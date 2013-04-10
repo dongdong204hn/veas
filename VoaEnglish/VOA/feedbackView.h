@@ -23,6 +23,7 @@
 @property(nonatomic,retain) IBOutlet UITextField *mail;
 @property(nonatomic,retain) UIAlertView *alert;
 @property(nonatomic) BOOL isiPhone;
+@property(nonatomic) BOOL sendLock;
 
 - (void)sendFeedback;
 

@@ -40,6 +40,7 @@ NSString * const kFeedbackThree = @"发送失败";
 NSString * const kFeedbackFour = @"您还没有连接网络";
 NSString * const kFeedbackFive = @"确定";
 NSString * const kFeedbacksix = @"发送";
+NSString * const kFeedbackSeven = @"请勿重复提交";
 
 NSString * const kHelpOne = @"使用帮助";
 
@@ -147,7 +148,6 @@ NSString * const kDIEight = @"非本地文章且当前服务器不可用";
 NSString * const kDINine = @"本地暂无当前文章，前往网页听读";
 
 NSString * const kSendOne = @"信息发送成功";
-
 
 NSMutableArray *downLoadList;//下载队列的全局变量，用于“下次再说”功能
 ASIHTTPRequest *nowrequest;//正在下载的全局变量，用于给cell的progress赋值

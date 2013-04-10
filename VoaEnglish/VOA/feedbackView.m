@@ -14,6 +14,7 @@
 @synthesize mail =  _mail;
 @synthesize alert = _alert;
 @synthesize isiPhone;
+@synthesize sendLock;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -60,6 +61,7 @@
 {
     [super viewDidLoad];
     isiPhone = ![Constants isPad];
+    sendLock = NO;
     if (!isiPhone) {
         [self.view setFrame:CGRectMake(0, 0, 768, 1024)];
         [self.feedback setFrame:CGRectMake(104, 20, 560, 250)];
@@ -98,22 +100,30 @@
 #pragma mark - http connect
 
 - (void)sendFeedback{
-    if ([self isExistenceNetwork]) {
-        ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:@"http://api.iyuba.com/mobile/ios/voa/feedback.xml"]];
-        request.delegate = self;
-        NSInteger nowUserId = [[[NSUserDefaults standardUserDefaults] objectForKey:@"nowUser"] integerValue];
-        NSString * decodedText = [[NSString alloc] initWithUTF8String:[_feedback.text UTF8String]];
-        if (nowUserId > 0) {
-            [request setPostValue:[NSString stringWithFormat:@"%d",nowUserId] forKey:@"uid"];
+    if (sendLock) {
+//        UIAlertView *alertOne = [[UIAlertView alloc] initWithTitle:kVoaWordOne message:kFeedbackSeven delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+//        [alertOne show];
+//        [alertOne release];
+    } else {
+        if ([self isExistenceNetwork]) {
+            sendLock = YES;
+            ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:@"http://api.iyuba.com/mobile/ios/voa/feedback.xml"]];
+            request.delegate = self;
+            NSInteger nowUserId = [[[NSUserDefaults standardUserDefaults] objectForKey:@"nowUser"] integerValue];
+            NSString * decodedText = [[NSString alloc] initWithUTF8String:[_feedback.text UTF8String]];
+            if (nowUserId > 0) {
+                [request setPostValue:[NSString stringWithFormat:@"%d",nowUserId] forKey:@"uid"];
+            }
+            else
+            {
+                [request setPostValue:_mail.text forKey:@"email"];
+            }
+            [request setPostValue:decodedText forKey:@"content"];
+            [decodedText release];
+            [request startAsynchronous];
         }
-        else
-        {
-            [request setPostValue:_mail.text forKey:@"email"];
-        }
-        [request setPostValue:decodedText forKey:@"content"];
-        [decodedText release];
-        [request startAsynchronous];
     }
+    
 }
 
 - (void)request:(ASIHTTPRequest *)request didReceiveResponseHeaders:(NSDictionary *)responseHeaders{
@@ -125,8 +135,18 @@
 //    NSLog(@"httpCode:%d",[request responseStatusCode]);
 }
 
+- (void)requestFailed:(ASIHTTPRequest *)request {
+    sendLock = NO;
+    kNetTest;
+    UIAlertView *alertOne = [[UIAlertView alloc] initWithTitle:kVoaWordOne message:kFeedbackThree delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+    [alertOne show];
+    [alertOne release];
+
+}
+
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
+    kNetEnable;
     NSData *myData = [request responseData];
     DDXMLDocument *doc = [[DDXMLDocument alloc] initWithData:myData options:0 error:nil];
     /////解析
@@ -164,6 +184,7 @@
                 [alertOne show];
                 [alertOne release];
             }
+            sendLock = NO;
         }
     }    
     [doc release],doc = nil;

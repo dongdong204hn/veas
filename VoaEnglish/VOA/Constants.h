@@ -40,6 +40,7 @@ extern NSString * const kFeedbackThree;
 extern NSString * const kFeedbackFour;
 extern NSString * const kFeedbackFive;
 extern NSString * const kFeedbacksix;
+extern NSString * const kFeedbackSeven;
 
 extern NSString * const kHelpOne;
 
