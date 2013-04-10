@@ -1,0 +1,24 @@
+//
+// Prefix header for all source files of the 'VOA' target in the 'VOA' project
+//扩展名.pch表示"precompiled header",这是一个你工程要用到的来自于外部框架的头文件列表。xcode将编译这些头到文件，这将减少你在选择Build 或Build and Go时编译项目的时间。通常用到的头文件已经自动包含了pch，系统编译每个cpp文件前，都会先include这个文件。这样就节省了添加include的时间，相当于加速编译（有待取证）
+//
+#import <Availability.h>
+
+#ifndef __IPHONE_3_0
+#warning "This project uses features only available in iOS SDK 3.0 and later."
+#endif
+
+#ifdef __OBJC__
+    #import <UIKit/UIKit.h>
+    #import <Foundation/Foundation.h>
+    #import "Constants.h"
+    #import "NetTest.h"
+#endif
+
+//#ifndef __OPTIMIZE__  
+//#define NSLog(...) NSLog(__VA_ARGS__)  
+//#else  
+//#define NSLog(...) {}
+//#endif 
+
+#define kBufferDurationSeconds .5
