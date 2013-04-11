@@ -382,6 +382,9 @@
 //@property BOOL isExisitNet;
 @property (nonatomic, retain) VOASentence *mySentence;  //记录要收藏的句子的基本信息
 
+@property (nonatomic) BOOL notValidInitLyric;   //标记是否有外部打断事件
+
+
 void RouteChangeListener(	void *                  inClientData,
                          AudioSessionPropertyID	inID,
                          UInt32                  inDataSize,

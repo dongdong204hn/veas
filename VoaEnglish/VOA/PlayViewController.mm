@@ -148,6 +148,7 @@
 //@synthesize audioRouteFlg;
 //@synthesize soundFileURLRef;
 //@synthesize soundFileObject;
+@synthesize notValidInitLyric;
 
 //用于批量下载
 extern NSMutableArray *downLoadList;
@@ -3063,7 +3064,7 @@ void audioRouteChangeListenerCallback (
 //    commNumber = 0;
     nowPage = 1;
     totalPage = 1;
-    [self catchComments:1];
+//    [self catchComments:1];
     [btn_play setHidden:YES];
     [btn_record setHidden:YES];
     //        [controller.lvlMeter_in setHidden:YES];
@@ -3093,9 +3094,11 @@ void audioRouteChangeListenerCallback (
     }
 //    NSLog(@"retain count1:%i", [player retainCount]);
     if (!notValid) {
-        [lyricSynTimer invalidate];
         [sliderTimer invalidate];
-        notValid = YES;
+        if (notValidInitLyric) {
+            [lyricSynTimer invalidate];
+            notValidInitLyric = NO;
+        }
     }
     timeSlider.maximumValue = 1.0f;//#$$#
     timeSlider.value = 0;
@@ -3129,12 +3132,14 @@ void audioRouteChangeListenerCallback (
     //刚进入页面时让歌词显示在开头
     [textScroll setContentOffset:startOffet];
     [myScroll setContentOffset:startOffet];
-    [timeSlider addTarget:self 
-                   action:@selector(sliderChanged:) 
-         forControlEvents:UIControlEventValueChanged];
-    [playButton addTarget:self 
-                   action:@selector(playButtonPressed:) 
-         forControlEvents:UIControlEventTouchUpInside];
+    
+//    [timeSlider addTarget:self 
+//                   action:@selector(sliderChanged:) 
+//         forControlEvents:UIControlEventValueChanged];
+//    [playButton addTarget:self 
+//                   action:@selector(playButtonPressed:) 
+//         forControlEvents:UIControlEventTouchUpInside];
+    
     //        [playButton addTarget:self 
     //                       action:@selector(playButtonPressed:) 
     //             forControlEvents:UIEventSubtypeMotionShake];
@@ -3147,252 +3152,13 @@ void audioRouteChangeListenerCallback (
     //        mp3Url = [NSURL fileURLWithPath:userPath];
     player = nil;
 //    NSLog(@"retain count2:%i", [player retainCount]);
-    if (localFileExist) {
-        [loadProgress setProgress:1.f];
-        
-//        mp3Url = [NSURL fileURLWithPath:userPath];
-//        NSString *testPath = [audioPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/00%d.wav", voa._voaid]];
-//        NSURL *testUrl = [NSURL fileURLWithPath:testPath];
-//        NSFileManager *deleteFile = [NSFileManager defaultManager];
-//        NSError *error = nil;
-//        [deleteFile removeItemAtPath:testPath error:&error];
-//        [mp3Url retain];
-//        [self modifySpeedOf:(__bridge CFURLRef)mp3Url byFactor:1.2 andWriteTo:(__bridge CFURLRef)testUrl];
-        
-        
-        
-//        mp3Url = [NSURL fileURLWithPath:userPath];
-//        [mp3Url retain];
-//        AVURLAsset *songAsset = [AVURLAsset URLAssetWithURL:mp3Url options:nil];
-//        NSString *exportPath = [audioPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/a%d.mp4", voa._voaid]];
-//        if ([[NSFileManager defaultManager] fileExistsAtPath:exportPath]) {
-//            [[NSFileManager defaultManager] removeItemAtPath:exportPath error:nil];
-//        }
-//        NSURL *exportURL = [NSURL fileURLWithPath:exportPath];
-//        AVAssetWriter *assetWriter = [[AVAssetWriter assetWriterWithURL:exportURL
-//                                                               fileType:AVFileTypeCoreAudioFormat
-//                                                                  error:nil]
-//                                      retain];
-////        AVAssetExportSession *exportSession = [AVAssetExportSession exportSessionWithAsset:songAsset
-////                                                                                presetName:AVAssetExportPreset1280x720];
-//        AVAssetExportSession *exportSession = [[AVAssetExportSession alloc] initWithAsset:[songAsset copy] presetName:AVAssetExportPreset1280x720];
-//        CMTime startTime = CMTimeMake(7, 1);
-//        CMTime stopTime = CMTimeMake(15, 1);
-//        CMTimeRange exportTimeRange = CMTimeRangeFromTimeToTime(startTime, stopTime);
-////        exportSession.outputURL = [NSURL fileURLWithPath:filePath]; // output path
-//        exportSession.outputURL = exportURL; // output path
-//        exportSession.outputFileType = AVFileTypeQuickTimeMovie; // output file type
-//        exportSession.timeRange = exportTimeRange; // trim time range
-//        [exportSession exportAsynchronouslyWithCompletionHandler:^{
-//            
-//            if (AVAssetExportSessionStatusCompleted == exportSession.status) {
-////                [self writeVideoToPhotoLibrary:exportURL];
-//                NSLog(@"AVAssetExportSessionStatusCompleted");
-//            } else if (AVAssetExportSessionStatusFailed == exportSession.status) {
-//                // a failure may happen because of an event out of your control
-//                // for example, an interruption like a phone call comming in
-//                // make sure and handle this case appropriately
-//                NSLog(@"AVAssetExportSessionStatusFailed");
-//            } else {
-//                NSLog(@"Export Session Status: %d", exportSession.status);
-//            }
-//        }];
-        
-//        exportSession 
-        
-        
-        
-        
-        
-        
-        if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 5.0) {
-            avSet = [AVAsset assetWithURL:[NSURL fileURLWithPath:userPath]];
-//            avSet = [AVAsset assetWithURL:[NSURL fileURLWithPath:testPath]];
-            [avSet retain];
-//            playerItem = [AVPlayerItem playerItemWithAsset:avSet];
-            player = [[AVPlayer alloc] initWithPlayerItem:[AVPlayerItem playerItemWithAsset:avSet]];
-//            NSLog(@"retain count3:%i", [player retainCount]);
-            
-        } else {
-            mp3Url = [NSURL fileURLWithPath:userPath];
-            [mp3Url retain];
-//            playerItem = [AVPlayerItem playerItemWithURL:[NSURL fileURLWithPath:userPath]];
-            player = [[AVPlayer alloc] initWithURL:mp3Url];
-//            NSLog(@"retain count3:%i", [player retainCount]);
-        }
-//        player = [[AVPlayer alloc] initWithPlayerItem:playerItem];
-        //            player = [[AVPlayer alloc] initWithURL:mp3Url];
-        
-        //            AudioSessionInitialize(NULL, NULL, NULL, NULL);
-        //            [[AVAudioSession sharedInstance] setDelegate: self];
-        playerFlag = 0;
-        //            [player release];
-        //            player = nil;
-        [downloadFlg setHidden:NO];
-        [collectButton setHidden:YES];
-        [downloadingFlg setHidden:YES];
-        //            NSLog(@"cunzai");  
-        //  获取mp3起止时间	
-        [totalTimeLabel setHidden:NO];
-        [currentTimeLabel setHidden:NO];
-        CMTime playerDuration = [self playerItemDuration];
-        double duration = CMTimeGetSeconds(playerDuration);
-        
-        CMTime playerProgress = [player currentTime];
-        double progress = CMTimeGetSeconds(playerProgress);
-        currentTimeLabel.text = [timeSwitchClass timeToSwitchAdvance:progress];
-        //            NSLog(@"%@", [timeSwitchClass timeToSwitchAdvance:localPlayer.currentTime]);
-        totalTimeLabel.text = [timeSwitchClass timeToSwitchAdvance:duration];
-//        timeSlider.maximumValue = duration;
-        [self setButtonImage:loadingImage];
-        
-        [player play];
-//        [player setRate:2.0f];
-        //            [playButton setImage:[UIImage imageNamed:@"PplayPressed.png"] forState:UIControlStateNormal];
-    }else
-    {
-        
-            
-//            NSError * error;
-//            AVKeyValueStatus status = [avSet statusOfValueForKey:@"track" error:&error];
-//            
-//            
-//            if(status != AVKeyValueStatusLoaded) {
-//                AVPlayerItem * playerItem = [AVPlayerItem playerItemWithAsset:avSet];
-//                [[NSNotificationCenter defaultCenter] addObserver:self
-//                                                         selector:@selector(playerItemDidReachEnd:)
-//                                                             name:AVPlayerItemDidPlayToEndTimeNotification
-//                                                           object:playerItem];
-//                
-//                player = [[AVPlayer alloc] initWithPlayerItem:playerItem];
-//            }
-//            else
-//            {
-//                //                NSLog(@"Asset loading failed : %@", [error localizedDescription]);
-//            }
-        if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 5.0) {
-            NSLog(@"URL：%@", [NSString stringWithFormat:@"http://static.iyuba.com/sounds/voa%@", voa._sound]);
-            avSet = [AVAsset assetWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://static.iyuba.com/sounds/voa%@", voa._sound]]];
-            [avSet retain];
-            if (avSet.playable) {
-                player = [[AVPlayer alloc] initWithPlayerItem:[AVPlayerItem playerItemWithAsset:avSet]];
-//                NSLog(@"retain count4:%i", [player retainCount]);
-                NSLog(@"Asset loading success");
-            } else {
-                NSLog(@"Asset loading failed");
-            }
-            
-            //
-        } else {
-            mp3Url = [NSURL URLWithString:[NSString stringWithFormat:@"http://static.iyuba.com/sounds/voa%@", voa._sound]];
-            [mp3Url retain];
-            player = [[AVPlayer alloc] initWithURL:mp3Url];
-//            NSLog(@"retain count4:%i", [player retainCount]);
-            //            AVPlayerItem * playerItem = [AVPlayerItem playerItemWithURL:mp3Url];
-            //            [[NSNotificationCenter defaultCenter] addObserver:self
-            //                                                     selector:@selector(playerItemDidReachEnd:)
-            //                                                         name:AVPlayerItemDidPlayToEndTimeNotification
-            //                                                       object:playerItem];
-            //
-            //            player = [[AVPlayer alloc] initWithPlayerItem:playerItem];
-        }
-        
-        //            NSLog(@"1");
-        
-        //            player = [[AVPlayer alloc] initWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://static.iyuba.com/sounds/voa%@", voa._sound]]];
-        playerFlag = 1;
-        //            NSLog(@"2");
-        int i=0;
-        for (; i<[downLoadList count]; i++) {
-            int downloadid = [[downLoadList objectAtIndex:i]intValue];
-            if (downloadid ==voa._voaid) {
-                break;
-            }
-        }
-        if (i<[downLoadList count])  {
-            [downloadFlg setHidden:YES];
-            [collectButton setHidden:YES];
-            [downloadingFlg setHidden:NO];
-        } else {
-            [downloadFlg setHidden:YES];
-            [collectButton setHidden:NO];
-            [downloadingFlg setHidden:YES];
-            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"autoDownload"]) {
-                [self collectButtonPressed:collectButton];
-            }
-        }
-        //            NSLog(@"3");
-        [totalTimeLabel setHidden:YES];
-        [currentTimeLabel setHidden:YES];
-        
-        //            NSLog(@"开始取时间");
-        //            CMTime playerDuration = [self playerItemDuration];
-        //            double duration = CMTimeGetSeconds(playerDuration);
-        ////            double duration = CMTimeGetSeconds([[player currentItem] duration]);
-        //            NSLog(@"duration1:%lf",duration);
-        
-        //            NSArray* loadedRanges = player.currentItem.loadedTimeRanges;  
-        //            if (loadedRanges.count > 0)  
-        //            {  
-        //                CMTimeRange range = [[loadedRanges objectAtIndex:0] CMTimeRangeValue];  
-        //                double duration = CMTimeGetSeconds(range.start) + CMTimeGetSeconds(range.duration);  
-        //                NSLog(@"duration2:%g", duration);  
-        //            }
-        //
-        //            CMTime playerProgress = [player currentTime];
-        //            double progress = CMTimeGetSeconds(playerProgress);
-        ////            NSLog(@"progress:%lf",progress);
-        kNetTest;
-        if (kNetIsExist) {
-            [player play];
-            //                NSArray* loadedRanges = player.currentItem.seekableTimeRanges; 
-            //                double duration;
-            //                if (loadedRanges.count > 0)  
-            //                {  
-            //                    CMTimeRange range = [[loadedRanges objectAtIndex:0] CMTimeRangeValue];  
-            //                    duration = CMTimeGetSeconds(range.start) + CMTimeGetSeconds(range.duration);  
-            //                    NSLog(@"duration2:%g", duration);  
-            //                }
-            
-//            CMTime playerProgress = [player currentTime];
-//            double progress = CMTimeGetSeconds(playerProgress);
-            double progress = 0;//#$$#
-            if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 4.3){
-                //                    NSLog(@"Version>=4.3");
-                CMTime playerDuration = [self playerItemDuration];
-                double duration = CMTimeGetSeconds(playerDuration);
-                if (duration > 0.1f) {//#$$#
-                    totalTimeLabel.text = [timeSwitchClass timeToSwitchAdvance:duration];
-                    timeSlider.maximumValue = duration;
-                    timeSlider.value = progress;
-                }
-            }else {
-                
-            }
-            //            NSLog(@"progress:%lf",progress);
-            
-            [totalTimeLabel setHidden:NO];
-            [currentTimeLabel setHidden:NO];
-            currentTimeLabel.text = [timeSwitchClass timeToSwitchAdvance:progress];//#$$#
-            //                totalTimeLabel.text = [timeSwitchClass timeToSwitchAdvance:duration];
-            //                timeSlider.maximumValue = duration;
-//            timeSlider.value = progress;
-            [self setButtonImage:loadingImage];
-        }else
-        {
-            needFlush = YES;
-        }
-        downloaded = NO;
-    }
-    //缓冲进度显示
     
-    //时间可调
-    sliderTimer = [NSTimer scheduledTimerWithTimeInterval:0.3
-                                                   target:self
-                                                 selector:@selector(updateSlider)
-                                                 userInfo:nil 
-                                                  repeats:YES];
-    [lyricArray removeAllObjects];
+    
+    ////////////////////////////
+//    [self performSelector:@selector(loadPlayRes) withObject:nil afterDelay:2];
+    [self loadPlayRes];
+    
+    /*[lyricArray removeAllObjects];
     [timeArray removeAllObjects];
     [indexArray removeAllObjects];
     [lyricCnArray removeAllObjects];
@@ -3412,9 +3178,6 @@ void audioRouteChangeListenerCallback (
     //        NSLog(@"lyricLabelArrayretainnumber:%i", [self.lyricLabelArray retainCount]);
     
     
-    /*
-     *  清空lyricLabelArray与lyricCnLabelArray两个数组
-     */
     for (UIView *deleteView in lyricLabelArray) {
         [deleteView removeFromSuperview];
     }
@@ -3427,9 +3190,7 @@ void audioRouteChangeListenerCallback (
     
     //
     //        NSLog(@"lyricLabelArrayretainnumber:%i", [self.lyricLabelArray retainCount]);
-    /*
-     *  释放lyricLabelArray与lyricCnLabelArray两个数组，重新创建。
-     */
+
     //        [lyricLabelArray release], lyricLabelArray = nil;
     //        [lyricCnLabelArray release], lyricCnLabelArray = nil;
     //        lyricLabelArray = [[NSMutableArray alloc] init];
@@ -3481,11 +3242,7 @@ void audioRouteChangeListenerCallback (
         }
     }
     //        NSLog(@"2");
-    kNetTest;
-    if (needFlushAdv && kNetIsExist) {
-        needFlushAdv = NO;
-        [bannerView_ loadRequest:[GADRequest request]];
-    }
+    
     //        NSLog(@"3");
     //  歌词同步的实现
 //#if 1
@@ -3495,7 +3252,26 @@ void audioRouteChangeListenerCallback (
                                                    userInfo:nil 
                                                     repeats:YES];
 //#endif
-    notValid = NO;
+    */
+//    [NSThread detachNewThreadSelector:@selector(loadLyric) toTarget:self withObject:nil];
+//    [self performSelector:@selector(loadLyric) withObject:nil afterDelay:5];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        
+        
+        dispatch_async(dispatch_get_main_queue (), ^{
+            
+            [self loadLyric];
+            
+        });
+        
+    });
+    kNetTest;
+    if (needFlushAdv && kNetIsExist) {
+        needFlushAdv = NO;
+        [bannerView_ loadRequest:[GADRequest request]];
+    }
+    
+//    notValid = NO;
     //        NSLog(@"4");
     [HUD hide:YES]; 
     [HUD hide:YES];
@@ -3506,11 +3282,14 @@ void audioRouteChangeListenerCallback (
         frame.origin.y = 0;
         [myScroll scrollRectToVisible:frame animated:YES];
     } else {
-        int page = pageControl.currentPage ;
+//        int page = pageControl.currentPage ;
+        int page = 0;
         CGRect frame = myScroll.frame;
         frame.origin.x = frame.size.width * page;
         frame.origin.y = 0;
         [myScroll scrollRectToVisible:frame animated:YES];
+        
+        [RoundBack setCenter:CGPointMake(btnOne.center.x, btnOne.center.y)];
     }
 //    NSLog(@"eee");
 //    NSLog(@"retain count5:%i", [player retainCount]);
@@ -3522,7 +3301,261 @@ void audioRouteChangeListenerCallback (
 
 }
 
+- (void) loadPlayRes {
+    if (localFileExist) {
+        [loadProgress setProgress:1.f];
+        
+        //        mp3Url = [NSURL fileURLWithPath:userPath];
+        //        NSString *testPath = [audioPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/00%d.wav", voa._voaid]];
+        //        NSURL *testUrl = [NSURL fileURLWithPath:testPath];
+        //        NSFileManager *deleteFile = [NSFileManager defaultManager];
+        //        NSError *error = nil;
+        //        [deleteFile removeItemAtPath:testPath error:&error];
+        //        [mp3Url retain];
+        //        [self modifySpeedOf:(__bridge CFURLRef)mp3Url byFactor:1.2 andWriteTo:(__bridge CFURLRef)testUrl];
+        
+        
+        
+        //        mp3Url = [NSURL fileURLWithPath:userPath];
+        //        [mp3Url retain];
+        //        AVURLAsset *songAsset = [AVURLAsset URLAssetWithURL:mp3Url options:nil];
+        //        NSString *exportPath = [audioPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/a%d.mp4", voa._voaid]];
+        //        if ([[NSFileManager defaultManager] fileExistsAtPath:exportPath]) {
+        //            [[NSFileManager defaultManager] removeItemAtPath:exportPath error:nil];
+        //        }
+        //        NSURL *exportURL = [NSURL fileURLWithPath:exportPath];
+        //        AVAssetWriter *assetWriter = [[AVAssetWriter assetWriterWithURL:exportURL
+        //                                                               fileType:AVFileTypeCoreAudioFormat
+        //                                                                  error:nil]
+        //                                      retain];
+        ////        AVAssetExportSession *exportSession = [AVAssetExportSession exportSessionWithAsset:songAsset
+        ////                                                                                presetName:AVAssetExportPreset1280x720];
+        //        AVAssetExportSession *exportSession = [[AVAssetExportSession alloc] initWithAsset:[songAsset copy] presetName:AVAssetExportPreset1280x720];
+        //        CMTime startTime = CMTimeMake(7, 1);
+        //        CMTime stopTime = CMTimeMake(15, 1);
+        //        CMTimeRange exportTimeRange = CMTimeRangeFromTimeToTime(startTime, stopTime);
+        ////        exportSession.outputURL = [NSURL fileURLWithPath:filePath]; // output path
+        //        exportSession.outputURL = exportURL; // output path
+        //        exportSession.outputFileType = AVFileTypeQuickTimeMovie; // output file type
+        //        exportSession.timeRange = exportTimeRange; // trim time range
+        //        [exportSession exportAsynchronouslyWithCompletionHandler:^{
+        //
+        //            if (AVAssetExportSessionStatusCompleted == exportSession.status) {
+        ////                [self writeVideoToPhotoLibrary:exportURL];
+        //                NSLog(@"AVAssetExportSessionStatusCompleted");
+        //            } else if (AVAssetExportSessionStatusFailed == exportSession.status) {
+        //                // a failure may happen because of an event out of your control
+        //                // for example, an interruption like a phone call comming in
+        //                // make sure and handle this case appropriately
+        //                NSLog(@"AVAssetExportSessionStatusFailed");
+        //            } else {
+        //                NSLog(@"Export Session Status: %d", exportSession.status);
+        //            }
+        //        }];
+        
+        //        exportSession
+        
+        
+        
+        
+        
+        
+        if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 5.0) {
+            avSet = [AVAsset assetWithURL:[NSURL fileURLWithPath:userPath]];
+            //            avSet = [AVAsset assetWithURL:[NSURL fileURLWithPath:testPath]];
+            [avSet retain];
+            //            playerItem = [AVPlayerItem playerItemWithAsset:avSet];
+            player = [[AVPlayer alloc] initWithPlayerItem:[AVPlayerItem playerItemWithAsset:avSet]];
+            //            NSLog(@"retain count3:%i", [player retainCount]);
+            
+        } else {
+            mp3Url = [NSURL fileURLWithPath:userPath];
+            [mp3Url retain];
+            //            playerItem = [AVPlayerItem playerItemWithURL:[NSURL fileURLWithPath:userPath]];
+            player = [[AVPlayer alloc] initWithURL:mp3Url];
+            //            NSLog(@"retain count3:%i", [player retainCount]);
+        }
+        //        player = [[AVPlayer alloc] initWithPlayerItem:playerItem];
+        //            player = [[AVPlayer alloc] initWithURL:mp3Url];
+        
+        //            AudioSessionInitialize(NULL, NULL, NULL, NULL);
+        //            [[AVAudioSession sharedInstance] setDelegate: self];
+        playerFlag = 0;
+        //            [player release];
+        //            player = nil;
+        [downloadFlg setHidden:NO];
+        [collectButton setHidden:YES];
+        [downloadingFlg setHidden:YES];
+        //            NSLog(@"cunzai");
+        //  获取mp3起止时间
+        [totalTimeLabel setHidden:NO];
+        [currentTimeLabel setHidden:NO];
+        CMTime playerDuration = [self playerItemDuration];
+        double duration = CMTimeGetSeconds(playerDuration);
+        
+        CMTime playerProgress = [player currentTime];
+        double progress = CMTimeGetSeconds(playerProgress);
+        currentTimeLabel.text = [timeSwitchClass timeToSwitchAdvance:progress];
+        //            NSLog(@"%@", [timeSwitchClass timeToSwitchAdvance:localPlayer.currentTime]);
+        totalTimeLabel.text = [timeSwitchClass timeToSwitchAdvance:duration];
+        //        timeSlider.maximumValue = duration;
+        [self setButtonImage:loadingImage];
+        
+        [player play];
+        //        [player setRate:2.0f];
+        //            [playButton setImage:[UIImage imageNamed:@"PplayPressed.png"] forState:UIControlStateNormal];
+    }else
+    {
+        
+        
+        //            NSError * error;
+        //            AVKeyValueStatus status = [avSet statusOfValueForKey:@"track" error:&error];
+        //
+        //
+        //            if(status != AVKeyValueStatusLoaded) {
+        //                AVPlayerItem * playerItem = [AVPlayerItem playerItemWithAsset:avSet];
+        //                [[NSNotificationCenter defaultCenter] addObserver:self
+        //                                                         selector:@selector(playerItemDidReachEnd:)
+        //                                                             name:AVPlayerItemDidPlayToEndTimeNotification
+        //                                                           object:playerItem];
+        //
+        //                player = [[AVPlayer alloc] initWithPlayerItem:playerItem];
+        //            }
+        //            else
+        //            {
+        //                //                NSLog(@"Asset loading failed : %@", [error localizedDescription]);
+        //            }
+        if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 5.0) {
+            NSLog(@"URL：%@", [NSString stringWithFormat:@"http://static.iyuba.com/sounds/voa%@", voa._sound]);
+            avSet = [AVAsset assetWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://static.iyuba.com/sounds/voa%@", voa._sound]]];
+            [avSet retain];
+            if (avSet.playable) {
+                player = [[AVPlayer alloc] initWithPlayerItem:[AVPlayerItem playerItemWithAsset:avSet]];
+                //                NSLog(@"retain count4:%i", [player retainCount]);
+                NSLog(@"Asset loading success");
+            } else {
+                NSLog(@"Asset loading failed");
+            }
+            
+            //
+        } else {
+            mp3Url = [NSURL URLWithString:[NSString stringWithFormat:@"http://static.iyuba.com/sounds/voa%@", voa._sound]];
+            [mp3Url retain];
+            player = [[AVPlayer alloc] initWithURL:mp3Url];
+            //            NSLog(@"retain count4:%i", [player retainCount]);
+            //            AVPlayerItem * playerItem = [AVPlayerItem playerItemWithURL:mp3Url];
+            //            [[NSNotificationCenter defaultCenter] addObserver:self
+            //                                                     selector:@selector(playerItemDidReachEnd:)
+            //                                                         name:AVPlayerItemDidPlayToEndTimeNotification
+            //                                                       object:playerItem];
+            //
+            //            player = [[AVPlayer alloc] initWithPlayerItem:playerItem];
+        }
+        
+        //            NSLog(@"1");
+        
+        //            player = [[AVPlayer alloc] initWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://static.iyuba.com/sounds/voa%@", voa._sound]]];
+        playerFlag = 1;
+        //            NSLog(@"2");
+        int i=0;
+        for (; i<[downLoadList count]; i++) {
+            int downloadid = [[downLoadList objectAtIndex:i]intValue];
+            if (downloadid ==voa._voaid) {
+                break;
+            }
+        }
+        if (i<[downLoadList count])  {
+            [downloadFlg setHidden:YES];
+            [collectButton setHidden:YES];
+            [downloadingFlg setHidden:NO];
+        } else {
+            [downloadFlg setHidden:YES];
+            [collectButton setHidden:NO];
+            [downloadingFlg setHidden:YES];
+            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"autoDownload"]) {
+                [self collectButtonPressed:collectButton];
+            }
+        }
+        //            NSLog(@"3");
+        [totalTimeLabel setHidden:YES];
+        [currentTimeLabel setHidden:YES];
+        
+        //            NSLog(@"开始取时间");
+        //            CMTime playerDuration = [self playerItemDuration];
+        //            double duration = CMTimeGetSeconds(playerDuration);
+        ////            double duration = CMTimeGetSeconds([[player currentItem] duration]);
+        //            NSLog(@"duration1:%lf",duration);
+        
+        //            NSArray* loadedRanges = player.currentItem.loadedTimeRanges;
+        //            if (loadedRanges.count > 0)
+        //            {
+        //                CMTimeRange range = [[loadedRanges objectAtIndex:0] CMTimeRangeValue];
+        //                double duration = CMTimeGetSeconds(range.start) + CMTimeGetSeconds(range.duration);
+        //                NSLog(@"duration2:%g", duration);
+        //            }
+        //
+        //            CMTime playerProgress = [player currentTime];
+        //            double progress = CMTimeGetSeconds(playerProgress);
+        ////            NSLog(@"progress:%lf",progress);
+        kNetTest;
+        if (kNetIsExist) {
+            [player play];
+            //                NSArray* loadedRanges = player.currentItem.seekableTimeRanges;
+            //                double duration;
+            //                if (loadedRanges.count > 0)
+            //                {
+            //                    CMTimeRange range = [[loadedRanges objectAtIndex:0] CMTimeRangeValue];
+            //                    duration = CMTimeGetSeconds(range.start) + CMTimeGetSeconds(range.duration);
+            //                    NSLog(@"duration2:%g", duration);
+            //                }
+            
+            //            CMTime playerProgress = [player currentTime];
+            //            double progress = CMTimeGetSeconds(playerProgress);
+            double progress = 0;//#$$#
+            if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 4.3){
+                //                    NSLog(@"Version>=4.3");
+                CMTime playerDuration = [self playerItemDuration];
+                double duration = CMTimeGetSeconds(playerDuration);
+                if (duration > 0.1f) {//#$$#
+                    totalTimeLabel.text = [timeSwitchClass timeToSwitchAdvance:duration];
+                    timeSlider.maximumValue = duration;
+                    timeSlider.value = progress;
+                }
+            }else {
+                
+            }
+            //            NSLog(@"progress:%lf",progress);
+            
+            [totalTimeLabel setHidden:NO];
+            [currentTimeLabel setHidden:NO];
+            currentTimeLabel.text = [timeSwitchClass timeToSwitchAdvance:progress];//#$$#
+            //                totalTimeLabel.text = [timeSwitchClass timeToSwitchAdvance:duration];
+            //                timeSlider.maximumValue = duration;
+            //            timeSlider.value = progress;
+            [self setButtonImage:loadingImage];
+        }else
+        {
+            needFlush = YES;
+        }
+        downloaded = NO;
+    }
+    //缓冲进度显示
+    
+    //时间可调
+    sliderTimer = [NSTimer scheduledTimerWithTimeInterval:0.3
+                                                   target:self
+                                                 selector:@selector(updateSlider)
+                                                 userInfo:nil 
+                                                  repeats:YES];
+}
+
 - (void) loadLyric {
+//    sliderTimer = [NSTimer scheduledTimerWithTimeInterval:0.3
+//                                                   target:self
+//                                                 selector:@selector(updateSlider)
+//                                                 userInfo:nil
+//                                                  repeats:YES];
+    
     [lyricArray removeAllObjects];
     [timeArray removeAllObjects];
     [indexArray removeAllObjects];
@@ -3618,6 +3651,13 @@ void audioRouteChangeListenerCallback (
                                                    userInfo:nil
                                                     repeats:YES];
 //#endif
+    notValid = NO;
+    notValidInitLyric = YES;
+    [myScroll setScrollEnabled:YES];
+    [btnTwo setUserInteractionEnabled:YES];
+    [btnThree setUserInteractionEnabled:YES];
+    [btnFour setUserInteractionEnabled:YES];
+    [self catchComments:1];
 }
 
 /**
@@ -3633,6 +3673,11 @@ void audioRouteChangeListenerCallback (
 //    NSString *fromPath = [audioPath stringByAppendingPathComponent:@"receive.mp3"];
 //    NSString *toPath = [audioPath stringByAppendingPathComponent:@"receive.aac"];
 //    [THUtility decodeBase64AtURL:[NSURL fileURLWithPath:fromPath] toURL:[NSURL fileURLWithPath:toPath]];
+    
+    [myScroll setScrollEnabled:NO];
+    [btnTwo setUserInteractionEnabled:NO];
+    [btnThree setUserInteractionEnabled:NO];
+    [btnFour setUserInteractionEnabled:NO];
     
     kNetTest;
     [self becomeFirstResponder];
@@ -3825,6 +3870,7 @@ void audioRouteChangeListenerCallback (
 - (void)viewDidLoad
 {
     NSLog(@"1");
+    notValidInitLyric = YES;
 //    audioRouteFlg = 0;
     isInterupted = NO;
     notValid = YES;
@@ -4480,6 +4526,14 @@ void audioRouteChangeListenerCallback (
         [bannerView_ setHidden:NO];
     }
 //    [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];//开启接受外部控制音频播放
+    
+    [timeSlider addTarget:self
+                   action:@selector(sliderChanged:)
+         forControlEvents:UIControlEventValueChanged];
+    [playButton addTarget:self
+                   action:@selector(playButtonPressed:)
+         forControlEvents:UIControlEventTouchUpInside];
+    
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
 }
@@ -4987,7 +5041,8 @@ void audioRouteChangeListenerCallback (
     NSString *audioPath = [documentPath stringByAppendingPathComponent:[NSString stringWithFormat:@"audio"]];;
     //    userPath = [audioPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%d.wav", voa._voaid]];
     NSString *dataPath = [audioPath stringByAppendingPathComponent:@"recordAudio.aac"];
-    NSString *audioStr = [THUtility encodeBase64AtURL:[NSURL fileURLWithPath:dataPath]];
+//    NSString *audioStr = [THUtility encodeBase64AtURL:[NSURL fileURLWithPath:dataPath]];
+//    NSString *audioStr = [NSString stringWithContentsOfURL:[NSURL fileURLWithPath:dataPath] usedEncoding:<#(NSStringEncoding *)#> error:<#(NSError **)#>];
     NSLog(@"audioUrl:%@", url);
     ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:url]];
     request.delegate = self;
@@ -4997,23 +5052,12 @@ void audioRouteChangeListenerCallback (
     [request setPostValue:[NSString stringWithFormat:@"%d", uid] forKey:@"userid"];
     [request setPostValue:[NSString stringWithFormat:@"%d", voa._voaid] forKey:@"voaid"];
     [request setPostValue:@"1" forKey:@"shuoshuotype"];
-    NSData* audioData = [audioStr dataUsingEncoding:NSUTF8StringEncoding];
-    
-//    static NSString *kBoundaryStr=@"_test_audio_comment_";
-//    NSString *header_type = [NSString stringWithFormat:@"multipart/form-data;boundary=%@",kBoundaryStr];
-//    [request addValue:header_type forHTTPHeaderField: @"Content-Type"];
-//    [request addRequestHeader:@"Content-Type" value:header_type];
-    
-//    [request addRequestHeader:@"Content-Type" value:@"multipart/form-data"];
-    
-//    [request setPostValue:audioData forKey:@"content"]; 
-//    [request appendPostData:audioData];
-    
-    [request setPostFormat:ASIMultipartFormDataPostFormat];
+//    NSData* audioData = [audioStr dataUsingEncoding:NSUTF8StringEncoding];
+    NSData* audioData = [NSData dataWithContentsOfURL:[NSURL fileURLWithPath:dataPath]];
     [request addData:audioData withFileName:@"record.aac" andContentType:@"multipart/form-data" forKey:@"content"];
     
     [request setUsername:@"sendAudio"];
-    [request setRequestMethod:@"POST"];
+//    [request setRequestMethod:@"POST"];
     [request startAsynchronous];
     
     

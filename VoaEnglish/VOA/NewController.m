@@ -115,7 +115,7 @@ extern ASIHTTPRequest *nowrequest;
             }
             [play setHidesBottomBarWhenPushed:YES];//设置推到新界面时无bottomBar
             
-            NSObject<EPGLTransitionViewDelegate> *transition;
+            /*NSObject<EPGLTransitionViewDelegate> *transition;
             
             //                                                switch ([sender tag]) {
             //                                                    case 0:
@@ -140,7 +140,7 @@ extern ASIHTTPRequest *nowrequest;
                                green:0.1
                                 blue:0.1
                                alpha:0.1];
-            [glview startTransition];
+            [glview startTransition];*/
             
             [self.navigationController pushViewController:play animated:NO];
             [HUD hide:YES];
@@ -1066,7 +1066,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
                                                 
                                                 [play setHidesBottomBarWhenPushed:YES];//设置推到新界面时无bottomBar
                                                 
-                                                
+                                                /*
                                                 NSObject<EPGLTransitionViewDelegate> *transition;
                                                 
 //                                                switch ([sender tag]) {
@@ -1094,7 +1094,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
                                                                    alpha:0.1];
                                                 [glview startTransition];
 //                                                [intro setTextColor:[UIColor colorWithRed:1.0/255 green:151.0/255 blue:211.0/255 alpha:1]];
-                                                
+                                                */
                                                 
                                                 [self.navigationController pushViewController:play animated:NO];
                                                 [HUD hide:YES];
