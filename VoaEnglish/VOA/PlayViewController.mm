@@ -2266,7 +2266,7 @@ extern ASIHTTPRequest *nowrequest;
 //	[playButton setTitle:@"播放" forState:UIControlStateNormal];
     //	Music completed 
     //	这段加上之后,播放结束时会自动退出，不知原因?
-#if 0
+//#if 0
 	
 	if (flag) {
 		
@@ -2274,7 +2274,7 @@ extern ASIHTTPRequest *nowrequest;
 		[sliderTimer invalidate];
 	}
 	
-#endif
+//#endif
 	
 }
 
@@ -3488,13 +3488,13 @@ void audioRouteChangeListenerCallback (
     }
     //        NSLog(@"3");
     //  歌词同步的实现
-#if 1
-    lyricSynTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 
+//#if 1
+    lyricSynTimer = [NSTimer scheduledTimerWithTimeInterval:0.5
                                                      target:self 
                                                    selector:@selector(lyricSyn) 
                                                    userInfo:nil 
                                                     repeats:YES];
-#endif
+//#endif
     notValid = NO;
     //        NSLog(@"4");
     [HUD hide:YES]; 
@@ -3522,11 +3522,118 @@ void audioRouteChangeListenerCallback (
 
 }
 
+- (void) loadLyric {
+    [lyricArray removeAllObjects];
+    [timeArray removeAllObjects];
+    [indexArray removeAllObjects];
+    [lyricCnArray removeAllObjects];
+    
+    [DataBaseClass querySQL:(NSMutableArray *)lyricArray
+            lyricCnResultIn:(NSMutableArray *)lyricCnArray
+               timeResultIn:(NSMutableArray *)timeArray
+              indexResultIn:(NSMutableArray *)indexArray
+                voaResultIn:(VOAView *)voa];
+    //    NSLog(@"lyricArraynumber:%i", [lyricArray count]);
+    
+    for (UIView *deleteView in [textScroll subviews]) {
+        [deleteView removeFromSuperview];
+    }
+    
+    //        NSLog(@"重复1");
+    //        NSLog(@"lyricLabelArrayretainnumber:%i", [self.lyricLabelArray retainCount]);
+    
+    
+    /*
+     *  清空lyricLabelArray与lyricCnLabelArray两个数组
+     */
+    for (UIView *deleteView in lyricLabelArray) {
+        [deleteView removeFromSuperview];
+    }
+    for (UIView *deleteView in lyricCnLabelArray) {
+        [deleteView removeFromSuperview];
+    }
+    [lyricLabelArray removeAllObjects];
+    [lyricCnLabelArray removeAllObjects];
+    
+    
+    //
+    //        NSLog(@"lyricLabelArrayretainnumber:%i", [self.lyricLabelArray retainCount]);
+    /*
+     *  释放lyricLabelArray与lyricCnLabelArray两个数组，重新创建。
+     */
+    //        [lyricLabelArray release], lyricLabelArray = nil;
+    //        [lyricCnLabelArray release], lyricCnLabelArray = nil;
+    //        lyricLabelArray = [[NSMutableArray alloc] init];
+    //        lyricCnLabelArray = [[NSMutableArray alloc] init];
+    
+    //        NSLog(@"重复2");
+    
+    int setY = [LyricSynClass lyricView : (NSMutableArray *)lyricLabelArray
+                       lyricCnLabelArray: (NSMutableArray *)lyricCnLabelArray
+                                  index : (NSMutableArray *)indexArray
+                                  lyric : (NSMutableArray *)lyricArray
+                                lyricCn : (NSMutableArray *)lyricCnArray
+                                   time : (NSMutableArray *)timeArray
+                            localPlayer : (AVPlayer *)player
+                                 scroll : (TextScrollView *)textScroll];
+    //                         myLabelDelegate: (id <UITextViewDelegate>) self
+    //                               engLines : (int *)&engLines
+    //                                cnLines : (int *)&cnLines];
+    //        NSLog(@"lyricLabelArrayretainnumber:%i", [self.lyricLabelArray retainCount]);
+    //    NSLog(@"retain count4:%i", [player retainCount]);
+    nowTextView = [lyricLabelArray objectAtIndex:0];
+    CGSize newSize = CGSizeMake(textScroll.frame.size.width, setY);
+    [textScroll setContentSize:newSize];
+    //        NSLog(@"lyricLabelArraynumber:%i", [lyricLabelArray count]);
+    //        NSLog(@"lyricLabelArray:%@", lyricLabelArray);
+    
+    BOOL engChn = [[NSUserDefaults standardUserDefaults] boolForKey:@"synContext"] ;
+    //        NSLog(@"同步设置:%d",engChn);
+    if (engChn) {
+        //            NSLog(@"no ......");
+        //        self.switchFlg = NO;
+        //        [switchBtn setTitle:@"开" forState:UIControlStateNormal] ;
+        for (UIView *hideView in textScroll.subviews) {
+            if (hideView.tag < 200) {
+                [hideView setHidden:NO];
+                //                    NSLog(@"hide1");
+            }
+        }
+    }else
+    {
+        //            NSLog(@"1");
+        //        self.switchFlg = YES;
+        //        [switchBtn setTitle:@"关" forState:UIControlStateNormal] ;
+        for (UIView *hideView in textScroll.subviews) {
+            if (hideView.tag < 200) {
+                [hideView setHidden:YES];
+                //                    NSLog(@"show1");
+            }
+        }
+    }
+//#if 1
+    lyricSynTimer = [NSTimer scheduledTimerWithTimeInterval:0.5
+                                                     target:self
+                                                   selector:@selector(lyricSyn)
+                                                   userInfo:nil
+                                                    repeats:YES];
+//#endif
+}
+
 /**
  *  页面即将展现时执行的操作
  */
 - (void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
+//    [self sendAudioComments];
+//    NSString *documentPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+//    NSString *audioPath = [documentPath stringByAppendingPathComponent:[NSString stringWithFormat:@"audio"]];;
+//    //    userPath = [audioPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%d.wav", voa._voaid]];
+//    NSString *fromPath = [audioPath stringByAppendingPathComponent:@"receive.mp3"];
+//    NSString *toPath = [audioPath stringByAppendingPathComponent:@"receive.aac"];
+//    [THUtility decodeBase64AtURL:[NSURL fileURLWithPath:fromPath] toURL:[NSURL fileURLWithPath:toPath]];
+    
     kNetTest;
     [self becomeFirstResponder];
 //    NSLog(@"字体大小：%d",[[NSUserDefaults standardUserDefaults] integerForKey:@"mulValueFont"]);
@@ -4868,6 +4975,98 @@ void audioRouteChangeListenerCallback (
 }
 
 /**
+ *  发表语音评论
+ */
+- (void)sendAudioComments{
+    NSInteger uid = [[NSUserDefaults standardUserDefaults] integerForKey:@"nowUser"];
+    NSString *url;
+//    url = [NSString stringWithFormat:@"http://172.16.94.220:8081/voa/UnicomApi?platform=ios&format=xml&protocol=60002&userid=%i&voaid=%i&shuoshuotype=1",uid, voa._voaid];
+    url = [NSString stringWithFormat:@"http://172.16.94.220:8081/voa/UnicomApi?protocol=60002"];
+    NSString *documentPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    //创建audio份目录在Documents文件夹下，not to back up
+    NSString *audioPath = [documentPath stringByAppendingPathComponent:[NSString stringWithFormat:@"audio"]];;
+    //    userPath = [audioPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%d.wav", voa._voaid]];
+    NSString *dataPath = [audioPath stringByAppendingPathComponent:@"recordAudio.aac"];
+    NSString *audioStr = [THUtility encodeBase64AtURL:[NSURL fileURLWithPath:dataPath]];
+    NSLog(@"audioUrl:%@", url);
+    ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:url]];
+    request.delegate = self;
+    [request setPostValue:@"ios" forKey:@"platform"];
+    [request setPostValue:@"xml" forKey:@"format"];
+    [request setPostValue:@"60002" forKey:@"protocol"];
+    [request setPostValue:[NSString stringWithFormat:@"%d", uid] forKey:@"userid"];
+    [request setPostValue:[NSString stringWithFormat:@"%d", voa._voaid] forKey:@"voaid"];
+    [request setPostValue:@"1" forKey:@"shuoshuotype"];
+    NSData* audioData = [audioStr dataUsingEncoding:NSUTF8StringEncoding];
+    
+//    static NSString *kBoundaryStr=@"_test_audio_comment_";
+//    NSString *header_type = [NSString stringWithFormat:@"multipart/form-data;boundary=%@",kBoundaryStr];
+//    [request addValue:header_type forHTTPHeaderField: @"Content-Type"];
+//    [request addRequestHeader:@"Content-Type" value:header_type];
+    
+//    [request addRequestHeader:@"Content-Type" value:@"multipart/form-data"];
+    
+//    [request setPostValue:audioData forKey:@"content"]; 
+//    [request appendPostData:audioData];
+    
+    [request setPostFormat:ASIMultipartFormDataPostFormat];
+    [request addData:audioData withFileName:@"record.aac" andContentType:@"multipart/form-data" forKey:@"content"];
+    
+    [request setUsername:@"sendAudio"];
+    [request setRequestMethod:@"POST"];
+    [request startAsynchronous];
+    
+    
+    
+//    static NSString *kBoundaryStr=@"_insert_some_boundary_here_";
+//    NSString *boundary = [NSString stringWithString:kBoundaryStr];
+//    NSMutableData *result = [[NSMutableData alloc] init];
+//    NSStringEncoding encoding = NSUTF8StringEncoding; //NSASCIIStringEncoding;
+//    [result appendData:[[NSString stringWithFormat:@"--%@\r\n",boundary]
+//                        
+//                        dataUsingEncoding:encoding]];
+//    [result appendData:[[NSString stringWithString:@"Content-Disposition: form-data;name=\"ClientLog\"\r\n\r\n"] dataUsingEncoding:encoding]];
+//    [result appendData:data];
+//    [result appendData:[[NSString stringWithString:@"\r\n"] dataUsingEncoding:encoding]];
+//    [result appendData:[[NSString stringWithFormat:@"--%@--\r\n",boundary]
+//                        
+//                        dataUsingEncoding:encoding]];
+//    NSString *header_type = [NSString stringWithFormat:@"multipart/form-data;boundary=%@",kBoundaryStr];
+//                             [request addValue:header_type forHTTPHeaderField: @"Content-Type"];
+//                             [request setHTTPBody:result];
+//                             [result release];
+    
+    
+//    NSInteger uid = [[NSUserDefaults standardUserDefaults] integerForKey:@"nowUser"];
+//    //    NSLog(@"$$$:%d", uid);
+//    if (uid>0) {
+//        NSString *url;
+//        if (isResponse) {
+//            url = [NSString stringWithFormat:@"http://apps.iyuba.com/voa/updateShuoShuo.jsp?userId=%i&groupName=ios&mod=insert&topicId=%i&comment=%@&toId=%i",uid, voa._voaid, [[textView text] URLEncodedString], [textView tag]];
+//        } else {
+//            url = [NSString stringWithFormat:@"http://apps.iyuba.com/voa/updateShuoShuo.jsp?userId=%i&groupName=ios&mod=insert&topicId=%i&comment=%@",uid, voa._voaid, [[textView text] URLEncodedString]];
+//        }
+//        
+//        //        ASIHTTPRequest * request = [[ASIHTTPRequest alloc] initWithURL:[NSURL URLWithString:url]];
+//        ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
+//        request.delegate = self;
+//        [request setUsername:@"send"];
+//        [request startAsynchronous];
+//    } else {
+//        LogController *myLog = [[LogController alloc]init];
+//        [self.navigationController  pushViewController:myLog animated:YES];
+//        
+//        //        id nextResponder = [self.view nextResponder];
+//        //        UIView *test = [[UIView alloc] init];
+//        //        tes
+//        //        [[(UIView *)self.view firstViewController:self.view] presentModalViewController:myLog animated:YES];
+//        [myLog release];
+//        //        PlayViewController *player = [PlayViewController sharedPlayer];
+//        //        [player.navigationController pushViewController:myLog animated:YES];
+//    }
+}
+
+/**
  *  发表评论
  */ 
 - (void)sendComments{
@@ -5065,6 +5264,20 @@ void audioRouteChangeListenerCallback (
             }
             
         }
+    } else if([request.username isEqualToString:@"sendAudio"]) {
+        NSLog(@"audio receive:%@", [[NSString alloc] initWithData:myData encoding:NSASCIIStringEncoding]);
+//        NSArray *items = [doc nodesForXPath:@"data/Row" error:nil];
+//        if (items) {
+//            for (DDXMLElement *obj in items) {
+//                NSInteger nowCount = [[[obj elementForName:@"ReadCount"] stringValue]integerValue];
+//                if (nowCount > [[VOAView find:[[[obj elementForName:@"VoaId"] stringValue]integerValue]] _readCount].integerValue) {
+//                    
+//                    [VOAView alterReadCount:[[[obj elementForName:@"VoaId"] stringValue]integerValue] count:nowCount];
+//                }
+//                
+//            }
+//            
+//        }
     }
     [doc release], doc = nil;
 }

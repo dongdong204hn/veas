@@ -51,7 +51,7 @@
 #import "DemoTransition.h"
 #import "Demo2Transition.h"
 #import "Demo3Transition.h"
-
+#import "THUtility.h"
 
 @class timeSwitchClass;
 //@class SpeakHereController;

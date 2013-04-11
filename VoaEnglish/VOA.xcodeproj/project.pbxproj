@@ -164,6 +164,7 @@
 		B043A25516A7E49100DEC567 /* MyTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = B043A25416A7E49100DEC567 /* MyTextView.m */; };
 		B047BE311508F34A00390878 /* myTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = B047BE301508F34A00390878 /* myTabBar.m */; };
 		B049A4AA1573735000DF391E /* SevenProgressBar.m in Sources */ = {isa = PBXBuildFile; fileRef = B049A4A91573735000DF391E /* SevenProgressBar.m */; };
+		B04C87C5171694A000897859 /* THUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = B04C87C4171694A000897859 /* THUtility.m */; };
 		B04E16AF15761963003E7A01 /* detailRead-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = B04E168715761963003E7A01 /* detailRead-ipad.png */; };
 		B04E16B015761963003E7A01 /* detailRead-ipad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B04E168815761963003E7A01 /* detailRead-ipad@2x.png */; };
 		B04E16B115761963003E7A01 /* detail-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = B04E168915761963003E7A01 /* detail-ipad.png */; };
@@ -924,6 +925,8 @@
 		B047BE301508F34A00390878 /* myTabBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = myTabBar.m; sourceTree = "<group>"; };
 		B049A4A81573735000DF391E /* SevenProgressBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SevenProgressBar.h; sourceTree = "<group>"; };
 		B049A4A91573735000DF391E /* SevenProgressBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SevenProgressBar.m; sourceTree = "<group>"; };
+		B04C87C3171694A000897859 /* THUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = THUtility.h; sourceTree = "<group>"; };
+		B04C87C4171694A000897859 /* THUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = THUtility.m; sourceTree = "<group>"; };
 		B04E168715761963003E7A01 /* detailRead-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "detailRead-ipad.png"; sourceTree = "<group>"; };
 		B04E168815761963003E7A01 /* detailRead-ipad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "detailRead-ipad@2x.png"; sourceTree = "<group>"; };
 		B04E168915761963003E7A01 /* detail-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "detail-ipad.png"; sourceTree = "<group>"; };
@@ -1816,6 +1819,7 @@
 		B016B58215107FF6008C75E9 /* my */ = {
 			isa = PBXGroup;
 			children = (
+				B04C87C2171694A000897859 /* THUtility */,
 				B03567BF1703D8A6001EA96B /* EPGLTransitionView */,
 				B020AEFC1701D17A00CC5D7D /* ImageSplit */,
 				B0FDEFC316AFB5B400257C1E /* STTweetLabel */,
@@ -2040,6 +2044,15 @@
 				B03567C71703D8A6001EA96B /* EPGLTransitionView.m */,
 			);
 			path = EPGLTransitionView;
+			sourceTree = "<group>";
+		};
+		B04C87C2171694A000897859 /* THUtility */ = {
+			isa = PBXGroup;
+			children = (
+				B04C87C3171694A000897859 /* THUtility.h */,
+				B04C87C4171694A000897859 /* THUtility.m */,
+			);
+			path = THUtility;
 			sourceTree = "<group>";
 		};
 		B04ECB0716AE277400F61D6E /* Infor */ = {
@@ -4027,6 +4040,7 @@
 				B03567C91703D8A6001EA96B /* Demo3Transition.m in Sources */,
 				B03567CA1703D8A6001EA96B /* DemoTransition.m in Sources */,
 				B03567CB1703D8A6001EA96B /* EPGLTransitionView.m in Sources */,
+				B04C87C5171694A000897859 /* THUtility.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
