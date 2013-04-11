@@ -73,7 +73,9 @@
                 if (!error) {
 #if  TARGET_IPHONE_SIMULATOR
                     NSString *fullPath = [kRecorderDirectory stringByAppendingPathComponent:
-                                          [NSString stringWithFormat:@"%@.caf",[[self class] stringWithUUID]]];
+                                          [NSString stringWithFormat:kRecordFile]];
+//                    NSString *fullPath = [kRecorderDirectory stringByAppendingPathComponent:
+//                                          [NSString stringWithFormat:@"%@.caf",[[self class] stringWithUUID]]];
                     //                    NSString *fullPath = [kRecorderDirectory stringByAppendingPathComponent:
                     //                                          [NSString stringWithFormat:@"recordAudio.caf"]];
 #else
@@ -226,15 +228,23 @@
 -(NSDictionary *)recordingSettings
 {
 #if  TARGET_IPHONE_SIMULATOR
+//    return [NSDictionary dictionaryWithObjectsAndKeys:
+//            [NSNumber numberWithInt:kAudioFormatLinearPCM], AVFormatIDKey,
+//            [NSNumber numberWithFloat:44100.0], AVSampleRateKey,
+//            [NSNumber numberWithInt: 2], AVNumberOfChannelsKey,
+//            [NSNumber numberWithInt:16], AVLinearPCMBitDepthKey,
+//            [NSNumber numberWithInt:AVAudioQualityMax],AVEncoderAudioQualityKey,
+//            [NSNumber numberWithBool:NO], AVLinearPCMIsBigEndianKey,
+//            [NSNumber numberWithBool:NO], AVLinearPCMIsFloatKey, nil];
     return [NSDictionary dictionaryWithObjectsAndKeys:
-            [NSNumber numberWithInt:kAudioFormatLinearPCM], AVFormatIDKey,
-            [NSNumber numberWithFloat:44100.0], AVSampleRateKey,
-            [NSNumber numberWithInt: 2], AVNumberOfChannelsKey,
-            [NSNumber numberWithInt:16], AVLinearPCMBitDepthKey,
-            [NSNumber numberWithInt:AVAudioQualityMax],AVEncoderAudioQualityKey,
-            [NSNumber numberWithBool:NO], AVLinearPCMIsBigEndianKey,
-            [NSNumber numberWithBool:NO], AVLinearPCMIsFloatKey, nil];
-    
+            [NSNumber numberWithInt: kAudioFormatMPEG4AAC],AVFormatIDKey,
+            [NSNumber numberWithFloat: 22050.0],AVSampleRateKey,
+            
+            [NSNumber numberWithInt: 8 ], AVLinearPCMBitDepthKey,
+            
+            [NSNumber numberWithInt: 1], AVNumberOfChannelsKey,
+            [NSNumber numberWithBool:NO],AVLinearPCMIsBigEndianKey,
+            [NSNumber numberWithBool:NO],AVLinearPCMIsFloatKey,nil];
 #else
 //        return [NSDictionary dictionaryWithObjectsAndKeys:
 //                [NSNumber numberWithInt:kAudioFormatMPEG4AAC], AVFormatIDKey,
@@ -246,14 +256,23 @@
 //                [NSNumber numberWithBool:NO], AVLinearPCMIsBigEndianKey,
 //                [NSNumber numberWithBool:NO], AVLinearPCMIsFloatKey, nil];
     return [NSDictionary dictionaryWithObjectsAndKeys:
-            [NSNumber numberWithInt:kAudioFormatMPEG4AAC], AVFormatIDKey,
-            [NSNumber numberWithFloat:44100.0], AVSampleRateKey,
-            [NSNumber numberWithInt:2], AVNumberOfChannelsKey,
-            [NSNumber numberWithInt:16], AVLinearPCMBitDepthKey,
-            [NSNumber numberWithInt:96], AVEncoderBitRateKey,
-            [NSNumber numberWithInt:AVAudioQualityLow],AVEncoderAudioQualityKey,
-            [NSNumber numberWithBool:NO], AVLinearPCMIsBigEndianKey,
-            [NSNumber numberWithBool:NO], AVLinearPCMIsFloatKey, nil];
+            [NSNumber numberWithInt: kAudioFormatMPEG4AAC],AVFormatIDKey,
+            [NSNumber numberWithFloat: 22050.0],AVSampleRateKey,
+            
+            [NSNumber numberWithInt: 8 ], AVLinearPCMBitDepthKey,
+            
+            [NSNumber numberWithInt: 1], AVNumberOfChannelsKey,
+            [NSNumber numberWithBool:NO],AVLinearPCMIsBigEndianKey,
+            [NSNumber numberWithBool:NO],AVLinearPCMIsFloatKey,nil];
+//    return [NSDictionary dictionaryWithObjectsAndKeys:
+//            [NSNumber numberWithInt:kAudioFormatMPEG4AAC], AVFormatIDKey,
+//            [NSNumber numberWithFloat:44100.0], AVSampleRateKey,
+//            [NSNumber numberWithInt:1], AVNumberOfChannelsKey,
+//            [NSNumber numberWithInt:16], AVLinearPCMBitDepthKey,
+//            [NSNumber numberWithInt:96], AVEncoderBitRateKey,
+//            [NSNumber numberWithInt:AVAudioQualityLow],AVEncoderAudioQualityKey,
+//            [NSNumber numberWithBool:NO], AVLinearPCMIsBigEndianKey,
+//            [NSNumber numberWithBool:NO], AVLinearPCMIsFloatKey, nil];
     //    return [NSDictionary dictionaryWithObjectsAndKeys:
     //            [NSNumber numberWithInt:kAudioFormatMPEGLayer3], AVFormatIDKey,
     //            [NSNumber numberWithFloat:8000.0], AVSampleRateKey,
