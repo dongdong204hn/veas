@@ -90,6 +90,7 @@ extern ASIHTTPRequest *nowrequest;
     HUD.labelText = @"Loading";
     HUD.dimBackground = YES;
     [HUD show:YES];
+//    [HUD release];
     dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
         
         dispatch_async(dispatch_get_main_queue(), ^{  
@@ -345,7 +346,8 @@ extern ASIHTTPRequest *nowrequest;
     search.delegate = self;
     [self.view addSubview:search];
     [search release];//$$
-   
+    
+    
     classArray = [[NSArray alloc] initWithObjects:kClassAll,kClassTwo,kClassThree,kClassFour,kClassFive,kClassSix,kClassSeven,kClassEight,kClassNine,kClassTen,nil];
     if (isiPhone) {
         classTableView = [[UITableView alloc] initWithFrame:CGRectMake(85, 0, 150, 0)];
@@ -388,9 +390,10 @@ extern ASIHTTPRequest *nowrequest;
     nowTitle = kClassAll;
     [self setMytitleUp];
     [titleBtn addTarget:self action:@selector(doSwitch:) forControlEvents:UIControlEventTouchUpInside];
+//    NSLog(@"titleBtn:%d", [titleBtn retainCount]);
     self.navigationItem.titleView = titleBtn;
     [titleBtn release];
-
+//    NSLog(@"titleBtn:%d", [titleBtn retainCount]);
     //    HUD = [[MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES] retain];
     //    HUD.dimBackground = YES;
     //    HUD.labelText = kNewFour;
@@ -416,8 +419,8 @@ extern ASIHTTPRequest *nowrequest;
         EGORefreshTableHeaderView *view =[[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.voasTableView.bounds.size.height, self.voasTableView.bounds.size.width, self.voasTableView.bounds.size.height)];
         view.delegate = self;
         [self.voasTableView addSubview:view];
+         [view release];
         _refreshHeaderView = view;
-        [view release];
     }
     //  update the last update date
 //    [_refreshHeaderView refreshLastUpdatedDate];
@@ -426,11 +429,16 @@ extern ASIHTTPRequest *nowrequest;
 
 - (void)viewDidUnload
 {
-//    self.voasTableView = nil;
-    [self.voasTableView release], voasTableView = nil;
-    [self.voasArray release], voasArray = nil;
-    [self.sharedSingleQueue release], sharedSingleQueue = nil;
-    [super dealloc];
+    self.voasTableView = nil;
+    [voasArray release], voasArray = nil;
+    [sharedSingleQueue release], sharedSingleQueue = nil;
+    [classArray release], classArray = nil;
+    [titleBtn release], titleBtn = nil;
+    [search release], search = nil;
+    [classTableView release], classTableView = nil;
+    [refreshHeaderView release], refreshHeaderView = nil;
+    [nowTitle release], nowTitle = nil;
+    [returnButton release], returnButton = nil;
     [super viewDidUnload];
 }
 
@@ -441,9 +449,29 @@ extern ASIHTTPRequest *nowrequest;
 }
 
 - (void)dealloc {
-    [self.voasTableView release], voasTableView = nil;
-    [voasArray release], voasArray = nil;
-    [self.sharedSingleQueue release], sharedSingleQueue = nil;
+    [voasTableView release];
+    [voasArray release];
+    [sharedSingleQueue release];
+    [classArray release];
+    [titleBtn release];
+    [search release];
+    [classTableView release];
+    [nowTitle release];
+    [refreshHeaderView release];
+    [returnButton release];
+    
+    
+//    [self.voasTableView release], voasTableView = nil;
+//    [voasArray release], voasArray = nil;
+//    [self.sharedSingleQueue release], sharedSingleQueue = nil;
+//    
+//    [self.classArray release], classArray = nil;
+//    [self.titleBtn release], titleBtn = nil;
+//    [self.search release], search = nil;
+//    [self.classTableView release], classTableView = nil;
+//    [self.nowTitle release], nowTitle = nil;
+//    [self.refreshHeaderView release], refreshHeaderView = nil;
+//    [self.returnButton release], returnButton = nil;
     [super dealloc];
 }
 
@@ -972,6 +1000,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
                                     HUD.labelText = @"Loading";
                                     HUD.dimBackground = YES;
                                     [HUD show:YES];
+//                                    [HUD release];
                                     //                                        HUD = [[MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES] retain];
                                     //                                        HUD.dimBackground = YES;
                                     //                                        HUD.labelText = @"connecting!";

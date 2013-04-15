@@ -62,13 +62,22 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
 }
+
+- (void)viewDidUnload {
+    self.SenEn = nil;
+    self.SenCn = nil;
+    self.myImageView = nil;
+    [sentences release], sentences = nil;
+    [super viewDidUnload];
+}
+
 - (void)dealloc
 {
     [SenEn release];
     [SenCn release];
-    [HUD release];
+//    [HUD release];
     [myImageView release];
-//    [OriText release];
+    [sentences release];
     [super dealloc];
 }
 

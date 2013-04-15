@@ -39,6 +39,7 @@
 @property (nonatomic, retain) UITextField *codeAgainF;
 @property (nonatomic, retain) UITextField *mailF;
 @property (nonatomic, retain) UIButton *registBtn;
+
 @property (nonatomic, retain) UIAlertView *alert;
 @property (nonatomic) BOOL isiPhone;
 

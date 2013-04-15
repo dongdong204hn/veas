@@ -85,7 +85,7 @@
 
 - (void)dealloc
 {
-    [self.webView release], _webView = nil;
+    [webView release], _webView = nil;
     [super dealloc];
 }
 

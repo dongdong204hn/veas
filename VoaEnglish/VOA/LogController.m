@@ -249,24 +249,36 @@
     self.registBtnTwo = nil;
     self.logBtnTwo = nil;
     self.logOutBtn = nil;
+    self.nowUser = nil;
     self.remCode = nil;
     self.remCodeL = nil;
-    self.afterLog = nil;
     self.yubBtn = nil;
     self.yubNumBtn = nil;
+    self.afterLog = nil;
+    self.userImg = nil;
+    [userL release], userL = nil;
+    [codeL release], codeL = nil;
+    [userF release], userF = nil;
+    [codeF release], codeF = nil;
 }
 
 - (void) dealloc
 {
-    [self.logTable release], logTable = nil;
-    [self.registBtnTwo release], registBtnTwo  = nil;
-    [self.logBtnTwo release], logBtnTwo  = nil;
-    [self.logOutBtn release], logOutBtn  = nil;
-    [self.remCode release], remCode  = nil;
-    [self.remCodeL release], remCodeL  = nil;
-    [self.afterLog release], afterLog  = nil;
-    [self.yubBtn release], yubBtn  = nil;
-    [self.yubNumBtn release], yubNumBtn  = nil;
+    [logTable release];
+    [registBtnTwo release];
+    [logBtnTwo release];
+    [logOutBtn release];
+    [nowUser release];
+    [remCode release];
+    [remCodeL release];
+    [yubBtn release];
+    [yubNumBtn release];
+    [afterLog release];
+    [userImg release];
+    [userL release];
+    [codeL release];
+    [userF release];
+    [codeF release];
     [super dealloc];
 }
 

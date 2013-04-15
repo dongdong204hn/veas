@@ -85,8 +85,8 @@
 
 - (void)dealloc
 {
-    [self.feedback release], _feedback = nil;
-    [self.mail release], _mail = nil;
+    [_feedback release], _feedback = nil;
+    [_feedback release], _mail = nil;
     [super dealloc];
 }
 

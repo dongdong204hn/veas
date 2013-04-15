@@ -28,14 +28,15 @@
 @property (nonatomic, retain) IBOutlet UITableView *voasTableView;
 @property (nonatomic, retain) NSMutableArray *contentsArray;
 @property (nonatomic, retain) NSString *searchWords;
-@property (nonatomic) NSInteger category;
-@property (nonatomic, assign) NSInteger searchFlg;
-@property (nonatomic, assign) NSInteger contentMode;
+@property (nonatomic, retain) NSOperationQueue *sharedSingleQueue;
+@property (nonatomic, retain) MBProgressHUD *HUD;
 @property (nonatomic, retain) NSMutableArray *contentsSrArray;
 @property (nonatomic, assign) NSInteger addNum;
-@property (nonatomic, retain) MBProgressHUD *HUD;
-@property(nonatomic) BOOL isiPhone;
-@property (nonatomic, retain) NSOperationQueue *sharedSingleQueue;
+@property (nonatomic, assign) NSInteger searchFlg;
+@property (nonatomic, assign) NSInteger contentMode;
+@property (nonatomic) BOOL isiPhone;
+@property (nonatomic) NSInteger category;
+
 
 - (void)catchDetails:(VOAView *) voaid;
 - (void)catchResult:(NSString *) searchWord page:(NSInteger)page;

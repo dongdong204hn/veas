@@ -247,16 +247,21 @@
 - (void)viewDidUnload
 {
     self.voasTableView = nil;
-    
+    [segmentedControl release], segmentedControl = nil;
+    [favArray release], favArray = nil;
+    [senArray release], senArray = nil;
+    [search release], search = nil;
     [super viewDidUnload];
     
 }
 
 - (void)dealloc
 {
-    [self.voasTableView release], voasTableView = nil;
-    [self.favArray release], favArray = nil;
-    [self.senArray release], senArray = nil;
+    [voasTableView release];
+    [segmentedControl release];
+    [favArray release];
+    [senArray release];
+    [search release];
     //    [favArray release];
     //    [search release];
     //    [HUD release];

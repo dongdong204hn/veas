@@ -171,8 +171,8 @@
 
 - (void)dealloc
 {
-    [self.scrollView release], scrollView = nil;
-    [self.pageControl release], pageControl = nil;
+    [scrollView release], scrollView = nil;
+    [pageControl release], pageControl = nil;
     [super dealloc];
 }
 

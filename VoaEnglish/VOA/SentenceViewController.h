@@ -25,11 +25,10 @@
 @property (nonatomic, retain) IBOutlet UITextView *SenEn;
 @property (nonatomic, retain) IBOutlet UITextView *SenCn;
 @property (nonatomic, retain) IBOutlet UIImageView *myImageView;
-@property (nonatomic) NSInteger row;
-@property (nonatomic) NSInteger nowUserId;
 @property (nonatomic, retain) MBProgressHUD *HUD;
 @property (nonatomic, retain) NSArray *sentences;
-
+@property (nonatomic) NSInteger row;
+@property (nonatomic) NSInteger nowUserId;
 //@property (nonatomic, retain) IBOutlet UIButton *OriText;
 //@property (nonatomic, retain) IBOutlet UILabel *NowSen;
 //-(IBAction)goOriText:(id)sender;

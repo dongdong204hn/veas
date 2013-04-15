@@ -111,6 +111,11 @@
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
     self.voasTableView = nil;
+    [_contentsSrArray release], _contentsSrArray = nil;
+    [_searchWords release], _searchWords = nil;
+    [sharedSingleQueue release], sharedSingleQueue = nil;
+//    [_HUD release], _HUD = nil;
+    [_contentsArray release], _contentsArray = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -122,9 +127,12 @@
 - (void)dealloc {
     //    [myRequest clearDelegatesAndCancel];
     //    [myRequest release];
-    [self.voasTableView release], _voasTableView = nil;
-    [self.contentsSrArray release], _contentsSrArray = nil;
-    [self.sharedSingleQueue release],sharedSingleQueue = nil;
+    [_voasTableView release];
+    [_contentsSrArray release];
+    [_searchWords release];
+    [sharedSingleQueue release];
+//    [_HUD release];
+    [_contentsArray release];
     [super dealloc];
 }
 

@@ -107,11 +107,29 @@
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
     self.logTable = nil;
+    [userL release], userL = nil;
+    [codeL release], codeL = nil;
+    [codeAgainL release], codeAgainL = nil;
+    [mailL release], mailL = nil;
+    [userF release], userF = nil;
+    [codeF release], codeF = nil;
+    [codeAgainF release], codeAgainF = nil;
+    [mailF release], mailF = nil;
+    [registBtn release], registBtn = nil;
 }
 
 - (void)dealloc
 {
-    [self.logTable release], logTable = nil;
+    [logTable release];
+    [userL release];
+    [codeL release];
+    [codeAgainL release];
+    [mailL release];
+    [userF release];
+    [codeF release];
+    [codeAgainF release];
+    [mailF release];
+    [registBtn release];
     [super dealloc];
 }
 

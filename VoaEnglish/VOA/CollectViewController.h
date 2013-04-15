@@ -31,7 +31,6 @@
 
 @property (nonatomic, retain) IBOutlet UITableView *voasTableView;
 @property (nonatomic, retain) UISegmentedControl *segmentedControl;
-@property (nonatomic) BOOL isSentence ;
 @property (nonatomic, retain) NSMutableArray *favArray;
 @property (nonatomic, retain) NSMutableArray *senArray;
 @property (nonatomic, retain) UISearchBar *search;
@@ -40,5 +39,6 @@
 @property (nonatomic) NSInteger nowUserId;
 @property (nonatomic) BOOL rightCharacter;
 @property (nonatomic) BOOL notSelect;
+@property (nonatomic) BOOL isSentence ;
 //@property (nonatomic, retain) NSMutableArray *voasArray;
 @end
