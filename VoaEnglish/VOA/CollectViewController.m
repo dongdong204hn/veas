@@ -624,7 +624,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
                                     rightCharacter = NO;
                                 }
                             }else {
-                                [myDetail release];
+//                                [myDetail release];
                                 rightCharacter = YES;
                             }//获取所选的cell的数据
                             if (rightCharacter) {

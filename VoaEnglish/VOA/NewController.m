@@ -12,7 +12,7 @@
 
 @implementation NewController
 
-@synthesize localArray;
+//@synthesize localArray;
 @synthesize category;
 @synthesize nowTitle;
 @synthesize classTableView;
@@ -283,15 +283,15 @@ extern ASIHTTPRequest *nowrequest;
     [search setBackgroundColor:[UIColor clearColor]];
 	[search setHidden:YES];
     
-    if (category == 10) {
-        NSArray *favViews = [VOAFav findCollect];
-        [localArray removeAllObjects];
-        for (id fav in favViews) {
-            [localArray addObject:fav];
-        }
-        [self.voasTableView reloadData];
-        [favViews release], favViews = nil;
-    }
+//    if (category == 10) {
+//        NSArray *favViews = [VOAFav findCollect];
+//        [localArray removeAllObjects];
+//        for (id fav in favViews) {
+//            [localArray addObject:fav];
+//        }
+//        [self.voasTableView reloadData];
+//        [favViews release], favViews = nil;
+//    }
 
     if ([[PlayViewController sharedPlayer] isPlaying]) {
         isValid = YES;
@@ -332,14 +332,14 @@ extern ASIHTTPRequest *nowrequest;
     isiPhone = ![Constants isPad];
     
     voasArray = [[NSMutableArray alloc]init];
-    localArray= [[NSMutableArray alloc]init];
-    
-    NSArray *favViews = [VOAFav findCollect];
-    for (id fav in favViews) {
-        [localArray addObject:fav];
-    }
-    [self.voasTableView reloadData];
-    [favViews release], favViews = nil;
+//    localArray= [[NSMutableArray alloc]init];
+//    
+//    NSArray *favViews = [VOAFav findCollect];
+//    for (id fav in favViews) {
+//        [localArray addObject:fav];
+//    }
+//    [self.voasTableView reloadData];
+//    [favViews release], favViews = nil;
     
     search = [[UISearchBar alloc] init];
     search.delegate = self;
@@ -426,7 +426,11 @@ extern ASIHTTPRequest *nowrequest;
 
 - (void)viewDidUnload
 {
-    self.voasTableView = nil;
+//    self.voasTableView = nil;
+    [self.voasTableView release], voasTableView = nil;
+    [self.voasArray release], voasArray = nil;
+    [self.sharedSingleQueue release], sharedSingleQueue = nil;
+    [super dealloc];
     [super viewDidUnload];
 }
 
@@ -438,7 +442,7 @@ extern ASIHTTPRequest *nowrequest;
 
 - (void)dealloc {
     [self.voasTableView release], voasTableView = nil;
-    [self.voasArray release], voasArray = nil;
+    [voasArray release], voasArray = nil;
     [self.sharedSingleQueue release], sharedSingleQueue = nil;
     [super dealloc];
 }
@@ -541,23 +545,25 @@ extern ASIHTTPRequest *nowrequest;
 
 - (NSInteger)tableView:(UITableView *)tableView //明确cell数目
  numberOfRowsInSection:(NSInteger)section {
-//    NSLog(@"number：%i", (tableView.tag == 1? (category == 10? [localArray count]: [voasArray count]+2): [classArray count]));
-//    NSLog(@"table:%d",tableView.tag);
-    return (tableView.tag == 1? (category == 10? [localArray count]: [voasArray count]+2): [classArray count]);}
+    //    NSLog(@"table:%d",tableView.tag);
+//    return (tableView.tag == 1? (category == 10? [localArray count]: [voasArray count]+2): [classArray count]);
+    return (tableView.tag == 1? [voasArray count]+2: [classArray count]);
+}
+
 
 - (UITableViewCell *)tableView:(UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     if (tableView.tag == 1) {
-        if (category == 10) {
-//            NSLog(@"本地");
-            NSUInteger row = [indexPath row];
-            static NSString *FirstLevelCell= @"CollectCell";
+        NSUInteger row = [indexPath row];
+        if ([indexPath row]<[voasArray count]) {
+            static NSString *FirstLevelCell= @"NewCell";
+            VOAView *voa = [self.voasArray objectAtIndex:row];
             
+            //        NSLog(@"-----cell id:%d",voa._voaid);
             VoaViewCell *cell = (VoaViewCell*)[tableView dequeueReusableCellWithIdentifier:FirstLevelCell];
             
             if (!cell) {
-                
                 if (isiPhone) {
                     cell = (VoaViewCell*)[[[NSBundle mainBundle] loadNibNamed:@"VoaViewCell"
                                                                         owner:self
@@ -567,266 +573,209 @@ extern ASIHTTPRequest *nowrequest;
                                                                         owner:self
                                                                       options:nil] objectAtIndex:0];
                 }
+                
             }
-            //            NSUInteger row = [indexPath row];
-            
-//            NSLog(@"fav:%i", row);
-            VOAFav *fav = [localArray objectAtIndex:row];
-            
-            VOAView *voa = [VOAView find:fav._voaid];
-            
             cell.myTitle.text = voa._title;
-            
             cell.myDate.text = voa._creatTime;
-            
-            cell.collectDate.text = fav._date;
-            
-            cell.readCount.text = voa._readCount;
-            
+            cell.readCount.text = [NSString stringWithFormat:@"%i人已听", [VOAView findReadCount:voa._voaid]+11321];
             //--------->设置内容换行
             [cell.myTitle setLineBreakMode:UILineBreakModeClip];
-            
             //--------->设置最大行数
             [cell.myTitle setNumberOfLines:3];
-            
             NSURL *url = [NSURL URLWithString: voa._pic];
-            
-            [cell.myImage setImageWithURL:url placeholderImage:[UIImage imageNamed:@"acquiesceBBC.png"]];
-            
+            [cell.myImage setImageWithURL:url placeholderImage:[UIImage imageNamed:@"acquiesce.png"]];
             [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-            
-            //            if (voa._hotFlg.integerValue == 1) {
-            //
-            //                [cell.hotImg setHidden:NO];
-            //
-            //                //        NSLog(@"hot:1");
-            //            }
-            [voa release];
-            return cell;
-        } else {
-//            NSLog(@"全部");
-            NSUInteger row = [indexPath row];
-            if ([indexPath row]<[voasArray count]) {
-                static NSString *FirstLevelCell= @"NewCell";
-                VOAView *voa = [self.voasArray objectAtIndex:row];
-                
-                //        NSLog(@"-----cell id:%d",voa._voaid);
-                VoaViewCell *cell = (VoaViewCell*)[tableView dequeueReusableCellWithIdentifier:FirstLevelCell];
-                
-                if (!cell) {
-                    if (isiPhone) {
-                        cell = (VoaViewCell*)[[[NSBundle mainBundle] loadNibNamed:@"VoaViewCell"
-                                                                            owner:self
-                                                                          options:nil] objectAtIndex:0];
-                    }else {
-                        cell = (VoaViewCell*)[[[NSBundle mainBundle] loadNibNamed:@"VoaViewCell-iPad"
-                                                                            owner:self
-                                                                          options:nil] objectAtIndex:0];
-                    }
-                    
-                }
-                cell.myTitle.text = voa._title;
-                cell.myDate.text = voa._creatTime;
-                cell.readCount.text = [NSString stringWithFormat:@"%i人已听", [VOAView findReadCount:voa._voaid]+11321];
-                //--------->设置内容换行
-                [cell.myTitle setLineBreakMode:UILineBreakModeClip];
-                //--------->设置最大行数
-                [cell.myTitle setNumberOfLines:3];
-                NSURL *url = [NSURL URLWithString: voa._pic];
-                [cell.myImage setImageWithURL:url placeholderImage:[UIImage imageNamed:@"acquiesce.png"]];
-                [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-                //        NSLog(@"readmy:%@",voa._isRead);
-                if ([VOAView isRead:voa._voaid]) {
-                    [cell.readImg setImage:[UIImage imageNamed:@"detailRead-ipad.png"]];
-                }else
-                {
-                    //                    [cell.myTitle setTextColor:[UIColor redColor]];
-                    //                    [cell.myDate setTextColor:[UIColor redColor]];
-                    //                    [cell.readImg setImage:[UIImage imageNamed:@"detail-ipad.png"]];
-                    [cell.hotImg setHidden:NO];
-                    
-                }
-                if (voa._hotFlg.integerValue == 1) {
-                    //            NSLog(@"hot:1");
-                }
-                if (isiPhone) {
-                    cell.downloadBtn = [[UIButton alloc] initWithFrame:CGRectMake(280, 45, 33, 33)];
-                } else {
-                    cell.downloadBtn = [[UIButton alloc] initWithFrame:CGRectMake(670, 44, 63, 63)];
-                }
-                if ([VOAFav isCollected:voa._voaid]) {
-                    [cell.downloadBtn setHidden:YES];
-                    [cell.aftImage setHidden:NO];
-                }else {
-                    [cell.aftImage setHidden:YES];
-                    [cell.downloadBtn setTag:voa._voaid];
-                    int i=0;
-                    for (; i<[downLoadList count]; i++) {
-                        int downloadid = [[downLoadList objectAtIndex:i]intValue];
-                        if (downloadid ==voa._voaid) {
-                            break;
-                        }
-                    }
-                    if (i<[downLoadList count]) {
-                        if (voa._voaid == nowrequest.tag){
-                            [cell.downloadBtn addTarget:self action:@selector(WaitingBtnPressed:) forControlEvents:UIControlEventTouchUpInside];
-                            
-                            if (isiPhone) {
-                                cell.progress=[[DACircularProgressView alloc]initWithFrame:CGRectMake(278, 43, 37, 37)];
-                                [cell.downloadBtn setImage:[UIImage imageNamed:@"stopdl.png"] forState:UIControlStateNormal];
-                            } else {
-                                cell.progress=[[DACircularProgressView alloc]initWithFrame:CGRectMake(666, 40, 71, 71)];
-                                [cell.downloadBtn setImage:[UIImage imageNamed:@"stopdl@2x.png"] forState:UIControlStateNormal];
-                            }
-                            
-                            nowrequest.downloadProgressDelegate = cell.progress;
-                            [nowrequest updateDownloadProgress];
-                            [cell addSubview:cell.progress];
-                            
-                        }else{
-                            [cell.downloadBtn addTarget:self action:@selector(WaitingBtnPressed:) forControlEvents:UIControlEventTouchUpInside];
-                            if (isiPhone) {
-                                [cell.downloadBtn setImage:[UIImage imageNamed:@"waiting.png"] forState:UIControlStateNormal];
-                            } else {
-                                [cell.downloadBtn setImage:[UIImage imageNamed:@"waiting@2x.png"] forState:UIControlStateNormal];
-                            }
-                            
-                        }
-                    }else{
-                        if (isiPhone) {
-                            [cell.downloadBtn setImage:[UIImage imageNamed:@"dl.png"] forState:UIControlStateNormal];
-                        } else {
-                            [cell.downloadBtn setImage:[UIImage imageNamed:@"dl@2x.png"] forState:UIControlStateNormal];
-                        }
-                        
-                        [cell.downloadBtn addTarget:self action:@selector(QueueDownloadMusicBtn:) forControlEvents:UIControlEventTouchUpInside];
-                    }
-                }
-                [cell addSubview:cell.downloadBtn];
-                //    cell.downloadBtn addTarget:self action: forControlEvents:
-                cell.tag = voa._voaid;
-                
-                return cell;
+            //        NSLog(@"readmy:%@",voa._isRead);
+            if ([VOAView isRead:voa._voaid]) {
+                [cell.readImg setImage:[UIImage imageNamed:@"detailRead-ipad.png"]];
             }else
             {
-                if ([indexPath row]==[voasArray count]) {
-                    static NSString *SecondLevelCell= @"NewCellOne";
-                    UITableViewCell *cellTwo = (UITableViewCell*)[tableView dequeueReusableCellWithIdentifier:SecondLevelCell];
-                    //            if (addNum > 0) {
-                    //                if (!cellTwo) {
-                    //                    //                cellTwo = [[UITableViewCell alloc]init];
-                    //                    //                cellTwo = [[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:SecondLevelCell] autorelease];
-                    //                    if (isiPhone) {
-                    //                        cellTwo = [[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:SecondLevelCell] autorelease];
-                    //                    }else {
-                    //                        cellTwo = (VoaViewCell*)[[[NSBundle mainBundle] loadNibNamed:@"VoaImageCell-iPad"
-                    //                                                                               owner:self
-                    //                                                                             options:nil] objectAtIndex:0];
-                    //                    }
-                    //                }
-                    //                [cellTwo setSelectionStyle:UITableViewCellSelectionStyleNone];
-                    //                //                cellTwo.imageView.contentMode = UIViewContentModeScaleToFill;
-                    //                //                if (isiPhone) {
-                    //                [cellTwo.imageView setImage:[UIImage imageNamed:@"load.png"]];
-                    //                //                } else {
-                    //                //                    [cellTwo.imageView setImage:[UIImage imageNamed:@"load-ipad.png"]];
-                    //                //                }
-                    //            } else {
-                    //                [cellTwo setHidden:YES];
-                    //            }
-                    if (!cellTwo) {
-                        //                cellTwo = [[UITableViewCell alloc]init];
-                        //                cellTwo = [[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:SecondLevelCell] autorelease];
-                        if (isiPhone) {
-                            cellTwo = [[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:SecondLevelCell] autorelease];
-                        }else {
-                            cellTwo = (VoaViewCell*)[[[NSBundle mainBundle] loadNibNamed:@"VoaImageCell-iPad"
-                                                                                   owner:self
-                                                                                 options:nil] objectAtIndex:0];
-                        }
+                //                    [cell.myTitle setTextColor:[UIColor redColor]];
+                //                    [cell.myDate setTextColor:[UIColor redColor]];
+                //                    [cell.readImg setImage:[UIImage imageNamed:@"detail-ipad.png"]];
+                [cell.hotImg setHidden:NO];
+                
+            }
+            if (voa._hotFlg.integerValue == 1) {
+                //            NSLog(@"hot:1");
+            }
+            if (isiPhone) {
+                cell.downloadBtn = [[[UIButton alloc] initWithFrame:CGRectMake(280, 45, 33, 33)] autorelease];
+            } else {
+                cell.downloadBtn = [[[UIButton alloc] initWithFrame:CGRectMake(670, 44, 63, 63)] autorelease];
+            }
+            if ([VOAFav isCollected:voa._voaid]) {
+                [cell.downloadBtn setHidden:YES];
+                [cell.aftImage setHidden:NO];
+            }else {
+                [cell.aftImage setHidden:YES];
+                [cell.downloadBtn setTag:voa._voaid];
+                int i=0;
+                for (; i<[downLoadList count]; i++) {
+                    int downloadid = [[downLoadList objectAtIndex:i]intValue];
+                    if (downloadid ==voa._voaid) {
+                        break;
                     }
-                    [cellTwo setSelectionStyle:UITableViewCellSelectionStyleNone];
-                    //            NSLog(@"cell width:%f",cellTwo.frame.size.width);
-                    //            if (isiPhone) {
-                    //                [cellTwo setFrame:CGRectMake(0, 0, 320, 28)];
-                    //                [cellTwo.imageView setFrame:CGRectMake(0, 0, 320, 28)];
-                    //            } else {
-                    //                [cellTwo setFrame:CGRectMake(0, 0, 768, 28)];
-                    //                [cellTwo.imageView setFrame:CGRectMake(0, 0, 768, 28)];
-                    //            }
-                    //            NSLog(@"cell width after:%f",cellTwo.frame.size.width);
-                    if (addNum > 0) {
-                        //                cellTwo.imageView.contentMode = UIViewContentModeScaleToFill;
+                }
+                if (i<[downLoadList count]) {
+                    if (voa._voaid == nowrequest.tag){
+                        [cell.downloadBtn addTarget:self action:@selector(WaitingBtnPressed:) forControlEvents:UIControlEventTouchUpInside];
+                        
                         if (isiPhone) {
-                            [cellTwo.imageView setImage:[UIImage imageNamed:@"load.png"]];
+                            cell.progress=[[[DACircularProgressView alloc]initWithFrame:CGRectMake(278, 43, 37, 37)] autorelease];
+                            [cell.downloadBtn setImage:[UIImage imageNamed:@"stopdl.png"] forState:UIControlStateNormal];
+                        } else {
+                            cell.progress=[[[DACircularProgressView alloc]initWithFrame:CGRectMake(666, 40, 71, 71)] autorelease];
+                            [cell.downloadBtn setImage:[UIImage imageNamed:@"stopdl@2x.png"] forState:UIControlStateNormal];
                         }
+                        
+                        nowrequest.downloadProgressDelegate = cell.progress;
+                        [nowrequest updateDownloadProgress];
+                        [cell addSubview:cell.progress];
+                        
+                    }else{
+                        [cell.downloadBtn addTarget:self action:@selector(WaitingBtnPressed:) forControlEvents:UIControlEventTouchUpInside];
+                        if (isiPhone) {
+                            [cell.downloadBtn setImage:[UIImage imageNamed:@"waiting.png"] forState:UIControlStateNormal];
+                        } else {
+                            [cell.downloadBtn setImage:[UIImage imageNamed:@"waiting@2x.png"] forState:UIControlStateNormal];
+                        }
+                        
+                    }
+                }else{
+                    if (isiPhone) {
+                        [cell.downloadBtn setImage:[UIImage imageNamed:@"dl.png"] forState:UIControlStateNormal];
                     } else {
-                        [cellTwo setHidden:YES];
+                        [cell.downloadBtn setImage:[UIImage imageNamed:@"dl@2x.png"] forState:UIControlStateNormal];
                     }
-                    //            NSLog(@"width:%f",cellTwo.imageView.frame.size.width);
-                    return cellTwo;
-                }else
-                {
-                    if ([indexPath row]==[voasArray count]+1) {
-                        //                NSLog(@"enter");
-                        static NSString *ThirdLevelCell= @"NewCellTwo";
-                        UITableViewCell *cellThree = (UITableViewCell*)[tableView dequeueReusableCellWithIdentifier:ThirdLevelCell];
-                        if (!cellThree) {
-                            cellThree = [[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:ThirdLevelCell] autorelease];
-                            //                    cellThree = [[UITableViewCell alloc]init];
-                        }
-                        //                UITableViewCell *cellThree = [[UITableViewCell alloc]init];
-                        [cellThree setSelectionStyle:UITableViewCellSelectionStyleNone];
-                        [cellThree setHidden:YES];
-                        if (row>lastId) {
-                        } else
-                        {
-                            //                    NSLog(@"重新加载");
-                            kNetTest;
-                            if (kNetIsExist) {
-                                //                        NSLog(@"lastId:%d",lastId);
-                                if (addNum>0) {
-                                    //                            NSLog(@"联网重新加载");
-                                    [self catchIntroduction:(0) pages:pageNum pageNum:10];
-                                }
-                            }else {
-                                NSMutableArray *addArray = [[NSMutableArray alloc]init];
-                                if (category == 0) {
-                                    addArray = [VOAView findNew:10*(pageNum-1) newVoas:addArray];
-                                } else if (category<10) {
-                                    addArray = [VOAView findNewByCategory:10*(pageNum-1) category:category myArray:addArray];
-                                } else {
-                                    
-                                }
-                                
-                                //                            addArray = [VOAView findNew:10*(pageNum-1) newVoas:addArray];
-                                pageNum ++;
-                                addNum = 0;
-                                for (VOAView *voaOne in addArray) {
-                                    [self.voasArray addObject:voaOne];
-                                    addNum++;
-                                }
-                                [addArray release],addArray = nil;
-                                
-                                [self.voasTableView reloadData];
+                    
+                    [cell.downloadBtn addTarget:self action:@selector(QueueDownloadMusicBtn:) forControlEvents:UIControlEventTouchUpInside];
+                }
+            }
+            [cell addSubview:cell.downloadBtn];
+            //    cell.downloadBtn addTarget:self action: forControlEvents:
+            cell.tag = voa._voaid;
+            
+            return cell;
+        }else
+        {
+            if ([indexPath row]==[voasArray count]) {
+                static NSString *SecondLevelCell= @"NewCellOne";
+                UITableViewCell *cellTwo = (UITableViewCell*)[tableView dequeueReusableCellWithIdentifier:SecondLevelCell];
+                //            if (addNum > 0) {
+                //                if (!cellTwo) {
+                //                    //                cellTwo = [[UITableViewCell alloc]init];
+                //                    //                cellTwo = [[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:SecondLevelCell] autorelease];
+                //                    if (isiPhone) {
+                //                        cellTwo = [[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:SecondLevelCell] autorelease];
+                //                    }else {
+                //                        cellTwo = (VoaViewCell*)[[[NSBundle mainBundle] loadNibNamed:@"VoaImageCell-iPad"
+                //                                                                               owner:self
+                //                                                                             options:nil] objectAtIndex:0];
+                //                    }
+                //                }
+                //                [cellTwo setSelectionStyle:UITableViewCellSelectionStyleNone];
+                //                //                cellTwo.imageView.contentMode = UIViewContentModeScaleToFill;
+                //                //                if (isiPhone) {
+                //                [cellTwo.imageView setImage:[UIImage imageNamed:@"load.png"]];
+                //                //                } else {
+                //                //                    [cellTwo.imageView setImage:[UIImage imageNamed:@"load-ipad.png"]];
+                //                //                }
+                //            } else {
+                //                [cellTwo setHidden:YES];
+                //            }
+                if (!cellTwo) {
+                    //                cellTwo = [[UITableViewCell alloc]init];
+                    //                cellTwo = [[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:SecondLevelCell] autorelease];
+                    if (isiPhone) {
+                        cellTwo = [[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:SecondLevelCell] autorelease];
+                    }else {
+                        cellTwo = (VoaViewCell*)[[[NSBundle mainBundle] loadNibNamed:@"VoaImageCell-iPad"
+                                                                               owner:self
+                                                                             options:nil] objectAtIndex:0];
+                    }
+                }
+                [cellTwo setSelectionStyle:UITableViewCellSelectionStyleNone];
+                //            NSLog(@"cell width:%f",cellTwo.frame.size.width);
+                //            if (isiPhone) {
+                //                [cellTwo setFrame:CGRectMake(0, 0, 320, 28)];
+                //                [cellTwo.imageView setFrame:CGRectMake(0, 0, 320, 28)];
+                //            } else {
+                //                [cellTwo setFrame:CGRectMake(0, 0, 768, 28)];
+                //                [cellTwo.imageView setFrame:CGRectMake(0, 0, 768, 28)];
+                //            }
+                //            NSLog(@"cell width after:%f",cellTwo.frame.size.width);
+                if (addNum > 0) {
+                    //                cellTwo.imageView.contentMode = UIViewContentModeScaleToFill;
+                    if (isiPhone) {
+                        [cellTwo.imageView setImage:[UIImage imageNamed:@"load.png"]];
+                    }
+                } else {
+                    [cellTwo setHidden:YES];
+                }
+                //            NSLog(@"width:%f",cellTwo.imageView.frame.size.width);
+                return cellTwo;
+            }else
+            {
+                if ([indexPath row]==[voasArray count]+1) {
+                    //                NSLog(@"enter");
+                    static NSString *ThirdLevelCell= @"NewCellTwo";
+                    UITableViewCell *cellThree = (UITableViewCell*)[tableView dequeueReusableCellWithIdentifier:ThirdLevelCell];
+                    if (!cellThree) {
+                        cellThree = [[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:ThirdLevelCell] autorelease];
+                        //                    cellThree = [[UITableViewCell alloc]init];
+                    }
+                    //                UITableViewCell *cellThree = [[UITableViewCell alloc]init];
+                    [cellThree setSelectionStyle:UITableViewCellSelectionStyleNone];
+                    [cellThree setHidden:YES];
+                    if (row>lastId) {
+                    } else
+                    {
+                        //                    NSLog(@"重新加载");
+                        kNetTest;
+                        if (kNetIsExist) {
+                            //                        NSLog(@"lastId:%d",lastId);
+                            if (addNum>0) {
+                                //                            NSLog(@"联网重新加载");
+                                [self catchIntroduction:(0) pages:pageNum pageNum:10];
+                            }
+                        }else {
+                            NSMutableArray *addArray = [[NSMutableArray alloc]init];
+                            if (category == 0) {
+                                addArray = [VOAView findNew:10*(pageNum-1) newVoas:addArray];
+                            } else if (category<10) {
+                                addArray = [VOAView findNewByCategory:10*(pageNum-1) category:category myArray:addArray];
+                            } else {
                                 
                             }
-                            //                    NSLog(@"lastId2:%d",lastId);
                             
-                            //                    NSMutableArray *addArray = [[NSMutableArray alloc]init];
-                            //                    addArray = [VOAView findNew:10*(pageNum-1) newVoas:addArray];
-                            //                    pageNum ++;
-                            //                    addNum = 0;
-                            //                    for (VOAView *voaOne in addArray) {
-                            //                        [self.voasArray addObject:voaOne];
-                            //                        addNum++;
-                            //                    }
-                            //                    [addArray release],addArray = nil;
-                            //
-                            //                    [self.voasTableView reloadData];
+                            //                            addArray = [VOAView findNew:10*(pageNum-1) newVoas:addArray];
+                            pageNum ++;
+                            addNum = 0;
+                            for (VOAView *voaOne in addArray) {
+                                [self.voasArray addObject:voaOne];
+                                addNum++;
+                            }
+                            [addArray release],addArray = nil;
+                            
+                            [self.voasTableView reloadData];
+                            
                         }
-                        return cellThree;
+                        //                    NSLog(@"lastId2:%d",lastId);
+                        
+                        //                    NSMutableArray *addArray = [[NSMutableArray alloc]init];
+                        //                    addArray = [VOAView findNew:10*(pageNum-1) newVoas:addArray];
+                        //                    pageNum ++;
+                        //                    addNum = 0;
+                        //                    for (VOAView *voaOne in addArray) {
+                        //                        [self.voasArray addObject:voaOne];
+                        //                        addNum++;
+                        //                    }
+                        //                    [addArray release],addArray = nil;
+                        //
+                        //                    [self.voasTableView reloadData];
                     }
+                    return cellThree;
                 }
             }
         }
@@ -907,30 +856,30 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
                 {
                     self.navigationController.navigationBarHidden = NO;
                     
-                    if (category == 10) {
-                        NSMutableArray *allVoaArray = localArray;
-                        NSMutableArray *contentsArray = nil;
-                        contentsArray = [VOAView findFavSimilar:allVoaArray search:searchWords];
-                        //                NSLog(@"count:%d", [contentsArray count]);
-                        
-                        if ([contentsArray count] == 0) {
-                            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:kColFour message:[NSString stringWithFormat:@"%@ %@ %@",kSearchThree,searchWords,kColThree] delegate:nil cancelButtonTitle:kFeedbackFive otherButtonTitles:nil, nil ];
-                            [alert show];
-                            [alert release];
-                            [contentsArray release];
-                        }else
-                        {
-                            search.text = @"";
-                            SearchViewController *searchController = [SearchViewController alloc];
-                            searchController.searchWords = searchWords;
-                            searchController.contentsArray = contentsArray;
-                            searchController.contentMode = 2;
-                            [contentsArray release];
-                            searchController.searchFlg = 11;
-                            [self.navigationController pushViewController:searchController animated:YES];
-                            [searchController release], searchController = nil;
-                        }
-                    } else {
+//                    if (category == 10) {
+//                        NSMutableArray *allVoaArray = localArray;
+//                        NSMutableArray *contentsArray = nil;
+//                        contentsArray = [VOAView findFavSimilar:allVoaArray search:searchWords];
+//                        //                NSLog(@"count:%d", [contentsArray count]);
+//                        
+//                        if ([contentsArray count] == 0) {
+//                            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:kColFour message:[NSString stringWithFormat:@"%@ %@ %@",kSearchThree,searchWords,kColThree] delegate:nil cancelButtonTitle:kFeedbackFive otherButtonTitles:nil, nil ];
+//                            [alert show];
+//                            [alert release];
+//                            [contentsArray release];
+//                        }else
+//                        {
+//                            search.text = @"";
+//                            SearchViewController *searchController = [SearchViewController alloc];
+//                            searchController.searchWords = searchWords;
+//                            searchController.contentsArray = contentsArray;
+//                            searchController.contentMode = 2;
+//                            [contentsArray release];
+//                            searchController.searchFlg = 11;
+//                            [self.navigationController pushViewController:searchController animated:YES];
+//                            [searchController release], searchController = nil;
+//                        }
+//                    } else {
                         if (isiPhone) {
                             [voasTableView setFrame:CGRectMake(0, 0, 320, kViewHeight)];
                             [search setFrame:CGRectMake(0, 0, 320, 44)];
@@ -948,7 +897,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
                         searchController.category = category;
                         [self.navigationController pushViewController:searchController animated:YES];
                         [searchController release], searchController = nil;
-                    }
+//                    }
                     
                 }
             }else{
@@ -1041,7 +990,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
                                                     rightCharacter = NO;
                                                 }
                                             }else {
-                                                [myDetail release];
+//                                                [myDetail release];
                                                 rightCharacter = YES;
                                             }//获取所选的cell的数据
                                             if (rightCharacter) {
@@ -1107,6 +1056,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
                                                 [addAlert release];
                                                 [voasTableView setUserInteractionEnabled:YES];
                                             }
+//                                            [HUD hide:YES];
                                         });
                                     });
                                 }
@@ -1161,30 +1111,30 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     {
         self.navigationController.navigationBarHidden = NO;
         
-        if (category == 10) {
-            NSMutableArray *allVoaArray = localArray;
-            NSMutableArray *contentsArray = nil;
-            contentsArray = [VOAView findFavSimilar:allVoaArray search:searchWords];
-            //                NSLog(@"count:%d", [contentsArray count]);
-            
-            if ([contentsArray count] == 0) {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:kColFour message:[NSString stringWithFormat:@"%@ %@ %@",kSearchThree,searchWords,kColThree] delegate:nil cancelButtonTitle:kFeedbackFive otherButtonTitles:nil, nil ];
-                [alert show];
-                [alert release];
-                [contentsArray release];
-            }else
-            {
-                search.text = @"";
-                SearchViewController *searchController = [SearchViewController alloc];
-                searchController.searchWords = searchWords;
-                searchController.contentsArray = contentsArray;
-                searchController.contentMode = 2;
-                [contentsArray release];
-                searchController.searchFlg = 11;
-                [self.navigationController pushViewController:searchController animated:YES];
-                [searchController release], searchController = nil;
-            }
-        } else {
+//        if (category == 10) {
+//            NSMutableArray *allVoaArray = localArray;
+//            NSMutableArray *contentsArray = nil;
+//            contentsArray = [VOAView findFavSimilar:allVoaArray search:searchWords];
+//            //                NSLog(@"count:%d", [contentsArray count]);
+//            
+//            if ([contentsArray count] == 0) {
+//                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:kColFour message:[NSString stringWithFormat:@"%@ %@ %@",kSearchThree,searchWords,kColThree] delegate:nil cancelButtonTitle:kFeedbackFive otherButtonTitles:nil, nil ];
+//                [alert show];
+//                [alert release];
+//                [contentsArray release];
+//            }else
+//            {
+//                search.text = @"";
+//                SearchViewController *searchController = [SearchViewController alloc];
+//                searchController.searchWords = searchWords;
+//                searchController.contentsArray = contentsArray;
+//                searchController.contentMode = 2;
+//                [contentsArray release];
+//                searchController.searchFlg = 11;
+//                [self.navigationController pushViewController:searchController animated:YES];
+//                [searchController release], searchController = nil;
+//            }
+//        } else {
             if (isiPhone) {
                 [voasTableView setFrame:CGRectMake(0, 0, 320, kViewHeight)];
                 
@@ -1203,7 +1153,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
             searchController.category = category;
             [self.navigationController pushViewController:searchController animated:YES];
             [searchController release], searchController = nil;
-        }
+//        }
 //        if (isiPhone) {
 //            [voasTableView setFrame:CGRectMake(0, 0, 320, 372)];
 //            [search setFrame:CGRectMake(0, 0, 320, 44)];
@@ -1382,14 +1332,14 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     DDXMLDocument *doc = [[DDXMLDocument alloc] initWithData:myData options:0 error:nil];
     if ([request.username isEqualToString:@"new" ]) {
         /////解析
-        NSArray *items = [doc nodesForXPath:@"data" error:nil];
+//        NSArray *items = [doc nodesForXPath:@"data" error:nil];
 //        if (items) {
 //            for (DDXMLElement *obj in items) {
 //                NSInteger total = [[[obj elementForName:@"total"] stringValue] integerValue] ;
 //                NSLog(@"total:%d",total);
 //            }
 //        }
-        items = [doc nodesForXPath:@"data/voatitle" error:nil];
+        NSArray *items = [doc nodesForXPath:@"data/voatitle" error:nil];
         if (items) {
             BOOL flushList = NO;
             for (DDXMLElement *obj in items) {
@@ -1429,7 +1379,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
                 //                if (player.playMode == 3) {
                 player.flushList = YES;  
                 //                }
-                flushList = NO;
+//                flushList = NO;
             }
             NSMutableArray *addArray = [[NSMutableArray alloc]init];
             if (category == 0) {
@@ -1556,7 +1506,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (nowrequest.tag ==sender.tag) {
         
         VOAView *voa;
-        NSInteger index;
+        NSInteger index = 0;
         for (int i= 0; i<[voasArray count]; i++) {
             voa = [voasArray objectAtIndex:i];
             if (voa._voaid==sender.tag) {
@@ -1582,7 +1532,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
         [request cancel];
     }
     VOAView *voa;
-    NSInteger index;
+    NSInteger index = 0;
     for (int i= 0; i<[voasArray count]; i++) {
         voa = [voasArray objectAtIndex:i];
         if (voa._voaid==request.tag) {
@@ -1646,7 +1596,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
         //        [downloadingFlg setHidden:YES];
         //    }
         VOAView *voa;
-        NSInteger index;
+        NSInteger index = 0;
         for (int i= 0; i<[voasArray count]; i++) {
             voa = [voasArray objectAtIndex:i];
             if (voa._voaid==request.tag) {
@@ -1680,7 +1630,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
         //    }
         // MusicView *nowmusic=[MusicView find:request.tag];
         VOAView *voa;
-        NSInteger index;
+        NSInteger index = 0;
         for (int i= 0; i<[voasArray count]; i++) {
             voa = [voasArray objectAtIndex:i];
             if (voa._voaid==request.tag) {
@@ -1731,7 +1681,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     //        [downloadingFlg setHidden:YES];
     //    }
     VOAView *voa;
-    NSInteger index;
+    NSInteger index = 0;
     for (int i= 0; i<[voasArray count]; i++) {
         voa = [voasArray objectAtIndex:i];
         if (voa._voaid==request.tag) {

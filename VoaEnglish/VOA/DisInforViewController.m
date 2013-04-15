@@ -399,6 +399,7 @@
     kNetTest;
     self.navigationController.navigationBarHidden = NO;
     int nowUserID = [[[NSUserDefaults standardUserDefaults] objectForKey:@"nowUser"] integerValue];
+    NSLog(@"%d", nowUserID);
     [editBtn setHidden:YES];
     [msgTv setHidden:YES];
     [disMsgLab setHidden:YES];
@@ -429,6 +430,7 @@
     } else {
         seconds += value_All;
     }
+    [formatter release], formatter = nil;
     if (avgTime > 0) {
         int n = (avgTime%60)*5/3;
         if (n > 9) {
@@ -711,6 +713,7 @@
                             SendMessageController *sendMsgController = [[SendMessageController alloc] init];
                             sendMsgController.userMsg = userMsg;
                             [self.navigationController pushViewController:sendMsgController animated:YES];
+                            [sendMsgController release], sendMsgController = nil;
 //                            NSLog(@"发信 %@", [NSString stringWithFormat:@"回复%@:", [inforArray objectAtIndex:i*8+1]]);
                         }
                     }
@@ -769,6 +772,7 @@
                             SendMessageController *sendMsgController = [[SendMessageController alloc] init];
                             sendMsgController.userMsg = userMsg;
                             [self.navigationController pushViewController:sendMsgController animated:YES];
+                            [sendMsgController release], sendMsgController = nil;
                             //                            NSLog(@"发信 %@", [NSString stringWithFormat:@"回复%@:", [inforArray objectAtIndex:i*8+1]]);
                         }
                     }
@@ -1037,6 +1041,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
                 if (![UserMessage isExist:userMsg.msgId]) {
                     [userMsg insert];
                 }
+                [userMsg release], userMsg = nil;
             }
         }
         //         NSLog(@"评论数：%i---表高:%f", [commArray count], [commArray count]*kCommTableHeightPh);
@@ -1135,7 +1140,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
         if (items) {
 //            NSLog(@"come into");
             rightCharacter = YES;
-            BOOL flushList = NO;
+//            BOOL flushList = NO;
             for (DDXMLElement *obj in items) {
                 VOAView *newVoa = [[VOAView alloc] init];
                 newVoa._voaid = [[[obj elementForName:@"Voaid"] stringValue] integerValue] ;
@@ -1157,7 +1162,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
                 if ([VOAView isExist:newVoa._voaid] == NO) {
                     [newVoa insert];
                     //                    [self catchDetails:newVoa];
-                    flushList = YES;
+//                    flushList = YES;
 //                    NSLog(@"插入%d成功",newVoa._voaid);
                 }else {
                     if (newVoa._readCount.integerValue > [[VOAView find:newVoa._voaid] _readCount].integerValue) {
@@ -1271,7 +1276,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
                             rightCharacter = NO;
                         }
                     }else {
-                        [myDetail release];
+//                        [myDetail release];
                         rightCharacter = YES;
                     }//获取所选的cell的数据
                     if (rightCharacter) {

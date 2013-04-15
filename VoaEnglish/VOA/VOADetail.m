@@ -92,7 +92,7 @@
 //    if (i<3) {
 //        return nil;
 //    }
-	return voaDetail;	
+	return [voaDetail autorelease];
 }
 
 + (BOOL) isExist:(NSInteger) voaid{

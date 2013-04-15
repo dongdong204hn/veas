@@ -3255,15 +3255,111 @@ void audioRouteChangeListenerCallback (
     */
 //    [NSThread detachNewThreadSelector:@selector(loadLyric) toTarget:self withObject:nil];
 //    [self performSelector:@selector(loadLyric) withObject:nil afterDelay:5];
+    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    
+        //时间可调
+        
+        [lyricArray removeAllObjects];
+        [timeArray removeAllObjects];
+        [indexArray removeAllObjects];
+        [lyricCnArray removeAllObjects];
+        
+        [DataBaseClass querySQL:(NSMutableArray *)lyricArray
+                lyricCnResultIn:(NSMutableArray *)lyricCnArray
+                   timeResultIn:(NSMutableArray *)timeArray
+                  indexResultIn:(NSMutableArray *)indexArray
+                    voaResultIn:(VOAView *)voa];
+        //    NSLog(@"lyricArraynumber:%i", [lyricArray count]);
+//    });
+
+    
+//        [self loadLyric];
+//    dispatch_barrier_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    
+        
+        
+        
+        
         
         
         dispatch_async(dispatch_get_main_queue (), ^{
+            for (UIView *deleteView in [textScroll subviews]) {
+                [deleteView removeFromSuperview];
+            }
             
-            [self loadLyric];
+            //        NSLog(@"重复1");
+            //        NSLog(@"lyricLabelArrayretainnumber:%i", [self.lyricLabelArray retainCount]);
             
+            
+            /*
+             *  清空lyricLabelArray与lyricCnLabelArray两个数组
+             */
+            for (UIView *deleteView in lyricLabelArray) {
+                [deleteView removeFromSuperview];
+            }
+            for (UIView *deleteView in lyricCnLabelArray) {
+                [deleteView removeFromSuperview];
+            }
+            [lyricLabelArray removeAllObjects];
+            [lyricCnLabelArray removeAllObjects];
+    
+            int setY = [LyricSynClass lyricView : (NSMutableArray *)lyricLabelArray
+                               lyricCnLabelArray: (NSMutableArray *)lyricCnLabelArray
+                                          index : (NSMutableArray *)indexArray
+                                          lyric : (NSMutableArray *)lyricArray
+                                        lyricCn : (NSMutableArray *)lyricCnArray
+                                           time : (NSMutableArray *)timeArray
+                                    localPlayer : (AVPlayer *)player
+                                         scroll : (TextScrollView *)textScroll];
+            
+            nowTextView = [lyricLabelArray objectAtIndex:0];
+            CGSize newSize = CGSizeMake(textScroll.frame.size.width, setY);
+            [textScroll setContentSize:newSize];
+            //        NSLog(@"lyricLabelArraynumber:%i", [lyricLabelArray count]);
+            //        NSLog(@"lyricLabelArray:%@", lyricLabelArray);
+            
+            BOOL engChn = [[NSUserDefaults standardUserDefaults] boolForKey:@"synContext"] ;
+            //        NSLog(@"同步设置:%d",engChn);
+            if (engChn) {
+                //            NSLog(@"no ......");
+                //        self.switchFlg = NO;
+                //        [switchBtn setTitle:@"开" forState:UIControlStateNormal] ;
+                for (UIView *hideView in textScroll.subviews) {
+                    if (hideView.tag < 200) {
+                        [hideView setHidden:NO];
+                        //                    NSLog(@"hide1");
+                    }
+                }
+            }else
+            {
+                for (UIView *hideView in textScroll.subviews) {
+                    if (hideView.tag < 200) {
+                        [hideView setHidden:YES];
+                        //                    NSLog(@"show1");
+                    }
+                }
+            }
+            //#if 1
+            lyricSynTimer = [NSTimer scheduledTimerWithTimeInterval:0.5
+                                                             target:self
+                                                           selector:@selector(lyricSyn)
+                                                           userInfo:nil
+                                                            repeats:YES];
+            //#endif
+            notValid = NO;
+            notValidInitLyric = YES;
+            NSLog(@"close");
+//            [[UIApplication sharedApplication].keyWindow setUserInteractionEnabled:YES];
+            
+            [myScroll setScrollEnabled:YES];
+            [btnTwo setUserInteractionEnabled:YES];
+            [btnThree setUserInteractionEnabled:YES];
+            [btnFour setUserInteractionEnabled:YES];
+//            [self catchComments:1];
+            [self catchComments:1];
         });
-        
+    
     });
     kNetTest;
     if (needFlushAdv && kNetIsExist) {
@@ -3357,53 +3453,62 @@ void audioRouteChangeListenerCallback (
         
         
         
+//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{ 
         
-        
-        
-        if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 5.0) {
-            avSet = [AVAsset assetWithURL:[NSURL fileURLWithPath:userPath]];
-            //            avSet = [AVAsset assetWithURL:[NSURL fileURLWithPath:testPath]];
-            [avSet retain];
-            //            playerItem = [AVPlayerItem playerItemWithAsset:avSet];
-            player = [[AVPlayer alloc] initWithPlayerItem:[AVPlayerItem playerItemWithAsset:avSet]];
-            //            NSLog(@"retain count3:%i", [player retainCount]);
+            if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 5.0) {
+                avSet = [AVAsset assetWithURL:[NSURL fileURLWithPath:userPath]];
+                //            avSet = [AVAsset assetWithURL:[NSURL fileURLWithPath:testPath]];
+                [avSet retain];
+                //            playerItem = [AVPlayerItem playerItemWithAsset:avSet];
+                player = [[AVPlayer alloc] initWithPlayerItem:[AVPlayerItem playerItemWithAsset:avSet]];
+                //            NSLog(@"retain count3:%i", [player retainCount]);
+                
+            } else {
+                mp3Url = [NSURL fileURLWithPath:userPath];
+                [mp3Url retain];
+                //            playerItem = [AVPlayerItem playerItemWithURL:[NSURL fileURLWithPath:userPath]];
+                player = [[AVPlayer alloc] initWithURL:mp3Url];
+                //            NSLog(@"retain count3:%i", [player retainCount]);
+            }
             
-        } else {
-            mp3Url = [NSURL fileURLWithPath:userPath];
-            [mp3Url retain];
-            //            playerItem = [AVPlayerItem playerItemWithURL:[NSURL fileURLWithPath:userPath]];
-            player = [[AVPlayer alloc] initWithURL:mp3Url];
-            //            NSLog(@"retain count3:%i", [player retainCount]);
-        }
-        //        player = [[AVPlayer alloc] initWithPlayerItem:playerItem];
-        //            player = [[AVPlayer alloc] initWithURL:mp3Url];
+            
+            //        player = [[AVPlayer alloc] initWithPlayerItem:playerItem];
+            //            player = [[AVPlayer alloc] initWithURL:mp3Url];
+            
+            //            AudioSessionInitialize(NULL, NULL, NULL, NULL);
+            //            [[AVAudioSession sharedInstance] setDelegate: self];
+            playerFlag = 0;
+            //            [player release];
+            //            player = nil;
+            [downloadFlg setHidden:NO];
+            [collectButton setHidden:YES];
+            [downloadingFlg setHidden:YES];
+            //            NSLog(@"cunzai");
+            //  获取mp3起止时间
+            [totalTimeLabel setHidden:NO];
+            [currentTimeLabel setHidden:NO];
+            CMTime playerDuration = [self playerItemDuration];
+            double duration = CMTimeGetSeconds(playerDuration);
+            
+            CMTime playerProgress = [player currentTime];
+            double progress = CMTimeGetSeconds(playerProgress);
+            currentTimeLabel.text = [timeSwitchClass timeToSwitchAdvance:progress];
+            //            NSLog(@"%@", [timeSwitchClass timeToSwitchAdvance:localPlayer.currentTime]);
+            totalTimeLabel.text = [timeSwitchClass timeToSwitchAdvance:duration];
+            //        timeSlider.maximumValue = duration;
+            [self setButtonImage:loadingImage];
+            [player play];
         
-        //            AudioSessionInitialize(NULL, NULL, NULL, NULL);
-        //            [[AVAudioSession sharedInstance] setDelegate: self];
-        playerFlag = 0;
-        //            [player release];
-        //            player = nil;
-        [downloadFlg setHidden:NO];
-        [collectButton setHidden:YES];
-        [downloadingFlg setHidden:YES];
-        //            NSLog(@"cunzai");
-        //  获取mp3起止时间
-        [totalTimeLabel setHidden:NO];
-        [currentTimeLabel setHidden:NO];
-        CMTime playerDuration = [self playerItemDuration];
-        double duration = CMTimeGetSeconds(playerDuration);
+            //        [player setRate:2.0f];
+            //            [playButton setImage:[UIImage imageNamed:@"PplayPressed.png"] forState:UIControlStateNormal];
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                
+//            });
+            
+//        });
         
-        CMTime playerProgress = [player currentTime];
-        double progress = CMTimeGetSeconds(playerProgress);
-        currentTimeLabel.text = [timeSwitchClass timeToSwitchAdvance:progress];
-        //            NSLog(@"%@", [timeSwitchClass timeToSwitchAdvance:localPlayer.currentTime]);
-        totalTimeLabel.text = [timeSwitchClass timeToSwitchAdvance:duration];
-        //        timeSlider.maximumValue = duration;
-        [self setButtonImage:loadingImage];
         
-        [player play];
-        //        [player setRate:2.0f];
-        //            [playButton setImage:[UIImage imageNamed:@"PplayPressed.png"] forState:UIControlStateNormal];
+        
     }else
     {
         
@@ -3425,32 +3530,6 @@ void audioRouteChangeListenerCallback (
         //            {
         //                //                NSLog(@"Asset loading failed : %@", [error localizedDescription]);
         //            }
-        if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 5.0) {
-            NSLog(@"URL：%@", [NSString stringWithFormat:@"http://static.iyuba.com/sounds/voa%@", voa._sound]);
-            avSet = [AVAsset assetWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://static.iyuba.com/sounds/voa%@", voa._sound]]];
-            [avSet retain];
-            if (avSet.playable) {
-                player = [[AVPlayer alloc] initWithPlayerItem:[AVPlayerItem playerItemWithAsset:avSet]];
-                //                NSLog(@"retain count4:%i", [player retainCount]);
-                NSLog(@"Asset loading success");
-            } else {
-                NSLog(@"Asset loading failed");
-            }
-            
-            //
-        } else {
-            mp3Url = [NSURL URLWithString:[NSString stringWithFormat:@"http://static.iyuba.com/sounds/voa%@", voa._sound]];
-            [mp3Url retain];
-            player = [[AVPlayer alloc] initWithURL:mp3Url];
-            //            NSLog(@"retain count4:%i", [player retainCount]);
-            //            AVPlayerItem * playerItem = [AVPlayerItem playerItemWithURL:mp3Url];
-            //            [[NSNotificationCenter defaultCenter] addObserver:self
-            //                                                     selector:@selector(playerItemDidReachEnd:)
-            //                                                         name:AVPlayerItemDidPlayToEndTimeNotification
-            //                                                       object:playerItem];
-            //
-            //            player = [[AVPlayer alloc] initWithPlayerItem:playerItem];
-        }
         
         //            NSLog(@"1");
         
@@ -3480,72 +3559,97 @@ void audioRouteChangeListenerCallback (
         [totalTimeLabel setHidden:YES];
         [currentTimeLabel setHidden:YES];
         
-        //            NSLog(@"开始取时间");
-        //            CMTime playerDuration = [self playerItemDuration];
-        //            double duration = CMTimeGetSeconds(playerDuration);
-        ////            double duration = CMTimeGetSeconds([[player currentItem] duration]);
-        //            NSLog(@"duration1:%lf",duration);
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         
-        //            NSArray* loadedRanges = player.currentItem.loadedTimeRanges;
-        //            if (loadedRanges.count > 0)
-        //            {
-        //                CMTimeRange range = [[loadedRanges objectAtIndex:0] CMTimeRangeValue];
-        //                double duration = CMTimeGetSeconds(range.start) + CMTimeGetSeconds(range.duration);
-        //                NSLog(@"duration2:%g", duration);
-        //            }
-        //
-        //            CMTime playerProgress = [player currentTime];
-        //            double progress = CMTimeGetSeconds(playerProgress);
-        ////            NSLog(@"progress:%lf",progress);
-        kNetTest;
-        if (kNetIsExist) {
-            [player play];
-            //                NSArray* loadedRanges = player.currentItem.seekableTimeRanges;
-            //                double duration;
-            //                if (loadedRanges.count > 0)
-            //                {
-            //                    CMTimeRange range = [[loadedRanges objectAtIndex:0] CMTimeRangeValue];
-            //                    duration = CMTimeGetSeconds(range.start) + CMTimeGetSeconds(range.duration);
-            //                    NSLog(@"duration2:%g", duration);
-            //                }
-            
-            //            CMTime playerProgress = [player currentTime];
-            //            double progress = CMTimeGetSeconds(playerProgress);
-            double progress = 0;//#$$#
-            if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 4.3){
-                //                    NSLog(@"Version>=4.3");
-                CMTime playerDuration = [self playerItemDuration];
-                double duration = CMTimeGetSeconds(playerDuration);
-                if (duration > 0.1f) {//#$$#
-                    totalTimeLabel.text = [timeSwitchClass timeToSwitchAdvance:duration];
-                    timeSlider.maximumValue = duration;
-                    timeSlider.value = progress;
+            if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 5.0) {
+                NSLog(@"URL：%@", [NSString stringWithFormat:@"http://static.iyuba.com/sounds/voa%@", voa._sound]);
+                avSet = [AVAsset assetWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://static.iyuba.com/sounds/voa%@", voa._sound]]];
+                [avSet retain];
+                if (avSet.playable) {
+                    player = [[AVPlayer alloc] initWithPlayerItem:[AVPlayerItem playerItemWithAsset:avSet]];
+                    //                NSLog(@"retain count4:%i", [player retainCount]);
+                    NSLog(@"Asset loading success");
+                } else {
+                    NSLog(@"Asset loading failed");
                 }
-            }else {
                 
+                //
+            } else {
+                mp3Url = [NSURL URLWithString:[NSString stringWithFormat:@"http://static.iyuba.com/sounds/voa%@", voa._sound]];
+                [mp3Url retain];
+                player = [[AVPlayer alloc] initWithURL:mp3Url];
+                //            NSLog(@"retain count4:%i", [player retainCount]);
+                //            AVPlayerItem * playerItem = [AVPlayerItem playerItemWithURL:mp3Url];
+                //            [[NSNotificationCenter defaultCenter] addObserver:self
+                //                                                     selector:@selector(playerItemDidReachEnd:)
+                //                                                         name:AVPlayerItemDidPlayToEndTimeNotification
+                //                                                       object:playerItem];
+                //
+                //            player = [[AVPlayer alloc] initWithPlayerItem:playerItem];
             }
-            //            NSLog(@"progress:%lf",progress);
+            kNetTest;
+
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (kNetIsExist) {
+                    [player play];
+                    //                NSArray* loadedRanges = player.currentItem.seekableTimeRanges;
+                    //                double duration;
+                    //                if (loadedRanges.count > 0)
+                    //                {
+                    //                    CMTimeRange range = [[loadedRanges objectAtIndex:0] CMTimeRangeValue];
+                    //                    duration = CMTimeGetSeconds(range.start) + CMTimeGetSeconds(range.duration);
+                    //                    NSLog(@"duration2:%g", duration);
+                    //                }
+                    
+                    //            CMTime playerProgress = [player currentTime];
+                    //            double progress = CMTimeGetSeconds(playerProgress);
+                    double progress = 0;//#$$#
+                    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 4.3){
+                        //                    NSLog(@"Version>=4.3");
+                        CMTime playerDuration = [self playerItemDuration];
+                        double duration = CMTimeGetSeconds(playerDuration);
+                        if (duration > 0.1f) {//#$$#
+                            totalTimeLabel.text = [timeSwitchClass timeToSwitchAdvance:duration];
+                            timeSlider.maximumValue = duration;
+                            timeSlider.value = progress;
+                        }
+                    }else {
+                        
+                    }
+                    //            NSLog(@"progress:%lf",progress);
+                    
+                    [totalTimeLabel setHidden:NO];
+                    [currentTimeLabel setHidden:NO];
+                    currentTimeLabel.text = [timeSwitchClass timeToSwitchAdvance:progress];//#$$#
+                    //                totalTimeLabel.text = [timeSwitchClass timeToSwitchAdvance:duration];
+                    //                timeSlider.maximumValue = duration;
+                    //            timeSlider.value = progress;
+                    [self setButtonImage:loadingImage];
+                }else
+                {
+                    needFlush = YES;
+                }
+                downloaded = NO;
+            });
             
-            [totalTimeLabel setHidden:NO];
-            [currentTimeLabel setHidden:NO];
-            currentTimeLabel.text = [timeSwitchClass timeToSwitchAdvance:progress];//#$$#
-            //                totalTimeLabel.text = [timeSwitchClass timeToSwitchAdvance:duration];
-            //                timeSlider.maximumValue = duration;
-            //            timeSlider.value = progress;
-            [self setButtonImage:loadingImage];
-        }else
-        {
-            needFlush = YES;
-        }
-        downloaded = NO;
+        });
+
+        
+        
+        
+        
+        
     }
-    //缓冲进度显示
-    
-    //时间可调
+//    //缓冲进度显示
+//    dispatch_barrier_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//        //时间可调
+//        
+//        
+//    });
     sliderTimer = [NSTimer scheduledTimerWithTimeInterval:0.3
                                                    target:self
                                                  selector:@selector(updateSlider)
-                                                 userInfo:nil 
+                                                 userInfo:nil
                                                   repeats:YES];
 }
 
@@ -3674,6 +3778,8 @@ void audioRouteChangeListenerCallback (
 //    NSString *toPath = [audioPath stringByAppendingPathComponent:@"receive.aac"];
 //    [THUtility decodeBase64AtURL:[NSURL fileURLWithPath:fromPath] toURL:[NSURL fileURLWithPath:toPath]];
     
+//    [[UIApplication sharedApplication].keyWindow setUserInteractionEnabled:NO];
+//    NSLog(@"open");
     [myScroll setScrollEnabled:NO];
     [btnTwo setUserInteractionEnabled:NO];
     [btnThree setUserInteractionEnabled:NO];
@@ -3753,13 +3859,22 @@ void audioRouteChangeListenerCallback (
     [lyricLabel setTextColor:swColor];
     if (flushList) {
 //        NSLog(@"开始刷新:%d", contentMode);
+        
         if (contentMode == 1) {
             //            if (playMode == 2) {
             //                [listArray removeAllObjects];
             //                [VOAView getListBeforeVoaid:voa._voaid listArray:listArray];
             //            } else if (playMode == 3) {
             //            [listArray removeAllObjects];
+            
             [VOAView getList:listArray category:category];
+//            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//                [VOAView getList:listArray category:category];
+//                dispatch_async(dispatch_get_main_queue(), ^{
+//                    flushList = NO;
+//                    playIndex = [self indexOfArray:listArray bbcId:voa._voaid];
+//                });
+//            });
             //            }
         } else if (contentMode == 2) {
             //            if (playMode == 2) {
@@ -3767,9 +3882,20 @@ void audioRouteChangeListenerCallback (
             //                [VOAFav getListBeforeVoaid:voa._voaid listArray:listArray];
             //            } else if (playMode == 3) {
             //            [listArray removeAllObjects];
+            
             [VOAFav getList:listArray];
+//            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//                [VOAFav getList:listArray];
+//                dispatch_async(dispatch_get_main_queue(), ^{
+//                    flushList = NO;
+//                    playIndex = [self indexOfArray:listArray bbcId:voa._voaid];
+//                });
+//            });
+            
             //            }
         }
+        
+        
         flushList = NO;
         
         //        int i = 0;
@@ -3778,6 +3904,9 @@ void audioRouteChangeListenerCallback (
         //        }
         //        NSLog(@"flushList playIndex=%i",playIndex);
     }
+//    else {
+//        playIndex = [self indexOfArray:listArray bbcId:voa._voaid];
+//    }
     playIndex = [self indexOfArray:listArray bbcId:voa._voaid];
     kNetTest;
     if (newFile == NO && (needFlush == NO || (needFlush == YES && kNetIsExist == NO))) {
@@ -3799,36 +3928,39 @@ void audioRouteChangeListenerCallback (
             
         } else {
 //            NSLog(@"not same!!");
-            for (UIView *deleteView in [textScroll subviews]) {
-                [deleteView removeFromSuperview];
-            }
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                for (UIView *deleteView in [textScroll subviews]) {
+                    [deleteView removeFromSuperview];
+                }
+                
+                /*
+                 *  清空lyricLabelArray与lyricCnLabelArray两个数组
+                 */
+                for (UIView *deleteView in lyricLabelArray) {
+                    [deleteView removeFromSuperview];
+                }
+                for (UIView *deleteView in lyricCnLabelArray) {
+                    [deleteView removeFromSuperview];
+                }
+                [lyricLabelArray removeAllObjects];
+                [lyricCnLabelArray removeAllObjects];
+                int setY = [LyricSynClass lyricView : (NSMutableArray *)lyricLabelArray
+                                   lyricCnLabelArray: (NSMutableArray *)lyricCnLabelArray
+                                              index : (NSMutableArray *)indexArray
+                                              lyric : (NSMutableArray *)lyricArray
+                                            lyricCn : (NSMutableArray *)lyricCnArray
+                                               time : (NSMutableArray *)timeArray
+                                        localPlayer : (AVPlayer *)player
+                                             scroll : (TextScrollView *)textScroll];
+                //                                 myLabelDelegate: (id <UITextViewDelegate>) self
+                //                                       engLines : (int *)&engLines
+                //                                        cnLines : (int *)&cnLines];
+                //        NSLog(@"lyricLabelArrayretainnumber:%i", [self.lyricLabelArray retainCount]);
+                nowTextView = [lyricLabelArray objectAtIndex:0];
+                CGSize newSize = CGSizeMake(textScroll.frame.size.width, setY);
+                [textScroll setContentSize:newSize];
+            });
             
-            /*
-             *  清空lyricLabelArray与lyricCnLabelArray两个数组
-             */
-            for (UIView *deleteView in lyricLabelArray) {
-                [deleteView removeFromSuperview];
-            }
-            for (UIView *deleteView in lyricCnLabelArray) {
-                [deleteView removeFromSuperview];
-            }
-            [lyricLabelArray removeAllObjects];
-            [lyricCnLabelArray removeAllObjects];
-            int setY = [LyricSynClass lyricView : (NSMutableArray *)lyricLabelArray
-                               lyricCnLabelArray: (NSMutableArray *)lyricCnLabelArray
-                                          index : (NSMutableArray *)indexArray
-                                          lyric : (NSMutableArray *)lyricArray
-                                        lyricCn : (NSMutableArray *)lyricCnArray
-                                           time : (NSMutableArray *)timeArray
-                                    localPlayer : (AVPlayer *)player
-                                         scroll : (TextScrollView *)textScroll];
-//                                 myLabelDelegate: (id <UITextViewDelegate>) self
-//                                       engLines : (int *)&engLines
-//                                        cnLines : (int *)&cnLines];
-            //        NSLog(@"lyricLabelArrayretainnumber:%i", [self.lyricLabelArray retainCount]);
-            nowTextView = [lyricLabelArray objectAtIndex:0];
-            CGSize newSize = CGSizeMake(textScroll.frame.size.width, setY);
-            [textScroll setContentSize:newSize];
         }
         if (notValid) {
             lyricSynTimer = [NSTimer scheduledTimerWithTimeInterval:0.5
@@ -4120,6 +4252,7 @@ void audioRouteChangeListenerCallback (
     [lyricScroll setBackgroundColor:[UIColor clearColor]];
     lyricCnScroll = [[TextScrollView alloc] initWithFrame:CGRectMake(320, 300, 320, 40)];
     [lyricCnScroll setBackgroundColor:[UIColor clearColor]];
+    
     
     if (isiPhone) {
         [myScroll setFrame:CGRectMake(0, 70, 320, (isFree?300:350) + kFiveAdd)];

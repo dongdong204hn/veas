@@ -294,7 +294,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
                 [self.navigationController pushViewController:play animated:NO]; 
                 [_HUD hide:YES];
             } else {
-                [myDetail release];
+//                [myDetail release];
                 PlayViewController *play = [PlayViewController sharedPlayer];//新建新界面的controller实例
                 if(play.voa._voaid == voa._voaid)
                 {
