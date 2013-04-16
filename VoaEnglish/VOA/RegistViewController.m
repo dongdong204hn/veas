@@ -121,15 +121,15 @@
 - (void)dealloc
 {
     [logTable release];
-    [userL release];
-    [codeL release];
-    [codeAgainL release];
-    [mailL release];
-    [userF release];
-    [codeF release];
-    [codeAgainF release];
-    [mailF release];
-    [registBtn release];
+//    [userL release];
+//    [codeL release];
+//    [codeAgainL release];
+//    [mailL release];
+//    [userF release];
+//    [codeF release];
+//    [codeAgainF release];
+//    [mailF release];
+//    [registBtn release];
     [super dealloc];
 }
 
@@ -366,14 +366,30 @@
     //    ASIHTTPRequest * request = [[ASIHTTPRequest alloc] initWithURL:[NSURL URLWithString:url]];
 //    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
     
-    NSString *url = [NSString stringWithFormat:@"http://api.iyuba.com/mobile/ios/voa/regist.xml?"];
+//    NSString *url = [NSString stringWithFormat:@"http://api.iyuba.com/mobile/ios/voa/regist.xml?"];
+//    ASIFormDataRequest *request=[ASIFormDataRequest requestWithURL:[NSURL URLWithString:url]];
+//    [request setPostValue:mailF.text forKey:@"email"];
+//    [request setPostValue:userF.text   forKey:@"username"];
+//    [request setPostValue:codeF.text   forKey:@"password"];
+//    [request setPostValue:@"0"   forKey:@"md5status"];
+//    request.delegate = self;
+//    [request setUsername:@"regist"];
+//    [request startSynchronous];
+    
+    
+    NSString *url = [NSString stringWithFormat:@"http://apis.iyuba.com/v2/api.iyuba?protocol=10002"];
     ASIFormDataRequest *request=[ASIFormDataRequest requestWithURL:[NSURL URLWithString:url]];
+    [request setPostValue:[ROUtility encodeString:userF.text urlEncode:NSUTF8StringEncoding] forKey:@"username"];
+    NSString *password = [ROUtility md5HexDigest:codeF.text];
+    [request setPostValue:password   forKey:@"password"];
     [request setPostValue:mailF.text forKey:@"email"];
-    [request setPostValue:userF.text   forKey:@"username"];
-    [request setPostValue:codeF.text   forKey:@"password"];
-    [request setPostValue:@"0"   forKey:@"md5status"];
+    [request setPostValue:@"xml" forKey:@"format"];
+    NSString *sign = [ROUtility md5HexDigest:[NSString stringWithFormat:@"10002%@%@%@iyubaV2",userF.text,password,mailF.text]];
+    NSLog(@"sign:%@   %@", sign, [NSString stringWithFormat:@"10002%@%@%@iyubaV2",userF.text,password,mailF.text]);
+    [request setPostValue:sign forKey:@"sign"];
     request.delegate = self;
     [request setUsername:@"regist"];
+    NSLog(@"%@", request.url);
     [request startSynchronous];
     
 }
@@ -396,9 +412,9 @@
         NSArray *items = [doc nodesForXPath:@"response" error:nil];
         if (items) {
             for (DDXMLElement *obj in items) {
-                NSString *status = [[obj elementForName:@"status"] stringValue];
-                //                NSLog(@"status:%@",status);
-                if ([status isEqualToString:@"OK"]) {
+                NSString *status = [[obj elementForName:@"result"] stringValue];
+                NSLog(@"status:%@",status);
+                if ([status isEqualToString:@"111"]) {
                     MyUser *user = [[MyUser alloc]init];
                     user._userName = [userF text];
                     user._code = [codeF text];
@@ -428,17 +444,27 @@
                     
                     [active release];
                     
-                    NSTimer *timer = nil;
-                    timer = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(c) userInfo:nil repeats:NO];
+                    [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(c) userInfo:nil repeats:NO];
                     NSInteger nowId = [[[NSUserDefaults standardUserDefaults] objectForKey:@"nowUser"] integerValue];
                     //    NSLog(@"生词本添加用户：%d",userId);
                     if (nowId<=0) {
                         [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:userId] forKey:@"nowUser"];
                     }
                     [self dismissModalViewControllerAnimated:YES];
+                    
                 }else
                 {
-                    NSString *msg = [[obj elementForName:@"msg"] stringValue] ;
+                    NSString *msg = nil;
+                    if ([status isEqualToString:@"112"]) {
+                        msg = kRegThirte;
+                    } else if([status isEqualToString:@"113"]){
+                        msg = kRegFourte;
+                    } else if([status isEqualToString:@"114"]){
+                        msg = kRegFivete;
+                    } else {
+                        msg = kRegTwelve;
+                    }
+                    //                    NSString *msg = [[obj elementForName:@"message"] stringValue] ;
                     //                    NSLog(@"msg:%@",msg);
                     alert = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"%@%@",kRegEight,msg] message:nil delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
                     
@@ -457,9 +483,9 @@
                     
                     [active release];
                     
-                    NSTimer *timer = nil;
-                    timer = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(c) userInfo:nil repeats:NO];
+                    [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(c) userInfo:nil repeats:NO];
                 }
+                
             }
         }
     }

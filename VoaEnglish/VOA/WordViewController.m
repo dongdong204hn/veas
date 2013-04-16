@@ -554,7 +554,7 @@
     //    [senTextView setContentSize:CGSizeMake(explainView.frame.size.width-10, senSize.height + [@"赵松" sizeWithFont:CourierTh].height * nNum)];
     //    [senTextView setContentSize:CGSizeMake(explainView.frame.size.width-10, 500)];
     //    NSLog(@"nNum:%d height:%f totalheight:%f", nNum, [@"赵松" sizeWithFont:CourierTh].height, senSize.height + [@"赵松" sizeWithFont:CourierTh].height * nNum);
-    senTextView.text = totalString;
+    senTextView.text = [totalString copy];
     [senTextView setTag:arc4random()%1000];
     [senTextView setEditable:NO];
     [senTextView setFont: isiPhone? CourierTh:CourierThP];
@@ -562,6 +562,7 @@
     [senTextView setContentOffset:CGPointMake(0, 10)];
     [explainView addSubview:senTextView];
     [senTextView release];
+    [totalString release];
     
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"showSen"]) {
         if (isiPhone) {
@@ -831,7 +832,7 @@
 //        NSLog(@"删除:%@",fav.key);
 		[self catchAsFlg:fav.wordId mode:@"delete"];
 	}
-    [delWords release],delWords = nil;
+//    [delWords release],delWords = nil;
 	NSArray *words = [VOAWord findWords:nowUserId];
 	[wordsArray removeAllObjects];
 	for (VOAWord *fav in words) {
@@ -842,7 +843,7 @@
         }
 	}
 	[self.wordsTableView reloadData];
-	[words release], words = nil;
+//	[words release], words = nil;
 }
 
 - (void)viewDidLoad
@@ -906,9 +907,15 @@
 
 - (void)viewDidUnload
 {
-    self.wordsTableView.delegate = nil;
-    self.wordsTableView.dataSource = nil;
+//    self.wordsTableView.delegate = nil;
+//    self.wordsTableView.dataSource = nil;
     self.wordsTableView = nil;
+    [wordPlayerTwo release], wordPlayerTwo = nil;
+    [wordsArray release], wordsArray = nil;
+    [myWord release], myWord = nil;
+    [search release], search = nil;
+    [explainView release], explainView = nil;
+    [sharedSingleQueue release], sharedSingleQueue = nil;
     [super viewDidUnload];
 }
 
@@ -919,14 +926,13 @@
 }
 
 - (void)dealloc {
-    [self.wordPlayerTwo release], wordPlayerTwo = nil;
-    [self.wordsTableView release], wordsTableView = nil;
-    [self.explainView release], explainView = nil;
-//    [self.wordFrame release], wordFrame = nil;
-    [self.myWord release], myWord = nil;
-    [self.wordsArray release], wordsArray = nil;
-    [self.sharedSingleQueue release], sharedSingleQueue = nil;
-    
+    [wordsTableView release];
+    [wordPlayerTwo release];
+    [wordsArray release];
+    [myWord release];
+    [search release];
+    [explainView release];
+    [sharedSingleQueue release];
     [super dealloc];
 }
 
@@ -1155,7 +1161,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
             [wordsArray addObject:fav];
         }
         [self.wordsTableView reloadData];
-        [words release], words = nil;
+//        [words release], words = nil;
     }else
     {
         NSArray *items = [doc nodesForXPath:@"response" error:nil];
@@ -1247,9 +1253,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
                         }
                     }
                     myWord.engArray = eng;
-                    [eng release], eng = nil;
                     myWord.chnArray = chi;
-                    [chi release], chi = nil;
                     [self wordExistNetDisplay];
                     
                 }else
@@ -1259,7 +1263,8 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
                     [self wordNoDisplay];
                     
                 }
-                
+                [eng release], eng = nil;
+                [chi release], chi = nil;
             }
             
         }
@@ -1290,7 +1295,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
                 [wordsArray addObject:fav];
             }
             [self.wordsTableView reloadData];
-            [words release], words = nil;
+//            [words release], words = nil;
             [VOAWord clearSynchro];
         }else
         {
@@ -1354,7 +1359,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
                 myWord.pron = @" ";
             }
             myWord.def = [[word.def stringByReplacingOccurrencesOfRegex:@"\\s+" withString:@""]stringByReplacingOccurrencesOfString:@"null" withString:@""];
-            [word release];
+//            [word release];
             [self wordExistNetDisplay];
             //            }
         } else {

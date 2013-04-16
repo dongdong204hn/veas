@@ -78,7 +78,7 @@
 
 -(BOOL) isExistenceNetwork:(NSInteger)choose
 {
-	BOOL isExistenceNetwork;
+	BOOL isExistenceNetwork=TRUE;
 	Reachability *r = [Reachability reachabilityWithHostName:@"www.apple.com"];
     switch ([r currentReachabilityStatus]) {
         case NotReachable:

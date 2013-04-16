@@ -294,7 +294,10 @@
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
-    self.itemBgImageViewArray = nil;
+    [_tabBarBackgroundImage release], _tabBarBackgroundImage = nil;
+    [_unSelectedImageArray release], _unSelectedImageArray = nil;
+    [_selectedImageArray release], _selectedImageArray = nil;
+    [_itemBgImageViewArray release], _itemBgImageViewArray = nil;
 }
 
 //- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

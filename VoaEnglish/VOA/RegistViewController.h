@@ -12,6 +12,7 @@
 #import "DDXMLElementAdditions.h"
 #import "MyUser.h"
 #import "RegexKitLite.h"
+#import "ROUtility.h"
 
 @interface RegistViewController : UIViewController<UITextFieldDelegate>
 {

@@ -176,12 +176,12 @@
 	//把rs中的数据库信息遍历到voaViews数组
 	while ([rs next]) {
         NSInteger wordId = [rs intForColumn:@"wordId"];
-        NSString *key = [rs objectForColumn:@"key"];
+        NSString *key = [[rs objectForColumn:@"key"] autorelease];
         //        NSString *lang = [rs objectForColumn:@"lang"];
-        NSString *audio = [rs objectForColumn:@"audio"];
-        NSString *pron = [rs objectForColumn:@"pron"];
-        NSString *def = [rs objectForColumn:@"def"];
-        NSString *date = [rs objectForColumn:@"date"];
+        NSString *audio = [[rs objectForColumn:@"audio"] autorelease];
+        NSString *pron = [[rs objectForColumn:@"pron"] autorelease];
+        NSString *def = [[rs objectForColumn:@"def"] autorelease];
+        NSString *date = [[rs objectForColumn:@"date"] autorelease];
         NSInteger checks = [rs intForColumn:@"checks"];
         NSInteger remember = [rs intForColumn:@"remember"];
         NSInteger userId = [rs intForColumn:@"userId"];
@@ -193,7 +193,7 @@
 	//关闭数据库
 	[rs close];
     //	[dataBase close];//
-	return words;
+	return [words autorelease];
 }
 
 /**
@@ -212,12 +212,12 @@
 	//把rs中的数据库信息遍历到voaViews数组
 	while ([rs next]) {
         NSInteger wordId = [rs intForColumn:@"wordId"];
-        NSString *key = [rs objectForColumn:@"key"];
+        NSString *key = [[rs objectForColumn:@"key"] autorelease];
         //        NSString *lang = [rs objectForColumn:@"lang"];
-        NSString *audio = [rs objectForColumn:@"audio"];
-        NSString *pron = [rs objectForColumn:@"pron"];
-        NSString *def = [rs objectForColumn:@"def"];
-        NSString *date = [rs objectForColumn:@"date"];
+        NSString *audio = [[rs objectForColumn:@"audio"] autorelease];
+        NSString *pron = [[rs objectForColumn:@"pron"] autorelease];
+        NSString *def = [[rs objectForColumn:@"def"] autorelease];
+        NSString *date = [[rs objectForColumn:@"date"] autorelease];
         NSInteger checks = [rs intForColumn:@"checks"];
         NSInteger remember = [rs intForColumn:@"remember"];
         NSInteger userId = [rs intForColumn:@"userId"];
@@ -229,7 +229,7 @@
 	//关闭数据库
 	[rs close];
     //	[dataBase close];//
-	return words;
+	return [words autorelease];
 }
 
 /**
@@ -286,12 +286,12 @@
     VOAWord *word = nil;
 	if([rs next]) {
         NSInteger wordId = [rs intForColumn:@"wordId"];
-        NSString *key = [rs objectForColumn:@"key"];
+        NSString *key = [[rs objectForColumn:@"key"] autorelease];
         //        NSString *lang = [rs objectForColumn:@"lang"];
-        NSString *audio = [rs objectForColumn:@"audio"];
-        NSString *pron = [rs objectForColumn:@"pron"];
-        NSString *def = [rs objectForColumn:@"def"];
-        NSString *date = [rs objectForColumn:@"date"];
+        NSString *audio = [[rs objectForColumn:@"audio"] autorelease];
+        NSString *pron = [[rs objectForColumn:@"pron"] autorelease];
+        NSString *def = [[rs objectForColumn:@"def"] autorelease];
+        NSString *date = [[rs objectForColumn:@"date"] autorelease];
         NSInteger checks = [rs intForColumn:@"checks"];
         NSInteger remember = [rs intForColumn:@"remember"];
         NSInteger userId = [rs intForColumn:@"userId"];
@@ -304,7 +304,7 @@
 	}	
 	[rs close];
     //	[dataBase close];//
-	return word;	
+	return [word autorelease];
     
 }
 

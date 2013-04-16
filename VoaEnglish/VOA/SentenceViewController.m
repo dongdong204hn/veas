@@ -44,13 +44,13 @@
     self.navigationController.navigationBarHidden=NO;
     nowUserId = 0;
     nowUserId = [[[NSUserDefaults standardUserDefaults] objectForKey:@"nowUser"] integerValue];
-    sentences = [VOASentence findSentences:nowUserId];
+    sentences = [[VOASentence findSentences:nowUserId] retain];
     VOASentence *voaSen = [sentences objectAtIndex:row];
     VOAView *voa = [VOAView find:voaSen.VoaId];
    
     NSURL *url = [NSURL URLWithString: voa._pic];
     [myImageView setImageWithURL:url placeholderImage:[UIImage imageNamed:@"acquiesce.png"]];
-    [voa release];
+//    [voa release];
     SenEn.text = voaSen.Sentence;
     SenCn.text = voaSen.Sentence_cn;
     self.title = [NSString stringWithFormat:@"第%d/%d句",row + 1,[sentences count]];

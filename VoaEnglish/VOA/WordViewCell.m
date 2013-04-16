@@ -35,10 +35,10 @@
 //}
 
 - (void)dealloc {
-	[self.audioButton release], audioButton = nil;
-    [self.defButton release], defButton = nil;
-    [self.keyLabel release], keyLabel = nil;
-    [self.pronLabel release], pronLabel = nil;
+	[audioButton release];
+    [defButton release];
+    [keyLabel release];
+    [pronLabel release];
     [super dealloc];
 }
 

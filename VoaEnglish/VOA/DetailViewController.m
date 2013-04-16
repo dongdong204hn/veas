@@ -348,7 +348,7 @@
             {
                 [cell.myTitle setTextColor:[UIColor redColor]];
                 [cell.myDate setTextColor:[UIColor redColor]];
-                [cell.readImg setImage:[UIImage imageNamed:@"detail-ipad.png"]];
+//                [cell.readImg setImage:[UIImage imageNamed:@"detail-ipad.png"]];
             }
             if (voa._hotFlg.integerValue == 1) {
                 [cell.hotImg setHidden:NO];
@@ -811,7 +811,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
                 newVoa._url = [[obj elementForName:@"Url"] stringValue];
                 newVoa._pic = [[obj elementForName:@"Pic"] stringValue];
                 newVoa._creatTime = [[obj elementForName:@"CreatTime"] stringValue];
-                newVoa._publishTime = [[obj elementForName:@"PublishTime"] stringValue] == @" null" ? nil :[[obj elementForName:@"Title_cn"] stringValue];
+                newVoa._publishTime = [[[obj elementForName:@"PublishTime"] stringValue] isEqualToString:@" null"] ? nil :[[obj elementForName:@"Title_cn"] stringValue];
                 newVoa._readCount = [[obj elementForName:@"ReadCount"] stringValue];
                 newVoa._hotFlg = [[obj elementForName:@"HotFlg"] stringValue];
                 newVoa._isRead = @"0";

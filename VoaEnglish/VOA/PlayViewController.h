@@ -234,7 +234,10 @@
 //    float time_total;
 }
 //@property (nonatomic, retain) IBOutlet SpeakHereController *controller;
-@property (nonatomic, retain) UIButton		*collectButton; //下载按钮
+//@property (nonatomic, retain) IBOutlet UILabel      *downloadFlg;
+//@property (nonatomic, retain) IBOutlet UILabel      *downloadingFlg;
+//@property (readwrite)	CFURLRef		soundFileURLRef;
+//@property (readonly)	SystemSoundID	soundFileObject;
 @property (nonatomic, retain) IBOutlet UIButton        *preButton;  //上一句按钮
 @property (nonatomic, retain) IBOutlet UIButton        *nextButton; //下一句按钮
 //四个页面按钮
@@ -261,8 +264,6 @@
 @property (nonatomic, retain) IBOutlet UISlider		*timeSlider;//时间滑块
 
 @property (nonatomic, retain) IBOutlet UIButton		*playButton;    //播放按钮
-//@property (nonatomic, retain) IBOutlet UILabel      *downloadFlg;
-//@property (nonatomic, retain) IBOutlet UILabel      *downloadingFlg;
 @property (nonatomic, retain) IBOutlet UITextView *titleWords;  //新闻标题
 @property (nonatomic, retain) IBOutlet UIImageView *RoundBack;  //四个页面按钮的标识图片
 @property (nonatomic, retain) IBOutlet UIView *fixTimeView; //定时视图
@@ -275,39 +276,27 @@
 @property (nonatomic, retain) UITextView        *nowTextView; //
 @property (nonatomic, retain) UIMenuController	*speedMenu; //拖动语速栏时显示语速的控件
 @property (nonatomic, retain) NSString	*selectWord;    //选择的字符串
-@property (nonatomic) float	aValue; //复读区间a点值
-@property (nonatomic) float	bValue; //幅度区间b点值
-@property (nonatomic) BOOL isSpeedMenu; //标识当前UIMenuController显示的是否语速值
-@property (nonatomic) BOOL isAbMenu; //标识当前UIMenuController显示的是否复读区间ab值
-@property (nonatomic) BOOL isResponse; //标识当前评论是否是回复
-@property (nonatomic) BOOL isInforComm; //标识当前的播放界面是否从消息内容处点击进来的
 
 @property (nonatomic, retain) TextScrollView	*lyricScroll; //跟读界面显示英文的滚动文本框
 @property (nonatomic, retain) TextScrollView	*lyricCnScroll; //跟读界面显示中文的滚动文本框
 
 @property (nonatomic, retain) CL_AudioRecorder* audioRecoder;   //录音实例
-@property (nonatomic) BOOL              m_isRecording; //标识是否正在录音
-@property (nonatomic) CMTime nowTime;   //当前播放到的时间点
 @property (nonatomic, retain) AVAsset *avSet; //保存当前播放的文件路径信息的对象
 @property (nonatomic, retain) NSURL			*mp3Url; //保存当前播放的文件的URL路径
-//@property (readwrite)	CFURLRef		soundFileURLRef;
-//@property (readonly)	SystemSoundID	soundFileObject;
 @property (nonatomic, retain) SevenProgressBar  *loadProgress;//缓冲进度条
 @property (nonatomic, retain) GADBannerView *bannerView_; //广告条
 @property (nonatomic, retain) VOAView *voa; //正在播放的voa
 @property (nonatomic, retain) UIImageView     *myImageView; //显示新闻图片的视图
 @property (nonatomic, retain) UIImageView *senImage;    //点击句子时截屏的句子图片
 @property (nonatomic, retain) UIImageView *starImage;   //星星图片,暂未用
-//@property (nonatomic, retain) UIImageView     *wordFrame;
 @property (nonatomic, retain) UIButton        *shareSenBtn; //分享句子按钮
 @property (nonatomic, retain) UIButton        *colSenBtn; //收藏句子按钮
 @property (nonatomic, retain) UIButton        *sendBtn; //发表评论按钮
-//@property (nonatomic, retain) timeSwitchClass *timeSwitch;
+@property (nonatomic, retain) UIButton		*collectButton; //下载按钮
 @property (nonatomic, retain) NSTimer			*sliderTimer; //播放时主定时器
 @property (nonatomic, retain) NSTimer			*lyricSynTimer; //歌词同步定时器
 @property (nonatomic, retain) NSTimer         *fixTimer; //定时播放定时器
 @property (nonatomic, retain) NSTimer         *recordTimer; //录音定时器
-//@property (nonatomic, retain) NSTimer			*updateTimer;
 @property (nonatomic, retain) NSMutableArray	*lyricArray;    //英文歌词数组
 @property (nonatomic, retain) NSMutableArray	*lyricCnArray;  //中文歌词数组
 @property (nonatomic, retain) NSMutableArray	*timeArray; //歌词播放时长数组
@@ -318,58 +307,23 @@
 @property (nonatomic, retain) NSArray         *hoursArray; //定时播放小时数
 @property (nonatomic, retain) NSArray         *minsArray;   //定时播放分钟数
 @property (nonatomic, retain) NSArray         *secsArray;   //定时播放秒数
-//@property int				engLines;
-//@property int				cnLines;
-@property int				playerFlag; //0:local 1:net
-@property (nonatomic) int             recordSeconds;    //记录实际录音时长
-@property (nonatomic) int             nowRecordSeconds; //实际录音时长的备份
-@property (nonatomic) int             recordTime;   //根据歌词播放时长得到的自动录音时的最长时长
-@property (nonatomic) int             fixSeconds;   //记录定时播放时秒数
-//@property (nonatomic, retain) NSString *category;
-@property (nonatomic) NSInteger category;   //记录当前播放的新闻的分类
-@property (nonatomic) NSInteger nowPage;    //记录当前获取的评论的页数
-@property (nonatomic) NSInteger totalPage;  //记录评论总页数
-//@property (nonatomic) NSInteger commNumber;
-@property (nonatomic) NSInteger contentMode;    //记录当前时联网播放（1）还是本地播放（2）
-@property (nonatomic) NSInteger playMode;   //播放顺序 1：单曲 2：顺序 3：随机
-@property (nonatomic) NSInteger playIndex;  //记录当前播放新闻在播放列表中的次序
-//@property (nonatomic) NSInteger audioRouteFlg;  //记录当前播放新闻在播放列表中的次序
-//@property (nonatomic, retain) AVPlayer	*localPlayer;
 @property (nonatomic, retain) AVPlayer	*player;    //VOA新闻音频播放器，主播放器
 @property (nonatomic, retain) AVPlayer	*wordPlayer;    //单词发音播放器
 @property (nonatomic, retain) UILabel     *myHighLightWord; //旧取词标记所取单词的标签，暂未用
 @property (nonatomic, retain) UIView      *myView;  //评论页面主视图
-//@property (nonatomic, retain) NSMutableData* mp3Data;   
 @property (nonatomic, retain) NSString *userPath;   //当前播放的音频在用户本地的理论存储路径
 @property (nonatomic, retain) UIButton        *clockButton; //定时按钮
 @property (nonatomic, retain) UIButton      *downloadFlg;   //已下载标记
 @property (nonatomic, retain) UIButton      *downloadingFlg;    //下载中标记
-@property BOOL localFileExist;  //标记当前新闻是否在本地存在
-@property BOOL downloaded;  //标记是否刚刚下载音频到本地，方便点击播放按钮时切换在线播放为本地播放
-@property BOOL newFile; //标记当前新闻是否是新的一篇新闻，便于区别回到播放
-//@property BOOL switchFlg;
-@property (nonatomic) BOOL isNewComm;   //标记当前用户是否有发表新评论，方便滚动评论界面到最新的评论
-//@property (nonatomic) BOOL afterRecord;
-@property (nonatomic) BOOL isFixing;    //标记是否正在定时播放中
-@property (nonatomic) BOOL flushList;   //标记是否需要刷新播放列表
-@property (nonatomic) BOOL isFree;  //标记是否是免费应用或未曾内购
-@property (nonatomic) BOOL isFive;  //标记是否iPhone5
-@property (nonatomic) BOOL isUpAlertShow;   //标记提示升级专业版的alert是否已弹出
-@property (nonatomic) BOOL isInterupted;   //标记是否有外部打断事件
-
 @property (nonatomic, retain) MyLabel *explainView; //取词翻译结果展示标签
 @property (nonatomic, retain) VOAWord *myWord;  //存放取词取到的单词基本信息
 @property (nonatomic, retain) MBProgressHUD *HUD;   //加载组件
-//@property (nonatomic, retain) UIView *viewOne;  
-//@property (nonatomic, retain) UIView *viewTwo;
 @property (nonatomic, retain) TextScrollView	*textScroll;    //展示歌词的滚动文本视图
 @property (nonatomic, retain) UITextView *imgWords; //展示新闻简介的文本框
-//@property double myStop;    
 @property (nonatomic, retain) UIImage *playImage;   //播放按钮的播放图片
 @property (nonatomic, retain) UIImage *pauseImage;  //播放按钮的暂停图片
 @property (nonatomic, retain) UIImage *loadingImage;    //播放按钮的加载图片
 @property (nonatomic, retain) UIAlertView *alert;   //全局提示alert
-//@property (nonatomic, retain) NSNotificationCenter *myCenter;   
 @property (nonatomic, retain) NSString *lyEn;   //跟读页面的英文歌词
 @property (nonatomic, retain) NSString *lyCn;   //跟读页面的中文歌词
 @property (nonatomic, retain) NSString *shareStr;   //准备进行分享的句子内容
@@ -378,10 +332,41 @@
 @property (nonatomic, retain) UIView *containerView;    //评论页面的底部视图，包含输入框及发表按钮
 @property (nonatomic, retain) HPGrowingTextView *textView; //可换行的输入框控件
 @property (nonatomic, retain) NSSet *wordTouches;
-@property NSInteger nowUserId;  //记录当前用户ID
-//@property BOOL isExisitNet;
 @property (nonatomic, retain) VOASentence *mySentence;  //记录要收藏的句子的基本信息
 
+@property int				playerFlag; //0:local 1:net
+@property (nonatomic) int             recordSeconds;    //记录实际录音时长
+@property (nonatomic) int             nowRecordSeconds; //实际录音时长的备份
+@property (nonatomic) int             recordTime;   //根据歌词播放时长得到的自动录音时的最长时长
+@property (nonatomic) int             fixSeconds;   //记录定时播放时秒数
+@property (nonatomic) BOOL              m_isRecording; //标识是否正在录音
+@property (nonatomic) CMTime nowTime;   //当前播放到的时间点
+@property (nonatomic) NSInteger category;   //记录当前播放的新闻的分类
+@property (nonatomic) NSInteger nowPage;    //记录当前获取的评论的页数
+@property (nonatomic) NSInteger totalPage;  //记录评论总页数
+@property (nonatomic) NSInteger contentMode;    //记录当前时联网播放（1）还是本地播放（2）
+@property (nonatomic) NSInteger playMode;   //播放顺序 1：单曲 2：顺序 3：随机
+@property (nonatomic) NSInteger playIndex;  //记录当前播放新闻在播放列表中的次序
+
+@property BOOL localFileExist;  //标记当前新闻是否在本地存在
+@property BOOL downloaded;  //标记是否刚刚下载音频到本地，方便点击播放按钮时切换在线播放为本地播放
+@property BOOL newFile; //标记当前新闻是否是新的一篇新闻，便于区别回到播放
+@property (nonatomic) BOOL isNewComm;   //标记当前用户是否有发表新评论，方便滚动评论界面到最新的评论
+@property (nonatomic) BOOL isFixing;    //标记是否正在定时播放中
+@property (nonatomic) BOOL flushList;   //标记是否需要刷新播放列表
+@property (nonatomic) BOOL isFree;  //标记是否是免费应用或未曾内购
+@property (nonatomic) BOOL isFive;  //标记是否iPhone5
+@property (nonatomic) BOOL isUpAlertShow;   //标记提示升级专业版的alert是否已弹出
+@property (nonatomic) BOOL isInterupted;   //标记是否有外部打断事件
+
+@property (nonatomic) float	aValue; //复读区间a点值
+@property (nonatomic) float	bValue; //幅度区间b点值
+@property (nonatomic) BOOL isSpeedMenu; //标识当前UIMenuController显示的是否语速值
+@property (nonatomic) BOOL isAbMenu; //标识当前UIMenuController显示的是否复读区间ab值
+@property (nonatomic) BOOL isResponse; //标识当前评论是否是回复
+@property (nonatomic) BOOL isInforComm; //标识当前的播放界面是否从消息内容处点击进来的
+
+@property NSInteger nowUserId;  //记录当前用户ID
 @property (nonatomic) BOOL notValidInitLyric;   //标记是否有外部打断事件
 
 

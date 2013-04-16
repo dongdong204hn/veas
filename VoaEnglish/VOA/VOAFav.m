@@ -69,10 +69,13 @@
 	//关闭数据库
 	[rs close];
     //	[dataBase close];//
-	return voaFavs;
+	return [voaFavs autorelease];
 }
 
-//根据voaid获取对象的方法
+/**
+ *  non-used
+ *  根据voaid获取对象的方法
+ */
 + (id) find:(NSInteger ) voaid{
 	PLSqliteDatabase *dataBase = [favdatabase setup];
 //    const char *myVoaid = [voaid UTF8String];//NSString转变为字符数组
@@ -100,7 +103,7 @@
 	
 	[rs close];
     //	[dataBase close];//
-	return voaFav;	
+	return [voaFav autorelease];
 }
 
 

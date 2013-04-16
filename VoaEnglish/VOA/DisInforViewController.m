@@ -524,6 +524,115 @@
     }
 }
 
+- (void)viewDidUnload {
+    self.inforScroll = nil;
+    self.appScroll = nil;
+    self.recordView = nil;
+    self.appView = nil;
+    self.avgOfDayStudyTLab = nil;
+    
+    self.todayStudyTLab = nil;
+    self.countOfReadedLab = nil;
+    self.loveClassLab = nil;
+    self.countOfCollectVoaLab = nil;
+    self.countOfCollectSenLab = nil;
+    self.countOfCollectWordLab = nil;
+    self.avgOfRemWordLab = nil;
+    self.remWorstWord = nil;
+    
+    self.img1 = nil;
+    self.img2 = nil;
+    self.img3 = nil;
+    self.img4 = nil;
+    self.img5 = nil;
+    self.img6 = nil;
+    self.img7 = nil;
+    self.img8 = nil;
+    self.img9 = nil;
+    self.img10 = nil;
+    self.img11 = nil;
+    self.img12 = nil;
+    self.img13 = nil;
+    self.img14 = nil;
+    self.img15 = nil;
+    self.img16 = nil;
+    self.img17 = nil;
+    self.img18 = nil;
+    self.img19 = nil;
+    self.img20 = nil;
+    self.img21 = nil;
+    self.img22 = nil;
+    self.img23 = nil;
+    self.img24 = nil;
+    self.img25 = nil;
+    self.img26 = nil;
+    self.img27 = nil;
+    
+    [segmentedControl release], segmentedControl = nil;
+    [msgTv release], msgTv = nil;
+    [disMsgLab release], disMsgLab = nil;
+    [alertLab release], alertLab = nil;
+    [inforArray release], inforArray = nil;
+    [logBtn release], logBtn = nil;
+    [editBtn release], editBtn = nil;
+    
+    [super viewDidUnload];
+}
+
+- (void)dealloc {
+    [inforScroll release];
+    [appScroll release];
+    [recordView release];
+    [appView release];
+    [avgOfDayStudyTLab release];
+    
+    [todayStudyTLab release];
+    [countOfReadedLab release];
+    [loveClassLab release];
+    [countOfCollectVoaLab release];
+    [countOfCollectSenLab release];
+    [countOfCollectWordLab release];
+    [avgOfRemWordLab release];
+    [remWorstWord release];
+    
+    [img1 release];
+    [img2 release];
+    [img3 release];
+    [img4 release];
+    [img5 release];
+    [img6 release];
+    [img7 release];
+    [img8 release];
+    [img9 release];
+    [img10 release];
+    [img11 release];
+    [img12 release];
+    [img13 release];
+    [img14 release];
+    [img15 release];
+    [img16 release];
+    [img17 release];
+    [img18 release];
+    [img19 release];
+    [img20 release];
+    [img21 release];
+    [img22 release];
+    [img23 release];
+    [img24 release];
+    [img25 release];
+    [img26 release];
+    [img27 release];
+    
+    [segmentedControl release];
+    [msgTv release];
+    [disMsgLab release];
+    [alertLab release];
+    [inforArray release];
+    [logBtn release];
+    [editBtn release];
+
+    [super dealloc];
+}
 
 #pragma mark - My Action
 - (void)photoTapped:(UIImageView *)sender
@@ -990,8 +1099,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
         
         [alert show];
         
-        NSTimer *timer = nil;
-        timer = [NSTimer scheduledTimerWithTimeInterval:1.5 target:self selector:@selector(c) userInfo:nil repeats:NO];
+        [NSTimer scheduledTimerWithTimeInterval:1.5 target:self selector:@selector(c) userInfo:nil repeats:NO];
         return;
     }
 }
@@ -1155,7 +1263,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
                 newVoa._url = [[obj elementForName:@"Url"] stringValue];
                 newVoa._pic = [[obj elementForName:@"Pic"] stringValue];
                 newVoa._creatTime = [[obj elementForName:@"CreatTime"] stringValue];
-                newVoa._publishTime = [[obj elementForName:@"PublishTime"] stringValue] == @" null" ? nil :[[obj elementForName:@"PublishTime"] stringValue];
+                newVoa._publishTime = [[[obj elementForName:@"PublishTime"] stringValue] isEqualToString:@" null"]? nil :[[obj elementForName:@"PublishTime"] stringValue];
                 newVoa._readCount = [[obj elementForName:@"ReadCount"] stringValue];
                 newVoa._hotFlg = [[obj elementForName:@"Hotflg"] stringValue];
                 newVoa._isRead = @"0";
@@ -1251,67 +1359,67 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
         [VOAView deleteByVoaid:voa._voaid];
 //    } else {
     }
-        if ([VOADetail isExist:voa._voaid] || [self isExistenceNetwork:1]) {
-//            HUD = [[MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES] retain];
-//            HUD.dimBackground = YES;
-//            HUD.labelText = @"connecting!";
-            HUD = [[MBProgressHUD alloc] initWithWindow:[UIApplication sharedApplication].keyWindow ];
-            [[UIApplication sharedApplication].keyWindow addSubview:HUD];
-            HUD.delegate = self;
-            HUD.labelText = @"Loading";
-            HUD.dimBackground = YES;
-            [HUD show:YES];
-            dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-                
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    VOADetail *myDetail = [VOADetail find:voa._voaid];
-                    if (!myDetail) {
-                        //  NSLog(@"内容不全-%d",voa._voaid);
-                        kNetTest;
-                        if (kNetIsExist) {
-                            [VOADetail deleteByVoaid: voa._voaid];
-                            //                                        NSLog(@"voaid:%i",voa._voaid);
-                            [self catchDetails:voa];
-                        }else {
-                            rightCharacter = NO;
-                        }
+    if ([VOADetail isExist:voa._voaid] || [self isExistenceNetwork:1]) {
+        //            HUD = [[MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES] retain];
+        //            HUD.dimBackground = YES;
+        //            HUD.labelText = @"connecting!";
+        HUD = [[MBProgressHUD alloc] initWithWindow:[UIApplication sharedApplication].keyWindow ];
+        [[UIApplication sharedApplication].keyWindow addSubview:HUD];
+        HUD.delegate = self;
+        HUD.labelText = @"Loading";
+        HUD.dimBackground = YES;
+        [HUD show:YES];
+        dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                VOADetail *myDetail = [VOADetail find:voa._voaid];
+                if (!myDetail) {
+                    //  NSLog(@"内容不全-%d",voa._voaid);
+                    kNetTest;
+                    if (kNetIsExist) {
+                        [VOADetail deleteByVoaid: voa._voaid];
+                        //                                        NSLog(@"voaid:%i",voa._voaid);
+                        [self catchDetails:voa];
                     }else {
-//                        [myDetail release];
-                        rightCharacter = YES;
-                    }//获取所选的cell的数据
-                    if (rightCharacter) {
-                        //                                NSLog(@"内容完整-%d",voa._voaid);
-                        //                                if ([VOADetail find:voa._voaid]) {
-                        PlayViewController *play = [PlayViewController sharedPlayer];//新建新界面的controller实例
-                        //                                                    play.isExisitNet = isExisitNet;
-                        if(play.voa._voaid == voa._voaid)
-                        {
-                            play.newFile = NO;
-                        }else
-                        {
-                            play.newFile = YES;
-                            play.voa = voa;
-                        }
-                        voa._isRead = @"1";//保证界面上显示已读
-                        if (!(play.contentMode == 1 && play.category == 0)) {
-                            play.flushList = YES;
-                            play.contentMode = 1;
-                            play.category = 0;
-                        }
-                        play.isInforComm = YES;
-                        [play setHidesBottomBarWhenPushed:YES];//设置推到新界面时无bottomBar
-                        [self.navigationController pushViewController:play animated:NO];
-                        [HUD hide:YES];
-                        //                                }
-                    }else {
-                        [HUD hide:YES];
-                        UIAlertView *addAlert = [[UIAlertView alloc] initWithTitle:kColFour message:kNewFive delegate:self cancelButtonTitle:kWordFour otherButtonTitles:nil ,nil];
-                        [addAlert show];
-                        [addAlert release];
+                        rightCharacter = NO;
                     }
-                });
+                }else {
+                    //                        [myDetail release];
+                    rightCharacter = YES;
+                }//获取所选的cell的数据
+                if (rightCharacter) {
+                    //                                NSLog(@"内容完整-%d",voa._voaid);
+                    //                                if ([VOADetail find:voa._voaid]) {
+                    PlayViewController *play = [PlayViewController sharedPlayer];//新建新界面的controller实例
+                    //                                                    play.isExisitNet = isExisitNet;
+                    if(play.voa._voaid == voa._voaid)
+                    {
+                        play.newFile = NO;
+                    }else
+                    {
+                        play.newFile = YES;
+                        play.voa = voa;
+                    }
+                    voa._isRead = @"1";//保证界面上显示已读
+                    if (!(play.contentMode == 1 && play.category == 0)) {
+                        play.flushList = YES;
+                        play.contentMode = 1;
+                        play.category = 0;
+                    }
+                    play.isInforComm = YES;
+                    [play setHidesBottomBarWhenPushed:YES];//设置推到新界面时无bottomBar
+                    [self.navigationController pushViewController:play animated:NO];
+                    [HUD hide:YES];
+                    //                                }
+                }else {
+                    [HUD hide:YES];
+                    UIAlertView *addAlert = [[UIAlertView alloc] initWithTitle:kColFour message:kNewFive delegate:self cancelButtonTitle:kWordFour otherButtonTitles:nil ,nil];
+                    [addAlert show];
+                    [addAlert release];
+                }
             });
-        }
+        });
+    }
 //    }
 }
 //点击网页链接的响应事件

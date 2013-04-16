@@ -220,7 +220,8 @@
 	
 	[rs close];
 //	[dataBase close];//
-	return voaView;
+//    return voaView;
+	return [voaView autorelease];
 }
 
 /**
@@ -235,13 +236,14 @@
 	NSString *findSql = [NSString stringWithFormat:@"select * FROM voadetail WHERE voaid = %d and sentence like %@ order by paraid ", voaid, nowSearch];
 //    NSLog(@"%@", findSql);
 	rs = [dataBase executeQuery:findSql];
+    [nowSearch release];
 	if ([rs next]) {
 //        NSString *sentence = [rs objectForColumn:@"sentence"];
 //        NSLog(@"%@", sentence);
         [rs close];
         return YES;
 	}	
-	[nowSearch release];
+	
 	return NO;	
 }
 
@@ -327,9 +329,8 @@
             [voaContent release], voaContent = nil;
         }
     }
-    [voa release];
     [voaContents sortUsingSelector:@selector(compareNumber:)];//对数组进行排序 
-    return voaContents;
+    return [voaContents autorelease];
     //    return [self QuickSort:voaContents left:0 right:([voaContents count]-1)];
     //    NSTimer *myTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(setProgress:) userInfo: repeats:<#(BOOL)#>]
     //    
@@ -425,7 +426,7 @@
     }
     
     [rs close];
-    return downLoadArray;
+    return [downLoadArray autorelease];
 }
 
 /**

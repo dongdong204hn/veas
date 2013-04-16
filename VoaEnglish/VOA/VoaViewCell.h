@@ -16,7 +16,7 @@
 //    UILabel *hot;
 //    UILabel *read;
     UIImageView *hotImg;
-    UIImageView *readImg;
+//    UIImageView *readImg;
     UIImageView *aftImage;
     UIButton *downloadBtn;
     DACircularProgressView *progress;
@@ -24,16 +24,17 @@
 
 @property (nonatomic,retain) IBOutlet UIImageView *myImage;
 @property (nonatomic,retain) IBOutlet UIImageView *hotImg;
-@property (nonatomic,retain) IBOutlet UIImageView *readImg;
 @property (nonatomic,retain) IBOutlet UILabel *myTitle;
 @property (nonatomic,retain) IBOutlet UILabel *myDate;
 @property (nonatomic,retain) IBOutlet UILabel *readCount;
 @property (nonatomic,retain) IBOutlet UILabel *collectDate;
-//@property (nonatomic,retain) IBOutlet UILabel *hot;
-//@property (nonatomic,retain) IBOutlet UILabel *read;
 @property (nonatomic,retain) IBOutlet UIImageView *aftImage;
 @property (nonatomic,retain) UIButton *downloadBtn;
 @property (nonatomic,retain) DACircularProgressView *progress;
+//@property (nonatomic,retain) IBOutlet UILabel *hot;
+//@property (nonatomic,retain) IBOutlet UILabel *read;
+//@property (nonatomic,retain) IBOutlet UIImageView *readImg;
+
 
 
 @end

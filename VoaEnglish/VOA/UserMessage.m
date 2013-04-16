@@ -135,6 +135,7 @@
 }
 
 /**
+ *  non-used
  *  根据msgId获取对象的方法
  */
 + (id) find:(NSInteger ) msgId{
@@ -175,7 +176,7 @@
 	
 	[rs close];
     //	[dataBase close];//
-	return userMsg;	
+	return [userMsg autorelease];
 }
 
 /**

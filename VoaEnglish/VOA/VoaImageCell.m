@@ -28,7 +28,7 @@
 }
 
 - (void)dealloc {
-	[self.myImage release], myImage = nil;
+	[myImage release];
     [super dealloc];
 }
 

@@ -42,6 +42,22 @@
     [nameLab setText:[NSString stringWithFormat:@"发私信给\"%@\"", userMsg.toUserName]];
 }
 
+- (void)viewDidUnload {
+    self.nameLab = nil;
+    self.messageTv = nil;
+    self.sendBtn = nil;
+    [userMsg release], userMsg = nil;
+    [super viewDidUnload];
+}
+
+- (void)dealloc {
+    [nameLab release];
+    [messageTv release];
+    [sendBtn release];
+    [userMsg release];
+    [super dealloc];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -126,8 +142,7 @@
                     //
                     //            [active startAnimating];
                     
-                    NSTimer *timer = nil;
-                    timer = [NSTimer scheduledTimerWithTimeInterval:1.5 target:self selector:@selector(c) userInfo:nil repeats:NO];
+                    [NSTimer scheduledTimerWithTimeInterval:1.5 target:self selector:@selector(c) userInfo:nil repeats:NO];
                 } else {
                     NSString *msg = [[obj elementForName:@"msg"] stringValue] ;
                     //                NSLog(@"msg:%@",msg);

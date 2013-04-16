@@ -77,6 +77,10 @@ NSString * const kRegEight = @"很遗憾,您注册失败:";
 NSString * const kRegNine = @"您还没有网络连接,请收听本地中新闻";
 NSString * const kRegTen = @"两次输入密码不一致";
 NSString * const kRegEleven = @"邮箱地址格式不对";
+NSString * const kRegTwelve = @"注册失败";
+NSString * const kRegThirte = @"用户名已存在";
+NSString * const kRegFourte = @"邮箱已注册";
+NSString * const kRegFivete= @"用户名长度错误";
 
 NSString * const kColOne = @"对本地新闻进行搜索";
 NSString * const kColTwo = @"本地";

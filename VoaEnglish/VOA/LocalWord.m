@@ -67,6 +67,10 @@
         pron = [self decodeFromPercentEscapeString:pron];
         NSString *def = [rs objectForColumn:@"def"];
         word = [[LocalWord alloc] initWithKey:myKey audio:audio pron:pron def:def];
+//        [myKey release];
+//        [audio release];
+//        [pron release];
+//        [def release];
 	}
 	else {
         //        NSString *nonWordEx = @"\\w+s";
@@ -90,6 +94,10 @@
                 pron = [self decodeFromPercentEscapeString:pron];
                 NSString *def = [rs objectForColumn:@"def"];
                 word = [[LocalWord alloc] initWithKey:myKey audio:audio pron:pron def:def];
+//                [myKey release];
+//                [audio release];
+//                [pron release];
+//                [def release];
             }
             else {
                 //                NSLog(@"s|");
@@ -105,6 +113,10 @@
                         pron = [self decodeFromPercentEscapeString:pron];
                         NSString *def = [rs objectForColumn:@"def"];
                         word = [[LocalWord alloc] initWithKey:myKey audio:audio pron:pron def:def];
+//                        [myKey release];
+//                        [audio release];
+//                        [pron release];
+//                        [def release];
                     }
                 }
             } 
@@ -122,6 +134,10 @@
                 pron = [self decodeFromPercentEscapeString:pron];
                 NSString *def = [rs objectForColumn:@"def"];
                 word = [[LocalWord alloc] initWithKey:myKey audio:audio pron:pron def:def];
+//                [myKey release];
+//                [audio release];
+//                [pron release];
+//                [def release];
             }
             else {
                 //                NSLog(@"s|");
@@ -137,6 +153,10 @@
                         pron = [self decodeFromPercentEscapeString:pron];
                         NSString *def = [rs objectForColumn:@"def"];
                         word = [[LocalWord alloc] initWithKey:myKey audio:audio pron:pron def:def];
+//                        [myKey release];
+//                        [audio release];
+//                        [pron release];
+//                        [def release];
                     }
                 }
             } 
@@ -154,8 +174,12 @@
                 pron = [self decodeFromPercentEscapeString:pron];
                 NSString *def = [rs objectForColumn:@"def"];
                 word = [[LocalWord alloc] initWithKey:myKey audio:audio pron:pron def:def];
+//                [myKey release];
+//                [audio release];
+//                [pron release];
+//                [def release];
             }
-        } 
+        }
         
         
         //		UIAlertView *errAlert = [[UIAlertView alloc] initWithTitle:@"Error!" message:@"Can not find!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -164,7 +188,7 @@
 	
 	[rs close];
     //	[dataBase close];//
-	return word;	
+	return [word autorelease];
 }
 
 @end

@@ -159,7 +159,7 @@
                 NSString *imgWords = [rs objectForColumn:@"ImgWords"];
                 NSString *imgPath = [rs objectForColumn:@"ImgPath"];
                 
-                voaDetail = [[VOADetail alloc] initWithVoaId:voaid paraid:paraid idIndex:idIndex timing:timing sentence:sentence imgWords:imgWords imgPath:imgPath sentence_cn:sentence_cn];
+                voaDetail = [[[VOADetail alloc] initWithVoaId:voaid paraid:paraid idIndex:idIndex timing:timing sentence:sentence imgWords:imgWords imgPath:imgPath sentence_cn:sentence_cn] autorelease];
             }
 //            NSLog(@"voadetail:%d,%d,%d,%@",voaDetail._voaid,voaDetail._paraid,voaDetail._idIndex,voaDetail._sentence_cn);
 

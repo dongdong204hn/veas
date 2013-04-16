@@ -112,7 +112,7 @@
         for (id fav in favViews) {
             [favArray addObject:fav];
         }
-        [favViews release], favViews = nil;
+//        [favViews release], favViews = nil;
         [segmentedControl setSelectedSegmentIndex:0];
         [self.voasTableView reloadData];
     }else
@@ -128,7 +128,7 @@
         }
         [self.voasTableView reloadData];
         [sender setSelectedSegmentIndex:1];
-        [senViews release],senViews =nil;
+//        [senViews release],senViews =nil;
     }
 }
 
@@ -144,7 +144,7 @@
         for (id sen in senViews){
             [senArray addObject:sen];
         }
-        [senViews release], senViews = nil;
+//        [senViews release], senViews = nil;
     
     }else{
         NSArray *favViews = [VOAFav findCollect];
@@ -154,7 +154,7 @@
         for (id fav in favViews) {
             [favArray addObject:fav];
         }
-        [favViews release], favViews = nil;
+//        [favViews release], favViews = nil;
     }
     [voasTableView reloadData];
     search.showsCancelButton = YES;
@@ -352,7 +352,7 @@
 //        
 ////        NSLog(@"hot:1");
 //    }
-    [voa release];
+//    [voa release];
   
     return cell;
     }
@@ -586,6 +586,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
                         senView.row=row;
                         [senView setHidesBottomBarWhenPushed:YES];//设置推到新界面时无bottomBar
                         [self.navigationController pushViewController:senView animated:YES];
+                        [senView release], senView = nil;
                         [HUD hide:YES];
                     });  
                 }); 
@@ -675,7 +676,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
                     [addAlert release];
                     [voasTableView setUserInteractionEnabled:YES];
                 }
-                
+//                [voa release];
 //            dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
 //
 //                dispatch_async(dispatch_get_main_queue(), ^{

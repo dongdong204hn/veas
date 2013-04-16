@@ -17,6 +17,6 @@
 @property (nonatomic, retain) IBOutlet UILabel *nameLab; //姓名标签
 @property (nonatomic, retain) IBOutlet UITextView *messageTv; //消息编辑框
 @property (nonatomic, retain) IBOutlet UIButton *sendBtn; //发送按钮
-@property (nonatomic, retain) UIAlertView *sucAlert;
 @property (nonatomic, retain) UserMessage *userMsg;
+@property (nonatomic, retain) UIAlertView *sucAlert;
 @end

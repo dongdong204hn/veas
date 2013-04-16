@@ -15,7 +15,7 @@
 @synthesize myDate;
 @synthesize collectDate;
 //@synthesize read;
-@synthesize readImg;
+//@synthesize readImg;
 //@synthesize hot;
 @synthesize hotImg;
 @synthesize readCount;
@@ -40,14 +40,16 @@
 }
 
 - (void)dealloc {
-    [self.myImage release], myImage = nil;
-    [self.myDate release], myDate = nil;
-    [self.myTitle release], myTitle = nil;
-    [self.collectDate release], collectDate = nil;
-    [self.readImg release], readImg = nil;
-    [self.hotImg release], hotImg = nil;
-    [self.readCount release], readCount = nil;
-    [aftImage release],aftImage =nil;
+    [myImage release];
+    [hotImg release];
+    [myTitle release];
+    [myDate release];
+    [readCount release];
+    [collectDate release];
+    [aftImage release];
+    [downloadBtn release];
+    [progress release];
+//    [self.readImg release], readImg = nil;
     [super dealloc];
 }
 

@@ -120,7 +120,7 @@
 	//关闭数据库
 	[rs close];
     //	[dataBase close];//
-    return sentences;
+    return [sentences autorelease];
 }
 
 + (void) deleteSentence:(NSInteger)SentenceId userId:(NSInteger)userId{
@@ -170,6 +170,9 @@
     
 }
 
+/**
+ *  non-used
+ */
 +(id) findBySentenceId:(NSInteger)SentenceId userId:(NSInteger)userId
 {
     PLSqliteDatabase *dataBase = [favdatabase setup];
@@ -194,7 +197,7 @@
         VOASentence *voaSen=[[VOASentence alloc]initWithVOASentence:SentenceId VoaId:VoaId ParaId:ParaId IdIndex:IdIndex StartTime:StartTime EndTime:EndTime Sentence:Sentence Sentence_cn:Sentence_cn userId:userId collected:collected];
         [rs close];
         //	[dataBase close];//
-        return voaSen;
+        return [voaSen autorelease];
 	}
 	else {
         //		UIAlertView *errAlert = [[UIAlertView alloc] initWithTitle:@"Error!" message:@"Can not find!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];

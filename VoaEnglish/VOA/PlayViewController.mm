@@ -588,7 +588,7 @@ extern ASIHTTPRequest *nowrequest;
 - (void)ShareThisQuestion{
     //    if (isExisitNet) {
     NSString * url = Nil;
-    url = [NSString stringWithFormat:@"http://apps.iyuba.com/voa/showItem.jsp?voaId=%d&network=weibo",voa._voaid];
+//    url = [NSString stringWithFormat:@"http://apps.iyuba.com/voa/showItem.jsp?voaId=%d&network=weibo",voa._voaid];
     int nowUserID = [[[NSUserDefaults standardUserDefaults] objectForKey:@"nowUser"] integerValue];
     if (nowUserID > 0) {
         url = [NSString stringWithFormat:@"http://apps.iyuba.com/voa/showItem.jsp?voaId=%d&network=weibo&userId=%d",voa._voaid,nowUserID];
@@ -642,8 +642,7 @@ extern ASIHTTPRequest *nowrequest;
             
             [alert show];
             
-            NSTimer *timer = nil;
-            timer = [NSTimer scheduledTimerWithTimeInterval:1.5 target:self selector:@selector(c) userInfo:nil repeats:NO];
+            [NSTimer scheduledTimerWithTimeInterval:1.5 target:self selector:@selector(c) userInfo:nil repeats:NO];
         }
     }else
     {
@@ -674,8 +673,7 @@ extern ASIHTTPRequest *nowrequest;
             
             [alert show];
             
-            NSTimer *timer = nil;
-            timer = [NSTimer scheduledTimerWithTimeInterval:1.5 target:self selector:@selector(c) userInfo:nil repeats:NO];
+            [NSTimer scheduledTimerWithTimeInterval:1.5 target:self selector:@selector(c) userInfo:nil repeats:NO];
         }
     }else
     {
@@ -1453,8 +1451,7 @@ extern ASIHTTPRequest *nowrequest;
             
             [alert show];
             
-            NSTimer *timer = nil;
-            timer = [NSTimer scheduledTimerWithTimeInterval:1.5 target:self selector:@selector(c) userInfo:nil repeats:NO];
+            [NSTimer scheduledTimerWithTimeInterval:1.5 target:self selector:@selector(c) userInfo:nil repeats:NO];
             
             NSString *documentPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
             //创建audio份目录在Documents文件夹下，not to back up
@@ -1835,7 +1832,7 @@ extern ASIHTTPRequest *nowrequest;
                 myWord.pron = @" ";
             }
             myWord.def = [[word.def stringByReplacingOccurrencesOfRegex:@"\\s+" withString:@""]stringByReplacingOccurrencesOfString:@"null" withString:@""];
-            [word release];
+//            [word release];
             [self wordExistDisplay];
             //            }
         } else {
@@ -2110,7 +2107,7 @@ extern ASIHTTPRequest *nowrequest;
                     //                    if (contentMode == 1) {
                     //                        voa = [VOAView find:playId];
                     //                    } else if (contentMode == 2) {
-                    voa = [VOAView find:playId];
+                    voa = [[VOAView find:playId] retain];
                     //                    }
                     playIndex = [self indexOfArray:listArray bbcId:voa._voaid] ;
                 } else {
@@ -2126,7 +2123,7 @@ extern ASIHTTPRequest *nowrequest;
                     //                    if (contentMode == 1) {
                     //                        voa = [VOAView find:playId];
                     //                    } else if (contentMode == 2) {
-                    voa = [VOAView find:playId];
+                    voa = [[VOAView find:playId] retain];
                     //                    }
                     
                 }
@@ -2311,6 +2308,7 @@ extern ASIHTTPRequest *nowrequest;
             isUpAlertShow = NO;
             InnerBuyController *myInner = [[InnerBuyController alloc] init];
             [self.navigationController pushViewController:myInner animated:YES];
+            [myInner release], myInner = nil;
         }
     }
     [alertView release];
@@ -2521,13 +2519,14 @@ extern ASIHTTPRequest *nowrequest;
     //    [senTextView setContentSize:CGSizeMake(explainView.frame.size.width-10, senSize.height + [@"赵松" sizeWithFont:CourierTh].height * nNum)];
     //    [senTextView setContentSize:CGSizeMake(explainView.frame.size.width-10, 500)];
     //    NSLog(@"nNum:%d height:%f totalheight:%f", nNum, [@"赵松" sizeWithFont:CourierTh].height, senSize.height + [@"赵松" sizeWithFont:CourierTh].height * nNum);
-    senTextView.text = totalString;
+    senTextView.text = [totalString copy];
     [senTextView setTag:arc4random()%1000];
     [senTextView setEditable:NO];
     [senTextView setFont: isiPhone? CourierTh:CourierThP];
     senTextView.backgroundColor = [UIColor clearColor];
     [senTextView setContentOffset:CGPointMake(0, 10)];
     [explainView addSubview:senTextView];
+    [totalString release];
     [senTextView release];
     
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"showSen"]) {
@@ -2774,7 +2773,7 @@ extern ASIHTTPRequest *nowrequest;
                     myWord.pron = @" ";
                 }
                 myWord.def = [[word.def stringByReplacingOccurrencesOfRegex:@"\\s+" withString:@""]stringByReplacingOccurrencesOfString:@"null" withString:@""];
-                [word release];
+//                [word release];
                 [self wordExistDisplay];
                 //            }
             } else {
@@ -3011,6 +3010,11 @@ void audioRouteChangeListenerCallback (
 {
     [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:contentMode] forKey:@"contentMode"];
     //    NSLog(@"%@",[[UIDevice currentDevice] model]);
+    
+    [myScroll setScrollEnabled:NO];
+    [btnTwo setUserInteractionEnabled:NO];
+    [btnThree setUserInteractionEnabled:NO];
+    [btnFour setUserInteractionEnabled:NO];
     
     [btn_record setEnabled:YES];
     switch (playMode) {
@@ -3780,10 +3784,7 @@ void audioRouteChangeListenerCallback (
     
 //    [[UIApplication sharedApplication].keyWindow setUserInteractionEnabled:NO];
 //    NSLog(@"open");
-    [myScroll setScrollEnabled:NO];
-    [btnTwo setUserInteractionEnabled:NO];
-    [btnThree setUserInteractionEnabled:NO];
-    [btnFour setUserInteractionEnabled:NO];
+    
     
     kNetTest;
     [self becomeFirstResponder];
@@ -4501,8 +4502,10 @@ void audioRouteChangeListenerCallback (
     
     // view hierachy
     [containerView addSubview:imageView];
+    [imageView release];
     [containerView addSubview:textView];
     [containerView addSubview:entryImageView];
+    [entryImageView release];
     
     UIImage *sendBtnBackground = [[UIImage imageNamed:@"MessageEntrySendButton.png"] stretchableImageWithLeftCapWidth:13 topCapHeight:0];
     UIImage *selectedSendBtnBackground = [[UIImage imageNamed:@"MessageEntrySendButton.png"] stretchableImageWithLeftCapWidth:13 topCapHeight:0];
@@ -4679,23 +4682,100 @@ void audioRouteChangeListenerCallback (
     [[UIApplication sharedApplication] endReceivingRemoteControlEvents];  
     [self resignFirstResponder]; 
 //    self.controller = nil;
-    self.collectButton = nil;
     self.preButton = nil;
     self.nextButton = nil;
-	self.myScroll = nil;
-	self.pageControl = nil;
-    self.totalTimeLabel = nil;
-    self.currentTimeLabel = nil;
-    self.timeSlider = nil;
-    self.playButton = nil;
-    self.downloadFlg = nil;
-    self.downloadingFlg = nil;
-    self.titleWords = nil;
-    self.RoundBack = nil;
     self.btnOne = nil;
     self.btnTwo = nil;
     self.btnThree = nil;
     self.btnFour = nil;
+    self.btn_record = nil;
+	self.btn_play = nil;
+    
+	self.toolBtn = nil;
+    self.abBtn = nil;
+    self.aBtn = nil;
+    self.bBtn = nil;
+    self.lightSlider = nil;
+    self.speedSlider = nil;
+    self.toolView = nil;
+    
+    self.myScroll = nil;
+    self.pageControl = nil;
+    self.totalTimeLabel = nil;
+    self.currentTimeLabel = nil;
+    self.recordLabel = nil;
+    self.timeSlider = nil;
+    
+    self.playButton = nil;
+    self.titleWords = nil;
+    self.RoundBack = nil;
+    self.fixTimeView = nil;
+    self.bottomView = nil;
+    self.myPick = nil;
+    self.fixButton = nil;
+    self.modeBtn = nil;
+    self.displayModeBtn = nil;
+    
+    [nowTextView release], nowTextView = nil;
+    [speedMenu release], speedMenu = nil;
+    [selectWord release], selectWord = nil;
+    [lyricScroll release], lyricScroll = nil;
+    [lyricCnScroll release], lyricCnScroll = nil;
+    
+    [audioRecoder release], audioRecoder = nil;
+    [avSet release], avSet = nil;
+    [mp3Url release], mp3Url = nil;
+    [loadProgress release], loadProgress = nil;
+    [bannerView_ release], bannerView_ = nil;
+    [voa release], voa = nil;
+    [myImageView release], myImageView = nil;
+    [senImage release], senImage = nil;
+    [starImage release], starImage = nil;
+    [shareSenBtn release], shareSenBtn = nil;
+    [colSenBtn release], colSenBtn = nil;
+    [sendBtn release], sendBtn = nil;
+    
+    [collectButton release], collectButton = nil;
+    [sliderTimer release], sliderTimer = nil;
+    [lyricSynTimer release], lyricSynTimer = nil;
+    [fixTimer release], fixTimer = nil;
+    [recordTimer release], recordTimer = nil;
+    [lyricArray release], lyricArray = nil;
+    [lyricCnArray release], lyricCnArray = nil;
+    [timeArray release], timeArray = nil;
+    [indexArray release], indexArray = nil;
+    [lyricLabelArray release], lyricLabelArray = nil;
+    [lyricCnLabelArray release], lyricCnLabelArray = nil;
+    [listArray release], listArray = nil;
+    [hoursArray release], hoursArray = nil;
+    [minsArray release], minsArray = nil;
+    [secsArray release], secsArray = nil;
+    [player release], player = nil;
+    [wordPlayer release], wordPlayer = nil;
+    [myHighLightWord release], myHighLightWord = nil;
+    [myView release], myView = nil;
+    [userPath release], userPath = nil;
+    [clockButton release], clockButton = nil;
+    
+    [downloadFlg release], downloadFlg = nil;
+    [downloadingFlg release], downloadingFlg = nil;
+    [explainView release], explainView = nil;
+    [myWord release], myWord = nil;
+    [textScroll release], textScroll = nil;
+    [imgWords release], imgWords = nil;
+    [playImage release], playImage = nil;
+    [pauseImage release], pauseImage = nil;
+    [loadingImage release], loadingImage = nil;
+    [lyEn release], lyEn = nil;
+    [lyCn release], lyCn = nil;
+    [shareStr release], shareStr = nil;
+    [commTableView release], commTableView = nil;
+    [commArray release], commArray = nil;
+    [containerView release], containerView = nil;
+    [textView release], textView = nil;
+    [wordTouches release], wordTouches = nil;
+    [mySentence release], mySentence = nil;
+    
 }
 
 /**
@@ -4717,48 +4797,97 @@ void audioRouteChangeListenerCallback (
 
 - (void)dealloc {
 //    NSLog(@"aaaa");
-//    self.controller = nil;
-    self.collectButton = nil;
-    self.preButton = nil;
-    self.nextButton = nil;
-	self.myScroll = nil;
-	self.pageControl = nil;
-    self.totalTimeLabel = nil;
-    self.currentTimeLabel = nil;
-    self.timeSlider = nil;
-    self.playButton = nil;
-    self.downloadFlg = nil;
-    self.downloadingFlg = nil;
-    self.titleWords = nil;
+    [preButton release];
+    [nextButton release];
+    [btnOne release];
+    [btnTwo release];
+    [btnThree release];
+    [btnFour release];
+    [btn_record release];
+    [btn_play release];
+    [toolBtn release];
+    [abBtn release];
+    [aBtn release];
+    [bBtn release];
+    [lightSlider release];
+    [speedSlider release];
+    [toolView release];
+    [myScroll release];
+    [pageControl release];
+    [totalTimeLabel release];
+    [currentTimeLabel release];
+    [recordLabel release];
+    [timeSlider release];
+    [playButton release];
+    [titleWords release];
+    [RoundBack release];
+    [fixTimeView release];
+    [bottomView release];
+    [myPick release];
+    [fixButton release];
+    [modeBtn release];
+    [displayModeBtn release];
     
-    [self.wordPlayer release], wordPlayer = nil;
-    [self.lyEn release], lyEn = nil;
-    [self.lyCn release], lyCn = nil;
-    [self.player release], player = nil;
-    [self.playImage release], playImage = nil;
-    [self.pauseImage release], pauseImage = nil;
-    [self.loadingImage release], loadingImage = nil;
-    [self.myWord release], myWord = nil;
-    [self.userPath release], userPath = nil;
-//    [self.mp3Data release], mp3Data = nil;
-    [self.lyricArray release], lyricArray = nil;
-    [self.lyricCnArray release], lyricCnArray = nil;
-    [self.lyricLabelArray release], lyricLabelArray = nil;
-    [self.lyricCnLabelArray release], lyricCnLabelArray = nil;
-    [self.timeArray release], timeArray = nil;
-    [self.indexArray release], indexArray = nil;
-    [self.myHighLightWord release], myHighLightWord = nil;
-    [self.bannerView_ release], bannerView_ = nil;
     
-    [self.RoundBack release], RoundBack = nil;
-    [self.btnFour release], btnFour = nil;
-    [self.btnOne release], btnOne = nil;
-    [self.btnThree release], btnThree = nil;
-    [self.btnTwo release], btnTwo = nil;
-    [self.colSenBtn release],colSenBtn = nil;
-    [shareSenBtn release],shareSenBtn = nil;
+    [nowTextView release];
+    [speedMenu release];
+    [selectWord release];
+    [lyricScroll release];
+    [lyricCnScroll release];
     
-    [self.mySentence release],mySentence = nil;
+    [audioRecoder release];
+    [avSet release];
+    [mp3Url release];
+    [loadProgress release];
+    [bannerView_ release];
+    [voa release];
+    [myImageView release];
+    [senImage release];
+    [starImage release];
+    [shareSenBtn release];
+    [colSenBtn release];
+    [sendBtn release];
+    
+    [collectButton release];
+    [sliderTimer release];
+    [lyricSynTimer release];
+    [fixTimer release];
+    [recordTimer release];
+    [lyricArray release];
+    [lyricCnArray release];
+    [timeArray release];
+    [indexArray release];
+    [lyricLabelArray release];
+    [lyricCnLabelArray release];
+    [listArray release];
+    [hoursArray release];
+    [minsArray release];
+    [secsArray release];
+    [player release];
+    [wordPlayer release];
+    [myHighLightWord release];
+    [myView release];
+    [userPath release];
+    [clockButton release];
+    
+    [downloadFlg release];
+    [downloadingFlg release];
+    [explainView release];
+    [myWord release];
+    [textScroll release];
+    [imgWords release];
+    [playImage release];
+    [pauseImage release];
+    [loadingImage release];
+    [lyEn release];
+    [lyCn release];
+    [shareStr release];
+    [commTableView release];
+    [commArray release];
+    [containerView release];
+    [textView release];
+    [wordTouches release];
+    [mySentence release];
     [super dealloc];
 }
 
@@ -4889,7 +5018,7 @@ void audioRouteChangeListenerCallback (
         if (contentMode == 2 && playMode == 3) {
             flushList = YES;
         }
-        [fm release];
+//        [fm release];
         [VOAView clearDownload:request.tag];
         for (int i =0; i<[downLoadList count]; i++) {
             if ([[downLoadList objectAtIndex:i]intValue]==request.tag) {
@@ -4991,7 +5120,7 @@ void audioRouteChangeListenerCallback (
             myWord.pron = @" ";
         }
         myWord.def = [[word.def stringByReplacingOccurrencesOfRegex:@"\\s+" withString:@""]stringByReplacingOccurrencesOfString:@"null" withString:@""];
-        [word release];
+//        [word release];
         [self wordExistDisplay];
         //            }
     } else {
@@ -5049,9 +5178,9 @@ void audioRouteChangeListenerCallback (
                     }
                 }
                 myWord.engArray = eng;
-                [eng release], eng = nil;
+                
                 myWord.chnArray = chi;
-                [chi release], chi = nil;
+                
                 [self wordExistDisplay];
 //                for (UIView *sView in [explainView subviews]) {
 //                    if (![sView isKindOfClass:[UIImageView class]]) {
@@ -5132,7 +5261,7 @@ void audioRouteChangeListenerCallback (
                         myWord.pron = @" ";
                     }
                     myWord.def = [[word.def stringByReplacingOccurrencesOfRegex:@"\\s+" withString:@""]stringByReplacingOccurrencesOfString:@"null" withString:@""];
-                    [word release];
+//                    [word release];
                     [self wordExistDisplay];
                     //            }
                 } else {
@@ -5143,6 +5272,8 @@ void audioRouteChangeListenerCallback (
                     [self wordNoDisplay];
                 }
             }
+            [eng release], eng = nil;
+            [chi release], chi = nil;
         }
     }
     [doc release];
@@ -5442,7 +5573,8 @@ void audioRouteChangeListenerCallback (
             
         }
     } else if([request.username isEqualToString:@"sendAudio"]) {
-        NSLog(@"audio receive:%@", [[NSString alloc] initWithData:myData encoding:NSASCIIStringEncoding]);
+//        NSLog(@"audio receive:%@", [[NSString alloc] initWithData:myData encoding:NSASCIIStringEncoding]);
+        
 //        NSArray *items = [doc nodesForXPath:@"data/Row" error:nil];
 //        if (items) {
 //            for (DDXMLElement *obj in items) {
@@ -5745,7 +5877,7 @@ void audioRouteChangeListenerCallback (
                 myWord.pron = @" ";
             }
             myWord.def = [[word.def stringByReplacingOccurrencesOfRegex:@"\\s+" withString:@""]stringByReplacingOccurrencesOfString:@"null" withString:@""];
-            [word release];
+//            [word release];
             [self wordExistDisplay];
 //            }
         } else {
@@ -7363,7 +7495,9 @@ void audioRouteChangeListenerCallback (
                                 UserMessage *userMsg = [[UserMessage alloc] initWithFromUserId:fromUserId fromUserName:[MyUser findNameById:fromUserId] toUserId:[[commArray objectAtIndex:i*6+5] integerValue] toUserName:(NSString *) [commArray objectAtIndex:i*6+1] comment:[commArray objectAtIndex:i*6+3] topicId:voa._voaid];
                                 SendMessageController *sendMsgController = [[SendMessageController alloc] init];
                                 sendMsgController.userMsg = userMsg;
+                                [userMsg release];
                                 [self.navigationController pushViewController:sendMsgController animated:YES];
+                                [sendMsgController release], sendMsgController = nil;
 //                                NSLog(@"发信 %@", [NSString stringWithFormat:@"回复%@:", [commArray objectAtIndex:i*6+1]]);
                             }
                         }
@@ -7424,7 +7558,9 @@ void audioRouteChangeListenerCallback (
                                 UserMessage *userMsg = [[UserMessage alloc] initWithFromUserId:fromUserId fromUserName:[MyUser findNameById:fromUserId] toUserId:[[commArray objectAtIndex:i*6+5] integerValue] toUserName:(NSString *) [commArray objectAtIndex:i*6+1] comment:[commArray objectAtIndex:i*6+3] topicId:voa._voaid];
                                 SendMessageController *sendMsgController = [[SendMessageController alloc] init];
                                 sendMsgController.userMsg = userMsg;
+                                [userMsg release];
                                 [self.navigationController pushViewController:sendMsgController animated:YES];
+                                [sendMsgController release], sendMsgController = nil;
 //                                NSLog(@"发信 %@", [NSString stringWithFormat:@"回复%@:", [commArray objectAtIndex:i*6+1]]);
                             }
                         }
@@ -7957,6 +8093,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
             [[NSFileManager defaultManager] removeItemAtPath:recordAudioFullPath error:nil];
         }
         [tempLock unlock];
+        [tempLock release];
 //        afterRecord = YES;
 //        if (isiPhone) {
 //            [btn_record setImage:[UIImage imageNamed:@"stopRecordBBC.png"] forState:UIControlStateNormal];
@@ -7981,13 +8118,11 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
                 [audioRecoder startRecord];
                 [btn_play setEnabled:NO];
                 if ([[NSUserDefaults standardUserDefaults] boolForKey:@"recordRead"]) {
-                    NSTimer *timer = nil;
-                    timer = [NSTimer scheduledTimerWithTimeInterval:(isiPhone?(recordTime*1.3):((recordTime*1.3)>7?(recordTime*1.3):8)) target:self selector:@selector(stopRecord) userInfo:nil repeats:NO];
+                    [NSTimer scheduledTimerWithTimeInterval:(isiPhone?(recordTime*1.3):((recordTime*1.3)>7?(recordTime*1.3):8)) target:self selector:@selector(stopRecord) userInfo:nil repeats:NO];
                 }
                 if (!isiPhone) { //ipad版本需要最少录制八秒才可播放
                     [btn_record setEnabled:NO];
-                    NSTimer *timer = nil;
-                    timer = [NSTimer scheduledTimerWithTimeInterval:8 target:self selector:@selector(recordEnable) userInfo:nil repeats:NO];
+                    [NSTimer scheduledTimerWithTimeInterval:8 target:self selector:@selector(recordEnable) userInfo:nil repeats:NO];
                 }
             });
         });

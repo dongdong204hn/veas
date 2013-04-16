@@ -173,8 +173,7 @@
                 //            
                 //            [active startAnimating];
                 
-                NSTimer *timer = nil;
-                timer = [NSTimer scheduledTimerWithTimeInterval:1.5 target:self selector:@selector(c) userInfo:nil repeats:NO];
+                [NSTimer scheduledTimerWithTimeInterval:1.5 target:self selector:@selector(c) userInfo:nil repeats:NO];
             }else
             {
 //                NSLog(@"反馈失败");
@@ -195,7 +194,7 @@
  */
 -(BOOL) isExistenceNetwork
 {
-	BOOL isExistenceNetwork;
+	BOOL isExistenceNetwork = TRUE;
 	Reachability *r = [Reachability reachabilityWithHostName:@"www.apple.com"];
     switch ([r currentReachabilityStatus]) {
         case NotReachable:

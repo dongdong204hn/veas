@@ -275,10 +275,10 @@
     [yubNumBtn release];
     [afterLog release];
     [userImg release];
-    [userL release];
-    [codeL release];
-    [userF release];
-    [codeF release];
+//    [userL release];
+//    [codeL release];
+//    [userF release];
+//    [codeF release];
     [super dealloc];
 }
 
@@ -486,18 +486,19 @@
 //    NSString *url = [NSString stringWithFormat:@"http://api.iyuba.com/mobile/ios/voa/login.xml?username=%s&password=%s&md5status=0",userF.text.UTF8String,codeF.text.UTF8String];
     //    ASIHTTPRequest * request = [[ASIHTTPRequest alloc] initWithURL:[NSURL URLWithString:url]];
     //    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
+    //    [request setPostValue:@"0"   forKey:@"md5status"];
+    //    NSLog(@"request: %@", request );
+    //    [request setRequestMethod:@"POST"];
     NSString *url = [NSString stringWithFormat:@"http://apis.iyuba.com/v2/api.iyuba?protocol=10001"];
     ASIFormDataRequest *request=[ASIFormDataRequest requestWithURL:[NSURL URLWithString:url]];
     [request setPostValue:[ROUtility encodeString:userF.text urlEncode:NSUTF8StringEncoding] forKey:@"username"];
     NSString *password = [ROUtility md5HexDigest:codeF.text];
     [request setPostValue:password   forKey:@"password"];
-    //    [request setPostValue:@"0"   forKey:@"md5status"];
     [request setPostValue:@"xml" forKey:@"format"];
     NSString *sign = [ROUtility md5HexDigest:[NSString stringWithFormat:@"10001%@%@iyubaV2",userF.text,password]];
     [request setPostValue:sign forKey:@"sign"];
+    NSLog(@"sign:%@   %@", sign, [NSString stringWithFormat:@"10001%@%@iyubaV2",userF.text,password]);
     request.delegate = self;
-//    NSLog(@"request: %@", request );
-    //    [request setRequestMethod:@"POST"];
     [request setUsername:@"log"];
     [request startSynchronous];
 }
@@ -597,8 +598,7 @@
                     
                     [active release];
                     
-                    NSTimer *timer = nil;
-                    timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(c) userInfo:nil repeats:NO];
+                    [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(c) userInfo:nil repeats:NO];
                     
                 }else 
                 {
@@ -629,8 +629,7 @@
                     
                     [active release];
                     
-                    NSTimer *timer = nil;
-                    timer = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(c) userInfo:nil repeats:NO];
+                    [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(c) userInfo:nil repeats:NO];
                 }
             }
         }

@@ -103,12 +103,12 @@ extern ASIHTTPRequest *nowrequest;
                 play.newFile = YES;
                 NSInteger voaid = [[[NSUserDefaults standardUserDefaults] objectForKey:@"lastPlay"] integerValue];
                 if (voaid > 0) {
-                    play.voa = [VOAView find:voaid];
+                    play.voa = [[VOAView find:voaid] retain];
                     play.contentMode = [[NSUserDefaults standardUserDefaults] integerForKey:@"contentMode"];
                     
                 }else
                 {
-                    play.voa = [VOAView find:746];
+                    play.voa = [[VOAView find:746] retain];
                     play.voa._isRead = @"1";
                     play.contentMode =1;
                 }
@@ -198,7 +198,7 @@ extern ASIHTTPRequest *nowrequest;
         
         [UIView beginAnimations:@"classAniOne" context:nil];
         [UIView setAnimationDuration:0.6];
-        [UIView setAnimationCurve:UIViewAnimationOptionCurveEaseInOut];
+        [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
         [self setMytitleUp];
         [sender setBackgroundColor:[UIColor clearColor]];
         if (isiPhone) {
@@ -212,7 +212,7 @@ extern ASIHTTPRequest *nowrequest;
         
         [UIView beginAnimations:@"classAniTwo" context:nil];
         [UIView setAnimationDuration:0.6];
-        [UIView setAnimationCurve:UIViewAnimationOptionCurveEaseInOut];
+        [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
         [self setMytitleDown];
         [sender setBackgroundColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.44f]];
         if (isiPhone) {
@@ -248,7 +248,7 @@ extern ASIHTTPRequest *nowrequest;
 -(void)viewDidAppear:(BOOL)animated
 {
     if ([[NSUserDefaults standardUserDefaults]boolForKey:@"alertShowed"]==NO) {
-        downLoadList = [VOAView findDownloading];
+        downLoadList = [[VOAView findDownloading] retain];
         if ([downLoadList count]!=0) {
             UIActionSheet *downLoadSheet = [[UIActionSheet alloc] initWithTitle:@"检测到您之前有未下载完成的任务" delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:@"继续下载",@"下次再说",@"拒绝", nil];
             [downLoadSheet showInView:self.view.window];
@@ -615,7 +615,8 @@ extern ASIHTTPRequest *nowrequest;
             [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
             //        NSLog(@"readmy:%@",voa._isRead);
             if ([VOAView isRead:voa._voaid]) {
-                [cell.readImg setImage:[UIImage imageNamed:@"detailRead-ipad.png"]];
+//                [cell.readImg setImage:[UIImage imageNamed:@"detailRead-ipad.png"]];
+                [cell.hotImg setHidden:YES];
             }else
             {
                 //                    [cell.myTitle setTextColor:[UIColor redColor]];
@@ -1385,7 +1386,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
                 newVoa._url = [[obj elementForName:@"Url"] stringValue];
                 newVoa._pic = [[obj elementForName:@"Pic"] stringValue];
                 newVoa._creatTime = [[obj elementForName:@"CreatTime"] stringValue];
-                newVoa._publishTime = [[obj elementForName:@"PublishTime"] stringValue] == @" null" ? nil :[[obj elementForName:@"PublishTime"] stringValue];
+                newVoa._publishTime = [[[obj elementForName:@"PublishTime"] stringValue] isEqualToString:@" null"] ? nil :[[obj elementForName:@"PublishTime"] stringValue];
                 newVoa._readCount = [[obj elementForName:@"ReadCount"] stringValue];
                 newVoa._hotFlg = [[obj elementForName:@"HotFlg"] stringValue];
                 newVoa._isRead = @"0";
@@ -1572,10 +1573,14 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     VoaViewCell *cell = (VoaViewCell *)[self.voasTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
     if (isiPhone) {
         [cell.downloadBtn setImage:[UIImage imageNamed:@"stopdl.png"] forState:UIControlStateNormal];
-        cell.progress=[[DACircularProgressView alloc]initWithFrame:CGRectMake(278, 43, 37, 37)];
+        DACircularProgressView *test = [[DACircularProgressView alloc]initWithFrame:CGRectMake(278, 43, 37, 37)];
+        cell.progress = test;
+        [test release];
     } else {
         [cell.downloadBtn setImage:[UIImage imageNamed:@"stopdl@2x.png"] forState:UIControlStateNormal];
-        cell.progress=[[DACircularProgressView alloc]initWithFrame:CGRectMake(666, 40, 71, 71)];
+        DACircularProgressView *test = [[DACircularProgressView alloc]initWithFrame:CGRectMake(666, 40, 71, 71)];
+        cell.progress = test;
+        [test release];
     }
     
     //    [cell.progress setTrackTintColor:[UIColor yellowColor]];

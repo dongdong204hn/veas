@@ -42,17 +42,19 @@
 @property (nonatomic, retain) NSMutableArray *wordsArray;
 @property (nonatomic, retain) IBOutlet UITableView *wordsTableView;
 @property (nonatomic, retain) VOAWord *myWord;
+@property (nonatomic, retain) UISearchBar *search;
+@property (nonatomic, retain) MyLabel *explainView;
+@property (nonatomic, retain) NSOperationQueue *sharedSingleQueue;
+@property (nonatomic, retain) UIAlertView *alert;
+
 @property (nonatomic) NSInteger isCellPlay;
 @property (nonatomic) NSInteger nowUserId;
 @property (nonatomic) NSInteger flg;
 @property (nonatomic) BOOL isiPhone;
 //@property (nonatomic) BOOL isExisitNet;
-@property (nonatomic, retain) UISearchBar *search;
-@property (nonatomic, retain) MyLabel *explainView;
 //@property (nonatomic, retain) MBProgressHUD *HUD;
 //@property (nonatomic, retain) UIImageView     *wordFrame;
-@property (nonatomic, retain) UIAlertView *alert;
-@property (nonatomic, retain) NSOperationQueue *sharedSingleQueue;
+
 
 - (void)catchWords:(NSString *) word;
 - (NSOperationQueue *)sharedQueue;

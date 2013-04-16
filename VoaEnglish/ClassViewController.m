@@ -117,7 +117,7 @@
     //设置动画效果
 	[UIView beginAnimations:@"classAniThree" context:nil];
 	[UIView setAnimationDuration:1];
-	[UIView setAnimationCurve:UIViewAnimationOptionCurveEaseInOut];
+	[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
     //设置你要运行的代码
     UITouch *touch = [touches anyObject];    
     CGPoint touchPoint = [touch locationInView:self.view];
@@ -160,7 +160,7 @@
     //设置动画效果
 	[UIView beginAnimations:@"classAniTwo" context:nil];
 	[UIView setAnimationDuration:0.5];
-	[UIView setAnimationCurve:UIViewAnimationOptionCurveEaseInOut];
+	[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
     //设置你要运行的代码
     UITouch *touch = [touches anyObject];    
     CGPoint touchPoint = [touch locationInView:self.view];
@@ -178,7 +178,7 @@
     //设置动画效果
 	[UIView beginAnimations:@"classAniOne" context:nil];
 	[UIView setAnimationDuration:1];
-	[UIView setAnimationCurve:UIViewAnimationOptionCurveEaseInOut];
+	[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
     //设置你要运行的代码
     [myMove.layer removeAllAnimations]; 
     [myMove setAlpha:0];

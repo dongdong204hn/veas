@@ -62,7 +62,6 @@
 @property (nonatomic, retain) IBOutlet UIImageView  *img26;
 @property (nonatomic, retain) IBOutlet UIImageView  *img27;
 
-@property (nonatomic, retain) UIAlertView       *alert; 
 @property (nonatomic, retain) UISegmentedControl    *segmentedControl; 
 @property (nonatomic, retain) UITableView           *msgTv; //消息列表
 @property (nonatomic, retain) STTweetLabel          *disMsgLab; //展示消息内容的标签
@@ -71,6 +70,7 @@
 @property (nonatomic, retain) UIButton *logBtn; //登录按钮
 @property (nonatomic, retain) UIButton *editBtn; //删除按钮
 @property (nonatomic, retain) MBProgressHUD *HUD; //加载组件
+@property (nonatomic, retain) UIAlertView       *alert; 
 @property (nonatomic) BOOL isiPhone;
 @property (nonatomic) BOOL rightCharacter;
 @property (nonatomic) NSInteger toVoaid; //消息相关的新闻id

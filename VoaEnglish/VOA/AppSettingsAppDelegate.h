@@ -35,7 +35,6 @@
 @property (retain, nonatomic) IBOutlet UIWindow *windowTwo;
 @property (retain, nonatomic) IBOutlet UITabBarController  *rootControllerOne;
 @property (retain, nonatomic) IBOutlet UITabBarController  *rootControllerTwo;
-//@property (retain, nonatomic) UIWindow *window;
 @property (retain, nonatomic) UIView *myView;
 @property (retain, nonatomic) UIScrollView *scrollView;
 @property (retain, nonatomic) UIPageControl * pageControl;
