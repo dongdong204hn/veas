@@ -4018,8 +4018,8 @@ void audioRouteChangeListenerCallback (
     isResponse = NO;
     isUpAlertShow = NO;
 //    [[NSUserDefaults standardUserDefaults] setObject:@"YES" forKey:kBePro];
-    isFree = ![[NSUserDefaults standardUserDefaults] boolForKey:kBePro] && ![[NSUserDefaults standardUserDefaults] boolForKey:@"isVip"];
-//    isFree = NO;
+//    isFree = ![[NSUserDefaults standardUserDefaults] boolForKey:kBePro] && ![[NSUserDefaults standardUserDefaults] boolForKey:@"isVip"];
+    isFree = NO;
 //    afterRecord = NO;
     [[fixButton layer] setCornerRadius:8.0f];
     [[fixButton layer] setMasksToBounds:YES];

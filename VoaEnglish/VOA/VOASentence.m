@@ -108,8 +108,8 @@
         NSInteger IdIndex = [rs intForColumn:@"IdIndex"];
         NSInteger StartTime = [rs intForColumn:@"StartTime"];
         NSInteger EndTime = [rs intForColumn:@"EndTime"];
-        NSString *Sentence =[rs objectForColumn:@"Sentence"];
-        NSString *Sentence_cn = [rs objectForColumn:@"SentenceCn"];
+        NSString *Sentence =[[rs objectForColumn:@"Sentence"] autorelease];
+        NSString *Sentence_cn = [[rs objectForColumn:@"SentenceCn"] autorelease];
 
         NSInteger userId = [rs intForColumn:@"userId"];
         NSInteger collected = [rs intForColumn:@"collected"];
@@ -190,8 +190,8 @@
         NSInteger IdIndex = [rs intForColumn:@"IdIndex"];
         NSInteger StartTime = [rs intForColumn:@"StartTime"];
         NSInteger EndTime = [rs intForColumn:@"EndTime"];
-        NSString *Sentence =[rs objectForColumn:@"Sentence"];
-        NSString *Sentence_cn = [rs objectForColumn:@"SentenceCn"];
+        NSString *Sentence =[[rs objectForColumn:@"Sentence"] autorelease];
+        NSString *Sentence_cn = [[rs objectForColumn:@"SentenceCn"] autorelease];
         NSInteger userId = [rs intForColumn:@"userId"];
         NSInteger collected = [rs intForColumn:@"collected"];
         VOASentence *voaSen=[[VOASentence alloc]initWithVOASentence:SentenceId VoaId:VoaId ParaId:ParaId IdIndex:IdIndex StartTime:StartTime EndTime:EndTime Sentence:Sentence Sentence_cn:Sentence_cn userId:userId collected:collected];

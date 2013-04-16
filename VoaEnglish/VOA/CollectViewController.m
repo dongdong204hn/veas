@@ -533,7 +533,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
                 
                 [alert release];
                 
-                [contentsArray release];
+//                [contentsArray release];
                 
             }else
             {
@@ -548,7 +548,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
                 searchController.contentMode = 2;
                 searchController.searchFlg = 11;
                 
-                [contentsArray release];
+//                [contentsArray release];
                 
                 [self.navigationController pushViewController:searchController animated:YES];
                 
@@ -751,7 +751,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:kColFour message:[NSString stringWithFormat:@"%@%@%@",kSearchThree,searchWords,kColThree] delegate:nil cancelButtonTitle:kFeedbackFive otherButtonTitles:nil, nil ];
                     [alert show];
                     [alert release];
-                    [contentsArray release];
+//                    [contentsArray release];
                 }else
                 {
                     search.text = @"";
@@ -759,7 +759,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
                     searchController.searchWords = searchWords;
                     searchController.contentsArray = contentsArray;
                     searchController.contentMode = 2;
-                    [contentsArray release];
+//                    [contentsArray release];
                     searchController.searchFlg = 11;
                     [self.navigationController pushViewController:searchController animated:YES];
                     [searchController release], searchController = nil;
