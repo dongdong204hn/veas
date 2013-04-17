@@ -621,13 +621,16 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
                             VOADetail *myDetail = [VOADetail find:voa._voaid];
                             if (!myDetail) {
                                 //  NSLog(@"内容不全-%d",voa._voaid);
-                                kNetTest;
+                                
                                 if (kNetIsExist) {
                                     [VOADetail deleteByVoaid: voa._voaid];
                                     //                                        NSLog(@"voaid:%i",voa._voaid);
                                     [self catchDetails:voa];
                                 }else {
                                     rightCharacter = NO;
+                                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                                        kNetTest;
+                                    });
                                 }
                             }else {
 //                                [myDetail release];
@@ -875,10 +878,17 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     //    [request release], request = nil;
 }
 
--(BOOL) isExistenceNetwork:(NSInteger)choose
+- (void)requestFailed:(ASIHTTPRequest *)request
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        kNetTest;
+    });
+}
+
+- (BOOL)isExistenceNetwork:(NSInteger)choose
 {
     UIAlertView *myalert = nil;
-    kNetTest;
+    
     switch (choose) {
         case 0:
             
@@ -887,6 +897,9 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
             if (kNetIsExist) {
                 
             }else {
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                    kNetTest;
+                });
                 myalert = [[UIAlertView alloc] initWithTitle:kInfoTwo message:kRegNine delegate:nil cancelButtonTitle:kFeedbackFive otherButtonTitles:nil,nil];
                 [myalert show];
                 [myalert release];

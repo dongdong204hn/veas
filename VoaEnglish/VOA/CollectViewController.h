@@ -14,6 +14,7 @@
 #import "VOASentence.h"
 #import "PlayViewController.h"
 #import "SentenceViewController.h"
+#import "ASIFormDataRequest.h"
 
 @interface CollectViewController : UIViewController <UITableViewDelegate,UITableViewDataSource,UISearchBarDelegate,MBProgressHUDDelegate> 
 {

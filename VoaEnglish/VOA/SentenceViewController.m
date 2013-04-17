@@ -40,7 +40,9 @@
 
 -(void) viewWillAppear:(BOOL)animated
 {
-    kNetTest;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        kNetTest;
+    });
     self.navigationController.navigationBarHidden=NO;
     nowUserId = 0;
     nowUserId = [[[NSUserDefaults standardUserDefaults] objectForKey:@"nowUser"] integerValue];

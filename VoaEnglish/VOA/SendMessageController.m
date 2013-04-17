@@ -37,7 +37,9 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    kNetTest;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        kNetTest;
+    });
     self.navigationController.navigationBarHidden = NO;
     [nameLab setText:[NSString stringWithFormat:@"发私信给\"%@\"", userMsg.toUserName]];
 }
@@ -79,7 +81,7 @@
             NSString *imgSrc = [NSString stringWithFormat:@"http://voa.iyuba.com/iyubaApi/account/image.jsp?uid=%d&size=small", userMsg.fromUserId];
             NSString *url = [NSString stringWithFormat:@"http://apps.iyuba.com/voa/updateMail.jsp?userId=%i&groupName=Iyuba&userName=%@&imgSrc=%@&toGroupName=Iyuba&toUserId=%i&comment=%@&mod=insert&topicId=%i",userMsg.fromUserId, userMsg.fromUserName, imgSrc, userMsg.toUserId, [messageTv.text URLEncodedString], userMsg.topicId];
             [sendBtn setUserInteractionEnabled:YES];
-            NSLog(@"sendurl :%@", url);
+//            NSLog(@"sendurl :%@", url);
             //        ASIHTTPRequest * request = [[ASIHTTPRequest alloc] initWithURL:[NSURL URLWithString:url]];
             ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
             request.delegate = self;
@@ -105,7 +107,9 @@
 
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
-    kNetTest;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        kNetTest;
+    });
     if([request.username isEqualToString:@"sendMsg"]) {
         [sendBtn setUserInteractionEnabled:YES];
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:kColFour message:kNewSix delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];

@@ -810,7 +810,9 @@
 #pragma mark - View lifecycle
 - (void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    kNetTest;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        kNetTest;
+    });
 //    [self catchNetA];
     nowUserId = 0;
     nowUserId = [[[NSUserDefaults standardUserDefaults] objectForKey:@"nowUser"] integerValue];
@@ -1102,7 +1104,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 - (void)catchWords:(NSString *) word
 {
     NSString *url = [NSString stringWithFormat:@"http://word.iyuba.com/words/apiWord.jsp?q=%@",[ROUtility encodeString:word urlEncode:NSUTF8StringEncoding]];
-    NSLog(@"%@", url);
+//    NSLog(@"%@", url);
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
     NSOperationQueue *myQueue = [self sharedQueue];
     request.delegate = self;
@@ -1189,14 +1191,18 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
 - (void)requestWentWrong:(ASIHTTPRequest *)request
 {
-    kNetTest;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        kNetTest;
+    });
 }
 
 - (void)requestWentWrongTwo:(ASIHTTPRequest *)request
 {
-    kNetTest;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        kNetTest;
+    });
     if (request.tag == 0) {
-        NSLog(@"取词失败");
+//        NSLog(@"取词失败");
         [myWord init];
         myWord.wordId = [VOAWord findLastId]+1;
         myWord.checks = 0;
@@ -1216,7 +1222,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     DDXMLDocument *doc = [[DDXMLDocument alloc] initWithData:myData options:0 error:nil];;
     /////解析
     if (request.tag == 0) {
-        NSLog(@"查词接收到了");
+//        NSLog(@"查词接收到了");
         [myWord init];
         int result = 0;
         NSArray *items = [doc nodesForXPath:@"data" error:nil];
@@ -1318,7 +1324,9 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
-    kNetTest;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        kNetTest;
+    });
     if ([request.username isEqualToString:@"catchnet"]) {
         //        NSLog(@"有网络");
 //        isExisitNet = NO;
@@ -1363,11 +1371,14 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
             [self wordExistNetDisplay];
             //            }
         } else {
-            kNetTest;
+            
             if (kNetIsExist) {
-                NSLog(@"联网取词");
+//                NSLog(@"联网取词");
                 [self catchWords:searchWords];
             } else {
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                    kNetTest;
+                });
                 myWord.key = searchWords;
                 myWord.audio = @"";
                 myWord.pron = @" ";

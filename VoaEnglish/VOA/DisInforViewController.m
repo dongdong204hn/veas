@@ -396,10 +396,12 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated  {
-    kNetTest;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        kNetTest;
+    });
     self.navigationController.navigationBarHidden = NO;
     int nowUserID = [[[NSUserDefaults standardUserDefaults] objectForKey:@"nowUser"] integerValue];
-    NSLog(@"%d", nowUserID);
+//    NSLog(@"%d", nowUserID);
     [editBtn setHidden:YES];
     [msgTv setHidden:YES];
     [disMsgLab setHidden:YES];
@@ -726,7 +728,7 @@
 -(BOOL) isExistenceNetwork:(NSInteger)choose
 {
     UIAlertView *myalert = nil;
-    kNetTest;
+    
     switch (choose) {
         case 0:
             
@@ -735,6 +737,9 @@
             if (kNetIsExist) {
                 
             }else {
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                    kNetTest;
+                });
                 myalert = [[UIAlertView alloc] initWithTitle:kInfoTwo message:kRegNine delegate:nil cancelButtonTitle:kFeedbackFive otherButtonTitles:nil,nil];
                 [myalert show];
                 [myalert release];
@@ -1056,7 +1061,9 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
-    kNetTest;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        kNetTest;
+    });
     if ([request.username isEqualToString:@"infor"]) {
 //        [sendBtn setUserInteractionEnabled:YES];
 //        [self.commTableView setFrame:(isiPhone? CGRectMake(0, 0, 320, 0) : CGRectMake(0, 0, 768, 0))];
@@ -1375,13 +1382,17 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
                 VOADetail *myDetail = [VOADetail find:voa._voaid];
                 if (!myDetail) {
                     //  NSLog(@"内容不全-%d",voa._voaid);
-                    kNetTest;
+                    
                     if (kNetIsExist) {
                         [VOADetail deleteByVoaid: voa._voaid];
                         //                                        NSLog(@"voaid:%i",voa._voaid);
                         [self catchDetails:voa];
                     }else {
+                        
                         rightCharacter = NO;
+                        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                            kNetTest;
+                        });
                     }
                 }else {
                     //                        [myDetail release];

@@ -347,6 +347,7 @@
 @property (nonatomic) NSInteger contentMode;    //记录当前时联网播放（1）还是本地播放（2）
 @property (nonatomic) NSInteger playMode;   //播放顺序 1：单曲 2：顺序 3：随机
 @property (nonatomic) NSInteger playIndex;  //记录当前播放新闻在播放列表中的次序
+@property (nonatomic) double playProgress;  //记录播放器当前的播放进度。辅助对播放是否结束进行判断。
 
 @property BOOL localFileExist;  //标记当前新闻是否在本地存在
 @property BOOL downloaded;  //标记是否刚刚下载音频到本地，方便点击播放按钮时切换在线播放为本地播放

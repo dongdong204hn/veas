@@ -59,7 +59,9 @@
 {
     [super viewDidLoad];
     self.title = kInfoOne;
-    kNetTest;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        kNetTest;
+    });
     // Do any additional setup after loading the view from its nib.
 }
 

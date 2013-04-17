@@ -188,7 +188,9 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     //    [self catchNetA];
-    kNetTest;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        kNetTest;
+    });
     self.navigationController.navigationBarHidden = NO;
     [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:0] forKey:@"remCode"];
     NSInteger userId = [[[NSUserDefaults standardUserDefaults] objectForKey:@"nowUser"] integerValue];
@@ -440,7 +442,7 @@
 -(BOOL) isExistenceNetwork:(NSInteger)choose
 {
     UIAlertView *myalert = nil;
-    kNetTest;
+   
     switch (choose) {
         case 0:
             
@@ -449,6 +451,9 @@
             if (kNetIsExist) {
                 
             }else {
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                    kNetTest;
+                });
                 myalert = [[UIAlertView alloc] initWithTitle:kInfoTwo message:kFeedbackFour delegate:nil cancelButtonTitle:kFeedbackFive otherButtonTitles:nil,nil];
                 [myalert show];
                 [myalert release];
@@ -497,7 +502,7 @@
     [request setPostValue:@"xml" forKey:@"format"];
     NSString *sign = [ROUtility md5HexDigest:[NSString stringWithFormat:@"10001%@%@iyubaV2",userF.text,password]];
     [request setPostValue:sign forKey:@"sign"];
-    NSLog(@"sign:%@   %@", sign, [NSString stringWithFormat:@"10001%@%@iyubaV2",userF.text,password]);
+//    NSLog(@"sign:%@   %@", sign, [NSString stringWithFormat:@"10001%@%@iyubaV2",userF.text,password]);
     request.delegate = self;
     [request setUsername:@"log"];
     [request startSynchronous];
@@ -506,7 +511,9 @@
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
     //    kNetDisable;
-    kNetTest;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        kNetTest;
+    });
     if ([request.username isEqualToString:@"log" ]) {
         alert = [[UIAlertView alloc] initWithTitle:kVoaWordOne message:kLogNine delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
         [alert show];
@@ -529,34 +536,34 @@
         if (items) {
             for (DDXMLElement *obj in items) {
                 NSString *status = [[obj elementForName:@"result"] stringValue];
-                NSLog(@"status:%@",status);
+//                NSLog(@"status:%@",status);
                 if ([status isEqualToString:@"101"]) {
                     MyUser *user = [[MyUser alloc]init];
                     user._userName = [userF text];
                     user._code = [codeF text];
                     
                     NSString *msg = [[obj elementForName:@"imgSrc"] stringValue] ;
-                    NSLog(@"msg:%@",msg);
+//                    NSLog(@"msg:%@",msg);
                     NSInteger userId = [[[obj elementForName:@"uid"] stringValue] integerValue] ;
-                    NSLog(@"userId:%d",userId);
+//                    NSLog(@"userId:%d",userId);
                     user._userId = userId;
                     [userImg setImageWithURL:[NSURL URLWithString:msg] placeholderImage:[UIImage imageNamed:@"acquiesceBBC.png"]];
                     [userImg setHidden:NO];
-                    NSString *vipStatus = [[obj elementForName:@"vipStatus"]stringValue];
-                    NSLog(@"vip:%@",vipStatus);
+//                    NSString *vipStatus = [[obj elementForName:@"vipStatus"]stringValue];
+//                    NSLog(@"vip:%@",vipStatus);
                     NSString *expireTime = [[obj elementForName:@"expireTime"]stringValue];
-                    NSLog(@"expireTime:%@",expireTime);
+//                    NSLog(@"expireTime:%@",expireTime);
                     NSDate *vipDate = [NSDate dateWithTimeIntervalSince1970: expireTime.doubleValue];
                     [[NSUserDefaults standardUserDefaults] setObject:vipDate forKey:@"vipDate"]; //vip到期时间
                     [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:userId] forKey:@"nowUser"];
                     if ([vipDate compare:[NSDate date]] == NSOrderedDescending) {
 //                        [[NSUserDefaults standardUserDefaults] setObject:@"YES" forKey:kBePro];
                         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"isVip"];
-                        NSLog(@"paid");
+//                        NSLog(@"paid");
                     } else {
 //                        [[NSUserDefaults standardUserDefaults] setObject:@"NO" forKey:kBePro];
                         [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"isVip"];
-                        NSLog(@"free");
+//                        NSLog(@"free");
                     }
                     
                     [user insert];

@@ -46,7 +46,9 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    kNetTest;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        kNetTest;
+    });
     NSInteger nowUserId = [[[NSUserDefaults standardUserDefaults] objectForKey:@"nowUser"] integerValue];
     if (nowUserId > 0) {
         [_mail setHidden:YES];
@@ -137,7 +139,9 @@
 
 - (void)requestFailed:(ASIHTTPRequest *)request {
     sendLock = NO;
-    kNetTest;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        kNetTest;
+    });
     UIAlertView *alertOne = [[UIAlertView alloc] initWithTitle:kVoaWordOne message:kFeedbackThree delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
     [alertOne show];
     [alertOne release];

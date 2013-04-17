@@ -55,7 +55,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    kNetTest;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        kNetTest;
+    });
     isiPhone = ![Constants isPad];
     if (!isiPhone) {
         [self.view setFrame:CGRectMake(0, 0, 768, 980)];

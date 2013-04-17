@@ -64,7 +64,9 @@
 #pragma mark - View lifecycle
 - (void)viewWillAppear:(BOOL)animated
 {
-    kNetTest;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        kNetTest;
+    });
     [registBtn setUserInteractionEnabled:NO];
     [self setTitle:@"注册"];
     UIImageView *logo = [[UIImageView alloc]init];
@@ -385,11 +387,11 @@
     [request setPostValue:mailF.text forKey:@"email"];
     [request setPostValue:@"xml" forKey:@"format"];
     NSString *sign = [ROUtility md5HexDigest:[NSString stringWithFormat:@"10002%@%@%@iyubaV2",userF.text,password,mailF.text]];
-    NSLog(@"sign:%@   %@", sign, [NSString stringWithFormat:@"10002%@%@%@iyubaV2",userF.text,password,mailF.text]);
+//    NSLog(@"sign:%@   %@", sign, [NSString stringWithFormat:@"10002%@%@%@iyubaV2",userF.text,password,mailF.text]);
     [request setPostValue:sign forKey:@"sign"];
     request.delegate = self;
     [request setUsername:@"regist"];
-    NSLog(@"%@", request.url);
+//    NSLog(@"%@", request.url);
     [request startSynchronous];
     
 }
@@ -397,7 +399,9 @@
 
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
-    kNetTest;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        kNetTest;
+    });
     alert = [[UIAlertView alloc] initWithTitle:kRegFive message:kRegSix delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
     [alert show];
     [alert release];    
@@ -413,7 +417,7 @@
         if (items) {
             for (DDXMLElement *obj in items) {
                 NSString *status = [[obj elementForName:@"result"] stringValue];
-                NSLog(@"status:%@",status);
+//                NSLog(@"status:%@",status);
                 if ([status isEqualToString:@"111"]) {
                     MyUser *user = [[MyUser alloc]init];
                     user._userName = [userF text];

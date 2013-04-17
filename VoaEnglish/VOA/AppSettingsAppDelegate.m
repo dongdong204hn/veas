@@ -74,7 +74,7 @@ void uncaughtExceptionHandler(NSException *exception) {
     //设置Flurry
     NSSetUncaughtExceptionHandler(&uncaughtExceptionHandler);
     [FlurryAnalytics startSession:@"VW6JCSWF6MQPCGZBIAND"]; //引号内为注册得到的应用编号
-    kNetTest;
+//    kNetTest;
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"alertShowed"]; //设置尚未检测队列下载情况
 
 //    [VOAView clearAllDownload];
@@ -303,12 +303,27 @@ void uncaughtExceptionHandler(NSException *exception) {
             [pageControl release];
             [self.windowOne addSubview:myView];
         } else {
-            if(!application.enabledRemoteNotificationTypes){ //注册开启应用推送功能
-//                NSLog(@"注册推送");
-                [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeAlert|UIRemoteNotificationTypeSound|UIRemoteNotificationTypeBadge)];
-            } else {
-//                NSLog(@"已注册推送");
-            }
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                
+                if(!application.enabledRemoteNotificationTypes){ //注册开启应用推送功能
+                    //                NSLog(@"注册推送");
+                    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeAlert|UIRemoteNotificationTypeSound|UIRemoteNotificationTypeBadge)];
+                } else {
+                    //                NSLog(@"已注册推送");
+                }
+                
+                int nowUserID = [[[NSUserDefaults standardUserDefaults] objectForKey:@"nowUser"] integerValue];
+                NSDate *vipDate = [[NSUserDefaults standardUserDefaults] objectForKey:@"vipDate"]; //vip到期时间
+                if (([vipDate compare:[NSDate date]] == NSOrderedDescending)&&(nowUserID>0)) {
+                    //                [[NSUserDefaults standardUserDefaults] setObject:@"YES" forKey:kBePro];
+                    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"isVip"];
+                } else {
+                    //                [[NSUserDefaults standardUserDefaults] setObject:@"NO" forKey:kBePro];
+                    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"isVip"];
+                }
+                
+            });
+            
             float appVersion = [[[NSUserDefaults standardUserDefaults] objectForKey:@"appVersionC"] floatValue];
             if (appVersion < 3.4f) { //新版本的一些新设置等
                 [[NSUserDefaults standardUserDefaults] setFloat:3.4f forKey:@"appVersionC"];
@@ -322,10 +337,11 @@ void uncaughtExceptionHandler(NSException *exception) {
                 [[NSUserDefaults standardUserDefaults] setObject:waitReadCountArray forKey:@"waitReadCount"];
                 [waitReadCountArray release];
             }
+            
             int lunchTime = [[NSUserDefaults standardUserDefaults] integerForKey:@"firstLaunch"];
             if (lunchTime < 5) { //打开应用三次之后开始检测是否对应用打分然后弹出提示框
                 [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:lunchTime+1] forKey:@"firstLaunch"];
-//                NSLog(@"lunchTime:%i", lunchTime+1);
+                //                NSLog(@"lunchTime:%i", lunchTime+1);
             } else {
                 if (![[NSUserDefaults standardUserDefaults] boolForKey:@"haveScore"]) {
                     UIAlertView *scoreAlert = [[UIAlertView alloc] initWithTitle:nil message:kAppOne delegate:self cancelButtonTitle:kAppThree otherButtonTitles:kAppTwo,nil];
@@ -333,15 +349,8 @@ void uncaughtExceptionHandler(NSException *exception) {
                     [scoreAlert show];
                 }
             }
-            int nowUserID = [[[NSUserDefaults standardUserDefaults] objectForKey:@"nowUser"] integerValue];
-            NSDate *vipDate = [[NSUserDefaults standardUserDefaults] objectForKey:@"vipDate"]; //vip到期时间
-            if (([vipDate compare:[NSDate date]] == NSOrderedDescending)&&(nowUserID>0)) {
-                //                [[NSUserDefaults standardUserDefaults] setObject:@"YES" forKey:kBePro];
-                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"isVip"];
-            } else {
-                //                [[NSUserDefaults standardUserDefaults] setObject:@"NO" forKey:kBePro];
-                [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"isVip"];
-            }
+            
+            
         }
         [self.windowOne makeKeyAndVisible];//最后两句基本都一样
     }
@@ -370,7 +379,7 @@ void uncaughtExceptionHandler(NSException *exception) {
      进入后台前判断音频是否正在播放：若在播放标识正在学习；否则记录结束时间与日期。
      */
     [[UIApplication sharedApplication] setIdleTimerDisabled:NO];//取消屏幕常亮
-    NSLog(@"应用进入后台");
+//    NSLog(@"应用进入后台");
     PlayViewController *play = [PlayViewController sharedPlayer];
     if ([play isPlaying]) {
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"isStudying"];
@@ -458,7 +467,7 @@ void uncaughtExceptionHandler(NSException *exception) {
 }
 
 /**
- *  程序进入后台之前调用
+ *  程序回到前台之前调用
  */
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
@@ -480,53 +489,69 @@ void uncaughtExceptionHandler(NSException *exception) {
     /*
      检测是否正在学习，若未标志正在学习，记录开始时间与日期。并且若有网的话告诉服务器无网时所听的新闻。
      */
-    kNetTest;
-//    NSLog(@"应用激活");
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"isStudying"]) {
-        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"isStudying"];
-    } else {
-        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-        [formatter setDateFormat:@"YY-MM-dd-a-hh-mm-ss"];
-        NSString* locationString=[formatter stringFromDate: [NSDate date]];
-        NSArray* timeArray=[locationString componentsSeparatedByString:@"-"];
-        NSInteger value_Y= [[timeArray objectAtIndex:0]integerValue];
-        NSInteger value_M= [[timeArray objectAtIndex:1]integerValue];
-        NSInteger value_D= [[timeArray objectAtIndex:2]integerValue];
-        NSString *am = [timeArray objectAtIndex:3];
-        NSInteger value_h = 0;
-        if ([am isEqualToString:@"PM"]) {
-            value_h= [[timeArray objectAtIndex:4]integerValue] + 12;
+    //    NSLog(@"应用激活");
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        kNetTest;
+        
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"isStudying"]) {
+            [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"isStudying"];
         } else {
-            value_h= [[timeArray objectAtIndex:4]integerValue];
-        }
-        NSInteger value_m= [[timeArray objectAtIndex:5]integerValue];
-        NSInteger value_s= [[timeArray objectAtIndex:6]integerValue];
-        NSInteger value_All = value_h*60*60 + value_m*60 + value_s;
-//        NSLog(@"%@:%2i-%2i-%2i-%2i-%2i-%2i", locationString, value_Y, value_M, value_D, value_h, value_m, value_s);
-        [[NSUserDefaults standardUserDefaults] setInteger:value_All forKey:@"nowSeconds"];
-        [[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithFormat:@"%2i-%2i-%2i", value_Y, value_M, value_D] forKey:@"todayDate"];
-        [[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithFormat:@"%2i:%2i:%2i", value_h, value_m, value_s] forKey:@"nowTime"];
-        [formatter release];
-    }
-    
-    if (kNetIsExist) {
-        NSMutableArray *myArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"waitReadCount"];
-        if (myArray.count > 1) {
-            NSMutableString *sendReadCount = [NSMutableString stringWithString:@"http://voa.iyuba.com/voa/UnicomApi?protocol=70001&format=xml"];
-            NSMutableString *voaids = [NSMutableString stringWithString:@"&voaids=0"];
-            NSMutableString *counts = [NSMutableString stringWithString:@"&counts=0"];
-            NSNumber *a;
-            for (a in myArray) {
-                [voaids appendString:[NSString stringWithFormat:@",%@", a]];
-                [counts appendString:[NSString stringWithFormat:@",1"]];
-                //                NSLog(@"array %@", a);
+            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+            [formatter setDateFormat:@"YY-MM-dd-a-hh-mm-ss"];
+            NSString* locationString=[formatter stringFromDate: [NSDate date]];
+            NSArray* timeArray=[locationString componentsSeparatedByString:@"-"];
+            NSInteger value_Y= [[timeArray objectAtIndex:0]integerValue];
+            NSInteger value_M= [[timeArray objectAtIndex:1]integerValue];
+            NSInteger value_D= [[timeArray objectAtIndex:2]integerValue];
+            NSString *am = [timeArray objectAtIndex:3];
+            NSInteger value_h = 0;
+            if ([am isEqualToString:@"PM"]) {
+                value_h= [[timeArray objectAtIndex:4]integerValue] + 12;
+            } else {
+                value_h= [[timeArray objectAtIndex:4]integerValue];
             }
-            [sendReadCount appendString:voaids];
-            [sendReadCount appendString:counts];
-//            NSLog(@"url:%@", sendReadCount);
-            [self updateReadCount:sendReadCount];
+            NSInteger value_m= [[timeArray objectAtIndex:5]integerValue];
+            NSInteger value_s= [[timeArray objectAtIndex:6]integerValue];
+            NSInteger value_All = value_h*60*60 + value_m*60 + value_s;
+            //        NSLog(@"%@:%2i-%2i-%2i-%2i-%2i-%2i", locationString, value_Y, value_M, value_D, value_h, value_m, value_s);
+            [[NSUserDefaults standardUserDefaults] setInteger:value_All forKey:@"nowSeconds"];
+            [[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithFormat:@"%2i-%2i-%2i", value_Y, value_M, value_D] forKey:@"todayDate"];
+            [[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithFormat:@"%2i:%2i:%2i", value_h, value_m, value_s] forKey:@"nowTime"];
+            [formatter release];
         }
-    }
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            
+//        });
+        
+    });
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        if (kNetIsExist) {
+            NSMutableArray *myArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"waitReadCount"];
+            if (myArray.count > 1) {
+                NSMutableString *sendReadCount = [NSMutableString stringWithString:@"http://voa.iyuba.com/voa/UnicomApi?protocol=70001&format=xml"];
+                NSMutableString *voaids = [NSMutableString stringWithString:@"&voaids=0"];
+                NSMutableString *counts = [NSMutableString stringWithString:@"&counts=0"];
+                NSNumber *a;
+                for (a in myArray) {
+                    [voaids appendString:[NSString stringWithFormat:@",%@", a]];
+                    [counts appendString:[NSString stringWithFormat:@",1"]];
+                    //                NSLog(@"array %@", a);
+                }
+                [sendReadCount appendString:voaids];
+                [sendReadCount appendString:counts];
+                //            NSLog(@"url:%@", sendReadCount);
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self updateReadCount:sendReadCount];
+                });
+                
+            }
+        }
+        
+        
+    });
+    
+    
 //    NSLog(@"applicationDidBecomeActive");
 //    AudioSessionSetActive(true);
     
@@ -567,8 +592,6 @@ void uncaughtExceptionHandler(NSException *exception) {
     }
     
     [UIView commitAnimations];
-    
-    
 }
 
 /**

@@ -257,6 +257,7 @@ extern ASIHTTPRequest *nowrequest;
     }
     [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"alertShowed"];
     
+    
 }
 
 /**
@@ -264,7 +265,11 @@ extern ASIHTTPRequest *nowrequest;
  */
 - (void) viewWillAppear:(BOOL)animated {
 //    [self catchNetA];
-    kNetTest;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        kNetTest;
+        
+    });
+    
     notSelect = YES;
 //    [self setTitle:@"最新"];
 //    isExisitNet = [self isExistenceNetwork:0];
@@ -480,7 +485,7 @@ extern ASIHTTPRequest *nowrequest;
 -(void)reloadTableViewDataSource{
     //  should be calling your tableviews data source model to reload
     //  put here just for demo
-    kNetTest;
+    
 //    NSLog(@"isExisitNet:%d",isExisitNet);
     if (kNetIsExist) {
 //        NSLog(@"开始刷新");
@@ -506,6 +511,10 @@ extern ASIHTTPRequest *nowrequest;
 //        pageNum++;
 //        addNum = 10;
         
+    } else {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            kNetTest;
+        });
     }
     _reloading =YES;
 //    [self doneLoadingTableViewData];
@@ -518,7 +527,7 @@ extern ASIHTTPRequest *nowrequest;
     //  model should call this when its done loading
     if (_reloading) {
         _reloading =NO;
-        kNetTest;
+//        kNetTest;
         if (kNetIsExist) {
             [self.voasArray removeAllObjects];
             self.lastId = [VOAView findLastId];
@@ -761,7 +770,7 @@ extern ASIHTTPRequest *nowrequest;
                     } else
                     {
                         //                    NSLog(@"重新加载");
-                        kNetTest;
+                        
                         if (kNetIsExist) {
                             //                        NSLog(@"lastId:%d",lastId);
                             if (addNum>0) {
@@ -769,6 +778,9 @@ extern ASIHTTPRequest *nowrequest;
                                 [self catchIntroduction:(0) pages:pageNum pageNum:10];
                             }
                         }else {
+                            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                                kNetTest;
+                            });
                             NSMutableArray *addArray = [[NSMutableArray alloc]init];
                             if (category == 0) {
                                 addArray = [VOAView findNew:10*(pageNum-1) newVoas:addArray];
@@ -873,7 +885,7 @@ extern ASIHTTPRequest *nowrequest;
 - (void)tableView:(UITableView *)tableView 
 didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 //    [self catchNetA];
-    kNetTest;
+//    kNetTest;
     NSInteger row = [indexPath row];
     if (tableView.tag == 1) {
         if (classTableView.frame.size.height < 200.f) {
@@ -1005,18 +1017,21 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
                                     //                                        HUD = [[MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES] retain];
                                     //                                        HUD.dimBackground = YES;
                                     //                                        HUD.labelText = @"connecting!";
-                                    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+                                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                                         
                                         dispatch_async(dispatch_get_main_queue(), ^{
                                             VOADetail *myDetail = [VOADetail find:voa._voaid];
                                             if (!myDetail) {
                                                 //  NSLog(@"内容不全-%d",voa._voaid);
-                                                kNetTest;
+                                                
                                                 if (kNetIsExist) {
                                                     [VOADetail deleteByVoaid: voa._voaid];
                                                     //                                        NSLog(@"voaid:%i",voa._voaid);
                                                     [self catchDetails:voa];
                                                 }else {
+                                                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                                                        kNetTest;
+                                                    });
                                                     rightCharacter = NO;
                                                 }
                                             }else {
@@ -1269,7 +1284,9 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
 //    isExisitNet = NO;
-    kNetTest;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        kNetTest;
+    });
     if ([request.username isEqualToString:@"detail"])
     {
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:kColFour message:kNewSix delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
@@ -1288,7 +1305,9 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
 - (void)requestWentWrong:(ASIHTTPRequest *)request
 {
-    kNetTest;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        kNetTest;
+    });
 //        if ([request.username isEqualToString:@"new"]) {
     NSMutableArray *addArray = [[NSMutableArray alloc]init];
 //    addArray = [VOAView findNew:10*(pageNum-1) newVoas:addArray];
@@ -1467,37 +1486,44 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 - (void)QueueDownloadMusicBtn:(UIButton *)sender
 {
     // NSLog(@"Queue 预备: %d",music._iid);
-    
-    //数据库中加入下载
-    [VOAView alterDownload:sender.tag];
-    //数组中标记加入正在下载
-    [downLoadList addObject:[NSNumber numberWithInt:sender.tag]];
-    //修改button功能为等待
-    [sender removeTarget:self action:@selector(QueueDownloadMusicBtn:) forControlEvents:UIControlEventTouchUpInside];
-    [sender addTarget:self action:@selector(WaitingBtnPressed:) forControlEvents:UIControlEventTouchUpInside];
-    //修改button图片为等待
-    if (isiPhone) {
-        [sender setImage:[UIImage imageNamed:@"waiting.png"] forState:UIControlStateNormal];
+    if(kNetIsExist) {
+        //数据库中加入下载
+        [VOAView alterDownload:sender.tag];
+        //数组中标记加入正在下载
+        [downLoadList addObject:[NSNumber numberWithInt:sender.tag]];
+        //修改button功能为等待
+        [sender removeTarget:self action:@selector(QueueDownloadMusicBtn:) forControlEvents:UIControlEventTouchUpInside];
+        [sender addTarget:self action:@selector(WaitingBtnPressed:) forControlEvents:UIControlEventTouchUpInside];
+        //修改button图片为等待
+        if (isiPhone) {
+            [sender setImage:[UIImage imageNamed:@"waiting.png"] forState:UIControlStateNormal];
+            
+        } else {
+            [sender setImage:[UIImage imageNamed:@"waiting@2x.png"] forState:UIControlStateNormal];
+            
+        }
         
-    } else {
-        [sender setImage:[UIImage imageNamed:@"waiting@2x.png"] forState:UIControlStateNormal];
-        
+        //加入下载队列
+        NSOperationQueue *myQueue = [PlayViewController sharedQueue];
+        [myQueue setMaxConcurrentOperationCount:1];
+        VOAView *voa=[VOAView find:sender.tag];
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://static.iyuba.com/sounds/voa%@", voa._sound]];
+        ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
+        [request setDelegate:self];
+        [request setTag:voa._voaid];
+        [request setDidStartSelector:@selector(requestSoundStarted:)];
+        [request setDidFinishSelector:@selector(requestSoundDone:)];
+        [request setDidFailSelector:@selector(requestSoundWentWrong:)];
+        [request setTimeOutSeconds:10];
+        [myQueue addOperation:request]; //queue is an NSOperationQueue
+        //    NSLog(@"status new:%d", request.);
     }
-    
-    //加入下载队列
-    NSOperationQueue *myQueue = [PlayViewController sharedQueue];
-    [myQueue setMaxConcurrentOperationCount:1];
-    VOAView *voa=[VOAView find:sender.tag];
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://static.iyuba.com/sounds/voa%@", voa._sound]];
-    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
-    [request setDelegate:self];
-    [request setTag:voa._voaid];
-    [request setDidStartSelector:@selector(requestSoundStarted:)];
-    [request setDidFinishSelector:@selector(requestSoundDone:)];
-    [request setDidFailSelector:@selector(requestSoundWentWrong:)];
-    [request setTimeOutSeconds:10];
-    [myQueue addOperation:request]; //queue is an NSOperationQueue
-    //    NSLog(@"status new:%d", request.);
+    else {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            kNetTest;
+        });
+    }
+
     
     
 }
@@ -1575,12 +1601,12 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
         [cell.downloadBtn setImage:[UIImage imageNamed:@"stopdl.png"] forState:UIControlStateNormal];
         DACircularProgressView *test = [[DACircularProgressView alloc]initWithFrame:CGRectMake(278, 43, 37, 37)];
         cell.progress = test;
-        [test release];
+//        [test release];
     } else {
         [cell.downloadBtn setImage:[UIImage imageNamed:@"stopdl@2x.png"] forState:UIControlStateNormal];
         DACircularProgressView *test = [[DACircularProgressView alloc]initWithFrame:CGRectMake(666, 40, 71, 71)];
         cell.progress = test;
-        [test release];
+//        [test release];
     }
     
     //    [cell.progress setTrackTintColor:[UIColor yellowColor]];
@@ -1594,7 +1620,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
         //    ASIHTTPRequest * request = [[ASIHTTPRequest alloc] initWithURL:[NSURL URLWithString:url]];
         ASIHTTPRequest * detailRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
         detailRequest.delegate = self;
-        [detailRequest setUsername:@"detail"];
+        [detailRequest setUsername:@"detailQueue"];
         [detailRequest setTag:request.tag];
         [detailRequest startAsynchronous];
     }
@@ -1624,7 +1650,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
                 break;
             }
         }
-        UIAlertView *netAlert = [[UIAlertView alloc] initWithTitle:kPlayFive message:[NSString stringWithFormat:@"音频%@, 可能暂无此音频", kPlayFive] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        
         //    if (request.tag == music._iid) {
         //        [collectButton setHidden:NO];
         //        [downloadingFlg setHidden:YES];
@@ -1642,6 +1668,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
         VoaViewCell *cell = (VoaViewCell *)[self.voasTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
         [cell.progress setHidden:YES];
         [cell.progress release];
+        UIAlertView *netAlert = [[UIAlertView alloc] initWithTitle:kPlayFive message:[NSString stringWithFormat:@"音频%@, 可能暂无此音频", kPlayFive] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
         [netAlert show];
         [netAlert release];
         //修改按钮功能 图片
@@ -1690,7 +1717,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
             }
         }
         [VOAFav alterCollect:request.tag];
-        [fm release];
+//        [fm release];
         //[MusicView clearDownload:request.tag];
     }
     //    NSLog(@"requestFinished。大小：%d", [responseData length]);
@@ -1699,7 +1726,9 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
 - (void)requestSoundWentWrong:(ASIHTTPRequest *)request
 {
-    kNetTest;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        kNetTest;
+    });
     //数据库中标记去掉
     [VOAView clearDownload:request.tag];
     //数组中标记去掉
@@ -1709,7 +1738,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
             break;
         }
     }
-    UIAlertView *netAlert = [[UIAlertView alloc] initWithTitle:kPlayFive message:[NSString stringWithFormat:@"音频%@, 可能暂无此音频", kPlayFive] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+    
     //    if (request.tag == music._iid) {
     //        [collectButton setHidden:NO];
     //        [downloadingFlg setHidden:YES];
@@ -1727,6 +1756,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     VoaViewCell *cell = (VoaViewCell *)[self.voasTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
     [cell.progress setHidden:YES];
     [cell.progress release];
+    UIAlertView *netAlert = [[UIAlertView alloc] initWithTitle:kPlayFive message:[NSString stringWithFormat:@"音频%@", kPlayFive] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
     [netAlert show];
     [netAlert release];
     //修改按钮功能 图片
@@ -1744,7 +1774,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 -(BOOL) isExistenceNetwork:(NSInteger)choose
 {
     UIAlertView *myalert = nil;
-    kNetTest;
+    
     switch (choose) {
         case 0:
             
@@ -1753,6 +1783,9 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
             if (kNetIsExist) {
                 
             }else {
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                    kNetTest;
+                });
                 myalert = [[UIAlertView alloc] initWithTitle:kInfoTwo message:kRegNine delegate:nil cancelButtonTitle:kFeedbackFive otherButtonTitles:nil,nil];
                 [myalert show];
                 [myalert release];
@@ -1829,6 +1862,25 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     }
 }
 
-
+#pragma mark UIActionSheetDelegate
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex{
+    switch (buttonIndex) {
+        case 0:// 继续下载 取出存在数组中
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                kNetTest;
+            });
+            [self QueueDownloadMusic];
+            break;
+        case 1://下次再说 数据库不动，不保存在数组中
+            [downLoadList removeAllObjects];
+            break;
+        case 2://拒绝 数据库中删除
+            [VOAView clearAllDownload];
+            [downLoadList removeAllObjects];
+            break;
+        default:
+            break;
+    }
+}
 
 @end

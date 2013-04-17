@@ -77,7 +77,9 @@
 #pragma mark - View lifecycle
 
 - (void) viewWillAppear:(BOOL)animated {
-    kNetTest;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        kNetTest;
+    });
     self.navigationController.navigationBarHidden = NO;
 }
 
@@ -403,7 +405,9 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
 - (void)requestWentWrong:(ASIHTTPRequest *)request
 {
-    kNetTest;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        kNetTest;
+    });
     if ([request.username isEqualToString:@"search"])
     {
         UIAlertView * alert = [[[UIAlertView alloc] initWithTitle:kSearchNine message:kSearchTen delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil] autorelease];
@@ -424,7 +428,9 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
-    kNetTest;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        kNetTest;
+    });
     if ([request.username isEqualToString:@"search"])
     {
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:kSearchNine message:kSearchTen delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];

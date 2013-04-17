@@ -145,9 +145,7 @@
 @synthesize shareStr;
 @synthesize wordTouches;
 @synthesize isInterupted;
-//@synthesize audioRouteFlg;
-//@synthesize soundFileURLRef;
-//@synthesize soundFileObject;
+@synthesize playProgress;
 @synthesize notValidInitLyric;
 
 //用于批量下载
@@ -1231,7 +1229,7 @@ extern ASIHTTPRequest *nowrequest;
                 break;
             }
         }
-        NSLog(@"sen_num:%i", sen_num);
+//        NSLog(@"sen_num:%i", sen_num);
 //        afterRecord = NO;
     }
 //    AudioServicesPlaySystemSound (soundFileObject);
@@ -1836,7 +1834,7 @@ extern ASIHTTPRequest *nowrequest;
             [self wordExistDisplay];
             //            }
         } else {
-            kNetTest;
+            
             if (kNetIsExist) {
                 //            NSLog(@"有网");
                 [self catchWords:selectWord];
@@ -1846,6 +1844,9 @@ extern ASIHTTPRequest *nowrequest;
                 myWord.pron = @" ";
                 myWord.def = @"";
                 [self wordNoDisplay];
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                    kNetTest;
+                });
             }
         }
     }
@@ -2014,6 +2015,7 @@ extern ASIHTTPRequest *nowrequest;
     CMTime playerProgress = [player currentTime];
     double progress = CMTimeGetSeconds(playerProgress);
     double duration = CMTimeGetSeconds([self playerItemDuration]);
+    BOOL playNext = NO;
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 4.3){
 //        NSLog(@"rate:%f", [player rate]);
 //        [player setRate:2.0f];
@@ -2066,8 +2068,15 @@ extern ASIHTTPRequest *nowrequest;
             if (duration > 0.1f) {
                 if (progress < duration) { //设置播放进度条和当前播放时间标签
                     self.timeSlider.value = progress;
+                    if (progress > playProgress - 0.1f && progress < playProgress + 0.1f) {
+                        playNext = YES;
+                    } else {
+                        playNext = NO;
+                    }
+                    playProgress = progress;
                     currentTimeLabel.text = [timeSwitchClass timeToSwitchAdvance:progress];
                 } else {
+                    playNext = YES;
                     self.timeSlider.value = duration;
                     currentTimeLabel.text = [timeSwitchClass timeToSwitchAdvance:duration];
                 }
@@ -2092,7 +2101,7 @@ extern ASIHTTPRequest *nowrequest;
                 [playButton setImage:[UIImage imageNamed:@"PplayPressed-iPad.png"] forState:UIControlStateNormal];
             }
         }    
-        if (timeSlider.maximumValue - 0.3 <= timeSlider.value) { //当一首即将播完时
+        if (timeSlider.maximumValue - 1.1 <= timeSlider.value && playNext) { //当一首即将播完时
             if (playMode == 1) {
                 [playButton.layer removeAllAnimations];
                 [player seekToTime:kCMTimeZero];
@@ -2133,10 +2142,13 @@ extern ASIHTTPRequest *nowrequest;
                     [VOADetail deleteByVoaid: voa._voaid];
                     //                        NSLog(@"voaid:%i",voa._voaid);
                     voa._isRead = @"1";
-                    kNetTest;
+                    
                     if (kNetIsExist) {
                         [self catchDetails:voa];
                     } else {
+                        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                            kNetTest;
+                        });
 //                        timeSlider.value = 0.f;//#$$#
                         if (playIndex == 0) {
                             
@@ -2320,7 +2332,7 @@ extern ASIHTTPRequest *nowrequest;
 -(BOOL) isExistenceNetwork:(NSInteger)choose
 {
     UIAlertView *myalert = nil;
-    kNetTest;
+    
     switch (choose) {
         case 0:
             
@@ -2329,6 +2341,9 @@ extern ASIHTTPRequest *nowrequest;
             if (kNetIsExist) {
                 
             }else {
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                    kNetTest;
+                });
                 myalert = [[UIAlertView alloc] initWithTitle:kInfoTwo message:kRegNine delegate:nil cancelButtonTitle:kFeedbackFive otherButtonTitles:nil,nil];
                 [myalert show];
                 [myalert release];
@@ -2756,12 +2771,15 @@ extern ASIHTTPRequest *nowrequest;
         myWord.wordId = [VOAWord findLastId] + 1;
         nowUserId = [[[NSUserDefaults standardUserDefaults] objectForKey:@"nowUser"] integerValue];
         myWord.userId = nowUserId;
-        NSLog(@"%@", WordIFind);
-        kNetTest;
+//        NSLog(@"%@", WordIFind);
+        
         if (kNetIsExist) {
             //            NSLog(@"有网");
             [self catchWords:WordIFind];
         } else {
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                kNetTest;
+            });
             if (([[NSUserDefaults standardUserDefaults] boolForKey:kBePro] || [[NSUserDefaults standardUserDefaults] boolForKey:@"isVip"])  && word) {
                 //        if (word) {
                 //            if (word) {
@@ -2869,13 +2887,13 @@ void audioRouteChangeListenerCallback (
     NSRange headphoneRange = [(NSString *)state rangeOfString : @"Headphone"];
     NSRange speakerRange = [(NSString *)state rangeOfString : @"Speaker"];
     if (headphoneRange.location != NSNotFound) {
-        NSLog(@"Headphone");
+//        NSLog(@"Headphone");
         if ([self isPlaying]) {
             [self playButtonPressed:self.playButton];
         }
 //        audioRouteFlg = 1;
     } else if(speakerRange.location != NSNotFound) {
-        NSLog(@"Speaker");
+//        NSLog(@"Speaker");
         if ([self isPlaying]) {
             [self playButtonPressed:self.playButton];
         }
@@ -3353,7 +3371,7 @@ void audioRouteChangeListenerCallback (
             //#endif
             notValid = NO;
             notValidInitLyric = YES;
-            NSLog(@"close");
+//            NSLog(@"close");
 //            [[UIApplication sharedApplication].keyWindow setUserInteractionEnabled:YES];
             
             [myScroll setScrollEnabled:YES];
@@ -3365,7 +3383,7 @@ void audioRouteChangeListenerCallback (
         });
     
     });
-    kNetTest;
+//    kNetTest;
     if (needFlushAdv && kNetIsExist) {
         needFlushAdv = NO;
         [bannerView_ loadRequest:[GADRequest request]];
@@ -3515,7 +3533,9 @@ void audioRouteChangeListenerCallback (
         
     }else
     {
-        
+        if (kNetIsExist) {
+            [self setButtonImage:loadingImage];
+        }
         
         //            NSError * error;
         //            AVKeyValueStatus status = [avSet statusOfValueForKey:@"track" error:&error];
@@ -3564,9 +3584,9 @@ void audioRouteChangeListenerCallback (
         [currentTimeLabel setHidden:YES];
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        
+            
             if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 5.0) {
-                NSLog(@"URL：%@", [NSString stringWithFormat:@"http://static.iyuba.com/sounds/voa%@", voa._sound]);
+//                NSLog(@"URL：%@", [NSString stringWithFormat:@"http://static.iyuba.com/sounds/voa%@", voa._sound]);
                 avSet = [AVAsset assetWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://static.iyuba.com/sounds/voa%@", voa._sound]]];
                 [avSet retain];
                 if (avSet.playable) {
@@ -3591,7 +3611,9 @@ void audioRouteChangeListenerCallback (
                 //
                 //            player = [[AVPlayer alloc] initWithPlayerItem:playerItem];
             }
-            kNetTest;
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                kNetTest;
+            });
 
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (kNetIsExist) {
@@ -3628,7 +3650,7 @@ void audioRouteChangeListenerCallback (
                     //                totalTimeLabel.text = [timeSwitchClass timeToSwitchAdvance:duration];
                     //                timeSlider.maximumValue = duration;
                     //            timeSlider.value = progress;
-                    [self setButtonImage:loadingImage];
+                    
                 }else
                 {
                     needFlush = YES;
@@ -3786,7 +3808,9 @@ void audioRouteChangeListenerCallback (
 //    NSLog(@"open");
     
     
-    kNetTest;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        kNetTest;
+    });
     [self becomeFirstResponder];
 //    NSLog(@"字体大小：%d",[[NSUserDefaults standardUserDefaults] integerForKey:@"mulValueFont"]);
 //    NSLog(@"字体颜色：%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"mulValueColor"]);
@@ -3909,7 +3933,7 @@ void audioRouteChangeListenerCallback (
 //        playIndex = [self indexOfArray:listArray bbcId:voa._voaid];
 //    }
     playIndex = [self indexOfArray:listArray bbcId:voa._voaid];
-    kNetTest;
+//    kNetTest;
     if (newFile == NO && (needFlush == NO || (needFlush == YES && kNetIsExist == NO))) {
         UILabel *test = [lyricLabelArray objectAtIndex:0];
         int fontSize = 15;
@@ -4002,7 +4026,8 @@ void audioRouteChangeListenerCallback (
  */
 - (void)viewDidLoad
 {
-    NSLog(@"1");
+//    NSLog(@"1");
+    playProgress = 0.f;
     notValidInitLyric = YES;
 //    audioRouteFlg = 0;
     isInterupted = NO;
@@ -4655,8 +4680,9 @@ void audioRouteChangeListenerCallback (
         // Initiate a generic request to load it with an ad.
         [bannerView_ loadRequest:[GADRequest request]];
         //    [bannerView_ setBackgroundColor:[UIColor blueColor]];
-        kNetTest;
+        
         if (!kNetIsExist) {
+//            kNetTest;
             needFlushAdv = YES;
         }
         [bannerView_ setHidden:NO];
@@ -4943,7 +4969,7 @@ void audioRouteChangeListenerCallback (
     [request setDidFailSelector:@selector(requestSoundWentWrong:)];
     [request setTimeOutSeconds:10];
     [myQueue addOperation:request]; //queue is an NSOperationQueue
-    NSLog(@"status:%d", request.responseStatusCode);
+//    NSLog(@"status:%d", request.responseStatusCode);
     [VOAView alterDownload:request.tag];
     [downLoadList addObject:[NSNumber numberWithInt:request.tag]];
 
@@ -4984,7 +5010,7 @@ void audioRouteChangeListenerCallback (
 	NSFileManager *fm = [NSFileManager defaultManager];
     userPath = [audioPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%d.mp3", request.tag]];
     NSData *responseData = [request responseData];
-    NSLog(@"length:%d", responseData.length); 
+//    NSLog(@"length:%d", responseData.length); 
 //    NSLog(@"requestFinished。大小：%d", [responseData length]);
     if(responseData.length < 2000){
         [VOAView clearDownload:request.tag];
@@ -5036,7 +5062,9 @@ void audioRouteChangeListenerCallback (
  */
 - (void)requestSoundWentWrong:(ASIHTTPRequest *)request
 {
-    kNetTest;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        kNetTest;
+    });
     [VOAView clearDownload:request.tag];
     for (int i =0; i<[downLoadList count]; i++) {
         if ([[downLoadList objectAtIndex:i]intValue]==request.tag) {
@@ -5100,7 +5128,9 @@ void audioRouteChangeListenerCallback (
  */
 - (void)requestWentWrong:(ASIHTTPRequest *)request
 {
-    kNetTest;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        kNetTest;
+    });
     if ([request.username isEqualToString:@"catchnet"]) {
 //        NSLog(@"有网络");
 //        isExisitNet = NO;
@@ -5307,7 +5337,7 @@ void audioRouteChangeListenerCallback (
     NSString *dataPath = [audioPath stringByAppendingPathComponent:@"recordAudio.aac"];
 //    NSString *audioStr = [THUtility encodeBase64AtURL:[NSURL fileURLWithPath:dataPath]];
 //    NSString *audioStr = [NSString stringWithContentsOfURL:[NSURL fileURLWithPath:dataPath] usedEncoding:<#(NSStringEncoding *)#> error:<#(NSError **)#>];
-    NSLog(@"audioUrl:%@", url);
+//    NSLog(@"audioUrl:%@", url);
     ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:url]];
     request.delegate = self;
     [request setPostValue:@"ios" forKey:@"platform"];
@@ -5413,7 +5443,9 @@ void audioRouteChangeListenerCallback (
  */
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
-    kNetTest;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        kNetTest;
+    });
     if ([request.username isEqualToString:@"comment"]) {
         [sendBtn setUserInteractionEnabled:YES];
         [self.commTableView setFrame:(isiPhone? CGRectMake(0, 0, 320, 0) : CGRectMake(0, 0, 768, 0))];
@@ -5881,11 +5913,14 @@ void audioRouteChangeListenerCallback (
             [self wordExistDisplay];
 //            }
         } else {
-            kNetTest;
+            
             if (kNetIsExist) {
                 //            NSLog(@"有网");
                 [self catchWords:WordIFind];
             } else {
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                    kNetTest;
+                });
                 myWord.key = WordIFind;
                 myWord.audio = @"";
                 myWord.pron = @" ";
@@ -7226,7 +7261,7 @@ void audioRouteChangeListenerCallback (
 //            [playButton setImage:[UIImage imageNamed:@"PplayPressed-iPad.png"] forState:UIControlStateNormal];
 //        }
 //    }
-     NSLog(@"endInterruption");
+//     NSLog(@"endInterruption");
 //    if (localFileExist) {
 //        [playButton setImage:[UIImage imageNamed:@"PplayPressed.png"] forState:UIControlStateNormal];
 //        [localPlayer play];
@@ -7333,7 +7368,7 @@ void audioRouteChangeListenerCallback (
         switch (buttonIndex) {
             case 0://新浪微博
                 // 微博分享：
-                NSLog(@"weibo");
+//                NSLog(@"weibo");
                 [self shareAll];
                 break;
             case 1:
@@ -7697,7 +7732,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
  */
 -(void) keyboardWillShow:(NSNotification *)note{
     // get keyboard size and loctaion
-    NSLog(@"键盘出");
+//    NSLog(@"键盘出");
 	CGRect keyboardBounds;
     [[note.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue: &keyboardBounds];
     NSNumber *duration = [note.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
