@@ -1614,16 +1614,21 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [request updateDownloadProgress];
     [cell insertSubview:cell.progress belowSubview:cell.downloadBtn];
     
-    if (![VOADetail isExist:voa._voaid]) {
-        NSString *url = [NSString stringWithFormat:@"http://apps.iyuba.com/voa/textApi.jsp?voaid=%d&format=xml",request.tag];
-        //    NSLog(@"catch:%d",voaid._voaid);
-        //    ASIHTTPRequest * request = [[ASIHTTPRequest alloc] initWithURL:[NSURL URLWithString:url]];
-        ASIHTTPRequest * detailRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
-        detailRequest.delegate = self;
-        [detailRequest setUsername:@"detailQueue"];
-        [detailRequest setTag:request.tag];
-        [detailRequest startAsynchronous];
-    }
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        
+        if (![VOADetail isExist:voa._voaid]) {
+            NSString *url = [NSString stringWithFormat:@"http://apps.iyuba.com/voa/textApi.jsp?voaid=%d&format=xml",request.tag];
+            //    NSLog(@"catch:%d",voaid._voaid);
+            //    ASIHTTPRequest * request = [[ASIHTTPRequest alloc] initWithURL:[NSURL URLWithString:url]];
+            ASIHTTPRequest * detailRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
+            detailRequest.delegate = self;
+            [detailRequest setUsername:@"detailQueue"];
+            [detailRequest setTag:request.tag];
+            [detailRequest startAsynchronous];
+        }
+        
+    });
+    
     
     //[MusicView alterDownload:request.tag];
     // NSLog(@"Queue 开始: %d",request.tag);

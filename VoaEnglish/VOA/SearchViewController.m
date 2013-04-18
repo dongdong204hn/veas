@@ -294,7 +294,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
                     play.newFile = YES;
                     play.voa = voa;
                 }
-                [voa release];
+//                [voa release];
 //                if (play.contentMode != self.contentMode) {
                     play.flushList = YES;
                     play.contentMode = self.contentMode;
@@ -314,7 +314,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
                     play.newFile = YES;
                     play.voa = voa;
                 }
-                [voa release];
+//                [voa release];
 //                if (play.contentMode != self.contentMode) {
                     play.flushList = YES;
                     play.contentMode = self.contentMode;
