@@ -230,7 +230,6 @@
     [segmentedControl insertSegmentWithTitle:kColSix atIndex:0 animated:YES];
     [segmentedControl insertSegmentWithTitle:kColSeven atIndex:1 animated:YES];
     segmentedControl.segmentedControlStyle = UISegmentedControlStyleBar;
-//    segmentedControl.momentary = YES;
     segmentedControl.multipleTouchEnabled=NO;
     [segmentedControl addTarget:self action:@selector(doSeg:) forControlEvents:UIControlEventValueChanged];
     [segmentedControl setSelectedSegmentIndex:0];

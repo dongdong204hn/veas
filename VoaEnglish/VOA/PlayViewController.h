@@ -292,11 +292,17 @@
 @property (nonatomic, retain) UIButton        *shareSenBtn; //分享句子按钮
 @property (nonatomic, retain) UIButton        *colSenBtn; //收藏句子按钮
 @property (nonatomic, retain) UIButton        *sendBtn; //发表评论按钮
+@property (nonatomic, retain) UIButton        *commChangeBtn; //发表评论按钮
+@property (nonatomic, retain) UIButton        *commRecBtn; //发表评论按钮
 @property (nonatomic, retain) UIButton		*collectButton; //下载按钮
+
+//@property (nonatomic, retain) UISegmentedControl *commRecControl;
+
 @property (nonatomic, retain) NSTimer			*sliderTimer; //播放时主定时器
 @property (nonatomic, retain) NSTimer			*lyricSynTimer; //歌词同步定时器
 @property (nonatomic, retain) NSTimer         *fixTimer; //定时播放定时器
 @property (nonatomic, retain) NSTimer         *recordTimer; //录音定时器
+//@property (nonatomic, retain) NSTimer         *commRecTimer; //录音定时器
 @property (nonatomic, retain) NSMutableArray	*lyricArray;    //英文歌词数组
 @property (nonatomic, retain) NSMutableArray	*lyricCnArray;  //中文歌词数组
 @property (nonatomic, retain) NSMutableArray	*timeArray; //歌词播放时长数组

@@ -147,6 +147,10 @@
 @synthesize isInterupted;
 @synthesize playProgress;
 @synthesize notValidInitLyric;
+@synthesize commChangeBtn;
+@synthesize commRecBtn;
+//@synthesize commRecControl;
+//@synthesize commRecTimer;
 
 //用于批量下载
 extern NSMutableArray *downLoadList;
@@ -929,6 +933,35 @@ extern ASIHTTPRequest *nowrequest;
     //    }
     //    NSLog(@"%@",[keyCommFd text]);
 }
+
+/**
+ *  切换评论方式的按钮响应事件
+ */
+- (void) doCommChange{
+    if (textView.isHidden) {
+        [textView setHidden:NO];
+        [commRecBtn setHidden:YES];
+//        [commRecControl setHidden:YES];
+    } else {
+        [textView setHidden:YES];
+        [commRecBtn setHidden:NO];
+//        [commRecControl setHidden:YES];
+    }
+}
+
+///**
+// *  录下语音评论后操作segment
+// */
+//- (void)doSeg:(UISegmentedControl *)sender
+//{
+//    if (sender.selectedSegmentIndex == 0) {
+//        [self doCommChange];
+//        NSLog(@"返回文字评价");
+//    }else
+//    {
+//        NSLog(@"播放语音评价");
+//    }
+//}
 
 /**
  *  添加生词本按钮响应事件
@@ -4483,7 +4516,7 @@ void audioRouteChangeListenerCallback (
     if (isiPhone) {
         containerView = [[UIView alloc] initWithFrame:CGRectMake(3*320, self.myScroll.frame.size.height - 40, 320, 40)];
         
-        textView = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(6, 3, 240, 40)];
+        textView = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(56, 3, 185, 40)];
     } else {
         containerView = [[UIView alloc] initWithFrame:CGRectMake(3*768, self.myScroll.frame.size.height - 40, 768, 40)];
         
@@ -4510,7 +4543,7 @@ void audioRouteChangeListenerCallback (
     UIImage *entryBackground = [rawEntryBackground stretchableImageWithLeftCapWidth:13 topCapHeight:22];
     UIImageView *entryImageView = [[UIImageView alloc] initWithImage:entryBackground];
     if (isiPhone) {
-        entryImageView.frame = CGRectMake(5, 0, 248, 40);
+        entryImageView.frame = CGRectMake(55, 0, 193, 40);
     } else {
         entryImageView.frame = CGRectMake(5, 0, 658, 40);
     }
@@ -4553,7 +4586,7 @@ void audioRouteChangeListenerCallback (
     sendBtn = [UIButton buttonWithType:UIButtonTypeCustom];
 	sendBtn.frame = CGRectMake(containerView.frame.size.width - 69, 8, 63, 27);
     sendBtn.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin;
-	[sendBtn setTitle:@"发表" forState:UIControlStateNormal];
+	[sendBtn setTitle:@"发布" forState:UIControlStateNormal];
     
     [sendBtn setTitleShadowColor:[UIColor colorWithWhite:0 alpha:0.4] forState:UIControlStateNormal];
     sendBtn.titleLabel.shadowOffset = CGSizeMake (0.0, -1.0);
@@ -4564,6 +4597,57 @@ void audioRouteChangeListenerCallback (
     [sendBtn setBackgroundImage:sendBtnBackground forState:UIControlStateNormal];
     [sendBtn setBackgroundImage:selectedSendBtnBackground forState:UIControlStateSelected];
 	[containerView addSubview:sendBtn];
+    
+    commChangeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+	commChangeBtn.frame = CGRectMake(6, 8, 40, 27);
+    commChangeBtn.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin;
+	[commChangeBtn setTitle:@"切" forState:UIControlStateNormal];
+    
+    [commChangeBtn setTitleShadowColor:[UIColor colorWithWhite:0 alpha:0.4] forState:UIControlStateNormal];
+    commChangeBtn.titleLabel.shadowOffset = CGSizeMake (0.0, -1.0);
+    commChangeBtn.titleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
+    
+    [commChangeBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+	[commChangeBtn addTarget:self action:@selector(doCommChange) forControlEvents:UIControlEventTouchUpInside];
+    [commChangeBtn setBackgroundImage:sendBtnBackground forState:UIControlStateNormal];
+    [commChangeBtn setBackgroundImage:selectedSendBtnBackground forState:UIControlStateSelected];
+	[containerView addSubview:commChangeBtn];
+    
+    commRecBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+	commRecBtn.frame = CGRectMake(55, 8, 190, 27);
+    commRecBtn.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin;
+	[commRecBtn setTitle:@"按住 说话" forState:UIControlStateNormal];
+    
+    [commRecBtn setTitleShadowColor:[UIColor colorWithWhite:0 alpha:0.4] forState:UIControlStateNormal];
+    commRecBtn.titleLabel.shadowOffset = CGSizeMake (0.0, -1.0);
+    commRecBtn.titleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
+    
+    [commRecBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+	[commRecBtn addTarget:self action:@selector(startCommRecord) forControlEvents:UIControlEventTouchDown];
+    [commRecBtn addTarget:self action:@selector(endCommRecord) forControlEvents:UIControlEventTouchUpInside];
+    [commRecBtn addTarget:self action:@selector(endCommRecord) forControlEvents:UIControlEventTouchUpOutside];
+    [commRecBtn setBackgroundImage:sendBtnBackground forState:UIControlStateNormal];
+    [commRecBtn setBackgroundImage:selectedSendBtnBackground forState:UIControlStateSelected];
+	[containerView addSubview:commRecBtn];
+    [commRecBtn setHidden:YES];
+    
+    
+//    commRecControl=[[UISegmentedControl alloc] initWithFrame:CGRectMake(55, 8, 190, 27)];
+//    commRecControl.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin;
+//	[commRecControl insertSegmentWithTitle:@"返回" atIndex:0 animated:YES];
+//    [commRecControl insertSegmentWithTitle:@"回放" atIndex:1 animated:YES];
+//
+//    commRecControl.segmentedControlStyle = UISegmentedControlStyleBar;
+//    commRecControl.multipleTouchEnabled=NO;
+//    [commRecControl addTarget:self action:@selector(doSeg:) forControlEvents:UIControlEventValueChanged];
+//    [commRecControl setBackgroundImage:sendBtnBackground forState:UIControlStateNormal barMetrics:nil];
+//    [commRecControl setBackgroundImage:selectedSendBtnBackground forState:UIControlStateSelected barMetrics:nil];
+//	[containerView addSubview:commRecControl];
+//    [commRecControl setHidden:YES];
+    
+    
+    
+
     
     containerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
     
@@ -6344,7 +6428,21 @@ void audioRouteChangeListenerCallback (
             [colSenBtn setHidden:YES];
         }
         
-        if (page == 2) {
+        if (page == 3) {
+            if ([self hasMicphone]) {
+                //该代码是设置手机喇叭与麦克风同时工作 iphone 3.0以上版本 播放类型
+                UInt32 audioCategory = kAudioSessionCategory_PlayAndRecord;
+                AudioSessionSetProperty(kAudioSessionProperty_AudioCategory, sizeof(audioCategory), &audioCategory);
+                //设置采样率的
+                Float64 smpl=kAudioSessionProperty_CurrentHardwareSampleRate;
+                AudioSessionSetProperty(kAudioSessionProperty_PreferredHardwareSampleRate, sizeof(smpl), &smpl);
+            }
+            if (![self hasHeadset]) {
+                //设置声音输出扬声器 还是默认的接收器kAudioSessionOverrideAudioRoute_None
+                UInt32 audioRoute = kAudioSessionOverrideAudioRoute_Speaker;
+                AudioSessionSetProperty(kAudioSessionProperty_OverrideAudioRoute, sizeof(UInt32), &audioRoute);
+            }
+        } else if (page == 2) {
             //        [lyricCnLabel setNumberOfLines:cLines];
             //        [lyricLabel setNumberOfLines:eLines];
             //        NSLog(@"progress:%f",progress);
@@ -7904,6 +8002,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 /**
  *  需要实现的协议
  */
+
 - (void)hudWasHidden:(MBProgressHUD *)hud {
     // Remove HUD from screen when the HUD was hidded
     [HUD removeFromSuperview];
@@ -7954,11 +8053,131 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
 #pragma mark Record action
 /**
+ *  评论录音按钮响应事件
+ */
+- (void)startCommRecord
+{
+    NSLog(@"开始录音");
+//    if (player) {
+//        nowTime = [player currentTime];
+//        [player release];
+//        player = nil;
+//    }
+//    //    [player pause];
+//    if (wordPlayer) {
+//        [wordPlayer release];
+//        wordPlayer = nil;
+//    }
+//    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+//    [audioSession setCategory:AVAudioSessionCategoryRecord error:nil];
+//    
+//    if (m_isRecording == NO)
+//    {
+//        if (!notValid) {
+//            //        if ([lyricSynTimer isValid]) {
+//            [lyricSynTimer invalidate];
+//            //        }
+//            //        if ([sliderTimer isValid]) {
+//            [sliderTimer invalidate];
+//            //        }
+//            notValid = YES;
+//        }
+//        
+//        m_isRecording = YES;
+//        NSString *recordAudioFullPath = [kRecorderDirectory stringByAppendingPathComponent:
+//                                         [NSString stringWithFormat:kRecordFile]];
+//        //        NSString *recordAudioFullPath = [kRecorderDirectory stringByAppendingPathComponent:
+//        //                                         [NSString stringWithFormat:@"recordAudio.caf"]];
+//        NSLock* tempLock = [[NSLock alloc]init];
+//        [tempLock lock];
+//        if ([[NSFileManager defaultManager] fileExistsAtPath:recordAudioFullPath])
+//        {
+//            [[NSFileManager defaultManager] removeItemAtPath:recordAudioFullPath error:nil];
+//        }
+//        [tempLock unlock];
+//        [tempLock release];
+//        
+//        dispatch_queue_t stopQueue;
+//        stopQueue = dispatch_queue_create("stopQueue", NULL);
+//        dispatch_async(stopQueue, ^(void){
+//            //run in main thread
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                [audioRecoder startRecord];
+////                if (!isiPhone) { //ipad版本需要最少录制八秒才可播放
+////                    [NSTimer scheduledTimerWithTimeInterval:8 target:self selector:@selector(recordEnable) userInfo:nil repeats:NO];
+////                }
+//            });
+//        });
+//        dispatch_release(stopQueue);
+//        
+//    }
+}
+
+- (void)endCommRecord
+{
+    NSLog(@"结束录音");
+//    if (m_isRecording) {
+//        m_isRecording = NO;
+//        [self stopRecordTimer];
+//        dispatch_queue_t stopQueue;
+//        stopQueue = dispatch_queue_create("stopQueue", NULL);
+//        dispatch_async(stopQueue, ^(void){
+//            //run in main thread
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                [audioRecoder stopRecord];
+//            });
+//        });
+//        dispatch_release(stopQueue);
+//    }
+    
+    
+    [commRecBtn removeTarget:self action:@selector(startCommRecord) forControlEvents:UIControlEventTouchDown];
+    [commRecBtn removeTarget:self action:@selector(endCommRecord) forControlEvents:UIControlEventTouchUpInside];
+    [commRecBtn removeTarget:self action:@selector(endCommRecord) forControlEvents:UIControlEventTouchUpOutside];
+    [commRecBtn setTitle:@"回放" forState:UIControlStateNormal];
+    [commRecBtn addTarget:self action:@selector(playCommRec) forControlEvents:UIControlEventTouchUpInside];
+    
+    [commChangeBtn removeTarget:self action:@selector(doCommChange) forControlEvents:UIControlEventTouchUpOutside];
+    [commChangeBtn setTitle:@"返" forState:UIControlStateNormal];
+    [commChangeBtn addTarget:self action:@selector(retuenCommRec) forControlEvents:UIControlEventTouchUpInside];
+    
+//    [commRecBtn setHidden:YES];
+//    [commRecControl setSelectedSegmentIndex:2] ;
+//    [commRecControl setHidden:NO];
+}
+
+/**
+ *  返回语音评价录制
+ */
+- (void)retuenCommRec{
+    [commRecBtn removeTarget:self action:@selector(playCommRec) forControlEvents:UIControlEventTouchUpInside];
+    [commRecBtn setTitle:@"按住 说话" forState:UIControlStateNormal];
+    [commRecBtn addTarget:self action:@selector(startCommRecord) forControlEvents:UIControlEventTouchDown];
+    [commRecBtn addTarget:self action:@selector(endCommRecord) forControlEvents:UIControlEventTouchUpInside];
+    [commRecBtn addTarget:self action:@selector(endCommRecord) forControlEvents:UIControlEventTouchUpOutside];
+    
+    
+    
+    [commChangeBtn removeTarget:self action:@selector(retuenCommRec) forControlEvents:UIControlEventTouchUpOutside];
+    [commChangeBtn setTitle:@"切" forState:UIControlStateNormal];
+    [commChangeBtn addTarget:self action:@selector(doCommChange) forControlEvents:UIControlEventTouchUpInside];
+//    [self doCommChange];
+//    NSLog(@"返回文字评价");
+}
+
+/**
+ *  回放语音评价
+ */
+- (void)playCommRec{
+    NSLog(@"回放语音评价");
+}
+
+/**
  *  录音按钮响应事件
  */
 - (IBAction)recordTouch:(UIButton *)sender
 {
-//    NSLog(@"录音");
+    //    NSLog(@"录音");
     if ([sender.titleLabel.text isEqualToString:@"recording"]) {
         [btn_record setTitle:@"record" forState:UIControlStateNormal];
         
