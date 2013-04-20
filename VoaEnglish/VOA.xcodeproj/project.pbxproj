@@ -163,6 +163,8 @@
 		B043A25116A7D44300DEC567 /* UIView+WhenTappedBlocks.m in Sources */ = {isa = PBXBuildFile; fileRef = B043A25016A7D44300DEC567 /* UIView+WhenTappedBlocks.m */; };
 		B043A25516A7E49100DEC567 /* MyTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = B043A25416A7E49100DEC567 /* MyTextView.m */; };
 		B047BE311508F34A00390878 /* myTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = B047BE301508F34A00390878 /* myTabBar.m */; };
+		B048C64A1722739D008B9E22 /* WaveFormViewIOS.m in Sources */ = {isa = PBXBuildFile; fileRef = B048C6481722739D008B9E22 /* WaveFormViewIOS.m */; };
+		B048C64B1722739D008B9E22 /* WaveSampleProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = B048C6491722739D008B9E22 /* WaveSampleProvider.m */; };
 		B049A4AA1573735000DF391E /* SevenProgressBar.m in Sources */ = {isa = PBXBuildFile; fileRef = B049A4A91573735000DF391E /* SevenProgressBar.m */; };
 		B04C87C5171694A000897859 /* THUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = B04C87C4171694A000897859 /* THUtility.m */; };
 		B04E16AF15761963003E7A01 /* detailRead-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = B04E168715761963003E7A01 /* detailRead-ipad.png */; };
@@ -923,6 +925,11 @@
 		B043A25416A7E49100DEC567 /* MyTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyTextView.m; sourceTree = "<group>"; };
 		B047BE2F1508F34A00390878 /* myTabBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = myTabBar.h; sourceTree = "<group>"; };
 		B047BE301508F34A00390878 /* myTabBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = myTabBar.m; sourceTree = "<group>"; };
+		B048C6451722739D008B9E22 /* WaveFormViewIOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WaveFormViewIOS.h; sourceTree = "<group>"; };
+		B048C6461722739D008B9E22 /* WaveSampleProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WaveSampleProvider.h; sourceTree = "<group>"; };
+		B048C6471722739D008B9E22 /* WaveSampleProviderDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WaveSampleProviderDelegate.h; sourceTree = "<group>"; };
+		B048C6481722739D008B9E22 /* WaveFormViewIOS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WaveFormViewIOS.m; sourceTree = "<group>"; };
+		B048C6491722739D008B9E22 /* WaveSampleProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WaveSampleProvider.m; sourceTree = "<group>"; };
 		B049A4A81573735000DF391E /* SevenProgressBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SevenProgressBar.h; sourceTree = "<group>"; };
 		B049A4A91573735000DF391E /* SevenProgressBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SevenProgressBar.m; sourceTree = "<group>"; };
 		B04C87C3171694A000897859 /* THUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = THUtility.h; sourceTree = "<group>"; };
@@ -2046,6 +2053,27 @@
 			path = EPGLTransitionView;
 			sourceTree = "<group>";
 		};
+		B048C64417227383008B9E22 /* speak */ = {
+			isa = PBXGroup;
+			children = (
+				B048C6451722739D008B9E22 /* WaveFormViewIOS.h */,
+				B048C6461722739D008B9E22 /* WaveSampleProvider.h */,
+				B048C6471722739D008B9E22 /* WaveSampleProviderDelegate.h */,
+				B048C6481722739D008B9E22 /* WaveFormViewIOS.m */,
+				B048C6491722739D008B9E22 /* WaveSampleProvider.m */,
+			);
+			name = speak;
+			sourceTree = "<group>";
+		};
+		B048C64C172273A3008B9E22 /* record */ = {
+			isa = PBXGroup;
+			children = (
+				B0F7B8541602D1DC002CF296 /* CL_AudioRecorder.h */,
+				B0F7B8551602D1DC002CF296 /* CL_AudioRecorder.m */,
+			);
+			name = record;
+			sourceTree = "<group>";
+		};
 		B04C87C2171694A000897859 /* THUtility */ = {
 			isa = PBXGroup;
 			children = (
@@ -2128,8 +2156,8 @@
 		B081C15E14E388A80015D894 /* play */ = {
 			isa = PBXGroup;
 			children = (
-				B0F7B8541602D1DC002CF296 /* CL_AudioRecorder.h */,
-				B0F7B8551602D1DC002CF296 /* CL_AudioRecorder.m */,
+				B048C64C172273A3008B9E22 /* record */,
+				B048C64417227383008B9E22 /* speak */,
 				B06AFB9114F7F915001E5574 /* PlayViewController.h */,
 				B06AFB9214F7F915001E5574 /* PlayViewController.mm */,
 				B09FC2BE14E50E0B006DE38B /* player */,
@@ -4041,6 +4069,8 @@
 				B03567CA1703D8A6001EA96B /* DemoTransition.m in Sources */,
 				B03567CB1703D8A6001EA96B /* EPGLTransitionView.m in Sources */,
 				B04C87C5171694A000897859 /* THUtility.m in Sources */,
+				B048C64A1722739D008B9E22 /* WaveFormViewIOS.m in Sources */,
+				B048C64B1722739D008B9E22 /* WaveSampleProvider.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
