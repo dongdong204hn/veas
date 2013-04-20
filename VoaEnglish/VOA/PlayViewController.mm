@@ -169,7 +169,6 @@ extern ASIHTTPRequest *nowrequest;
     }
     if (self) {
         //        NSLog(@"%@",nibNameOrNil);
-        
     }
     return self;
 }
@@ -284,10 +283,19 @@ extern ASIHTTPRequest *nowrequest;
  */
 - (void) doResponse:(UIButton*) sender {
 //    NSLog(@"doResponse:%d", sender.superview.tag);
+    [commRecBtn setHidden:YES];
     [textView becomeFirstResponder];
-    for (int i = 0; i < [commArray count]/6; i++) {
-        if (((NSString*)[commArray objectAtIndex:i*6]).integerValue == sender.superview.tag) {
-            [textView setText:[NSString stringWithFormat:@"回复%@:", [commArray objectAtIndex:i*6+1]]];
+    [textView setHidden:NO];
+    [commChangeBtn setTitle:@"语音" forState:UIControlStateNormal];
+    [commRecBtn removeTarget:self action:@selector(playCommRec) forControlEvents:UIControlEventTouchUpInside];
+    [commRecBtn setTitle:@"按住 说话" forState:UIControlStateNormal];
+    [commRecBtn addTarget:self action:@selector(startCommRecord) forControlEvents:UIControlEventTouchDown];
+    [commRecBtn addTarget:self action:@selector(endCommRecord) forControlEvents:UIControlEventTouchUpInside];
+    [commRecBtn addTarget:self action:@selector(endCommRecord) forControlEvents:UIControlEventTouchUpOutside];
+    
+    for (int i = 0; i < [commArray count]/7; i++) {
+        if (((NSString*)[commArray objectAtIndex:i*7]).integerValue == sender.superview.tag) {
+            [textView setText:[NSString stringWithFormat:@"回复%@:", [commArray objectAtIndex:i*7+1]]];
         }
     }
     isResponse = YES;
@@ -923,31 +931,28 @@ extern ASIHTTPRequest *nowrequest;
  *  发送按钮响应事件
  */
 - (void) doSend{
-    if ([[textView text] length] > 0) {
-        
-        [self sendComments];
+    if (kNetIsExist) {
+        if ([textView isHidden]) {
+            NSLog(@"上传音频");
+            [self sendComments:1];
+        } else {
+            if ([[textView text] length] > 0) {
+                
+                [self sendComments:0];
+            }
+        }
+        //    [inputText resignFirstResponder];
+        //    if ([keyCommFd isFirstResponder]) {
+        [self.view endEditing:YES];
+        //    }
+        //    NSLog(@"%@",[keyCommFd text]);
+    } else {
+        kNetTest;
     }
-    //    [inputText resignFirstResponder];
-    //    if ([keyCommFd isFirstResponder]) {
-    [self.view endEditing:YES];
-    //    }
-    //    NSLog(@"%@",[keyCommFd text]);
+    
 }
 
-/**
- *  切换评论方式的按钮响应事件
- */
-- (void) doCommChange{
-    if (textView.isHidden) {
-        [textView setHidden:NO];
-        [commRecBtn setHidden:YES];
-//        [commRecControl setHidden:YES];
-    } else {
-        [textView setHidden:YES];
-        [commRecBtn setHidden:NO];
-//        [commRecControl setHidden:YES];
-    }
-}
+
 
 ///**
 // *  录下语音评论后操作segment
@@ -4516,11 +4521,11 @@ void audioRouteChangeListenerCallback (
     if (isiPhone) {
         containerView = [[UIView alloc] initWithFrame:CGRectMake(3*320, self.myScroll.frame.size.height - 40, 320, 40)];
         
-        textView = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(56, 3, 185, 40)];
+        textView = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(79, 3, 162, 40)];
     } else {
         containerView = [[UIView alloc] initWithFrame:CGRectMake(3*768, self.myScroll.frame.size.height - 40, 768, 40)];
         
-        textView = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(6, 3, 650, 40)];
+        textView = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(116, 3, 520, 40)];
     }
     
     textView.contentInset = UIEdgeInsetsMake(0, 5, 0, 5);
@@ -4543,9 +4548,9 @@ void audioRouteChangeListenerCallback (
     UIImage *entryBackground = [rawEntryBackground stretchableImageWithLeftCapWidth:13 topCapHeight:22];
     UIImageView *entryImageView = [[UIImageView alloc] initWithImage:entryBackground];
     if (isiPhone) {
-        entryImageView.frame = CGRectMake(55, 0, 193, 40);
+        entryImageView.frame = CGRectMake(78, 0, 170, 40);
     } else {
-        entryImageView.frame = CGRectMake(5, 0, 658, 40);
+        entryImageView.frame = CGRectMake(115, 0, 528, 40);
     }
     
     entryImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
@@ -4599,9 +4604,9 @@ void audioRouteChangeListenerCallback (
 	[containerView addSubview:sendBtn];
     
     commChangeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-	commChangeBtn.frame = CGRectMake(6, 8, 40, 27);
+	commChangeBtn.frame = CGRectMake(6, 8, 63, 27);
     commChangeBtn.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin;
-	[commChangeBtn setTitle:@"切" forState:UIControlStateNormal];
+	[commChangeBtn setTitle:@"语音" forState:UIControlStateNormal];
     
     [commChangeBtn setTitleShadowColor:[UIColor colorWithWhite:0 alpha:0.4] forState:UIControlStateNormal];
     commChangeBtn.titleLabel.shadowOffset = CGSizeMake (0.0, -1.0);
@@ -4614,24 +4619,28 @@ void audioRouteChangeListenerCallback (
 	[containerView addSubview:commChangeBtn];
     
     commRecBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-	commRecBtn.frame = CGRectMake(55, 8, 190, 27);
+    if (isiPhone) {
+        
+        commRecBtn.frame = CGRectMake(78, 8, 167, 27);
+        
+    } else {
+        commRecBtn.frame = CGRectMake(115, 8, 528, 27);
+    }
     commRecBtn.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin;
-	[commRecBtn setTitle:@"按住 说话" forState:UIControlStateNormal];
+    [commRecBtn setTitle:@"按住 说话" forState:UIControlStateNormal];
     
     [commRecBtn setTitleShadowColor:[UIColor colorWithWhite:0 alpha:0.4] forState:UIControlStateNormal];
     commRecBtn.titleLabel.shadowOffset = CGSizeMake (0.0, -1.0);
     commRecBtn.titleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
     
     [commRecBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-	[commRecBtn addTarget:self action:@selector(startCommRecord) forControlEvents:UIControlEventTouchDown];
+    [commRecBtn addTarget:self action:@selector(startCommRecord) forControlEvents:UIControlEventTouchDown];
     [commRecBtn addTarget:self action:@selector(endCommRecord) forControlEvents:UIControlEventTouchUpInside];
     [commRecBtn addTarget:self action:@selector(endCommRecord) forControlEvents:UIControlEventTouchUpOutside];
     [commRecBtn setBackgroundImage:sendBtnBackground forState:UIControlStateNormal];
     [commRecBtn setBackgroundImage:selectedSendBtnBackground forState:UIControlStateSelected];
-	[containerView addSubview:commRecBtn];
+    [containerView addSubview:commRecBtn];
     [commRecBtn setHidden:YES];
-    
-    
 //    commRecControl=[[UISegmentedControl alloc] initWithFrame:CGRectMake(55, 8, 190, 27)];
 //    commRecControl.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin;
 //	[commRecControl insertSegmentWithTitle:@"返回" atIndex:0 animated:YES];
@@ -4645,9 +4654,6 @@ void audioRouteChangeListenerCallback (
 //	[containerView addSubview:commRecControl];
 //    [commRecControl setHidden:YES];
     
-    
-    
-
     
     containerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
     
@@ -4886,6 +4892,8 @@ void audioRouteChangeListenerCallback (
     [wordTouches release], wordTouches = nil;
     [mySentence release], mySentence = nil;
     
+    [commChangeBtn release], commChangeBtn = nil;
+    [commRecBtn release], commRecBtn = nil;
 }
 
 /**
@@ -5397,6 +5405,20 @@ void audioRouteChangeListenerCallback (
  *  获取评论
  */
 - (void)catchComments:(NSInteger)pages{
+    if (kNetIsExist) {
+        NSString *url = [NSString stringWithFormat:@"http://172.16.94.220:8081/voa/UnicomApi?protocol=60001&format=xml&voaid=%i&pageNumber=%i&pageCounts=15",voa._voaid,pages];
+        //    ASIHTTPRequest * request = [[ASIHTTPRequest alloc] initWithURL:[NSURL URLWithString:url]];
+        ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
+        [sendBtn setUserInteractionEnabled:NO];
+        request.delegate = self;
+        [request setUsername:@"comment"];
+        [request startAsynchronous];
+    } else {
+        kNetTest;
+    }
+    
+    
+    /* 旧版获取评论API
     NSString *url = [NSString stringWithFormat:@"http://apps.iyuba.com/voa/updateShuoShuo.jsp?groupName=iyuba&mod=select&topicId=%i&pageNumber=%i&pageCounts=15",voa._voaid,pages];
     //    ASIHTTPRequest * request = [[ASIHTTPRequest alloc] initWithURL:[NSURL URLWithString:url]];
     ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
@@ -5404,93 +5426,54 @@ void audioRouteChangeListenerCallback (
     request.delegate = self;
     [request setUsername:@"comment"];
     [request startAsynchronous];
+     */
 }
 
 /**
  *  发表语音评论
  */
-- (void)sendAudioComments{
+- (void)sendComments:(NSInteger)commType{
     NSInteger uid = [[NSUserDefaults standardUserDefaults] integerForKey:@"nowUser"];
-    NSString *url;
-//    url = [NSString stringWithFormat:@"http://172.16.94.220:8081/voa/UnicomApi?platform=ios&format=xml&protocol=60002&userid=%i&voaid=%i&shuoshuotype=1",uid, voa._voaid];
-    url = [NSString stringWithFormat:@"http://172.16.94.220:8081/voa/UnicomApi?protocol=60002"];
-    NSString *documentPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    //创建audio份目录在Documents文件夹下，not to back up
-    NSString *audioPath = [documentPath stringByAppendingPathComponent:[NSString stringWithFormat:@"audio"]];;
-    //    userPath = [audioPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%d.wav", voa._voaid]];
-    NSString *dataPath = [audioPath stringByAppendingPathComponent:@"recordAudio.aac"];
-//    NSString *audioStr = [THUtility encodeBase64AtURL:[NSURL fileURLWithPath:dataPath]];
-//    NSString *audioStr = [NSString stringWithContentsOfURL:[NSURL fileURLWithPath:dataPath] usedEncoding:<#(NSStringEncoding *)#> error:<#(NSError **)#>];
-//    NSLog(@"audioUrl:%@", url);
-    ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:url]];
-    request.delegate = self;
-    [request setPostValue:@"ios" forKey:@"platform"];
-    [request setPostValue:@"xml" forKey:@"format"];
-    [request setPostValue:@"60002" forKey:@"protocol"];
-    [request setPostValue:[NSString stringWithFormat:@"%d", uid] forKey:@"userid"];
-    [request setPostValue:[NSString stringWithFormat:@"%d", voa._voaid] forKey:@"voaid"];
-    [request setPostValue:@"1" forKey:@"shuoshuotype"];
-//    NSData* audioData = [audioStr dataUsingEncoding:NSUTF8StringEncoding];
-    NSData* audioData = [NSData dataWithContentsOfURL:[NSURL fileURLWithPath:dataPath]];
-    [request addData:audioData withFileName:@"record.aac" andContentType:@"multipart/form-data" forKey:@"content"];
-    
-    [request setUsername:@"sendAudio"];
-//    [request setRequestMethod:@"POST"];
-    [request startAsynchronous];
-    
-    
-    
-//    static NSString *kBoundaryStr=@"_insert_some_boundary_here_";
-//    NSString *boundary = [NSString stringWithString:kBoundaryStr];
-//    NSMutableData *result = [[NSMutableData alloc] init];
-//    NSStringEncoding encoding = NSUTF8StringEncoding; //NSASCIIStringEncoding;
-//    [result appendData:[[NSString stringWithFormat:@"--%@\r\n",boundary]
-//                        
-//                        dataUsingEncoding:encoding]];
-//    [result appendData:[[NSString stringWithString:@"Content-Disposition: form-data;name=\"ClientLog\"\r\n\r\n"] dataUsingEncoding:encoding]];
-//    [result appendData:data];
-//    [result appendData:[[NSString stringWithString:@"\r\n"] dataUsingEncoding:encoding]];
-//    [result appendData:[[NSString stringWithFormat:@"--%@--\r\n",boundary]
-//                        
-//                        dataUsingEncoding:encoding]];
-//    NSString *header_type = [NSString stringWithFormat:@"multipart/form-data;boundary=%@",kBoundaryStr];
-//                             [request addValue:header_type forHTTPHeaderField: @"Content-Type"];
-//                             [request setHTTPBody:result];
-//                             [result release];
-    
-    
-//    NSInteger uid = [[NSUserDefaults standardUserDefaults] integerForKey:@"nowUser"];
-//    //    NSLog(@"$$$:%d", uid);
-//    if (uid>0) {
-//        NSString *url;
-//        if (isResponse) {
-//            url = [NSString stringWithFormat:@"http://apps.iyuba.com/voa/updateShuoShuo.jsp?userId=%i&groupName=ios&mod=insert&topicId=%i&comment=%@&toId=%i",uid, voa._voaid, [[textView text] URLEncodedString], [textView tag]];
-//        } else {
-//            url = [NSString stringWithFormat:@"http://apps.iyuba.com/voa/updateShuoShuo.jsp?userId=%i&groupName=ios&mod=insert&topicId=%i&comment=%@",uid, voa._voaid, [[textView text] URLEncodedString]];
-//        }
-//        
-//        //        ASIHTTPRequest * request = [[ASIHTTPRequest alloc] initWithURL:[NSURL URLWithString:url]];
-//        ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
-//        request.delegate = self;
-//        [request setUsername:@"send"];
-//        [request startAsynchronous];
-//    } else {
-//        LogController *myLog = [[LogController alloc]init];
-//        [self.navigationController  pushViewController:myLog animated:YES];
-//        
-//        //        id nextResponder = [self.view nextResponder];
-//        //        UIView *test = [[UIView alloc] init];
-//        //        tes
-//        //        [[(UIView *)self.view firstViewController:self.view] presentModalViewController:myLog animated:YES];
-//        [myLog release];
-//        //        PlayViewController *player = [PlayViewController sharedPlayer];
-//        //        [player.navigationController pushViewController:myLog animated:YES];
-//    }
+    if (uid>0) {
+        NSString *url;
+        //    url = [NSString stringWithFormat:@"http://172.16.94.220:8081/voa/UnicomApi?platform=ios&format=xml&protocol=60002&userid=%i&voaid=%i&shuoshuotype=1",uid, voa._voaid];
+        url = [NSString stringWithFormat:@"http://172.16.94.220:8081/voa/UnicomApi?"];
+        
+        
+        ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:url]];
+        request.delegate = self;
+        [request setPostValue:@"ios" forKey:@"platform"];
+        [request setPostValue:@"xml" forKey:@"format"];
+        [request setPostValue:@"60002" forKey:@"protocol"];
+        [request setPostValue:[NSString stringWithFormat:@"%d", uid] forKey:@"userid"];
+        [request setPostValue:[NSString stringWithFormat:@"%d", voa._voaid] forKey:@"voaid"];
+        [request setPostValue:[NSString stringWithFormat:@"%d", commType] forKey:@"shuoshuotype"];
+        //    NSData* audioData = [audioStr dataUsingEncoding:NSUTF8StringEncoding];
+        if (commType == 0) {
+            [request setPostValue:[[textView text] URLEncodedString] forKey:@"content"];
+            
+        } else {
+            NSString *recordAudioFullPath = [kRecorderDirectory stringByAppendingPathComponent:
+                                             [NSString stringWithFormat:kRecordFile]];
+            NSData* audioData = [NSData dataWithContentsOfURL:[NSURL fileURLWithPath:recordAudioFullPath]];
+            [request addData:audioData withFileName:@"record.aac" andContentType:@"multipart/form-data" forKey:@"content"];
+        }
+        
+        NSLog(@"url:%@ %d %d", request.url, uid, voa._voaid);
+        [request setUsername:@"send"];
+        //    [request setRequestMethod:@"POST"];
+        [request startAsynchronous];
+    } else {
+        LogController *myLog = [[LogController alloc]init];
+        [self.navigationController  pushViewController:myLog animated:YES];
+        [myLog release];
+    }
 }
 
 /**
  *  发表评论
- */ 
+ */
+/*
 - (void)sendComments{
     
     NSInteger uid = [[NSUserDefaults standardUserDefaults] integerForKey:@"nowUser"];
@@ -5521,6 +5504,7 @@ void audioRouteChangeListenerCallback (
         //        [player.navigationController pushViewController:myLog animated:YES];
     }
 }
+*/
 
 /**
  *  评论获取失败
@@ -5567,6 +5551,56 @@ void audioRouteChangeListenerCallback (
     if ([request.username isEqualToString:@"comment" ]) {
         /////解析
         [sendBtn setUserInteractionEnabled:YES];
+        
+        NSArray *items = [doc nodesForXPath:@"data" error:nil];
+        if (items) {
+            for (DDXMLElement *obj in items) {
+                nowPage = [[[obj elementForName:@"PageNumber"] stringValue] integerValue] ;
+                
+                //                NSLog(@"pageNumber:%d",pageNumber);
+                
+                
+                if (nowPage == 1) {
+                    [commArray removeAllObjects];
+                    //                    NSInteger commcount = [[[obj elementForName:@"counts"] stringValue] integerValue] ;
+                    totalPage = [[[obj elementForName:@"TotalPage"] stringValue] integerValue] ;
+                    //                    NSLog(@"commcount:%d",commcount);
+                    //                    commArray = [[NSMutableArray alloc]initWithCapacity:4*commcount];
+                    //                    struct comment comms[commNumber];
+                }
+            }
+        }
+        items = [doc nodesForXPath:@"data/Row" error:nil];
+        if (items) {
+            for (DDXMLElement *obj in items) {
+                [commArray addObject:[[obj elementForName:@"id"] stringValue]];
+                [commArray addObject:[[obj elementForName:@"UserName"] stringValue]];
+                [commArray addObject:[[obj elementForName:@"ImgSrc"] stringValue]];
+                [commArray addObject: [[obj elementForName:@"ShuoShuoType"] stringValue].intValue == 1 ?[NSString stringWithFormat:@"http://172.16.94.220:8081/voa/%@", [[obj elementForName:@"ShuoShuo"] stringValue].URLDecodedString] : [[obj elementForName:@"ShuoShuo"] stringValue].URLDecodedString];
+                [commArray addObject:[[obj elementForName:@"CreateDate"] stringValue]];
+                [commArray addObject:[[obj elementForName:@"Userid"] stringValue]];
+                [commArray addObject:[[obj elementForName:@"ShuoShuoType"] stringValue]];
+            }
+        }
+        if (isiPhone) { //动态改变表的大小，防止背景出现灰色
+            if ([commArray count]/7<(isFree?(isFive?6:5):(isFive?7:6))) {
+                [self.commTableView setFrame:CGRectMake(0, 0, 320, [commArray count]/7*kCommTableHeightPh)];
+                //                NSLog(@"表高:%f", [commArray count]/4*kCommTableHeightPh);
+            }
+            else {
+                [self.commTableView setFrame:CGRectMake(0, 0, 320, (isFree?260:310) + kFiveAdd)];
+            }
+        } else {
+            if ([commArray count]/7<(isFree?9:10)) {
+                [self.commTableView setFrame:CGRectMake(0, 0, 768, [commArray count]/7*80.0f)];
+                //                NSLog(@"表高:%f", [commArray count]/4*80.0f);
+            }
+            else {
+                [self.commTableView setFrame:CGRectMake(0, 0, 768,(isFree?665:755))];
+            }
+        }
+        
+        /* 旧版API
         NSArray *items = [doc nodesForXPath:@"response" error:nil];
         if (items) {
             for (DDXMLElement *obj in items) {
@@ -5621,7 +5655,7 @@ void audioRouteChangeListenerCallback (
                 [self.commTableView setFrame:CGRectMake(0, 0, 768,(isFree?665:755))];
             }
         }
-        
+        */
         [commTableView reloadData];
         if (isNewComm) {
             [self.commTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
@@ -5688,21 +5722,6 @@ void audioRouteChangeListenerCallback (
             }
             
         }
-    } else if([request.username isEqualToString:@"sendAudio"]) {
-//        NSLog(@"audio receive:%@", [[NSString alloc] initWithData:myData encoding:NSASCIIStringEncoding]);
-        
-//        NSArray *items = [doc nodesForXPath:@"data/Row" error:nil];
-//        if (items) {
-//            for (DDXMLElement *obj in items) {
-//                NSInteger nowCount = [[[obj elementForName:@"ReadCount"] stringValue]integerValue];
-//                if (nowCount > [[VOAView find:[[[obj elementForName:@"VoaId"] stringValue]integerValue]] _readCount].integerValue) {
-//                    
-//                    [VOAView alterReadCount:[[[obj elementForName:@"VoaId"] stringValue]integerValue] count:nowCount];
-//                }
-//                
-//            }
-//            
-//        }
     }
     [doc release], doc = nil;
 }
@@ -6428,21 +6447,7 @@ void audioRouteChangeListenerCallback (
             [colSenBtn setHidden:YES];
         }
         
-        if (page == 3) {
-            if ([self hasMicphone]) {
-                //该代码是设置手机喇叭与麦克风同时工作 iphone 3.0以上版本 播放类型
-                UInt32 audioCategory = kAudioSessionCategory_PlayAndRecord;
-                AudioSessionSetProperty(kAudioSessionProperty_AudioCategory, sizeof(audioCategory), &audioCategory);
-                //设置采样率的
-                Float64 smpl=kAudioSessionProperty_CurrentHardwareSampleRate;
-                AudioSessionSetProperty(kAudioSessionProperty_PreferredHardwareSampleRate, sizeof(smpl), &smpl);
-            }
-            if (![self hasHeadset]) {
-                //设置声音输出扬声器 还是默认的接收器kAudioSessionOverrideAudioRoute_None
-                UInt32 audioRoute = kAudioSessionOverrideAudioRoute_Speaker;
-                AudioSessionSetProperty(kAudioSessionProperty_OverrideAudioRoute, sizeof(UInt32), &audioRoute);
-            }
-        } else if (page == 2) {
+        if (page == 2) {
             //        [lyricCnLabel setNumberOfLines:cLines];
             //        [lyricLabel setNumberOfLines:eLines];
             //        NSLog(@"progress:%f",progress);
@@ -6602,8 +6607,26 @@ void audioRouteChangeListenerCallback (
             //        [controller.lvlMeter_in setHidden:NO];
         }else {
             
-            //此种模式下无法播放的同时录音
-            [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
+            if (page == 3) {
+                if ([self hasMicphone]) {
+                    //该代码是设置手机喇叭与麦克风同时工作 iphone 3.0以上版本 播放类型
+                    UInt32 audioCategory = kAudioSessionCategory_PlayAndRecord;
+                    AudioSessionSetProperty(kAudioSessionProperty_AudioCategory, sizeof(audioCategory), &audioCategory);
+                    //设置采样率的
+                    Float64 smpl=kAudioSessionProperty_CurrentHardwareSampleRate;
+                    AudioSessionSetProperty(kAudioSessionProperty_PreferredHardwareSampleRate, sizeof(smpl), &smpl);
+                }
+                if (![self hasHeadset]) {
+                    //设置声音输出扬声器 还是默认的接收器kAudioSessionOverrideAudioRoute_None
+                    UInt32 audioRoute = kAudioSessionOverrideAudioRoute_Speaker;
+                    AudioSessionSetProperty(kAudioSessionProperty_OverrideAudioRoute, sizeof(UInt32), &audioRoute);
+                }
+            } else {
+                //此种模式下无法播放的同时录音
+                [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
+            }
+            
+            
             if (isiPhone) {
                 [preButton setFrame:CGRectMake(245, 10, 25, 25)];
                 [nextButton setFrame:CGRectMake(285, 10, 25, 25)];
@@ -6828,7 +6851,21 @@ void audioRouteChangeListenerCallback (
             [colSenBtn setHidden:YES];
         }
         
-        if (page == 2) {
+        if (page == 3) {
+            if ([self hasMicphone]) {
+                //该代码是设置手机喇叭与麦克风同时工作 iphone 3.0以上版本 播放类型
+                UInt32 audioCategory = kAudioSessionCategory_PlayAndRecord;
+                AudioSessionSetProperty(kAudioSessionProperty_AudioCategory, sizeof(audioCategory), &audioCategory);
+                //设置采样率的
+                Float64 smpl=kAudioSessionProperty_CurrentHardwareSampleRate;
+                AudioSessionSetProperty(kAudioSessionProperty_PreferredHardwareSampleRate, sizeof(smpl), &smpl);
+            }
+            if (![self hasHeadset]) {
+                //设置声音输出扬声器 还是默认的接收器kAudioSessionOverrideAudioRoute_None
+                UInt32 audioRoute = kAudioSessionOverrideAudioRoute_Speaker;
+                AudioSessionSetProperty(kAudioSessionProperty_OverrideAudioRoute, sizeof(UInt32), &audioRoute);
+            }
+        } else if (page == 2) {
             //        [lyricCnLabel setNumberOfLines:cLines];
             //        [lyricLabel setNumberOfLines:eLines];
             //        NSLog(@"progress:%f",progress);
@@ -6986,8 +7023,24 @@ void audioRouteChangeListenerCallback (
             }
             //        [controller.lvlMeter_in setHidden:NO];
         }else {
-            //此种模式下无法播放的同时录音
-            [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
+            if (page == 3) {
+                if ([self hasMicphone]) {
+                    //该代码是设置手机喇叭与麦克风同时工作 iphone 3.0以上版本 播放类型
+                    UInt32 audioCategory = kAudioSessionCategory_PlayAndRecord;
+                    AudioSessionSetProperty(kAudioSessionProperty_AudioCategory, sizeof(audioCategory), &audioCategory);
+                    //设置采样率的
+                    Float64 smpl=kAudioSessionProperty_CurrentHardwareSampleRate;
+                    AudioSessionSetProperty(kAudioSessionProperty_PreferredHardwareSampleRate, sizeof(smpl), &smpl);
+                }
+                if (![self hasHeadset]) {
+                    //设置声音输出扬声器 还是默认的接收器kAudioSessionOverrideAudioRoute_None
+                    UInt32 audioRoute = kAudioSessionOverrideAudioRoute_Speaker;
+                    AudioSessionSetProperty(kAudioSessionProperty_OverrideAudioRoute, sizeof(UInt32), &audioRoute);
+                }
+            } else {
+                //此种模式下无法播放的同时录音
+                [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
+            }
             if (isiPhone) {
                 [preButton setFrame:CGRectMake(245, 10, 25, 25)];
                 [nextButton setFrame:CGRectMake(285, 10, 25, 25)];
@@ -7484,7 +7537,7 @@ void audioRouteChangeListenerCallback (
 #pragma mark Table Data Source Methods
 - (NSInteger)tableView:(UITableView *)tableView //明确cell数目
  numberOfRowsInSection:(NSInteger)section {
-    return ([commArray count]/6 + 1);
+    return ([commArray count]/7 + 1);
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView
@@ -7567,7 +7620,7 @@ void audioRouteChangeListenerCallback (
 //        [tablecell setSelectionStyle:UITableViewCellSelectionStyleNone];
 //        return tablecell;
 //    } else {
-        if (row == [commArray count]/6) {
+        if (row == [commArray count]/7) {
             static NSString *ThirdLevelCell= @"NewCellTwo";
             UITableViewCell *cellThree = (UITableViewCell*)[tableView dequeueReusableCellWithIdentifier:ThirdLevelCell];
             if (!cellThree) {
@@ -7622,10 +7675,10 @@ void audioRouteChangeListenerCallback (
                     [userImg setTag:4];
                     [userImg whenTapped:^{
 //                        NSLog(@"发信 %i", userImg.superview.tag);
-                        for (int i = 0; i < [commArray count]/6; i++) {
-                            if (((NSString*)[commArray objectAtIndex:i*6]).integerValue == userImg.superview.tag) {
+                        for (int i = 0; i < [commArray count]/7; i++) {
+                            if (((NSString*)[commArray objectAtIndex:i*7]).integerValue == userImg.superview.tag) {
                                 int fromUserId = [[[NSUserDefaults standardUserDefaults] objectForKey:@"nowUser"] integerValue];
-                                UserMessage *userMsg = [[UserMessage alloc] initWithFromUserId:fromUserId fromUserName:[MyUser findNameById:fromUserId] toUserId:[[commArray objectAtIndex:i*6+5] integerValue] toUserName:(NSString *) [commArray objectAtIndex:i*6+1] comment:[commArray objectAtIndex:i*6+3] topicId:voa._voaid];
+                                UserMessage *userMsg = [[UserMessage alloc] initWithFromUserId:fromUserId fromUserName:[MyUser findNameById:fromUserId] toUserId:[[commArray objectAtIndex:i*7+5] integerValue] toUserName:(NSString *) [commArray objectAtIndex:i*7+1] comment:[commArray objectAtIndex:i*7+3] topicId:voa._voaid];
                                 SendMessageController *sendMsgController = [[SendMessageController alloc] init];
                                 sendMsgController.userMsg = userMsg;
                                 [userMsg release];
@@ -7649,6 +7702,14 @@ void audioRouteChangeListenerCallback (
                     [reponseBtn setTag:5];
                     [cell addSubview:reponseBtn];
                     [reponseBtn release];
+                    
+                    UIButton *playCommBtn = [[UIButton alloc] initWithFrame:CGRectMake(280, 35, 30, 20)];
+                    [playCommBtn addTarget:self action:@selector(playUserCommRec:) forControlEvents:UIControlEventTouchUpInside];
+                    [playCommBtn setImage:[UIImage imageNamed:@"playingBBC.png"] forState:UIControlStateNormal];
+                    [playCommBtn setTag:6];
+                    [playCommBtn setHidden:YES];
+                    [cell addSubview:playCommBtn];
+                    [playCommBtn release];
                     
                 }else {
                     cell = [[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:FirstLevelCell] autorelease];
@@ -7685,10 +7746,10 @@ void audioRouteChangeListenerCallback (
                     [userImg setTag:4];
                     [userImg whenTapped:^{
                         //                        NSLog(@"发信 %i", userImg.superview.tag);
-                        for (int i = 0; i < [commArray count]/6; i++) {
-                            if (((NSString*)[commArray objectAtIndex:i*6]).integerValue == userImg.superview.tag) {
+                        for (int i = 0; i < [commArray count]/7; i++) {
+                            if (((NSString*)[commArray objectAtIndex:i*7]).integerValue == userImg.superview.tag) {
                                 int fromUserId = [[[NSUserDefaults standardUserDefaults] objectForKey:@"nowUser"] integerValue];
-                                UserMessage *userMsg = [[UserMessage alloc] initWithFromUserId:fromUserId fromUserName:[MyUser findNameById:fromUserId] toUserId:[[commArray objectAtIndex:i*6+5] integerValue] toUserName:(NSString *) [commArray objectAtIndex:i*6+1] comment:[commArray objectAtIndex:i*6+3] topicId:voa._voaid];
+                                UserMessage *userMsg = [[UserMessage alloc] initWithFromUserId:fromUserId fromUserName:[MyUser findNameById:fromUserId] toUserId:[[commArray objectAtIndex:i*7+5] integerValue] toUserName:(NSString *) [commArray objectAtIndex:i*7+1] comment:[commArray objectAtIndex:i*7+3] topicId:voa._voaid];
                                 SendMessageController *sendMsgController = [[SendMessageController alloc] init];
                                 sendMsgController.userMsg = userMsg;
                                 [userMsg release];
@@ -7712,25 +7773,48 @@ void audioRouteChangeListenerCallback (
                     [reponseBtn setTag:5];
                     [cell addSubview:reponseBtn];
                     [reponseBtn release];
+                    
+                    UIButton *playCommBtn = [[UIButton alloc] initWithFrame:CGRectMake(718, 45, 40, 30)];
+                    [playCommBtn addTarget:self action:@selector(playUserCommRec:) forControlEvents:UIControlEventTouchUpInside];
+                    [playCommBtn setImage:[UIImage imageNamed:@"playingBBC.png"] forState:UIControlStateNormal];
+                    [playCommBtn setTag:6];
+                    [playCommBtn setHidden:YES];
+                    [cell addSubview:playCommBtn];
+                    [playCommBtn release];
                 }
             }
             for (UIView *nLabel in [cell subviews]) {
                 if (nLabel.tag == 1) {
-                    [(UILabel*)nLabel setText:[commArray objectAtIndex:row*6+1]];
+                    [(UILabel*)nLabel setText:[commArray objectAtIndex:row*7+1]];
                 }
                 if (nLabel.tag == 2) {
-                    [(UILabel*)nLabel setText:[commArray objectAtIndex:row*6+4]];
-                }
-                if (nLabel.tag == 3) {
-                    [(UILabel*)nLabel setText:[commArray objectAtIndex:row*6+3]];
+                    [(UILabel*)nLabel setText:[commArray objectAtIndex:row*7+4]];
                 }
                 if (nLabel.tag == 4) {
-                    [(UIImageView*)nLabel setImageWithURL:[commArray objectAtIndex:row*6+2] placeholderImage:[UIImage imageNamed:@"acquiesce.png"]];
+                    [(UIImageView*)nLabel setImageWithURL:[commArray objectAtIndex:row*7+2] placeholderImage:[UIImage imageNamed:@"acquiesce.png"]];
                 }
+                if ([[commArray objectAtIndex:row*7+6] integerValue] == 1) {
+                    if (nLabel.tag == 3) {
+                        [nLabel setHidden:YES];
+                    }
+                    if (nLabel.tag == 6) {
+                        [nLabel setHidden:NO];
+                    }
+                } else {
+                    if (nLabel.tag == 3) {
+                        [nLabel setHidden:NO];
+                        [(UILabel*)nLabel setText:[commArray objectAtIndex:row*7+3]];
+                    }
+                    if (nLabel.tag == 6) {
+                        [nLabel setHidden:YES];
+                    }
+                }
+                
             }
             
 //            [cell.imageView setImageWithURL:[commArray objectAtIndex:row*5+2] placeholderImage:[UIImage imageNamed:@"acquiesce.png"]];
-            [cell setTag:[[commArray objectAtIndex:row*6] integerValue]];
+//            [cell setTag:[[commArray objectAtIndex:row*7] integerValue]];
+            [cell setTag: row];
             [cell setBackgroundColor:[UIColor clearColor]];
             [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
             return cell;
@@ -7744,7 +7828,7 @@ void audioRouteChangeListenerCallback (
 #pragma mark TableView Delegate Methods
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return ([indexPath row] < [commArray count]/6 ? (isiPhone?kCommTableHeightPh:80.0f) : 1);
+    return ([indexPath row] < [commArray count]/7 ? (isiPhone?kCommTableHeightPh:80.0f) : 1);
 }
 
 - (void)tableView:(UITableView *)tableView 
@@ -8058,77 +8142,78 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 - (void)startCommRecord
 {
     NSLog(@"开始录音");
-//    if (player) {
-//        nowTime = [player currentTime];
-//        [player release];
-//        player = nil;
-//    }
-//    //    [player pause];
-//    if (wordPlayer) {
-//        [wordPlayer release];
-//        wordPlayer = nil;
-//    }
-//    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-//    [audioSession setCategory:AVAudioSessionCategoryRecord error:nil];
-//    
-//    if (m_isRecording == NO)
-//    {
-//        if (!notValid) {
-//            //        if ([lyricSynTimer isValid]) {
-//            [lyricSynTimer invalidate];
-//            //        }
-//            //        if ([sliderTimer isValid]) {
-//            [sliderTimer invalidate];
-//            //        }
-//            notValid = YES;
-//        }
-//        
-//        m_isRecording = YES;
-//        NSString *recordAudioFullPath = [kRecorderDirectory stringByAppendingPathComponent:
-//                                         [NSString stringWithFormat:kRecordFile]];
-//        //        NSString *recordAudioFullPath = [kRecorderDirectory stringByAppendingPathComponent:
-//        //                                         [NSString stringWithFormat:@"recordAudio.caf"]];
-//        NSLock* tempLock = [[NSLock alloc]init];
-//        [tempLock lock];
-//        if ([[NSFileManager defaultManager] fileExistsAtPath:recordAudioFullPath])
-//        {
-//            [[NSFileManager defaultManager] removeItemAtPath:recordAudioFullPath error:nil];
-//        }
-//        [tempLock unlock];
-//        [tempLock release];
-//        
-//        dispatch_queue_t stopQueue;
-//        stopQueue = dispatch_queue_create("stopQueue", NULL);
-//        dispatch_async(stopQueue, ^(void){
-//            //run in main thread
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//                [audioRecoder startRecord];
-////                if (!isiPhone) { //ipad版本需要最少录制八秒才可播放
-////                    [NSTimer scheduledTimerWithTimeInterval:8 target:self selector:@selector(recordEnable) userInfo:nil repeats:NO];
-////                }
-//            });
-//        });
-//        dispatch_release(stopQueue);
-//        
-//    }
+    [self setButtonImage:pauseImage];
+    if (player) {
+        nowTime = [player currentTime];
+        [player release];
+        player = nil;
+    }
+    //    [player pause];
+    if (wordPlayer) {
+        [wordPlayer release];
+        wordPlayer = nil;
+    }
+    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+    [audioSession setCategory:AVAudioSessionCategoryRecord error:nil];
+    
+    if (m_isRecording == NO)
+    {
+        if (!notValid) {
+            //        if ([lyricSynTimer isValid]) {
+            [lyricSynTimer invalidate];
+            //        }
+            //        if ([sliderTimer isValid]) {
+            [sliderTimer invalidate];
+            //        }
+            notValid = YES;
+        }
+        
+        m_isRecording = YES;
+        NSString *recordAudioFullPath = [kRecorderDirectory stringByAppendingPathComponent:
+                                         [NSString stringWithFormat:kRecordFile]];
+        //        NSString *recordAudioFullPath = [kRecorderDirectory stringByAppendingPathComponent:
+        //                                         [NSString stringWithFormat:@"recordAudio.caf"]];
+        NSLock* tempLock = [[NSLock alloc]init];
+        [tempLock lock];
+        if ([[NSFileManager defaultManager] fileExistsAtPath:recordAudioFullPath])
+        {
+            [[NSFileManager defaultManager] removeItemAtPath:recordAudioFullPath error:nil];
+        }
+        [tempLock unlock];
+        [tempLock release];
+        
+        dispatch_queue_t stopQueue;
+        stopQueue = dispatch_queue_create("stopQueue", NULL);
+        dispatch_async(stopQueue, ^(void){
+            //run in main thread
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [audioRecoder startRecord];
+//                if (!isiPhone) { //ipad版本需要最少录制八秒才可播放
+//                    [NSTimer scheduledTimerWithTimeInterval:8 target:self selector:@selector(recordEnable) userInfo:nil repeats:NO];
+//                }
+            });
+        });
+        dispatch_release(stopQueue);
+        
+    }
 }
 
 - (void)endCommRecord
 {
     NSLog(@"结束录音");
-//    if (m_isRecording) {
-//        m_isRecording = NO;
-//        [self stopRecordTimer];
-//        dispatch_queue_t stopQueue;
-//        stopQueue = dispatch_queue_create("stopQueue", NULL);
-//        dispatch_async(stopQueue, ^(void){
-//            //run in main thread
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//                [audioRecoder stopRecord];
-//            });
-//        });
-//        dispatch_release(stopQueue);
-//    }
+    if (m_isRecording) {
+        m_isRecording = NO;
+        [self stopRecordTimer];
+        dispatch_queue_t stopQueue;
+        stopQueue = dispatch_queue_create("stopQueue", NULL);
+        dispatch_async(stopQueue, ^(void){
+            //run in main thread
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [audioRecoder stopRecord];
+            });
+        });
+        dispatch_release(stopQueue);
+    }
     
     
     [commRecBtn removeTarget:self action:@selector(startCommRecord) forControlEvents:UIControlEventTouchDown];
@@ -8137,9 +8222,9 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [commRecBtn setTitle:@"回放" forState:UIControlStateNormal];
     [commRecBtn addTarget:self action:@selector(playCommRec) forControlEvents:UIControlEventTouchUpInside];
     
-    [commChangeBtn removeTarget:self action:@selector(doCommChange) forControlEvents:UIControlEventTouchUpOutside];
-    [commChangeBtn setTitle:@"返" forState:UIControlStateNormal];
-    [commChangeBtn addTarget:self action:@selector(retuenCommRec) forControlEvents:UIControlEventTouchUpInside];
+    [commChangeBtn removeTarget:self action:@selector(doCommChange) forControlEvents:UIControlEventTouchUpInside];
+    [commChangeBtn setTitle:@"返回" forState:UIControlStateNormal];
+    [commChangeBtn addTarget:self action:@selector(returnCommRec) forControlEvents:UIControlEventTouchUpInside];
     
 //    [commRecBtn setHidden:YES];
 //    [commRecControl setSelectedSegmentIndex:2] ;
@@ -8147,9 +8232,43 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 }
 
 /**
+ *  切换评论方式的按钮响应事件
+ */
+- (void) doCommChange{
+    if (textView.isHidden) {
+        [textView setHidden:NO];
+        [commRecBtn setHidden:YES];
+        [commChangeBtn setTitle:@"语音" forState:UIControlStateNormal];
+//        [sendBtn removeTarget:self action:@selector(doRecSend) forControlEvents:UIControlEventTouchUpInside];
+//        [sendBtn addTarget:self action:@selector(doSend) forControlEvents:UIControlEventTouchUpInside];
+        //        [commRecControl setHidden:YES];
+    } else {
+        [textView setHidden:YES];
+        [commRecBtn setHidden:NO];
+        [commChangeBtn setTitle:@"文本" forState:UIControlStateNormal];
+//        [sendBtn removeTarget:self action:@selector(doSend) forControlEvents:UIControlEventTouchUpInside];
+//        [sendBtn addTarget:self action:@selector(doRecSend) forControlEvents:UIControlEventTouchUpInside];
+        //        [commRecControl setHidden:YES];
+    }
+}
+
+/**
+ *  切换评论方式的按钮响应事件
+ */
+//- (void) doRecSend{
+//    NSLog(@"上传音频");
+//    if (kNetIsExist) {
+//        [self sendAudioComments:1];
+//    } else {
+//        kNetTest;
+//    }
+//    
+//}
+
+/**
  *  返回语音评价录制
  */
-- (void)retuenCommRec{
+- (void)returnCommRec{
     [commRecBtn removeTarget:self action:@selector(playCommRec) forControlEvents:UIControlEventTouchUpInside];
     [commRecBtn setTitle:@"按住 说话" forState:UIControlStateNormal];
     [commRecBtn addTarget:self action:@selector(startCommRecord) forControlEvents:UIControlEventTouchDown];
@@ -8157,12 +8276,29 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [commRecBtn addTarget:self action:@selector(endCommRecord) forControlEvents:UIControlEventTouchUpOutside];
     
     
-    
-    [commChangeBtn removeTarget:self action:@selector(retuenCommRec) forControlEvents:UIControlEventTouchUpOutside];
-    [commChangeBtn setTitle:@"切" forState:UIControlStateNormal];
+    [commChangeBtn removeTarget:self action:@selector(retuenCommRec) forControlEvents:UIControlEventTouchUpInside];
+    [commChangeBtn setTitle:@"文本" forState:UIControlStateNormal];
     [commChangeBtn addTarget:self action:@selector(doCommChange) forControlEvents:UIControlEventTouchUpInside];
 //    [self doCommChange];
-//    NSLog(@"返回文字评价");
+    NSLog(@"返回语音评价录制");
+}
+
+/**
+ *  播放大家的语音评论
+ */
+- (void) playUserCommRec:(UIButton *)sender
+{
+    if (kNetIsExist) {
+        AVAudioSession *session = [AVAudioSession sharedInstance];
+        [session setCategory:AVAudioSessionCategoryPlayback error:nil];
+        if (wordPlayer) {
+            [wordPlayer release];
+        }
+        wordPlayer =[[AVPlayer alloc]initWithURL:[NSURL URLWithString:[commArray objectAtIndex:sender.superview.tag*7+3]]];
+        [wordPlayer play];
+        //    NSLog(@"play word");
+    }
+    
 }
 
 /**
@@ -8170,6 +8306,28 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
  */
 - (void)playCommRec{
     NSLog(@"回放语音评价");
+    
+    NSString *recordAudioFullPath = [kRecorderDirectory stringByAppendingPathComponent:
+                                     [NSString stringWithFormat:kRecordFile]];
+    ////    NSLock* tempLock = [[NSLock alloc]init];
+    ////    [tempLock lock];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:recordAudioFullPath])
+    {
+        NSLog(@"文件存在");
+        AVAudioSession *session = [AVAudioSession sharedInstance];
+        [session setCategory:AVAudioSessionCategoryPlayback error:nil];
+        if (wordPlayer) {
+            [wordPlayer release];
+            wordPlayer = nil;
+        }
+        
+        wordPlayer = [[AVPlayer alloc] initWithURL:[NSURL fileURLWithPath:recordAudioFullPath]];
+        [self changePlayRecordTimer];
+        [wordPlayer play];
+        
+    }else {
+        NSLog(@"文件不存在");
+    }
 }
 
 /**
@@ -8366,18 +8524,17 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
         dispatch_async(stopQueue, ^(void){
             //run in main thread
             dispatch_async(dispatch_get_main_queue(), ^{
-        
-                
                 [self changeRecordTimer];
                 [audioRecoder startRecord];
                 [btn_play setEnabled:NO];
                 if ([[NSUserDefaults standardUserDefaults] boolForKey:@"recordRead"]) {
-                    [NSTimer scheduledTimerWithTimeInterval:(isiPhone?(recordTime*1.3):((recordTime*1.3)>7?(recordTime*1.3):8)) target:self selector:@selector(stopRecord) userInfo:nil repeats:NO];
+                    [NSTimer scheduledTimerWithTimeInterval:recordTime*1.3 target:self selector:@selector(stopRecord) userInfo:nil repeats:NO];
+//                    [NSTimer scheduledTimerWithTimeInterval:(isiPhone?(recordTime*1.3):((recordTime*1.3)>7?(recordTime*1.3):8)) target:self selector:@selector(stopRecord) userInfo:nil repeats:NO];
                 }
-                if (!isiPhone) { //ipad版本需要最少录制八秒才可播放
-                    [btn_record setEnabled:NO];
-                    [NSTimer scheduledTimerWithTimeInterval:8 target:self selector:@selector(recordEnable) userInfo:nil repeats:NO];
-                }
+//                if (!isiPhone) { //ipad版本需要最少录制八秒才可播放
+//                    [btn_record setEnabled:NO];
+//                    [NSTimer scheduledTimerWithTimeInterval:8 target:self selector:@selector(recordEnable) userInfo:nil repeats:NO];
+//                }
             });
         });
         dispatch_release(stopQueue);
