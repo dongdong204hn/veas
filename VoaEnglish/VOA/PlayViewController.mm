@@ -5920,6 +5920,18 @@ void audioRouteChangeListenerCallback (
     }
     else if ([request.username isEqualToString:@"send"]) {
         isResponse = NO;
+        [displayModeBtn setTitle:@"评论发布失败" forState:UIControlStateNormal];
+        [UIView beginAnimations:@"Display" context:nil];
+        [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+        [UIView setAnimationDuration:0.5];
+        [displayModeBtn setAlpha:0.8];
+        [UIView commitAnimations];
+        
+        [UIView beginAnimations:@"Dismiss" context:nil];
+        [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+        [UIView setAnimationDuration:2.0];
+        [displayModeBtn setAlpha:0];
+        [UIView commitAnimations];
     }
     else if ([request.username isEqualToString:@"detail"]) {
 //        timeSlider.value = 0.f;

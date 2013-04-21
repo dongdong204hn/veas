@@ -2057,10 +2057,10 @@
 			isa = PBXGroup;
 			children = (
 				B048C6451722739D008B9E22 /* WaveFormViewIOS.h */,
-				B048C6461722739D008B9E22 /* WaveSampleProvider.h */,
-				B048C6471722739D008B9E22 /* WaveSampleProviderDelegate.h */,
 				B048C6481722739D008B9E22 /* WaveFormViewIOS.m */,
+				B048C6461722739D008B9E22 /* WaveSampleProvider.h */,
 				B048C6491722739D008B9E22 /* WaveSampleProvider.m */,
+				B048C6471722739D008B9E22 /* WaveSampleProviderDelegate.h */,
 			);
 			name = speak;
 			sourceTree = "<group>";

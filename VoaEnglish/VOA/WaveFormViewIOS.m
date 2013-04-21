@@ -54,7 +54,7 @@
 
 - (void) initView
 {
-	playProgress = 0.0;
+	/*playProgress = 0.0;
 	progress = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray] autorelease];
 	progress.frame = [self progressRect];
 	[self addSubview:progress];
@@ -70,6 +70,7 @@
 	darkgray = [[UIColor colorWithRed:47.0/255.0 green:47.0/255.0 blue:48.0/255.0 alpha:1.0]retain];
 	white = [[UIColor whiteColor]retain];
 	marker = [[UIColor colorWithRed:242.0/255.0 green:147.0/255.0 blue:0.0/255.0 alpha:1.0]retain];
+     */
 }
 
 - (void)setFrame:(CGRect)frameRect
@@ -129,7 +130,7 @@
 - (void) openAudioURL:(NSURL *)url own:(NSInteger)own
 {
     self.type=own;
-	if(player != nil) {
+	/*if(player != nil) {
 		[player pause];
 		[player release];
 		player = nil;
@@ -137,7 +138,7 @@
 	sampleLength = 0;
 	[self setNeedsDisplay];
 	[progress setHidden:FALSE];
-	[progress startAnimating];
+	[progress startAnimating];*/
 	[wsp release];
 	wsp = [[WaveSampleProvider alloc]initWithURL:url];
 	wsp.delegate = self;
@@ -555,7 +556,7 @@
 }
 
 #pragma mark -
-#pragma mark Sample Data Provider Delegat
+#pragma mark Sample Data Provider Delegate
 - (void) statusUpdated:(WaveSampleProvider *)provider
 {
 	//[self setInfoString:wsp.statusMessage];
