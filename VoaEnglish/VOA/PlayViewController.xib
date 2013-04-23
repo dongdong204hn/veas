@@ -868,7 +868,7 @@
 								<string key="NSFrame">{{285, 47}, {25, 25}}</string>
 								<reference key="NSSuperview" ref="443189078"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="562078025"/>
+								<reference key="NSNextKeyView" ref="462641346"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -1075,7 +1075,7 @@
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="1004400258"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
-						<object class="NSColor" key="IBUIBackgroundColor">
+						<object class="NSColor" key="IBUIBackgroundColor" id="607974053">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MAA</bytes>
 						</object>
@@ -1102,6 +1102,52 @@
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<reference key="IBUIBackgroundColor" ref="138002272"/>
 						<float key="IBUIAlpha">0.0</float>
+						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+					</object>
+					<object class="IBUIView" id="462641346">
+						<reference key="NSNextResponder" ref="191373211"/>
+						<int key="NSvFlags">-2147483356</int>
+						<object class="NSMutableArray" key="NSSubviews">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBUIImageView" id="829044679">
+								<reference key="NSNextResponder" ref="462641346"/>
+								<int key="NSvFlags">292</int>
+								<string key="NSFrameSize">{160, 160}</string>
+								<reference key="NSSuperview" ref="462641346"/>
+								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="763174642"/>
+								<string key="NSReuseIdentifierKey">_NS:9</string>
+								<reference key="IBUIBackgroundColor" ref="607974053"/>
+								<float key="IBUIAlpha">0.60000002384185791</float>
+								<bool key="IBUIUserInteractionEnabled">NO</bool>
+								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+							</object>
+							<object class="IBUIImageView" id="763174642">
+								<reference key="NSNextResponder" ref="462641346"/>
+								<int key="NSvFlags">274</int>
+								<string key="NSFrameSize">{160, 160}</string>
+								<reference key="NSSuperview" ref="462641346"/>
+								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="562078025"/>
+								<string key="NSReuseIdentifierKey">_NS:9</string>
+								<bool key="IBUIUserInteractionEnabled">NO</bool>
+								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+								<object class="NSCustomResource" key="IBUIImage">
+									<string key="NSClassName">NSImage</string>
+									<string key="NSResourceName">speaker_0.png</string>
+								</object>
+							</object>
+						</object>
+						<string key="NSFrame">{{80, 160}, {160, 160}}</string>
+						<reference key="NSSuperview" ref="191373211"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="829044679"/>
+						<string key="NSReuseIdentifierKey">_NS:9</string>
+						<reference key="IBUIBackgroundColor" ref="138002272"/>
+						<object class="IBUISimulatedSizeMetrics" key="IBUISimulatedDestinationMetrics">
+							<string key="IBUISimulatedSizeMetricsClass">IBUISimulatedFreeformSizeMetricsSentinel</string>
+							<string key="IBUIDisplayName">Freeform</string>
+						</object>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 					</object>
 				</object>
@@ -1378,6 +1424,22 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">recorderView</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="462641346"/>
+					</object>
+					<int key="connectionID">296</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">peakMeterIV</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="763174642"/>
+					</object>
+					<int key="connectionID">297</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">delegate</string>
 						<reference key="source" ref="1060696115"/>
 						<reference key="destination" ref="372490531"/>
@@ -1645,6 +1707,7 @@
 							<reference ref="814393736"/>
 							<reference ref="912856838"/>
 							<reference ref="279231159"/>
+							<reference ref="462641346"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -1918,7 +1981,30 @@
 					<object class="IBObjectRecord">
 						<int key="objectID">285</int>
 						<reference key="object" ref="279231159"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+						</object>
 						<reference key="parent" ref="191373211"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">288</int>
+						<reference key="object" ref="462641346"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<reference ref="763174642"/>
+							<reference ref="829044679"/>
+						</object>
+						<reference key="parent" ref="191373211"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">289</int>
+						<reference key="object" ref="829044679"/>
+						<reference key="parent" ref="462641346"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">292</int>
+						<reference key="object" ref="763174642"/>
+						<reference key="parent" ref="462641346"/>
 					</object>
 				</object>
 			</object>
@@ -1979,6 +2065,9 @@
 					<string>28.IBPluginDependency</string>
 					<string>285.CustomClassName</string>
 					<string>285.IBPluginDependency</string>
+					<string>288.IBPluginDependency</string>
+					<string>289.IBPluginDependency</string>
+					<string>292.IBPluginDependency</string>
 					<string>80.CustomClassName</string>
 					<string>80.IBPluginDependency</string>
 					<string>86.CustomClassName</string>
@@ -2042,6 +2131,9 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>WaveFormViewIOS</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>MyPageControl</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>MyTextView</string>
@@ -2063,7 +2155,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">287</int>
+			<int key="maxID">297</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -2194,9 +2286,11 @@
 							<string>myScroll</string>
 							<string>nextButton</string>
 							<string>pageControl</string>
+							<string>peakMeterIV</string>
 							<string>playButton</string>
 							<string>preButton</string>
 							<string>recordLabel</string>
+							<string>recorderView</string>
 							<string>speedSlider</string>
 							<string>timeSlider</string>
 							<string>titleWords</string>
@@ -2228,9 +2322,11 @@
 							<string>TextScrollView</string>
 							<string>UIButton</string>
 							<string>MyPageControl</string>
+							<string>UIImageView</string>
 							<string>UIButton</string>
 							<string>UIButton</string>
 							<string>UILabel</string>
+							<string>UIView</string>
 							<string>UISlider</string>
 							<string>UISlider</string>
 							<string>UITextView</string>
@@ -2265,9 +2361,11 @@
 							<string>myScroll</string>
 							<string>nextButton</string>
 							<string>pageControl</string>
+							<string>peakMeterIV</string>
 							<string>playButton</string>
 							<string>preButton</string>
 							<string>recordLabel</string>
+							<string>recorderView</string>
 							<string>speedSlider</string>
 							<string>timeSlider</string>
 							<string>titleWords</string>
@@ -2363,6 +2461,10 @@
 								<string key="candidateClassName">MyPageControl</string>
 							</object>
 							<object class="IBToOneOutletInfo">
+								<string key="name">peakMeterIV</string>
+								<string key="candidateClassName">UIImageView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
 								<string key="name">playButton</string>
 								<string key="candidateClassName">UIButton</string>
 							</object>
@@ -2373,6 +2475,10 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">recordLabel</string>
 								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">recorderView</string>
+								<string key="candidateClassName">UIView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">speedSlider</string>
@@ -2456,6 +2562,7 @@
 				<string>returnTwo.png</string>
 				<string>share.png</string>
 				<string>sin.png</string>
+				<string>speaker_0.png</string>
 				<string>speedQuick.png</string>
 				<string>speedSlow.png</string>
 				<string>startRecord.png</string>
@@ -2483,6 +2590,7 @@
 				<string>{32, 24}</string>
 				<string>{29, 29}</string>
 				<string>{29, 29}</string>
+				<string>{162, 152}</string>
 				<string>{36, 46}</string>
 				<string>{28, 44}</string>
 				<string>{27, 27}</string>

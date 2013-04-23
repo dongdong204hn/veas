@@ -70,6 +70,11 @@
 #define kRecordFile @"recordAudio.aac"
 #define kCutFile @"export.wav"
 
+#define kSpeakImage0        @"speaker_0.png"
+#define kSpeakImage1         @"speaker_1.png"
+#define kSpeakImage2         @"speaker_2.png"
+#define kSpeakImage3         @"speaker_3.png"
+
 @interface PlayViewController : UIViewController <UIAlertViewDelegate, AVAudioPlayerDelegate, ASIHTTPRequestDelegate,MyLabelDelegate,MBProgressHUDDelegate, AVAudioSessionDelegate, UIScrollViewDelegate,UIActionSheetDelegate,UITableViewDelegate,UITableViewDataSource,UIPickerViewDelegate,UIPickerViewDataSource,HPGrowingTextViewDelegate,HSCButtonDelegate, UITextViewDelegate>
 {
     CL_AudioRecorder* audioRecoder;
@@ -160,7 +165,7 @@
 //    int				cnLines;
     int             playerFlag;
     int             fixSeconds;
-    int             recordSeconds;
+    CGFloat             recordSeconds;
     int             nowRecordSeconds;
     int             recordTime;
     
@@ -276,6 +281,11 @@
 @property (nonatomic, retain) IBOutlet UIButton  *displayModeBtn;   //播放模式展示
 
 @property (nonatomic, retain) IBOutlet WaveFormViewIOS *wfv;
+@property (nonatomic, retain) IBOutlet UIImageView *peakMeterIV;
+@property (nonatomic, retain) IBOutlet UIView *recorderView;
+
+
+
 @property (nonatomic) NSInteger thisScore;
 
 @property (nonatomic, retain) UITextView        *nowTextView; //
@@ -307,7 +317,7 @@
 @property (nonatomic, retain) NSTimer			*lyricSynTimer; //歌词同步定时器
 @property (nonatomic, retain) NSTimer         *fixTimer; //定时播放定时器
 @property (nonatomic, retain) NSTimer         *recordTimer; //录音定时器
-//@property (nonatomic, retain) NSTimer         *commRecTimer; //录音定时器
+@property (nonatomic, retain) NSTimer         *updateTimer; //录音音量定时器
 @property (nonatomic, retain) NSMutableArray	*lyricArray;    //英文歌词数组
 @property (nonatomic, retain) NSMutableArray	*lyricCnArray;  //中文歌词数组
 @property (nonatomic, retain) NSMutableArray	*timeArray; //歌词播放时长数组
@@ -346,7 +356,7 @@
 @property (nonatomic, retain) VOASentence *mySentence;  //记录要收藏的句子的基本信息
 
 @property int				playerFlag; //0:local 1:net
-@property (nonatomic) int             recordSeconds;    //记录实际录音时长
+@property (nonatomic) CGFloat             recordSeconds;    //记录实际录音时长
 @property (nonatomic) int             nowRecordSeconds; //实际录音时长的备份
 @property (nonatomic) int             recordTime;   //根据歌词播放时长得到的自动录音时的最长时长
 @property (nonatomic) int             fixSeconds;   //记录定时播放时秒数

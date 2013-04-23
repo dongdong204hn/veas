@@ -151,6 +151,9 @@
 @synthesize commRecBtn;
 @synthesize wfv;
 @synthesize thisScore;
+@synthesize updateTimer;
+@synthesize recorderView;
+@synthesize peakMeterIV;
 //@synthesize commRecControl;
 //@synthesize commRecTimer;
 
@@ -296,7 +299,7 @@ extern ASIHTTPRequest *nowrequest;
     [commRecBtn addTarget:self action:@selector(endCommRecord) forControlEvents:UIControlEventTouchUpOutside];
     
     for (int i = 0; i < [commArray count]/7; i++) {
-        if (((NSString*)[commArray objectAtIndex:i*7]).integerValue == sender.superview.tag) {
+        if (i == sender.superview.tag) {
             [textView setText:[NSString stringWithFormat:@"回复%@:", [commArray objectAtIndex:i*7+1]]];
         }
     }
@@ -1110,7 +1113,7 @@ extern ASIHTTPRequest *nowrequest;
 //        NSInteger myEndTime = sen_num > 1? [[timeArray objectAtIndex:sen_num-1] unsignedIntValue] : [[timeArray objectAtIndex:1] unsignedIntValue];
 //        NSLog(@"start:%d end:%d", myStartTime, myEndTime);
 //        [self cutAudio:myStartTime endTime:myEndTime];
-        [self loadAudio];
+//        [self loadAudio];
 //        double engHight = [@"a" sizeWithFont:CourierOne].height;
 //        if (![self isPlaying] && sen_num>1) {
 //            [player seekToTime:CMTimeMakeWithSeconds([[timeArray objectAtIndex:sen_num-2] unsignedIntValue], NSEC_PER_SEC)];
@@ -1121,7 +1124,7 @@ extern ASIHTTPRequest *nowrequest;
         } else {
         }
         recordTime = (sen_num > 1 ? [[timeArray objectAtIndex:sen_num-1] unsignedIntValue] - [[timeArray objectAtIndex:sen_num-2] unsignedIntValue] : [[timeArray objectAtIndex:1] unsignedIntValue] - [[timeArray objectAtIndex:0] unsignedIntValue]) ;
-        NSLog(@"recordTime:%d", recordTime);
+//        NSLog(@"recordTime:%d", recordTime);
         
 //        NSLog(@"controller.recordTime:%d",controller.recordTime);
 //        if (afterRecord) {
@@ -1311,13 +1314,13 @@ extern ASIHTTPRequest *nowrequest;
 //        NSInteger myEndTime = sen_num > 1? [[timeArray objectAtIndex:sen_num-1] unsignedIntValue] : [[timeArray objectAtIndex:1] unsignedIntValue];
 //        NSLog(@"start:%d end:%d", myStartTime, myEndTime);
 //        [self cutAudio:myStartTime endTime:myEndTime];
-        [self loadAudio];
+//        [self loadAudio];
 //        NSLog(@"1");
         if (sen_num == [timeArray count]+1) {
             recordTime = 6;
         } else {
             recordTime = [[timeArray objectAtIndex:sen_num-1] unsignedIntValue] - [[timeArray objectAtIndex:sen_num-2] unsignedIntValue] ;
-            NSLog(@"recordTime:%d", recordTime);
+//            NSLog(@"recordTime:%d", recordTime);
         }
 //        NSLog(@"2");
 //        if (afterRecord) {
@@ -4029,7 +4032,7 @@ void audioRouteChangeListenerCallback (
         
 	}
 //    [self score];
-    [NSTimer scheduledTimerWithTimeInterval:4.0f target:self selector:@selector(score) userInfo:nil repeats:NO];
+    [NSTimer scheduledTimerWithTimeInterval:5.0f target:self selector:@selector(score) userInfo:nil repeats:NO];
     
     
 }
@@ -5021,10 +5024,10 @@ void audioRouteChangeListenerCallback (
     commRecBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     if (isiPhone) {
         
-        commRecBtn.frame = CGRectMake(78, 8, 167, 27);
+        commRecBtn.frame = CGRectMake(78, 5, 167, 30);
         
     } else {
-        commRecBtn.frame = CGRectMake(115, 8, 528, 27);
+        commRecBtn.frame = CGRectMake(120, 5, 528, 30);
     }
     commRecBtn.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin;
     [commRecBtn setTitle:@"按住 说话" forState:UIControlStateNormal];
@@ -5294,6 +5297,7 @@ void audioRouteChangeListenerCallback (
     
     [commChangeBtn release], commChangeBtn = nil;
     [commRecBtn release], commRecBtn = nil;
+    [wfv release], wfv = nil;
 }
 
 /**
@@ -5406,6 +5410,9 @@ void audioRouteChangeListenerCallback (
     [textView release];
     [wordTouches release];
     [mySentence release];
+    [commRecBtn release];
+    [commChangeBtn release];
+    [wfv release];
     [super dealloc];
 }
 
@@ -5806,7 +5813,7 @@ void audioRouteChangeListenerCallback (
  */
 - (void)catchComments:(NSInteger)pages{
     if (kNetIsExist) {
-        NSString *url = [NSString stringWithFormat:@"http://172.16.94.220:8081/voa/UnicomApi?protocol=60001&format=xml&voaid=%i&pageNumber=%i&pageCounts=15",voa._voaid,pages];
+        NSString *url = [NSString stringWithFormat:@"http://voa.iyuba.com/voa/UnicomApi?protocol=60001&format=xml&voaid=%i&pageNumber=%i&pageCounts=15",voa._voaid,pages];
         //    ASIHTTPRequest * request = [[ASIHTTPRequest alloc] initWithURL:[NSURL URLWithString:url]];
         ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
         [sendBtn setUserInteractionEnabled:NO];
@@ -5837,7 +5844,7 @@ void audioRouteChangeListenerCallback (
     if (uid>0) {
         NSString *url;
         //    url = [NSString stringWithFormat:@"http://172.16.94.220:8081/voa/UnicomApi?platform=ios&format=xml&protocol=60002&userid=%i&voaid=%i&shuoshuotype=1",uid, voa._voaid];
-        url = [NSString stringWithFormat:@"http://172.16.94.220:8081/voa/UnicomApi?"];
+        url = [NSString stringWithFormat:@"http://voa.iyuba.com/voa/UnicomApi?"];
         
         
         ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:url]];
@@ -5988,7 +5995,7 @@ void audioRouteChangeListenerCallback (
                 [commArray addObject:[[obj elementForName:@"id"] stringValue]];
                 [commArray addObject:[[obj elementForName:@"UserName"] stringValue]];
                 [commArray addObject:[[obj elementForName:@"ImgSrc"] stringValue]];
-                [commArray addObject: [[obj elementForName:@"ShuoShuoType"] stringValue].intValue == 1 ?[NSString stringWithFormat:@"http://172.16.94.220:8081/voa/%@", [[obj elementForName:@"ShuoShuo"] stringValue].URLDecodedString] : [[obj elementForName:@"ShuoShuo"] stringValue].URLDecodedString];
+                [commArray addObject: [[obj elementForName:@"ShuoShuoType"] stringValue].intValue == 1 ?[NSString stringWithFormat:@"http://voa.iyuba.com/voa/%@", [[obj elementForName:@"ShuoShuo"] stringValue].URLDecodedString] : [[obj elementForName:@"ShuoShuo"] stringValue].URLDecodedString];
                 [commArray addObject:[[obj elementForName:@"CreateDate"] stringValue]];
                 [commArray addObject:[[obj elementForName:@"Userid"] stringValue]];
                 [commArray addObject:[[obj elementForName:@"ShuoShuoType"] stringValue]];
@@ -6899,7 +6906,7 @@ void audioRouteChangeListenerCallback (
                 if ((int)progress < [[timeArray objectAtIndex:i] unsignedIntValue]) {
                     sen_num = i+1;//跟读标识句子号
                     recordTime = (i > 0 ? [[timeArray objectAtIndex:i] unsignedIntValue] - [[timeArray objectAtIndex:i-1] unsignedIntValue] : [[timeArray objectAtIndex:1] unsignedIntValue] - [[timeArray objectAtIndex:0] unsignedIntValue]) ;
-                    NSLog(@"recordTime:%d", recordTime);
+//                    NSLog(@"recordTime:%d", recordTime);
                     break;
                 }
             }
@@ -6907,7 +6914,8 @@ void audioRouteChangeListenerCallback (
 //            NSInteger myStartTime = sen_num > 1? [[timeArray objectAtIndex:sen_num-2] unsignedIntValue]:[[timeArray objectAtIndex:0] unsignedIntValue];
 //            NSInteger myEndTime = sen_num > 1? [[timeArray objectAtIndex:sen_num-1] unsignedIntValue] : [[timeArray objectAtIndex:1] unsignedIntValue];
 //            NSLog(@"start:%d end:%d", myStartTime, myEndTime);
-            [self loadAudio];
+//            [self cutAudio:myStartTime endTime:myEndTime];
+//            [self loadAudio];
             [lyCn release];
             [lyEn release];
             lyEn = [[NSString alloc] initWithFormat:@"%@", [lyricArray objectAtIndex:(sen_num>2?sen_num-2:0)]];
@@ -7019,7 +7027,7 @@ void audioRouteChangeListenerCallback (
 //                NSLog(@"%d,%d,%d,%d,%d,%d,%d,%@",self.voa._voaid,[[timeArray objectAtIndex:0]unsignedIntValue],myVoaDetail._voaid,myVoaDetail._paraid,myVoaDetail._idIndex,mySentence.StartTime,mySentence.EndTime,mySentence.Sentence);
             }
             
-//            [self cutAudio:myStartTime endTime:myEndTime];
+            
 
             //        [controller.lvlMeter_in setHidden:NO];
         }else {
@@ -7310,7 +7318,7 @@ void audioRouteChangeListenerCallback (
                 if ((int)progress < [[timeArray objectAtIndex:i] unsignedIntValue]) {
                     sen_num = i+1;//跟读标识句子号
                     recordTime = (i > 0 ? [[timeArray objectAtIndex:i] unsignedIntValue] - [[timeArray objectAtIndex:i-1] unsignedIntValue] : [[timeArray objectAtIndex:1] unsignedIntValue] - [[timeArray objectAtIndex:0] unsignedIntValue]) ;
-                    NSLog(@"recordTime:%d", recordTime);
+//                    NSLog(@"recordTime:%d", recordTime);
                     break;
                 }
             }
@@ -7318,7 +7326,8 @@ void audioRouteChangeListenerCallback (
 //            NSInteger myStartTime = sen_num > 1? [[timeArray objectAtIndex:sen_num-2] unsignedIntValue]:[[timeArray objectAtIndex:0] unsignedIntValue];
 //            NSInteger myEndTime = sen_num > 1? [[timeArray objectAtIndex:sen_num-1] unsignedIntValue] : [[timeArray objectAtIndex:1] unsignedIntValue];
 //            NSLog(@"start:%d end:%d", myStartTime, myEndTime);
-            [self loadAudio];
+//            [self cutAudio:myStartTime endTime:myEndTime];
+//            [self loadAudio];
             [lyCn release];
             [lyEn release];
             lyEn = [[NSString alloc] initWithFormat:@"%@", [lyricArray objectAtIndex:(sen_num>2?sen_num-2:0)]];
@@ -8577,7 +8586,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
             //        }
             notValid = YES;
         }
-        
+        [recorderView setHidden:NO];
         m_isRecording = YES;
         NSString *recordAudioFullPath = [kRecorderDirectory stringByAppendingPathComponent:
                                          [NSString stringWithFormat:kRecordFile]];
@@ -8613,6 +8622,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSLog(@"结束录音");
     if (m_isRecording) {
         m_isRecording = NO;
+        [recorderView setHidden:YES];
         [self stopRecordTimer];
         dispatch_queue_t stopQueue;
         stopQueue = dispatch_queue_create("stopQueue", NULL);
@@ -8771,6 +8781,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
         
         //    [self changeRecordTimer];
         [self stopRecordTimer];
+        [recorderView setHidden:YES];
         dispatch_queue_t stopQueue;
         stopQueue = dispatch_queue_create("stopQueue", NULL);
         dispatch_async(stopQueue, ^(void){
@@ -8779,7 +8790,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
                 [audioRecoder stopRecord];
                 [btn_play setEnabled:YES];
                 
-                [self loadAudio2];
+//                [self loadAudio2];
             });
         });    
         dispatch_release(stopQueue);
@@ -8798,14 +8809,15 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
         //    } else {
         //        [btn_record setImage:[UIImage imageNamed:@"startRecordBBCP.png"] forState:UIControlStateNormal];
         //    }
+        
         if (isiPhone) {
             [btn_record setImage:[UIImage imageNamed:@"startRecord.png"] forState:UIControlStateNormal];
         } else {
             [btn_record setImage:[UIImage imageNamed:@"startRecord-iPad.png"] forState:UIControlStateNormal];
         }
         
-        
         [self stopRecordTimer];
+        [recorderView setHidden:YES];
         dispatch_queue_t stopQueue;
         stopQueue = dispatch_queue_create("stopQueue", NULL);
         dispatch_async(stopQueue, ^(void){
@@ -8813,8 +8825,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [audioRecoder stopRecord];
                 [btn_play setEnabled:YES];
-                
-//                [self loadAudio2];
+//                [self performSelector:@selector(loadAudio2) withObject:nil afterDelay:1.5f];
             });
         });    
         dispatch_release(stopQueue);
@@ -8824,7 +8835,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
             //        [self playRecord];
         }
         
-        [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(loadAudio2) userInfo:nil repeats:NO];
+//        [NSTimer scheduledTimerWithTimeInterval:5.0f target:self selector:@selector(loadAudio2) userInfo:nil repeats:NO];
         
 //#if 1
 //        lyricSynTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 
@@ -8892,11 +8903,12 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     }
 //    [player pause];
     
-    NSInteger myStartTime = sen_num > 1? [[timeArray objectAtIndex:sen_num-2] unsignedIntValue]:[[timeArray objectAtIndex:0] unsignedIntValue];
-    NSInteger myEndTime = sen_num > 1? [[timeArray objectAtIndex:sen_num-1] unsignedIntValue] : [[timeArray objectAtIndex:1] unsignedIntValue];
-    NSLog(@"start:%d end:%d", myStartTime, myEndTime);
-    [self cutAudio:myStartTime endTime:myEndTime];
-//    [self loadAudio];
+//    NSInteger myStartTime = sen_num > 1? [[timeArray objectAtIndex:sen_num-2] unsignedIntValue]:[[timeArray objectAtIndex:0] unsignedIntValue];
+//    NSInteger myEndTime = sen_num > 1? [[timeArray objectAtIndex:sen_num-1] unsignedIntValue] : [[timeArray objectAtIndex:1] unsignedIntValue];
+//    NSLog(@"start:%d end:%d", myStartTime, myEndTime);
+//    [self cutAudio:myStartTime endTime:myEndTime];
+//    [self performSelector:@selector(loadAudio) withObject:nil afterDelay:1.5f];
+
     
     if (wordPlayer) {
         [wordPlayer release];
@@ -8949,6 +8961,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
             //run in main thread
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self changeRecordTimer];
+                [recorderView setHidden:NO];
                 [audioRecoder startRecord];
                 [btn_play setEnabled:NO];
                 if ([[NSUserDefaults standardUserDefaults] boolForKey:@"recordRead"]) {
@@ -9094,9 +9107,9 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 //        recordTimer = nil;
     } else {
         [self stopPlayRecord];
-        recordSeconds = 0 ;
+        recordSeconds = 0.f ;
         [recordLabel setText:[timeSwitchClass timeToSwitchAdvance:0]];
-        recordTimer = [NSTimer scheduledTimerWithTimeInterval:1.0f
+        recordTimer = [NSTimer scheduledTimerWithTimeInterval:0.1f
                                                        target:self
                                                      selector:@selector(handleRecordTimer)
                                                      userInfo:nil
@@ -9122,8 +9135,29 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
  *  录音定时器处理函数
  */
 -(void) handleRecordTimer {
-    recordSeconds++;
-    [recordLabel setText:[timeSwitchClass timeToSwitchAdvance:recordSeconds]];
+    //更新峰值
+    [audioRecoder.audioRecorder updateMeters];
+    [self updateMetersByAvgPower:[audioRecoder.audioRecorder averagePowerForChannel:0]];
+    [recordLabel setText:[timeSwitchClass timeToSwitchAdvance: (int)recordSeconds]];
+    recordSeconds += 0.1f;
+    
+}
+
+/**
+ *  更新音频峰值
+ */
+- (void)updateMetersByAvgPower:(float)_avgPower{
+    //-160表示完全安静，0表示最大输入值
+    //
+//    NSInteger imageIndex = 0;
+    if (_avgPower >= -40 && _avgPower < -30)
+        peakMeterIV.image = [UIImage imageNamed:kSpeakImage1];
+    else if (_avgPower >= -30 && _avgPower < -25)
+        peakMeterIV.image = [UIImage imageNamed:kSpeakImage2];
+    else if (_avgPower >= -25)
+        peakMeterIV.image = [UIImage imageNamed:kSpeakImage3];
+    else peakMeterIV.image = [UIImage imageNamed:kSpeakImage0];
+    
 }
 
 /** 
@@ -9139,7 +9173,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
         playRecordTimer = nil;
         [recordLabel setText:[timeSwitchClass timeToSwitchAdvance:0]];
     } 
-    nowRecordSeconds = recordSeconds;
+    nowRecordSeconds = (int)recordSeconds;
     [recordLabel setText:[timeSwitchClass timeToSwitchAdvance:nowRecordSeconds]];
     playRecordTimer = [NSTimer scheduledTimerWithTimeInterval:1.0f
                                                    target:self
