@@ -555,9 +555,7 @@ void uncaughtExceptionHandler(NSException *exception) {
 //    NSLog(@"applicationDidBecomeActive");
 //    AudioSessionSetActive(true);
     
-    
-    
-    NSArray *array = [UIImage splitImageIntoTwoParts:[UIImage imageNamed:([Constants isPad]? @"Default-Portrait.png": (isiPhone5? @"Default-568h.png": @"Default.png"))]];
+    NSArray *array = [UIImage splitImageIntoTwoParts:[UIImage imageNamed:([Constants isPad]? @"Default-Portrait.png": (isiPhone5? @"Default-568h@2x.png": @"Default.png"))]];
     UIImageView *leftImageView = [[UIImageView alloc] initWithImage:[array objectAtIndex:0]];
     UIImageView *rightImageView = [[UIImageView alloc] initWithImage:[array objectAtIndex:1]];
     self.leftDefault = leftImageView;

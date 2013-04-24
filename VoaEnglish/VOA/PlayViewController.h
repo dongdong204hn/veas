@@ -70,10 +70,15 @@
 #define kRecordFile @"recordAudio.aac"
 #define kCutFile @"export.wav"
 
-#define kSpeakImage0        @"speaker_0.png"
 #define kSpeakImage1         @"speaker_1.png"
 #define kSpeakImage2         @"speaker_2.png"
 #define kSpeakImage3         @"speaker_3.png"
+#define kSpeakImage4         @"speaker_4.png"
+#define kSpeakImage5         @"speaker_5.png"
+#define kSpeakImage6         @"speaker_6.png"
+#define kSpeakImage7         @"speaker_7.png"
+#define kSpeakImage8         @"speaker_8.png"
+
 
 @interface PlayViewController : UIViewController <UIAlertViewDelegate, AVAudioPlayerDelegate, ASIHTTPRequestDelegate,MyLabelDelegate,MBProgressHUDDelegate, AVAudioSessionDelegate, UIScrollViewDelegate,UIActionSheetDelegate,UITableViewDelegate,UITableViewDataSource,UIPickerViewDelegate,UIPickerViewDataSource,HPGrowingTextViewDelegate,HSCButtonDelegate, UITextViewDelegate>
 {
@@ -166,7 +171,7 @@
     int             playerFlag;
     int             fixSeconds;
     CGFloat             recordSeconds;
-    int             nowRecordSeconds;
+    CGFloat             nowRecordSeconds;
     int             recordTime;
     
     NSInteger nowPage;
@@ -317,7 +322,6 @@
 @property (nonatomic, retain) NSTimer			*lyricSynTimer; //歌词同步定时器
 @property (nonatomic, retain) NSTimer         *fixTimer; //定时播放定时器
 @property (nonatomic, retain) NSTimer         *recordTimer; //录音定时器
-@property (nonatomic, retain) NSTimer         *updateTimer; //录音音量定时器
 @property (nonatomic, retain) NSMutableArray	*lyricArray;    //英文歌词数组
 @property (nonatomic, retain) NSMutableArray	*lyricCnArray;  //中文歌词数组
 @property (nonatomic, retain) NSMutableArray	*timeArray; //歌词播放时长数组
@@ -357,7 +361,7 @@
 
 @property int				playerFlag; //0:local 1:net
 @property (nonatomic) CGFloat             recordSeconds;    //记录实际录音时长
-@property (nonatomic) int             nowRecordSeconds; //实际录音时长的备份
+@property (nonatomic) CGFloat             nowRecordSeconds; //实际录音时长的备份
 @property (nonatomic) int             recordTime;   //根据歌词播放时长得到的自动录音时的最长时长
 @property (nonatomic) int             fixSeconds;   //记录定时播放时秒数
 @property (nonatomic) BOOL              m_isRecording; //标识是否正在录音

@@ -151,7 +151,6 @@
 @synthesize commRecBtn;
 @synthesize wfv;
 @synthesize thisScore;
-@synthesize updateTimer;
 @synthesize recorderView;
 @synthesize peakMeterIV;
 //@synthesize commRecControl;
@@ -291,7 +290,9 @@ extern ASIHTTPRequest *nowrequest;
     [commRecBtn setHidden:YES];
     [textView becomeFirstResponder];
     [textView setHidden:NO];
-    [commChangeBtn setTitle:@"语音" forState:UIControlStateNormal];
+//    [commChangeBtn setTitle:@"语音" forState:UIControlStateNormal];
+    [commChangeBtn setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"audioComm" ofType:@"png"]] forState:UIControlStateNormal];
+    [commChangeBtn setTag:1];
     [commRecBtn removeTarget:self action:@selector(playCommRec) forControlEvents:UIControlEventTouchUpInside];
     [commRecBtn setTitle:@"按住 说话" forState:UIControlStateNormal];
     [commRecBtn addTarget:self action:@selector(startCommRecord) forControlEvents:UIControlEventTouchDown];
@@ -939,10 +940,24 @@ extern ASIHTTPRequest *nowrequest;
     if (kNetIsExist) {
         if ([textView isHidden]) {
             NSLog(@"上传音频");
-            [self sendComments:1];
+            if (commChangeBtn.tag == 3) {
+                [self sendComments:1];
+            } else {
+                [displayModeBtn setTitle:@"请先录音" forState:UIControlStateNormal];
+                [UIView beginAnimations:@"Display" context:nil];
+                [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+                [UIView setAnimationDuration:0.5];
+                [displayModeBtn setAlpha:0.8];
+                [UIView commitAnimations];
+                
+                [UIView beginAnimations:@"Dismiss" context:nil];
+                [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+                [UIView setAnimationDuration:2.0];
+                [displayModeBtn setAlpha:0];
+                [UIView commitAnimations];
+            }
         } else {
             if ([[textView text] length] > 0) {
-                
                 [self sendComments:0];
             }
         }
@@ -4487,6 +4502,10 @@ void audioRouteChangeListenerCallback (
     isFree = ![[NSUserDefaults standardUserDefaults] boolForKey:kBePro] && ![[NSUserDefaults standardUserDefaults] boolForKey:@"isVip"];
 //    isFree = NO;
 //    afterRecord = NO;
+    
+    [[recorderView layer] setCornerRadius:15.0f];
+    [[recorderView layer] setMasksToBounds:YES];
+    
     [[fixButton layer] setCornerRadius:8.0f];
     [[fixButton layer] setMasksToBounds:YES];
     [btn_play setEnabled:NO];
@@ -4924,11 +4943,11 @@ void audioRouteChangeListenerCallback (
     if (isiPhone) {
         containerView = [[UIView alloc] initWithFrame:CGRectMake(3*320, self.myScroll.frame.size.height - 40, 320, 40)];
         
-        textView = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(79, 3, 162, 40)];
+        textView = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(60, 3, 162, 40)];
     } else {
         containerView = [[UIView alloc] initWithFrame:CGRectMake(3*768, self.myScroll.frame.size.height - 40, 768, 40)];
         
-        textView = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(116, 3, 520, 40)];
+        textView = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(100, 3, 520, 40)];
     }
     
     textView.contentInset = UIEdgeInsetsMake(0, 5, 0, 5);
@@ -4951,9 +4970,9 @@ void audioRouteChangeListenerCallback (
     UIImage *entryBackground = [rawEntryBackground stretchableImageWithLeftCapWidth:13 topCapHeight:22];
     UIImageView *entryImageView = [[UIImageView alloc] initWithImage:entryBackground];
     if (isiPhone) {
-        entryImageView.frame = CGRectMake(78, 0, 170, 40);
+        entryImageView.frame = CGRectMake(60, 0, 170, 40);
     } else {
-        entryImageView.frame = CGRectMake(115, 0, 528, 40);
+        entryImageView.frame = CGRectMake(100, 0, 528, 40);
     }
     
     entryImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
@@ -5007,27 +5026,29 @@ void audioRouteChangeListenerCallback (
 	[containerView addSubview:sendBtn];
     
     commChangeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-	commChangeBtn.frame = CGRectMake(6, 8, 63, 27);
+//	commChangeBtn.frame = CGRectMake(6, 8, 63, 27);
+    commChangeBtn.frame = CGRectMake(6, 5, 30, 30);
     commChangeBtn.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin;
-	[commChangeBtn setTitle:@"语音" forState:UIControlStateNormal];
+//	[commChangeBtn setTitle:@"语音" forState:UIControlStateNormal];
+    [commChangeBtn setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"audioComm" ofType:@"png"]] forState:UIControlStateNormal];
+    [commChangeBtn setTag:1];
+//    [commChangeBtn setTitleShadowColor:[UIColor colorWithWhite:0 alpha:0.4] forState:UIControlStateNormal];
+//    commChangeBtn.titleLabel.shadowOffset = CGSizeMake (0.0, -1.0);
+//    commChangeBtn.titleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
     
-    [commChangeBtn setTitleShadowColor:[UIColor colorWithWhite:0 alpha:0.4] forState:UIControlStateNormal];
-    commChangeBtn.titleLabel.shadowOffset = CGSizeMake (0.0, -1.0);
-    commChangeBtn.titleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
-    
-    [commChangeBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+//    [commChangeBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
 	[commChangeBtn addTarget:self action:@selector(doCommChange) forControlEvents:UIControlEventTouchUpInside];
-    [commChangeBtn setBackgroundImage:sendBtnBackground forState:UIControlStateNormal];
-    [commChangeBtn setBackgroundImage:selectedSendBtnBackground forState:UIControlStateSelected];
+//    [commChangeBtn setBackgroundImage:sendBtnBackground forState:UIControlStateNormal];
+//    [commChangeBtn setBackgroundImage:selectedSendBtnBackground forState:UIControlStateSelected];
 	[containerView addSubview:commChangeBtn];
     
     commRecBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     if (isiPhone) {
         
-        commRecBtn.frame = CGRectMake(78, 5, 167, 30);
+        commRecBtn.frame = CGRectMake(60, 5, 167, 30);
         
     } else {
-        commRecBtn.frame = CGRectMake(120, 5, 528, 30);
+        commRecBtn.frame = CGRectMake(100, 5, 528, 30);
     }
     commRecBtn.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin;
     [commRecBtn setTitle:@"按住 说话" forState:UIControlStateNormal];
@@ -5044,19 +5065,6 @@ void audioRouteChangeListenerCallback (
     [commRecBtn setBackgroundImage:selectedSendBtnBackground forState:UIControlStateSelected];
     [containerView addSubview:commRecBtn];
     [commRecBtn setHidden:YES];
-//    commRecControl=[[UISegmentedControl alloc] initWithFrame:CGRectMake(55, 8, 190, 27)];
-//    commRecControl.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin;
-//	[commRecControl insertSegmentWithTitle:@"返回" atIndex:0 animated:YES];
-//    [commRecControl insertSegmentWithTitle:@"回放" atIndex:1 animated:YES];
-//
-//    commRecControl.segmentedControlStyle = UISegmentedControlStyleBar;
-//    commRecControl.multipleTouchEnabled=NO;
-//    [commRecControl addTarget:self action:@selector(doSeg:) forControlEvents:UIControlEventValueChanged];
-//    [commRecControl setBackgroundImage:sendBtnBackground forState:UIControlStateNormal barMetrics:nil];
-//    [commRecControl setBackgroundImage:selectedSendBtnBackground forState:UIControlStateSelected barMetrics:nil];
-//	[containerView addSubview:commRecControl];
-//    [commRecControl setHidden:YES];
-    
     
     containerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
     
@@ -5235,6 +5243,9 @@ void audioRouteChangeListenerCallback (
     self.modeBtn = nil;
     self.displayModeBtn = nil;
     
+    self.recorderView = nil;
+    self.peakMeterIV = nil;
+    
     [nowTextView release], nowTextView = nil;
     [speedMenu release], speedMenu = nil;
     [selectWord release], selectWord = nil;
@@ -5349,7 +5360,8 @@ void audioRouteChangeListenerCallback (
     [fixButton release];
     [modeBtn release];
     [displayModeBtn release];
-    
+    [recorderView release];
+    [peakMeterIV release];
     
     [nowTextView release];
     [speedMenu release];
@@ -5813,7 +5825,7 @@ void audioRouteChangeListenerCallback (
  */
 - (void)catchComments:(NSInteger)pages{
     if (kNetIsExist) {
-        NSString *url = [NSString stringWithFormat:@"http://voa.iyuba.com/voa/UnicomApi?protocol=60001&format=xml&voaid=%i&pageNumber=%i&pageCounts=15",voa._voaid,pages];
+        NSString *url = [NSString stringWithFormat:@"http://voa.iyuba.com/voa/UnicomApi?protocol=60001&platform=ios&format=xml&voaid=%i&pageNumber=%i&pageCounts=15",voa._voaid,pages];
         //    ASIHTTPRequest * request = [[ASIHTTPRequest alloc] initWithURL:[NSURL URLWithString:url]];
         ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
         [sendBtn setUserInteractionEnabled:NO];
@@ -5845,7 +5857,11 @@ void audioRouteChangeListenerCallback (
         NSString *url;
         //    url = [NSString stringWithFormat:@"http://172.16.94.220:8081/voa/UnicomApi?platform=ios&format=xml&protocol=60002&userid=%i&voaid=%i&shuoshuotype=1",uid, voa._voaid];
         url = [NSString stringWithFormat:@"http://voa.iyuba.com/voa/UnicomApi?"];
-        
+//        if (isResponse) {
+//            url = [NSString stringWithFormat:@"http://voa.iyuba.com/voa/UnicomApi?toId=%i", [textView tag]];
+//        } else {
+//            url = [NSString stringWithFormat:@"http://voa.iyuba.com/voa/UnicomApi?"];
+//        }
         
         ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:url]];
         request.delegate = self;
@@ -5866,7 +5882,7 @@ void audioRouteChangeListenerCallback (
             [request addData:audioData withFileName:@"record.aac" andContentType:@"multipart/form-data" forKey:@"content"];
         }
         
-        NSLog(@"url:%@ %d %d", request.url, uid, voa._voaid);
+//        NSLog(@"url:%@ %d %d", request.url, uid, voa._voaid);
         [request setUsername:@"send"];
         //    [request setRequestMethod:@"POST"];
         [request startAsynchronous];
@@ -8071,7 +8087,7 @@ void audioRouteChangeListenerCallback (
                     [cell addSubview:nameLabel];
                     [nameLabel release];
                     
-                    UILabel *dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(250, 0, 65, 15)];
+                    UILabel *dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(210, 0, 65, 15)];
                     [dateLabel setBackgroundColor:[UIColor clearColor]];
                     [dateLabel setFont:CourierF];
                     [dateLabel setTag:2];
@@ -8095,7 +8111,7 @@ void audioRouteChangeListenerCallback (
                     [userImg whenTapped:^{
 //                        NSLog(@"发信 %i", userImg.superview.tag);
                         for (int i = 0; i < [commArray count]/7; i++) {
-                            if (((NSString*)[commArray objectAtIndex:i*7]).integerValue == userImg.superview.tag) {
+                            if (i == userImg.superview.tag) {
                                 int fromUserId = [[[NSUserDefaults standardUserDefaults] objectForKey:@"nowUser"] integerValue];
                                 UserMessage *userMsg = [[UserMessage alloc] initWithFromUserId:fromUserId fromUserName:[MyUser findNameById:fromUserId] toUserId:[[commArray objectAtIndex:i*7+5] integerValue] toUserName:(NSString *) [commArray objectAtIndex:i*7+1] comment:[commArray objectAtIndex:i*7+3] topicId:voa._voaid];
                                 SendMessageController *sendMsgController = [[SendMessageController alloc] init];
@@ -8111,20 +8127,22 @@ void audioRouteChangeListenerCallback (
                     [cell addSubview:userImg];
                     [userImg release];
                     
-                    UIButton *reponseBtn = [[UIButton alloc] initWithFrame:CGRectMake(280, 10, 30, 20)];
-                    [reponseBtn.titleLabel setFont:[UIFont systemFontOfSize:12]];
+                    UIButton *reponseBtn = [[UIButton alloc] initWithFrame:CGRectMake(275, 2, 45, 21)];
+//                    [reponseBtn.titleLabel setFont:[UIFont systemFontOfSize:12]];
 //                    [reponseBtn.titleLabel setTextColor:[UIColor blackColor]];
-                    [reponseBtn setTitleColor:[UIColor colorWithRed:0.216f green:0.471f blue:0.686f alpha:1.0f] forState:UIControlStateNormal];
-                    [reponseBtn setTitle:kPlayNine forState:UIControlStateNormal];
+//                    [reponseBtn setTitleColor:[UIColor colorWithRed:0.216f green:0.471f blue:0.686f alpha:1.0f] forState:UIControlStateNormal];
+//                    [reponseBtn setTitle:kPlayNine forState:UIControlStateNormal];
 //                    [reponseBtn setBackgroundColor:[UIColor whiteColor]];
-                    [reponseBtn addTarget:self action:@selector(doResponse:) forControlEvents:UIControlEventTouchUpInside];
+                    [reponseBtn addTarget:self action:@selector(doResponse:) forControlEvents:
+                     UIControlEventTouchUpInside];
+                    [reponseBtn setImage:[UIImage imageNamed:@"commResp.png"] forState:UIControlStateNormal];
                     [reponseBtn setTag:5];
                     [cell addSubview:reponseBtn];
                     [reponseBtn release];
                     
-                    UIButton *playCommBtn = [[UIButton alloc] initWithFrame:CGRectMake(280, 35, 30, 20)];
+                    UIButton *playCommBtn = [[UIButton alloc] initWithFrame:CGRectMake(70, 30, 52, 21)];
                     [playCommBtn addTarget:self action:@selector(playUserCommRec:) forControlEvents:UIControlEventTouchUpInside];
-                    [playCommBtn setImage:[UIImage imageNamed:@"playingBBC.png"] forState:UIControlStateNormal];
+                    [playCommBtn setImage:[UIImage imageNamed:@"commSpeak.png"] forState:UIControlStateNormal];
                     [playCommBtn setTag:6];
                     [playCommBtn setHidden:YES];
                     [cell addSubview:playCommBtn];
@@ -8142,7 +8160,7 @@ void audioRouteChangeListenerCallback (
                     [cell addSubview:nameLabel];
                     [nameLabel release];
                     
-                    UILabel *dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(648, 0, 120, 20)];
+                    UILabel *dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(620, 0, 120, 20)];
                     [dateLabel setBackgroundColor:[UIColor clearColor]];
                     [dateLabel setFont:CourieraF];
                     [dateLabel setTag:2];
@@ -8164,9 +8182,9 @@ void audioRouteChangeListenerCallback (
                     UIImageView *userImg = [[UIImageView alloc] initWithFrame:CGRectMake(5, 5, 70, 70)];
                     [userImg setTag:4];
                     [userImg whenTapped:^{
-                        //                        NSLog(@"发信 %i", userImg.superview.tag);
+//                        NSLog(@"发信 %i", userImg.superview.tag);
                         for (int i = 0; i < [commArray count]/7; i++) {
-                            if (((NSString*)[commArray objectAtIndex:i*7]).integerValue == userImg.superview.tag) {
+                            if (i == userImg.superview.tag) {
                                 int fromUserId = [[[NSUserDefaults standardUserDefaults] objectForKey:@"nowUser"] integerValue];
                                 UserMessage *userMsg = [[UserMessage alloc] initWithFromUserId:fromUserId fromUserName:[MyUser findNameById:fromUserId] toUserId:[[commArray objectAtIndex:i*7+5] integerValue] toUserName:(NSString *) [commArray objectAtIndex:i*7+1] comment:[commArray objectAtIndex:i*7+3] topicId:voa._voaid];
                                 SendMessageController *sendMsgController = [[SendMessageController alloc] init];
@@ -8182,20 +8200,21 @@ void audioRouteChangeListenerCallback (
                     [cell addSubview:userImg];
                     [userImg release];
                     
-                    UIButton *reponseBtn = [[UIButton alloc] initWithFrame:CGRectMake(718, 10, 40, 30)];
-                    [reponseBtn.titleLabel setFont:[UIFont systemFontOfSize:15]];
+                    UIButton *reponseBtn = [[UIButton alloc] initWithFrame:CGRectMake(700, 4, 60, 30)];
+//                    [reponseBtn.titleLabel setFont:[UIFont systemFontOfSize:15]];
                     //                    [reponseBtn.titleLabel setTextColor:[UIColor blackColor]];
-                    [reponseBtn setTitleColor:[UIColor colorWithRed:55.0/255 green:120.0/255 blue:175.0/255 alpha:1.0f] forState:UIControlStateNormal];
-                    [reponseBtn setTitle:kPlayNine forState:UIControlStateNormal];
+//                    [reponseBtn setTitleColor:[UIColor colorWithRed:55.0/255 green:120.0/255 blue:175.0/255 alpha:1.0f] forState:UIControlStateNormal];
+//                    [reponseBtn setTitle:kPlayNine forState:UIControlStateNormal];
                     //                    [reponseBtn setBackgroundColor:[UIColor whiteColor]];
                     [reponseBtn addTarget:self action:@selector(doResponse:) forControlEvents:UIControlEventTouchUpInside];
+                    [reponseBtn setImage:[UIImage imageNamed:@"commResp.png"] forState:UIControlStateNormal];
                     [reponseBtn setTag:5];
                     [cell addSubview:reponseBtn];
                     [reponseBtn release];
                     
-                    UIButton *playCommBtn = [[UIButton alloc] initWithFrame:CGRectMake(718, 45, 40, 30)];
+                    UIButton *playCommBtn = [[UIButton alloc] initWithFrame:CGRectMake(100, 40, 100, 40)];
                     [playCommBtn addTarget:self action:@selector(playUserCommRec:) forControlEvents:UIControlEventTouchUpInside];
-                    [playCommBtn setImage:[UIImage imageNamed:@"playingBBC.png"] forState:UIControlStateNormal];
+                    [playCommBtn setImage:[UIImage imageNamed:@"commSpeak.png"] forState:UIControlStateNormal];
                     [playCommBtn setTag:6];
                     [playCommBtn setHidden:YES];
                     [cell addSubview:playCommBtn];
@@ -8586,6 +8605,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
             //        }
             notValid = YES;
         }
+        [self changeRecordTimer];
         [recorderView setHidden:NO];
         m_isRecording = YES;
         NSString *recordAudioFullPath = [kRecorderDirectory stringByAppendingPathComponent:
@@ -8635,16 +8655,32 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
         dispatch_release(stopQueue);
     }
     
-    
-    [commRecBtn removeTarget:self action:@selector(startCommRecord) forControlEvents:UIControlEventTouchDown];
-    [commRecBtn removeTarget:self action:@selector(endCommRecord) forControlEvents:UIControlEventTouchUpInside];
-    [commRecBtn removeTarget:self action:@selector(endCommRecord) forControlEvents:UIControlEventTouchUpOutside];
-    [commRecBtn setTitle:@"回放" forState:UIControlStateNormal];
-    [commRecBtn addTarget:self action:@selector(playCommRec) forControlEvents:UIControlEventTouchUpInside];
-    
-    [commChangeBtn removeTarget:self action:@selector(doCommChange) forControlEvents:UIControlEventTouchUpInside];
-    [commChangeBtn setTitle:@"返回" forState:UIControlStateNormal];
-    [commChangeBtn addTarget:self action:@selector(returnCommRec) forControlEvents:UIControlEventTouchUpInside];
+    if (recordSeconds > 0.8f) {
+        [commRecBtn removeTarget:self action:@selector(startCommRecord) forControlEvents:UIControlEventTouchDown];
+        [commRecBtn removeTarget:self action:@selector(endCommRecord) forControlEvents:UIControlEventTouchUpInside];
+        [commRecBtn removeTarget:self action:@selector(endCommRecord) forControlEvents:UIControlEventTouchUpOutside];
+        [commRecBtn setTitle:@"回放" forState:UIControlStateNormal];
+        [commRecBtn addTarget:self action:@selector(playCommRec) forControlEvents:UIControlEventTouchUpInside];
+        
+        [commChangeBtn removeTarget:self action:@selector(doCommChange) forControlEvents:UIControlEventTouchUpInside];
+        [commChangeBtn setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"commReturn" ofType:@"png"]] forState:UIControlStateNormal];
+        [commChangeBtn setTag:3];
+        [commChangeBtn addTarget:self action:@selector(returnCommRec) forControlEvents:UIControlEventTouchUpInside];
+    } else {
+        [displayModeBtn setTitle:@"录音时间太短" forState:UIControlStateNormal];
+        [UIView beginAnimations:@"Display" context:nil];
+        [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+        [UIView setAnimationDuration:0.5];
+        [displayModeBtn setAlpha:0.8];
+        [UIView commitAnimations];
+        
+        [UIView beginAnimations:@"Dismiss" context:nil];
+        [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+        [UIView setAnimationDuration:2.0];
+        [displayModeBtn setAlpha:0];
+        [UIView commitAnimations];
+    }
+     
     
 //    [commRecBtn setHidden:YES];
 //    [commRecControl setSelectedSegmentIndex:2] ;
@@ -8658,14 +8694,18 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (textView.isHidden) {
         [textView setHidden:NO];
         [commRecBtn setHidden:YES];
-        [commChangeBtn setTitle:@"语音" forState:UIControlStateNormal];
+//        [commChangeBtn setTitle:@"语音" forState:UIControlStateNormal];
+        [commChangeBtn setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"audioComm" ofType:@"png"]] forState:UIControlStateNormal];
+        [commChangeBtn setTag:1];
 //        [sendBtn removeTarget:self action:@selector(doRecSend) forControlEvents:UIControlEventTouchUpInside];
 //        [sendBtn addTarget:self action:@selector(doSend) forControlEvents:UIControlEventTouchUpInside];
         //        [commRecControl setHidden:YES];
     } else {
         [textView setHidden:YES];
         [commRecBtn setHidden:NO];
-        [commChangeBtn setTitle:@"文本" forState:UIControlStateNormal];
+//        [commChangeBtn setTitle:@"文本" forState:UIControlStateNormal];
+        [commChangeBtn setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"textComm" ofType:@"png"]] forState:UIControlStateNormal];
+        [commChangeBtn setTag:2];
 //        [sendBtn removeTarget:self action:@selector(doSend) forControlEvents:UIControlEventTouchUpInside];
 //        [sendBtn addTarget:self action:@selector(doRecSend) forControlEvents:UIControlEventTouchUpInside];
         //        [commRecControl setHidden:YES];
@@ -8697,7 +8737,9 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     
     [commChangeBtn removeTarget:self action:@selector(retuenCommRec) forControlEvents:UIControlEventTouchUpInside];
-    [commChangeBtn setTitle:@"文本" forState:UIControlStateNormal];
+//    [commChangeBtn setTitle:@"文本" forState:UIControlStateNormal];
+    [commChangeBtn setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"textComm" ofType:@"png"]] forState:UIControlStateNormal];
+    [commChangeBtn setTag:2];
     [commChangeBtn addTarget:self action:@selector(doCommChange) forControlEvents:UIControlEventTouchUpInside];
 //    [self doCommChange];
     NSLog(@"返回语音评价录制");
@@ -9102,12 +9144,14 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     //    //时间间隔
     //    NSTimeInterval timeInterval =1.0 ;
     //定时器
-    if ([recordTimer isValid]) {
+    if (recordTimer && [recordTimer isValid]) {
         [recordTimer invalidate];
 //        recordTimer = nil;
     } else {
         [self stopPlayRecord];
-        recordSeconds = 0.f ;
+//        recordSeconds = 0.f ;
+        nowRecordSeconds = recordTime;
+        recordSeconds = 0.f;
         [recordLabel setText:[timeSwitchClass timeToSwitchAdvance:0]];
         recordTimer = [NSTimer scheduledTimerWithTimeInterval:0.1f
                                                        target:self
@@ -9125,9 +9169,10 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     //    //时间间隔
     //    NSTimeInterval timeInterval =1.0 ;
     //定时器
-    if ([recordTimer isValid]) {
+    if (recordTimer && [recordTimer isValid]) {
         [recordTimer invalidate];
         recordTimer = nil;
+        [recordLabel setTextColor:[UIColor whiteColor]];
     } 
 }
 
@@ -9138,7 +9183,14 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     //更新峰值
     [audioRecoder.audioRecorder updateMeters];
     [self updateMetersByAvgPower:[audioRecoder.audioRecorder averagePowerForChannel:0]];
-    [recordLabel setText:[timeSwitchClass timeToSwitchAdvance: (int)recordSeconds]];
+    if (pageControl.currentPage == 2) {
+//        [recordLabel setText:[timeSwitchClass timeToSwitchAdvance: (int)recordSeconds]];
+        [recordLabel setText:[timeSwitchClass timeToSwitchAdvance: (int)nowRecordSeconds]];
+        if (nowRecordSeconds < 0 && recordLabel.textColor != [UIColor redColor] ) {
+            [recordLabel setTextColor:[UIColor redColor]];
+        }
+    } 
+    nowRecordSeconds -= 0.1f;
     recordSeconds += 0.1f;
     
 }
@@ -9150,13 +9202,22 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     //-160表示完全安静，0表示最大输入值
     //
 //    NSInteger imageIndex = 0;
-    if (_avgPower >= -40 && _avgPower < -30)
+    if (_avgPower < -40) 
         peakMeterIV.image = [UIImage imageNamed:kSpeakImage1];
-    else if (_avgPower >= -30 && _avgPower < -25)
+    else if (_avgPower >= -40 && _avgPower < -30)
         peakMeterIV.image = [UIImage imageNamed:kSpeakImage2];
-    else if (_avgPower >= -25)
+    else if (_avgPower >= -30 && _avgPower < -25)
         peakMeterIV.image = [UIImage imageNamed:kSpeakImage3];
-    else peakMeterIV.image = [UIImage imageNamed:kSpeakImage0];
+    else if (_avgPower >= -25 && _avgPower < -20)
+        peakMeterIV.image = [UIImage imageNamed:kSpeakImage4];
+    else if (_avgPower >= -20 && _avgPower < -15)
+        peakMeterIV.image = [UIImage imageNamed:kSpeakImage5];
+    else if (_avgPower >= -15 && _avgPower < -10)
+        peakMeterIV.image = [UIImage imageNamed:kSpeakImage6];
+    else if (_avgPower >= -10 && _avgPower < -5)
+        peakMeterIV.image = [UIImage imageNamed:kSpeakImage7];
+    else if (_avgPower >= -5 && _avgPower < -0)
+        peakMeterIV.image = [UIImage imageNamed:kSpeakImage8];
     
 }
 
@@ -9173,7 +9234,8 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
         playRecordTimer = nil;
         [recordLabel setText:[timeSwitchClass timeToSwitchAdvance:0]];
     } 
-    nowRecordSeconds = (int)recordSeconds;
+//    nowRecordSeconds = (int)recordSeconds;
+    nowRecordSeconds = recordTime - nowRecordSeconds;
     [recordLabel setText:[timeSwitchClass timeToSwitchAdvance:nowRecordSeconds]];
     playRecordTimer = [NSTimer scheduledTimerWithTimeInterval:1.0f
                                                    target:self

@@ -28,19 +28,35 @@
     NSString *minString;
     NSString *secString;
     
-    if (value_m<10){
-        minString=[NSString stringWithFormat:@"0%d:",value_m];
-    }
-    else {
-        minString=[NSString stringWithFormat:@"%d:",value_m];
+    if (preTime >= 0.f) {
+        if (value_m<10){
+            minString=[NSString stringWithFormat:@"0%d:",value_m];
+        }
+        else {
+            minString=[NSString stringWithFormat:@"%d:",value_m];
+        }
+        if (value_s<10){
+            secString=[NSString stringWithFormat:@"0%d",value_s];
+        }
+        else {
+            secString=[NSString stringWithFormat:@"%d",value_s];
+        }
+    } else {
+        if (-value_m<10){
+            minString=[NSString stringWithFormat:@"-0%d:",-value_m];
+        }
+        else {
+            minString=[NSString stringWithFormat:@"%d:",value_m];
+        }
+        if (-value_s<10){
+            secString=[NSString stringWithFormat:@"0%d",-value_s];
+        }
+        else {
+            secString=[NSString stringWithFormat:@"%d",-value_s];
+        }
     }
 	
-    if (value_s<10){
-        secString=[NSString stringWithFormat:@"0%d",value_s];
-    }
-    else {
-        secString=[NSString stringWithFormat:@"%d",value_s];
-    }
+    
     
     //当前播放时间字符串MM:SS
     NSString *nowCurrTime=[minString stringByAppendingString:secString];

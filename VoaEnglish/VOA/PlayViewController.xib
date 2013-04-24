@@ -868,7 +868,7 @@
 								<string key="NSFrame">{{285, 47}, {25, 25}}</string>
 								<reference key="NSSuperview" ref="443189078"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="462641346"/>
+								<reference key="NSNextKeyView" ref="562078025"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -1075,7 +1075,7 @@
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="1004400258"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
-						<object class="NSColor" key="IBUIBackgroundColor" id="607974053">
+						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MAA</bytes>
 						</object>
@@ -1098,7 +1098,7 @@
 						<string key="NSFrame">{{20, 190}, {280, 100}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="443189078"/>
+						<reference key="NSNextKeyView" ref="462641346"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<reference key="IBUIBackgroundColor" ref="138002272"/>
 						<float key="IBUIAlpha">0.0</float>
@@ -1112,38 +1112,44 @@
 							<object class="IBUIImageView" id="829044679">
 								<reference key="NSNextResponder" ref="462641346"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrameSize">{160, 160}</string>
+								<string key="NSFrame">{{12, 18}, {48, 64}}</string>
 								<reference key="NSSuperview" ref="462641346"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="763174642"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
-								<reference key="IBUIBackgroundColor" ref="607974053"/>
-								<float key="IBUIAlpha">0.60000002384185791</float>
+								<reference key="IBUIBackgroundColor" ref="138002272"/>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+								<object class="NSCustomResource" key="IBUIImage">
+									<string key="NSClassName">NSImage</string>
+									<string key="NSResourceName">recordMicro.png</string>
+								</object>
 							</object>
 							<object class="IBUIImageView" id="763174642">
 								<reference key="NSNextResponder" ref="462641346"/>
 								<int key="NSvFlags">274</int>
-								<string key="NSFrameSize">{160, 160}</string>
+								<string key="NSFrame">{{69, 29}, {19, 53}}</string>
 								<reference key="NSSuperview" ref="462641346"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="562078025"/>
+								<reference key="NSNextKeyView" ref="443189078"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<object class="NSCustomResource" key="IBUIImage">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">speaker_0.png</string>
+									<string key="NSResourceName">speaker_1.png</string>
 								</object>
 							</object>
 						</object>
-						<string key="NSFrame">{{80, 160}, {160, 160}}</string>
+						<string key="NSFrame">{{110, 180}, {100, 100}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="829044679"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
-						<reference key="IBUIBackgroundColor" ref="138002272"/>
+						<object class="NSColor" key="IBUIBackgroundColor">
+							<int key="NSColorSpace">3</int>
+							<bytes key="NSWhite">MC4zMzMzMzMzMzMzAA</bytes>
+						</object>
 						<object class="IBUISimulatedSizeMetrics" key="IBUISimulatedDestinationMetrics">
 							<string key="IBUISimulatedSizeMetricsClass">IBUISimulatedFreeformSizeMetricsSentinel</string>
 							<string key="IBUIDisplayName">Freeform</string>
@@ -2559,10 +2565,11 @@
 				<string>nextSen.png</string>
 				<string>playRecord.png</string>
 				<string>preSen.png</string>
+				<string>recordMicro.png</string>
 				<string>returnTwo.png</string>
 				<string>share.png</string>
 				<string>sin.png</string>
-				<string>speaker_0.png</string>
+				<string>speaker_1.png</string>
 				<string>speedQuick.png</string>
 				<string>speedSlow.png</string>
 				<string>startRecord.png</string>
@@ -2587,10 +2594,11 @@
 				<string>{15, 25}</string>
 				<string>{28, 23}</string>
 				<string>{15, 25}</string>
+				<string>{48, 64}</string>
 				<string>{32, 24}</string>
 				<string>{29, 29}</string>
 				<string>{29, 29}</string>
-				<string>{162, 152}</string>
+				<string>{19, 53}</string>
 				<string>{36, 46}</string>
 				<string>{28, 44}</string>
 				<string>{27, 27}</string>
