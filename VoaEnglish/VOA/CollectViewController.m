@@ -186,7 +186,7 @@
     
     search.delegate = self;
     
-    search.backgroundImage = [UIImage imageNamed:@"title.png"];
+    search.backgroundImage = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"title" ofType:@"png"]];
     
     search.backgroundColor = [UIColor clearColor];
     
@@ -370,7 +370,7 @@
             UILabel *SenLabel = [[UILabel alloc] init];
             UILabel *SenCnLabel = [[UILabel alloc] init];
             UIImageView *line = [[UIImageView alloc]init];
-            UIImageView *detail = [[UIImageView alloc]init];
+//            UIImageView *detail = [[UIImageView alloc]init];
             if (isiPhone) {
                 [SenLabel setFrame:CGRectMake(20, 5, 250, 45)];
                 [SenLabel setFont:SenEn];
@@ -378,8 +378,8 @@
                 [SenCnLabel setFont:SenCn];
                 [line setImage:[UIImage imageNamed:@"line.png"]];
                 [line setFrame:CGRectMake(0, 79, 320, 1)];
-                [detail setImage:[UIImage imageNamed:@"detailRead.png"]];
-                [detail setFrame:CGRectMake(300, 32, 12, 12)];
+//                [detail setImage:[UIImage imageNamed:@"detailRead.png"]];
+//                [detail setFrame:CGRectMake(300, 32, 12, 12)];
             } else {
                 [SenLabel setFrame:CGRectMake(20, 5, 698, 90)];
                 [SenLabel setFont:SenEnP];
@@ -387,8 +387,8 @@
                 [SenCnLabel setFont:SenCnP];
                 [line setImage:[UIImage imageNamed:@"line@2x.png"]];
                 [line setFrame:CGRectMake(0, 159, 768, 1)];
-                [detail setImage:[UIImage imageNamed:@"detailRead@2x.png"]];
-                [detail setFrame:CGRectMake(720, 64, 24, 24)];
+//                [detail setImage:[UIImage imageNamed:@"detailRead@2x.png"]];
+//                [detail setFrame:CGRectMake(720, 64, 24, 24)];
             }
             
             [SenLabel setBackgroundColor:[UIColor clearColor]];
@@ -411,9 +411,9 @@
             [cellThree addSubview:SenLabel];
             [cellThree addSubview:SenCnLabel];
             [cellThree addSubview:line];
-            [cellThree addSubview:detail];
+//            [cellThree addSubview:detail];
             [line release];
-            [detail release];
+//            [detail release];
             [SenLabel release];
             [SenCnLabel release];
         }

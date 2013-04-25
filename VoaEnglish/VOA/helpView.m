@@ -97,9 +97,9 @@
     if (!isiPhone) {
         for (NSUInteger i = 1; i <= numOfPages; i++)
         {
-            NSString *imageName = [NSString stringWithFormat:@"helpP%d.png", i];
+            NSString *imageName = [NSString stringWithFormat:@"helpP%d", i];
             UIView * pageView = [[UIView alloc] initWithFrame:CGRectMake(scrollView.frame.size.width * (i-1), 0, scrollView.frame.size.width, scrollView.frame.size.height+5)];
-            UIImage *image = [UIImage imageNamed:imageName];
+            UIImage *image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:imageName ofType:@"png"]];
             UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
             // setup each frame to a default height and width, it will be properly placed when we call "updateScrollList"
             imageView.frame = CGRectMake(0, 0, scrollView.frame.size.width, scrollView.frame.size.height+5);
@@ -113,9 +113,9 @@
     } else {
         for (NSUInteger i = 1; i <= numOfPages; i++)
         {
-            NSString *imageName = [NSString stringWithFormat:@"help%d.png", i];
+            NSString *imageName = [NSString stringWithFormat:@"help%d", i];
             UIView * pageView = [[UIView alloc] initWithFrame:CGRectMake(scrollView.frame.size.width * (i-1), 0, scrollView.frame.size.width, scrollView.frame.size.height)];
-            UIImage *image = [UIImage imageNamed:imageName];
+            UIImage *image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:imageName ofType:@"png"]];
             UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
             // setup each frame to a default height and width, it will be properly placed when we call "updateScrollList"
             imageView.frame = CGRectMake(0, 0, scrollView.frame.size.width, scrollView.frame.size.height);

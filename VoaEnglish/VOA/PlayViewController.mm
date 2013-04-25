@@ -346,27 +346,27 @@ extern ASIHTTPRequest *nowrequest;
     switch (playMode) {
         case 1:
             if (isiPhone) {
-                [modeBtn setImage:[UIImage imageNamed:@"sin.png"] forState:UIControlStateNormal];
+                [modeBtn setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"sin" ofType:@"png"]] forState:UIControlStateNormal];
             } else {
-                [modeBtn setImage:[UIImage imageNamed:@"sin-iPad.png"] forState:UIControlStateNormal];
+                [modeBtn setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"sin-iPad" ofType:@"png"]] forState:UIControlStateNormal];
             }
             
             [displayModeBtn setTitle:@"单曲循环" forState:UIControlStateNormal]; 
             break;
         case 2:
             if (isiPhone) {
-                [modeBtn setImage:[UIImage imageNamed:@"seq.png"] forState:UIControlStateNormal];
+                [modeBtn setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"seq" ofType:@"png"]] forState:UIControlStateNormal];
             } else {
-                [modeBtn setImage:[UIImage imageNamed:@"seq-iPad.png"] forState:UIControlStateNormal];
+                [modeBtn setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"seq-iPad" ofType:@"png"]] forState:UIControlStateNormal];
             }
 
             [displayModeBtn setTitle:@"顺序播放" forState:UIControlStateNormal];
             break;
         case 3:
             if (isiPhone) {
-                [modeBtn setImage:[UIImage imageNamed:@"ran.png"] forState:UIControlStateNormal];
+                [modeBtn setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"ran" ofType:@"png"]] forState:UIControlStateNormal];
             } else {
-                [modeBtn setImage:[UIImage imageNamed:@"ran-iPad.png"] forState:UIControlStateNormal];
+                [modeBtn setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"ran-iPad" ofType:@"png"]] forState:UIControlStateNormal];
             }
             
             [displayModeBtn setTitle:@"随机播放" forState:UIControlStateNormal];
@@ -411,9 +411,9 @@ extern ASIHTTPRequest *nowrequest;
         isFixing = NO;
         [fixButton setTitle:@"开启定时" forState:UIControlStateNormal];
         if (isiPhone) {
-            [clockButton setImage:[UIImage imageNamed:@"clockBBC.png"] forState:UIControlStateNormal];
+            [clockButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"clockBBC" ofType:@"png"]] forState:UIControlStateNormal];
         } else {
-            [clockButton setImage:[UIImage imageNamed:@"clockBBCP.png"] forState:UIControlStateNormal];
+            [clockButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"clockBBCP" ofType:@"png"]] forState:UIControlStateNormal];
         }
         
         [self changeTimer];
@@ -428,9 +428,9 @@ extern ASIHTTPRequest *nowrequest;
             isFixing = YES;
             [fixButton setTitle:@"取消定时" forState:UIControlStateNormal];
             if (isiPhone) {
-                [clockButton setImage:[UIImage imageNamed:@"clockedBBC.png"] forState:UIControlStateNormal];
+                [clockButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"clockBBC" ofType:@"png"]] forState:UIControlStateNormal];
             } else {
-                [clockButton setImage:[UIImage imageNamed:@"clockedBBCP.png"] forState:UIControlStateNormal];
+                [clockButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"clockBBCP" ofType:@"png"]] forState:UIControlStateNormal];
             }
             
             //            NSLog(@"%@时%@分%@秒--共:%d秒", fixHour, fixMinute,fixSecond,fixSeconds);
@@ -498,9 +498,9 @@ extern ASIHTTPRequest *nowrequest;
                     isFixing = NO;
                     [fixButton setTitle:@"开启定时" forState:UIControlStateNormal];
                     if (isiPhone) {
-                        [clockButton setImage:[UIImage imageNamed:@"clockBBC.png"] forState:UIControlStateNormal];
+                        [clockButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"clockBBC" ofType:@"png"]] forState:UIControlStateNormal];
                     } else {
-                        [clockButton setImage:[UIImage imageNamed:@"clockBBCP.png"] forState:UIControlStateNormal];
+                        [clockButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"clockBBCP" ofType:@"png"]] forState:UIControlStateNormal];
                     }
                 }
             }
@@ -515,9 +515,9 @@ extern ASIHTTPRequest *nowrequest;
         isFixing = NO;
         [fixButton setTitle:@"开启定时" forState:UIControlStateNormal];
         if (isiPhone) {
-            [clockButton setImage:[UIImage imageNamed:@"clockBBC.png"] forState:UIControlStateNormal];
+            [clockButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"clockBBC" ofType:@"png"]] forState:UIControlStateNormal];
         } else {
-            [clockButton setImage:[UIImage imageNamed:@"clockBBCP.png"] forState:UIControlStateNormal];
+            [clockButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"clockBBCP" ofType:@"png"]] forState:UIControlStateNormal];
         }
         
     }
@@ -1045,7 +1045,7 @@ extern ASIHTTPRequest *nowrequest;
     if (wordPlayer) {
         [wordPlayer release];
     }
-    wordPlayer =[[AVPlayer alloc]initWithURL:[NSURL URLWithString:myWord.audio]];
+    wordPlayer =[[AVPlayer alloc] initWithURL:[NSURL URLWithString:myWord.audio]];
     [wordPlayer play];
 }
 
@@ -1318,7 +1318,11 @@ extern ASIHTTPRequest *nowrequest;
         [self stopPlayRecord];
         
         
-        
+//        if (sen_num < [timeArray count]+1) {
+//            //        if (sen_num < [timeArray count]) {
+//            sen_num++;
+//            [player seekToTime:CMTimeMakeWithSeconds([[timeArray objectAtIndex:sen_num-2] unsignedIntValue], NSEC_PER_SEC)];
+//        }
         if (sen_num < [timeArray count]+1 && [self isPlaying]) {
             //        if (sen_num < [timeArray count]) {
             sen_num++;
@@ -1334,8 +1338,11 @@ extern ASIHTTPRequest *nowrequest;
         if (sen_num == [timeArray count]+1) {
             recordTime = 6;
         } else {
-            recordTime = [[timeArray objectAtIndex:sen_num-1] unsignedIntValue] - [[timeArray objectAtIndex:sen_num-2] unsignedIntValue] ;
-//            NSLog(@"recordTime:%d", recordTime);
+            NSInteger myStartTime = sen_num > 1? [[timeArray objectAtIndex:sen_num-2] unsignedIntValue]:[[timeArray objectAtIndex:0] unsignedIntValue];
+            NSInteger myEndTime = sen_num > 1? [[timeArray objectAtIndex:sen_num-1] unsignedIntValue] : [[timeArray objectAtIndex:1] unsignedIntValue];
+            recordTime = myEndTime - myStartTime;
+//            recordTime = [[timeArray objectAtIndex:sen_num-1] unsignedIntValue] - [[timeArray objectAtIndex:sen_num-2] unsignedIntValue] ;
+            NSLog(@"recordTime:%d", recordTime);
         }
 //        NSLog(@"2");
 //        if (afterRecord) {
@@ -3115,27 +3122,27 @@ void audioRouteChangeListenerCallback (
     switch (playMode) {
         case 1:
             if (isiPhone) {
-                [modeBtn setImage:[UIImage imageNamed:@"sin.png"] forState:UIControlStateNormal];
+                [modeBtn setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"sin" ofType:@"png"]] forState:UIControlStateNormal];
             } else {
-                [modeBtn setImage:[UIImage imageNamed:@"sin-iPad.png"] forState:UIControlStateNormal];
+                [modeBtn setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"sin-iPad" ofType:@"png"]] forState:UIControlStateNormal];
             }
             
-            //            [displayModeBtn setTitle:@"单曲循环" forState:UIControlStateNormal]; 
+//            [displayModeBtn setTitle:@"单曲循环" forState:UIControlStateNormal];
             break;
         case 2:
             if (isiPhone) {
-                [modeBtn setImage:[UIImage imageNamed:@"seq.png"] forState:UIControlStateNormal];
+                [modeBtn setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"seq" ofType:@"png"]] forState:UIControlStateNormal];
             } else {
-                [modeBtn setImage:[UIImage imageNamed:@"seq-iPad.png"] forState:UIControlStateNormal];
+                [modeBtn setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"seq-iPad" ofType:@"png"]] forState:UIControlStateNormal];
             }
             
-            //            [displayModeBtn setTitle:@"顺序播放" forState:UIControlStateNormal];
+//            [displayModeBtn setTitle:@"顺序播放" forState:UIControlStateNormal];
             break;
         case 3:
             if (isiPhone) {
-                [modeBtn setImage:[UIImage imageNamed:@"ran.png"] forState:UIControlStateNormal];
+                [modeBtn setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"ran" ofType:@"png"]] forState:UIControlStateNormal];
             } else {
-                [modeBtn setImage:[UIImage imageNamed:@"ran-iPad.png"] forState:UIControlStateNormal];
+                [modeBtn setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"ran-iPad" ofType:@"png"]] forState:UIControlStateNormal];
             }
             
             //            [displayModeBtn setTitle:@"随机播放" forState:UIControlStateNormal];
@@ -5856,12 +5863,12 @@ void audioRouteChangeListenerCallback (
     if (uid>0) {
         NSString *url;
         //    url = [NSString stringWithFormat:@"http://172.16.94.220:8081/voa/UnicomApi?platform=ios&format=xml&protocol=60002&userid=%i&voaid=%i&shuoshuotype=1",uid, voa._voaid];
-        url = [NSString stringWithFormat:@"http://voa.iyuba.com/voa/UnicomApi?"];
-//        if (isResponse) {
-//            url = [NSString stringWithFormat:@"http://voa.iyuba.com/voa/UnicomApi?toId=%i", [textView tag]];
-//        } else {
-//            url = [NSString stringWithFormat:@"http://voa.iyuba.com/voa/UnicomApi?"];
-//        }
+//        url = [NSString stringWithFormat:@"http://voa.iyuba.com/voa/UnicomApi?"];
+        if (isResponse) {
+            url = [NSString stringWithFormat:@"http://voa.iyuba.com/voa/UnicomApi?toId=%i", [textView tag]];
+        } else {
+            url = [NSString stringWithFormat:@"http://voa.iyuba.com/voa/UnicomApi?"];
+        }
         
         ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:url]];
         request.delegate = self;
@@ -8608,8 +8615,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
         [self changeRecordTimer];
         [recorderView setHidden:NO];
         m_isRecording = YES;
-        NSString *recordAudioFullPath = [kRecorderDirectory stringByAppendingPathComponent:
-                                         [NSString stringWithFormat:kRecordFile]];
+        NSString *recordAudioFullPath = [kRecorderDirectory stringByAppendingPathComponent:[NSString stringWithFormat:kRecordFile]];
         //        NSString *recordAudioFullPath = [kRecorderDirectory stringByAppendingPathComponent:
         //                                         [NSString stringWithFormat:@"recordAudio.caf"]];
         NSLock* tempLock = [[NSLock alloc]init];
@@ -8632,6 +8638,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 //                }
             });
         });
+        
         dispatch_release(stopQueue);
         
     }
@@ -8650,36 +8657,39 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
             //run in main thread
             dispatch_async(dispatch_get_main_queue(), ^{
                 [audioRecoder stopRecord];
+                
             });
         });
         dispatch_release(stopQueue);
+        
+        if (recordSeconds > 3.0f) {
+            [commRecBtn removeTarget:self action:@selector(startCommRecord) forControlEvents:UIControlEventTouchDown];
+            [commRecBtn removeTarget:self action:@selector(endCommRecord) forControlEvents:UIControlEventTouchUpInside];
+            [commRecBtn removeTarget:self action:@selector(endCommRecord) forControlEvents:UIControlEventTouchUpOutside];
+            [commRecBtn setTitle:@"回放" forState:UIControlStateNormal];
+            [commRecBtn addTarget:self action:@selector(playCommRec) forControlEvents:UIControlEventTouchUpInside];
+            
+            [commChangeBtn removeTarget:self action:@selector(doCommChange) forControlEvents:UIControlEventTouchUpInside];
+            [commChangeBtn setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"commReturn" ofType:@"png"]] forState:UIControlStateNormal];
+            [commChangeBtn setTag:3];
+            [commChangeBtn addTarget:self action:@selector(returnCommRec) forControlEvents:UIControlEventTouchUpInside];
+        } else {
+            [displayModeBtn setTitle:@"录音时间太短" forState:UIControlStateNormal];
+            [UIView beginAnimations:@"Display" context:nil];
+            [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+            [UIView setAnimationDuration:0.5];
+            [displayModeBtn setAlpha:0.8];
+            [UIView commitAnimations];
+            
+            [UIView beginAnimations:@"Dismiss" context:nil];
+            [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+            [UIView setAnimationDuration:2.0];
+            [displayModeBtn setAlpha:0];
+            [UIView commitAnimations];
+        }
     }
     
-    if (recordSeconds > 0.8f) {
-        [commRecBtn removeTarget:self action:@selector(startCommRecord) forControlEvents:UIControlEventTouchDown];
-        [commRecBtn removeTarget:self action:@selector(endCommRecord) forControlEvents:UIControlEventTouchUpInside];
-        [commRecBtn removeTarget:self action:@selector(endCommRecord) forControlEvents:UIControlEventTouchUpOutside];
-        [commRecBtn setTitle:@"回放" forState:UIControlStateNormal];
-        [commRecBtn addTarget:self action:@selector(playCommRec) forControlEvents:UIControlEventTouchUpInside];
-        
-        [commChangeBtn removeTarget:self action:@selector(doCommChange) forControlEvents:UIControlEventTouchUpInside];
-        [commChangeBtn setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"commReturn" ofType:@"png"]] forState:UIControlStateNormal];
-        [commChangeBtn setTag:3];
-        [commChangeBtn addTarget:self action:@selector(returnCommRec) forControlEvents:UIControlEventTouchUpInside];
-    } else {
-        [displayModeBtn setTitle:@"录音时间太短" forState:UIControlStateNormal];
-        [UIView beginAnimations:@"Display" context:nil];
-        [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-        [UIView setAnimationDuration:0.5];
-        [displayModeBtn setAlpha:0.8];
-        [UIView commitAnimations];
-        
-        [UIView beginAnimations:@"Dismiss" context:nil];
-        [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-        [UIView setAnimationDuration:2.0];
-        [displayModeBtn setAlpha:0];
-        [UIView commitAnimations];
-    }
+    
      
     
 //    [commRecBtn setHidden:YES];
@@ -8783,8 +8793,8 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
             wordPlayer = nil;
         }
         
-        wordPlayer = [[AVPlayer alloc] initWithURL:[NSURL fileURLWithPath:recordAudioFullPath]];
-        [self changePlayRecordTimer];
+        wordPlayer = [[AVPlayer alloc]  initWithURL:[NSURL fileURLWithPath:recordAudioFullPath]];
+//        [self changePlayRecordTimer];
         [wordPlayer play];
         
     }else {
@@ -8875,6 +8885,20 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
             [btn_play setTitle:@"stop" forState:UIControlStateNormal];
             [self performSelector:@selector(playRecord) withObject:nil afterDelay:0.5f];
             //        [self playRecord];
+        }
+        if (recordSeconds < 3.0f) {
+            [displayModeBtn setTitle:@"录音时间太短" forState:UIControlStateNormal];
+            [UIView beginAnimations:@"Display" context:nil];
+            [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+            [UIView setAnimationDuration:0.5];
+            [displayModeBtn setAlpha:0.8];
+            [UIView commitAnimations];
+            
+            [UIView beginAnimations:@"Dismiss" context:nil];
+            [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+            [UIView setAnimationDuration:2.0];
+            [displayModeBtn setAlpha:0];
+            [UIView commitAnimations];
         }
         
 //        [NSTimer scheduledTimerWithTimeInterval:5.0f target:self selector:@selector(loadAudio2) userInfo:nil repeats:NO];
@@ -9148,7 +9172,9 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
         [recordTimer invalidate];
 //        recordTimer = nil;
     } else {
-        [self stopPlayRecord];
+        if (pageControl.currentPage == 2) {
+            [self stopPlayRecord];
+        }
 //        recordSeconds = 0.f ;
         nowRecordSeconds = recordTime;
         recordSeconds = 0.f;
@@ -9192,7 +9218,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     } 
     nowRecordSeconds -= 0.1f;
     recordSeconds += 0.1f;
-    
+    NSLog(@"recordSeconds:%f", recordSeconds);
 }
 
 /**
@@ -9234,10 +9260,10 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
         playRecordTimer = nil;
         [recordLabel setText:[timeSwitchClass timeToSwitchAdvance:0]];
     } 
-//    nowRecordSeconds = (int)recordSeconds;
-    nowRecordSeconds = recordTime - nowRecordSeconds;
+    nowRecordSeconds = recordSeconds;
+//    nowRecordSeconds = recordTime - nowRecordSeconds;
     [recordLabel setText:[timeSwitchClass timeToSwitchAdvance:nowRecordSeconds]];
-    playRecordTimer = [NSTimer scheduledTimerWithTimeInterval:1.0f
+    playRecordTimer = [NSTimer scheduledTimerWithTimeInterval:0.1f
                                                    target:self
                                                  selector:@selector(handlePlayRecordTimer)
                                                  userInfo:nil
@@ -9264,15 +9290,16 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
  */
 -(void) handlePlayRecordTimer {
     
-    nowRecordSeconds--;
+    nowRecordSeconds -= 0.1f;
     //    NSLog(@"%d", recordSeconds);
-    [recordLabel setText:[timeSwitchClass timeToSwitchAdvance:nowRecordSeconds]];
-    if (nowRecordSeconds < 1) {
+    [recordLabel setText:[timeSwitchClass timeToSwitchAdvance:(int)nowRecordSeconds]];
+//    if (pageControl.currentPage == 2 && nowRecordSeconds < 1) {
 //        if (isiPhone) {
 //            [btn_play setImage:[UIImage imageNamed:@"playingBBC.png"] forState:UIControlStateNormal];
 //        } else {
 //            [btn_play setImage:[UIImage imageNamed:@"playingBBCP.png"] forState:UIControlStateNormal];
 //        }
+    if (nowRecordSeconds < 0.f) {
         if (isiPhone) {
             [btn_play setImage:[UIImage imageNamed:@"playRecord.png"] forState:UIControlStateNormal];
         } else {

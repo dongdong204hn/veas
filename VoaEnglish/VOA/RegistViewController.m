@@ -72,10 +72,10 @@
     UIImageView *logo = [[UIImageView alloc]init];
     if (isiPhone) {
          [logo setFrame:CGRectMake(30, 273, 261, 114)];
-         [logo setImage:[UIImage imageNamed:@"logoIyuba.png"]];
+         [logo setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"logoIyuba" ofType:@"png"]]];
     } else {
         [logo setFrame:CGRectMake(0, 650, 768,220)];
-        [logo setImage:[UIImage imageNamed:@"logoiyuba-iPad.png"]];
+        [logo setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"logoiyuba-iPad" ofType:@"png"]]];
     }
     [self.view addSubview:logo];
     [logo release];
@@ -331,11 +331,11 @@
                 [registBtn addTarget:self action:@selector(doRegist) forControlEvents:UIControlEventTouchUpInside];
                 if (isiPhone) {
                     [registBtn setFrame:CGRectMake(220, 5, 80, 40)];
-                    [registBtn setBackgroundImage: [UIImage imageNamed:@"logPressed.png"] forState:UIControlStateNormal];
+                    [registBtn setBackgroundImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"logPressed" ofType:@"png"]] forState:UIControlStateNormal];
                     [[registBtn titleLabel] setFont:[UIFont boldSystemFontOfSize:18]];
                 } else {
                     [registBtn setFrame:CGRectMake(400 , 5, 150, 80)];
-                    [registBtn setBackgroundImage: [UIImage imageNamed:@"logOut-iPad.png"] forState:UIControlStateNormal];
+                    [registBtn setBackgroundImage: [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"logOut-iPad" ofType:@"png"]] forState:UIControlStateNormal];
                     [[registBtn titleLabel] setFont:[UIFont boldSystemFontOfSize:32]];
 
                 }

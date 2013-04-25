@@ -255,7 +255,7 @@
         [logBtn.titleLabel setTextAlignment:NSTextAlignmentCenter];
 //        [logBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
 //        [logBtn setTitle:@"登录后查看" forState:UIControlStateNormal];
-        [logBtn setImage:[UIImage imageNamed:@"VOANeedLog.png"] forState:UIControlStateNormal];
+        [logBtn setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"VOANeedLog" ofType:@"png"]] forState:UIControlStateNormal];
         //                    [reponseBtn setBackgroundColor:[UIColor whiteColor]];
         [logBtn addTarget:self action:@selector(doLog) forControlEvents:UIControlEventTouchUpInside];
         //        [reponseBtn setTag:4];
@@ -267,7 +267,7 @@
         [editBtn.titleLabel setTextAlignment:NSTextAlignmentCenter];
 //        [editBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
 //        [editBtn setTitle:kSearchTwo forState:UIControlStateNormal];
-        [editBtn setImage:[UIImage imageNamed:@"messageDel"] forState:UIControlStateNormal];
+        [editBtn setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"messageDel" ofType:@"png"]] forState:UIControlStateNormal];
         //                    [reponseBtn setBackgroundColor:[UIColor whiteColor]];
         [editBtn addTarget:self action:@selector(doEdit) forControlEvents:UIControlEventTouchUpInside];
         
@@ -329,7 +329,7 @@
 //        [logBtn setBackgroundColor:[UIColor whiteColor]];
         [logBtn.titleLabel setTextAlignment:NSTextAlignmentCenter];
 //        [logBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [logBtn setImage:[UIImage imageNamed:@"VOANeedLog-ipad.png"] forState:UIControlStateNormal];
+        [logBtn setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"VOANeedLog-ipad" ofType:@"png"]] forState:UIControlStateNormal];
 //        [logBtn setTitle:@"登录后查看" forState:UIControlStateNormal];
         //                    [reponseBtn setBackgroundColor:[UIColor whiteColor]];
         [logBtn addTarget:self action:@selector(doLog) forControlEvents:UIControlEventTouchUpInside];
@@ -342,7 +342,7 @@
         [editBtn.titleLabel setTextAlignment:NSTextAlignmentCenter];
 //        [editBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
 //        [editBtn setTitle:kSearchTwo forState:UIControlStateNormal];
-        [editBtn setImage:[UIImage imageNamed:@"messageDel-ipad.png"] forState:UIControlStateNormal];
+        [editBtn setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"messageDel-ipad" ofType:@"png"]] forState:UIControlStateNormal];
         //                    [reponseBtn setBackgroundColor:[UIColor whiteColor]];
         [editBtn addTarget:self action:@selector(doEdit) forControlEvents:UIControlEventTouchUpInside];
         
@@ -702,20 +702,20 @@
     [self.navigationController pushViewController:myLog animated:YES];
     [myLog release], myLog = nil;
 }
-
+   
 - (void) doEdit{
     
 	[msgTv setEditing:!msgTv.editing animated:YES];
     if (isiPhone) {
         if(msgTv.editing)
-            [editBtn setImage:[UIImage imageNamed:@"messageDo.png"] forState:UIControlStateNormal];
+            [editBtn setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"messageDo" ofType:@"png"]] forState:UIControlStateNormal];
         else
-            [editBtn setImage:[UIImage imageNamed:@"messageDel.png"] forState:UIControlStateNormal];
+            [editBtn setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"messageDel" ofType:@"png"]] forState:UIControlStateNormal];
     } else {
         if(msgTv.editing)
-            [editBtn setImage:[UIImage imageNamed:@"messageDo-ipad.png"] forState:UIControlStateNormal];
+            [editBtn setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"messageDo-ipad" ofType:@"png"]] forState:UIControlStateNormal];
         else
-            [editBtn setImage:[UIImage imageNamed:@"messageDel-ipad.png"] forState:UIControlStateNormal];
+            [editBtn setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"messageDel-ipad" ofType:@"png"]] forState:UIControlStateNormal];
     }
 }
 

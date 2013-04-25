@@ -678,7 +678,6 @@ extern ASIHTTPRequest *nowrequest;
                         } else {
                             [cell.downloadBtn setImage:[UIImage imageNamed:@"waiting@2x.png"] forState:UIControlStateNormal];
                         }
-                        
                     }
                 }else{
                     if (isiPhone) {

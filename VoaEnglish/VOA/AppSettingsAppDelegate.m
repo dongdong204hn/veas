@@ -106,7 +106,7 @@ void uncaughtExceptionHandler(NSException *exception) {
     if ([Constants isPad]) {
 //        NSLog(@"ipad");
 //        window = windowTwo;
-        UIImageView *img = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Pbg-ipad.png"]];
+        UIImageView *img = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Pbg-ipad" ofType:@"png"]]];
         img.frame = self.windowTwo.frame;
         self.rootControllerTwo.wantsFullScreenLayout = YES;
         [self.windowTwo addSubview:img];
@@ -123,14 +123,14 @@ void uncaughtExceptionHandler(NSException *exception) {
             [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:20] forKey:@"mulValueFont"];
             [[NSUserDefaults standardUserDefaults] setObject:@"YES" forKey:@"hightlightLoc"];
             [[NSUserDefaults standardUserDefaults] setObject:@"YES" forKey:@"shakeCtrlPlay"];
-            [[NSUserDefaults standardUserDefaults] setObject:@"YES" forKey:@"recordRead"];
+            [[NSUserDefaults standardUserDefaults] setObject:@"NO" forKey:@"recordRead"];
             [[NSUserDefaults standardUserDefaults] setFloat:3.5f forKey:@"appVersionC"];
             [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:1] forKey:@"playMode"];
             [[NSUserDefaults standardUserDefaults] setObject:@"NO" forKey:@"autoDownload"];
             [[NSUserDefaults standardUserDefaults] setObject:@"NO" forKey:@"nightMode"];
             [[NSUserDefaults standardUserDefaults] setObject:@"NO" forKey:kBePro];
+            [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"haveScore"]; //默认尚未给应用进行打分
             [[NSUserDefaults standardUserDefaults] setFloat:1.0f forKey:@"speed"];
-            [[NSUserDefaults standardUserDefaults] setObject:@"NO" forKey:@"nightMode"];
             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"showSen"];
             [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"catchPause"];
             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"synScroll"];
@@ -143,6 +143,7 @@ void uncaughtExceptionHandler(NSException *exception) {
             [waitReadCountArray addObject:[NSNumber numberWithInteger:0]];//预置一个无效数
             [[NSUserDefaults standardUserDefaults] setObject:waitReadCountArray forKey:@"waitReadCount"];
             [waitReadCountArray release];
+            [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:1] forKey:@"remCode"];
             //展示帮助界面
             numOfPages = 6;
             scrollView = [[UIScrollView alloc] initWithFrame:self.windowTwo.bounds];
@@ -157,9 +158,9 @@ void uncaughtExceptionHandler(NSException *exception) {
             [pageControl addTarget:self action:@selector(changePage:) forControlEvents:UIControlEventValueChanged];
             for (NSUInteger i = 1; i <= numOfPages; i++)
             {
-                NSString *imageName = [NSString stringWithFormat:@"helpP%d.png", i];
+                NSString *imageName = [NSString stringWithFormat:@"helpP%d", i];
                 UIView * pageView = [[UIView alloc] initWithFrame:CGRectMake(scrollView.frame.size.width * (i-1), 0, scrollView.frame.size.width, scrollView.frame.size.height)];
-                UIImage *image = [UIImage imageNamed:imageName];
+                UIImage *image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:imageName ofType:@"png"]];
                 UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
                 // setup each frame to a default height and width, it will be properly placed when we call "updateScrollList"
                 imageView.frame = CGRectMake(0, 0, scrollView.frame.size.width, scrollView.frame.size.height);
@@ -225,7 +226,7 @@ void uncaughtExceptionHandler(NSException *exception) {
 //        NSLog(@"iphone");
 //        window = windowOne;
         
-        UIImageView *img = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Pbg.png"]];
+        UIImageView *img = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Pbg" ofType:@"png"]]];
         img.frame = self.windowOne.frame;
         self.rootControllerOne.wantsFullScreenLayout = YES;
         [self.windowOne addSubview:img];
@@ -243,7 +244,7 @@ void uncaughtExceptionHandler(NSException *exception) {
             [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:15] forKey:@"mulValueFont"]; //字体大小15
             [[NSUserDefaults standardUserDefaults] setObject:@"NO" forKey:@"hightlightLoc"]; //高亮区域默认不居中
             [[NSUserDefaults standardUserDefaults] setObject:@"YES" forKey:@"shakeCtrlPlay"]; //默认晃动设备可控制播放
-            [[NSUserDefaults standardUserDefaults] setObject:@"YES" forKey:@"recordRead"]; //默认开启跟读模式
+            [[NSUserDefaults standardUserDefaults] setObject:@"NO" forKey:@"recordRead"]; //默认开启跟读模式
             [[NSUserDefaults standardUserDefaults] setFloat:3.5f forKey:@"appVersionC"]; //版本号3.2
             [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:1] forKey:@"playMode"]; //默认单曲循环
             [[NSUserDefaults standardUserDefaults] setObject:@"NO" forKey:@"autoDownload"]; //默认自动下载
@@ -264,6 +265,7 @@ void uncaughtExceptionHandler(NSException *exception) {
             [waitReadCountArray addObject:[NSNumber numberWithInteger:0]];//预置一个无效数
             [[NSUserDefaults standardUserDefaults] setObject:waitReadCountArray forKey:@"waitReadCount"]; //waitReadCountArray数组的元素为无网状态下所听读的新闻的id,方便统计新闻已听读的人数
             [waitReadCountArray release];
+            [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:1] forKey:@"remCode"];
             //展示用户帮助
             numOfPages = 6;
             //        scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.window.frame.size.width, self.window.frame.size.height)];
@@ -281,9 +283,9 @@ void uncaughtExceptionHandler(NSException *exception) {
             
             for (NSUInteger i = 1; i <= numOfPages; i++)
             {
-                NSString *imageName = [NSString stringWithFormat:@"help%d.png", i];
+                NSString *imageName = [NSString stringWithFormat:@"help%d", i];
                 UIView * pageView = [[UIView alloc] initWithFrame:CGRectMake(scrollView.frame.size.width * (i-1), 0, scrollView.frame.size.width, scrollView.frame.size.height)];
-                UIImage *image = [UIImage imageNamed:imageName];
+                UIImage *image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:imageName ofType:@"png"]];
                 UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
                 // setup each frame to a default height and width, it will be properly placed when we call "updateScrollList"
                 imageView.frame = CGRectMake(0, 0, scrollView.frame.size.width, scrollView.frame.size.height);
@@ -555,7 +557,7 @@ void uncaughtExceptionHandler(NSException *exception) {
 //    NSLog(@"applicationDidBecomeActive");
 //    AudioSessionSetActive(true);
     
-    NSArray *array = [UIImage splitImageIntoTwoParts:[UIImage imageNamed:([Constants isPad]? @"Default-Portrait.png": (isiPhone5? @"Default-568h@2x.png": @"Default.png"))]];
+    NSArray *array = [UIImage splitImageIntoTwoParts:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:([Constants isPad]? @"Default-Portrait": (isiPhone5? @"Default-568h@2x": @"Default")) ofType:@"png"]]];
     UIImageView *leftImageView = [[UIImageView alloc] initWithImage:[array objectAtIndex:0]];
     UIImageView *rightImageView = [[UIImageView alloc] initWithImage:[array objectAtIndex:1]];
     self.leftDefault = leftImageView;
@@ -730,7 +732,7 @@ void uncaughtExceptionHandler(NSException *exception) {
     int page = floor((scrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
     pageControl.currentPage = page;
     if (scrollView.contentOffset.x>(pageWidth*(numOfPages-0.9))) {
-        NSArray *array = [UIImage splitImageIntoTwoParts:[UIImage imageNamed:([Constants isPad]? @"helpP6.png": @"help6.png")]];
+        NSArray *array = [UIImage splitImageIntoTwoParts:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:([Constants isPad]? @"helpP6": @"help6") ofType:@"png"]]];
         UIImageView *leftImage = [[UIImageView alloc] initWithImage:[array objectAtIndex:0]];
         UIImageView *rightImage = [[UIImageView alloc] initWithImage:[array objectAtIndex:1]];
         leftImage.frame = CGRectMake(0, 0, leftImage.frame.size.width, myView.frame.size.height);

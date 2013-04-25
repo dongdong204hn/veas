@@ -70,11 +70,11 @@
 - (IBAction) doRem:(UIButton *)sender{
     NSInteger rem = [[[NSUserDefaults standardUserDefaults] objectForKey:@"remCode"] integerValue];
     if (rem==1) {
-        [remCode setImage:[UIImage imageNamed:@"rememCodeNot.png"] forState:0];
+        [remCode setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"rememCodeNot" ofType:@"png"]] forState:0];
         [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:0] forKey:@"remCode"];
     }else
     {
-        [remCode setImage:[UIImage imageNamed:@"rememCode.png"] forState:0];
+        [remCode setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"ememCode" ofType:@"png"]] forState:0];
         [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:1] forKey:@"remCode"];
     }
 }
@@ -192,7 +192,7 @@
         kNetTest;
     });
     self.navigationController.navigationBarHidden = NO;
-    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:0] forKey:@"remCode"];
+    
     NSInteger userId = [[[NSUserDefaults standardUserDefaults] objectForKey:@"nowUser"] integerValue];
     //    NSLog(@"生词本添加用户：%d",userId);
     if (userId>0) {
@@ -238,6 +238,13 @@
     [self.navigationItem setTitle:kLogFour];
     //    [userImg setImageWithURL:url placeholderImage:[UIImage imageNamed:@"acquiesceBBC.png"]];
     //    isExisitNet = NO;
+    NSInteger rem = [[[NSUserDefaults standardUserDefaults] objectForKey:@"remCode"] integerValue];
+    if (rem==1) {
+        [remCode setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"ememCode" ofType:@"png"]] forState:0];
+    }else
+    {
+        [remCode setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"rememCodeNot" ofType:@"png"]] forState:0];
+    }
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
 }

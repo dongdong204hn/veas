@@ -32,7 +32,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     if ([Constants isPad]) {
-        [sendBtn setImage:[UIImage imageNamed:@"messageSend-ipad.png"] forState:UIControlStateNormal];
+        [sendBtn setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"messageSend-ipad" ofType:@"png"]] forState:UIControlStateNormal];
     }
 }
 
