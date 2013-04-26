@@ -62,6 +62,16 @@
 		</dict>
 		<dict>
 			<key>DefaultValue</key>
+			<string>YES</string>
+			<key>Key</key>
+			<string>recPlayAgain</string>
+			<key>Title</key>
+			<string>RECORD_READ_TWICE</string>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+		</dict>
+		<dict>
+			<key>DefaultValue</key>
 			<string>NO</string>
 			<key>Key</key>
 			<string>nightMode</string>

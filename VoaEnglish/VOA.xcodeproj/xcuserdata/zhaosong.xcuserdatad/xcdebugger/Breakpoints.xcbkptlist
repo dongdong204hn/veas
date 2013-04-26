@@ -106,11 +106,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "VOA/PlayViewController.mm"
-         timestampString = "388568766.174446"
+         timestampString = "388662520.912078"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "4067"
-         endingLineNumber = "4067"
+         startingLineNumber = "4129"
+         endingLineNumber = "4129"
          landmarkName = "-calculateSim"
          landmarkType = "5">
       </FileBreakpoint>
@@ -119,11 +119,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "VOA/PlayViewController.mm"
-         timestampString = "388568766.174446"
+         timestampString = "388662520.912078"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "6849"
-         endingLineNumber = "6849"
+         startingLineNumber = "6925"
+         endingLineNumber = "6925"
          landmarkName = "-scrollViewDidEndScrollingAnimation:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -132,11 +132,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "VOA/PlayViewController.mm"
-         timestampString = "388568766.174446"
+         timestampString = "388662520.912078"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "7259"
-         endingLineNumber = "7259"
+         startingLineNumber = "7335"
+         endingLineNumber = "7335"
          landmarkName = "-scrollViewDidEndDecelerating:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -145,11 +145,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "VOA/PlayViewController.mm"
-         timestampString = "388480298.614561"
+         timestampString = "388662520.912078"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1066"
-         endingLineNumber = "1066"
+         startingLineNumber = "1076"
+         endingLineNumber = "1076"
          landmarkName = "-prePlay:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -158,11 +158,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "VOA/PlayViewController.mm"
-         timestampString = "388572732.027277"
+         timestampString = "388662613.143195"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "8857"
-         endingLineNumber = "8857"
+         startingLineNumber = "8937"
+         endingLineNumber = "8937"
          landmarkName = "-stopRecord"
          landmarkType = "5">
       </FileBreakpoint>
@@ -171,11 +171,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "VOA/PlayViewController.mm"
-         timestampString = "388574908.693471"
+         timestampString = "388662613.143195"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "8961"
-         endingLineNumber = "8961"
+         startingLineNumber = "9048"
+         endingLineNumber = "9048"
          landmarkName = "-startToRecord"
          landmarkType = "5">
       </FileBreakpoint>
@@ -184,12 +184,25 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "VOA/PlayViewController.mm"
-         timestampString = "388564036.204573"
+         timestampString = "388662520.912078"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1247"
-         endingLineNumber = "1247"
+         startingLineNumber = "1306"
+         endingLineNumber = "1306"
          landmarkName = "-aftPlay:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "VOA/PlayViewController.mm"
+         timestampString = "388662613.143195"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "9401"
+         endingLineNumber = "9401"
+         landmarkName = "-handlePlayRecordTimer"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

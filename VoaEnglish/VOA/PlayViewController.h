@@ -315,7 +315,7 @@
 @property (nonatomic, retain) UIButton        *commChangeBtn; //发表评论按钮
 @property (nonatomic, retain) UIButton        *commRecBtn; //发表评论按钮
 @property (nonatomic, retain) UIButton		*collectButton; //下载按钮
-
+@property (nonatomic, retain) UIButton		*playAgainButton; //下载按钮
 //@property (nonatomic, retain) UISegmentedControl *commRecControl;
 
 @property (nonatomic, retain) NSTimer			*sliderTimer; //播放时主定时器
@@ -396,6 +396,7 @@
 
 @property NSInteger nowUserId;  //记录当前用户ID
 @property (nonatomic) BOOL notValidInitLyric;   //标记是否有外部打断事件
+@property (nonatomic) BOOL recPlayAgain; //检测是否开启自动跟读复读
 
 
 void RouteChangeListener(	void *                  inClientData,

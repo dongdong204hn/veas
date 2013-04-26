@@ -74,7 +74,7 @@
         [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:0] forKey:@"remCode"];
     }else
     {
-        [remCode setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"ememCode" ofType:@"png"]] forState:0];
+        [remCode setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"rememCode" ofType:@"png"]] forState:0];
         [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:1] forKey:@"remCode"];
     }
 }
@@ -240,7 +240,7 @@
     //    isExisitNet = NO;
     NSInteger rem = [[[NSUserDefaults standardUserDefaults] objectForKey:@"remCode"] integerValue];
     if (rem==1) {
-        [remCode setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"ememCode" ofType:@"png"]] forState:0];
+        [remCode setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"rememCode" ofType:@"png"]] forState:0];
     }else
     {
         [remCode setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"rememCodeNot" ofType:@"png"]] forState:0];

@@ -106,11 +106,11 @@ void uncaughtExceptionHandler(NSException *exception) {
     if ([Constants isPad]) {
 //        NSLog(@"ipad");
 //        window = windowTwo;
-        UIImageView *img = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Pbg-ipad" ofType:@"png"]]];
-        img.frame = self.windowTwo.frame;
+//        UIImageView *img = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Pbg-ipad" ofType:@"png"]]];
+//        img.frame = self.windowTwo.frame;
         self.rootControllerTwo.wantsFullScreenLayout = YES;
-        [self.windowTwo addSubview:img];
-        [img release], img = nil;
+//        [self.windowTwo addSubview:img];
+//        [img release], img = nil;
         self.windowTwo.rootViewController = self.rootControllerTwo;
 //        [self.windowTwo addSubview:rootControllerTwo.view];
         
@@ -124,7 +124,7 @@ void uncaughtExceptionHandler(NSException *exception) {
             [[NSUserDefaults standardUserDefaults] setObject:@"YES" forKey:@"hightlightLoc"];
             [[NSUserDefaults standardUserDefaults] setObject:@"YES" forKey:@"shakeCtrlPlay"];
             [[NSUserDefaults standardUserDefaults] setObject:@"NO" forKey:@"recordRead"];
-            [[NSUserDefaults standardUserDefaults] setFloat:3.5f forKey:@"appVersionC"];
+            [[NSUserDefaults standardUserDefaults] setFloat:3.6f forKey:@"appVersionC"];
             [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:1] forKey:@"playMode"];
             [[NSUserDefaults standardUserDefaults] setObject:@"NO" forKey:@"autoDownload"];
             [[NSUserDefaults standardUserDefaults] setObject:@"NO" forKey:@"nightMode"];
@@ -144,6 +144,8 @@ void uncaughtExceptionHandler(NSException *exception) {
             [[NSUserDefaults standardUserDefaults] setObject:waitReadCountArray forKey:@"waitReadCount"];
             [waitReadCountArray release];
             [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:1] forKey:@"remCode"];
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"recPlayAgain"];
+            
             //展示帮助界面
             numOfPages = 6;
             scrollView = [[UIScrollView alloc] initWithFrame:self.windowTwo.bounds];
@@ -186,8 +188,8 @@ void uncaughtExceptionHandler(NSException *exception) {
 //                NSLog(@"已注册推送");
             }
             float appVersion = [[[NSUserDefaults standardUserDefaults] objectForKey:@"appVersionC"] floatValue];
-            if (appVersion < 3.5f) { //新版本的一些新设置等
-                [[NSUserDefaults standardUserDefaults] setFloat:3.5f forKey:@"appVersionC"];
+            if (appVersion < 3.6f) { //新版本的一些新设置等
+                [[NSUserDefaults standardUserDefaults] setFloat:3.6f forKey:@"appVersionC"];
                 [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"haveScore"];
                 [[NSUserDefaults standardUserDefaults] setFloat:1.0f forKey:@"speed"];
                 [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"showSen"];
@@ -197,6 +199,7 @@ void uncaughtExceptionHandler(NSException *exception) {
                 [waitReadCountArray addObject:[NSNumber numberWithInteger:0]];//预置一个无效数
                 [[NSUserDefaults standardUserDefaults] setObject:waitReadCountArray forKey:@"waitReadCount"];
                 [waitReadCountArray release];
+                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"recPlayAgain"];
             }
             int lunchTime = [[NSUserDefaults standardUserDefaults] integerForKey:@"firstLaunch"];
             if (lunchTime < 5) {
@@ -226,11 +229,11 @@ void uncaughtExceptionHandler(NSException *exception) {
 //        NSLog(@"iphone");
 //        window = windowOne;
         
-        UIImageView *img = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Pbg" ofType:@"png"]]];
-        img.frame = self.windowOne.frame;
+//        UIImageView *img = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Pbg" ofType:@"png"]]];
+//        img.frame = self.windowOne.frame;
         self.rootControllerOne.wantsFullScreenLayout = YES;
-        [self.windowOne addSubview:img];
-        [img release], img = nil;
+//        [self.windowOne addSubview:img];
+//        [img release], img = nil;
         self.windowOne.rootViewController = self.rootControllerOne;
 //        [self.windowOne addSubview:rootControllerOne.view];
         
@@ -245,7 +248,7 @@ void uncaughtExceptionHandler(NSException *exception) {
             [[NSUserDefaults standardUserDefaults] setObject:@"NO" forKey:@"hightlightLoc"]; //高亮区域默认不居中
             [[NSUserDefaults standardUserDefaults] setObject:@"YES" forKey:@"shakeCtrlPlay"]; //默认晃动设备可控制播放
             [[NSUserDefaults standardUserDefaults] setObject:@"NO" forKey:@"recordRead"]; //默认开启跟读模式
-            [[NSUserDefaults standardUserDefaults] setFloat:3.5f forKey:@"appVersionC"]; //版本号3.2
+            [[NSUserDefaults standardUserDefaults] setFloat:3.6f forKey:@"appVersionC"]; //版本号3.2
             [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:1] forKey:@"playMode"]; //默认单曲循环
             [[NSUserDefaults standardUserDefaults] setObject:@"NO" forKey:@"autoDownload"]; //默认自动下载
             [[NSUserDefaults standardUserDefaults] setObject:@"NO" forKey:@"nightMode"]; //默认关闭夜间模式
@@ -266,6 +269,8 @@ void uncaughtExceptionHandler(NSException *exception) {
             [[NSUserDefaults standardUserDefaults] setObject:waitReadCountArray forKey:@"waitReadCount"]; //waitReadCountArray数组的元素为无网状态下所听读的新闻的id,方便统计新闻已听读的人数
             [waitReadCountArray release];
             [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:1] forKey:@"remCode"];
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"recPlayAgain"];
+            
             //展示用户帮助
             numOfPages = 6;
             //        scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.window.frame.size.width, self.window.frame.size.height)];
@@ -327,8 +332,8 @@ void uncaughtExceptionHandler(NSException *exception) {
             });
             
             float appVersion = [[[NSUserDefaults standardUserDefaults] objectForKey:@"appVersionC"] floatValue];
-            if (appVersion < 3.5f) { //新版本的一些新设置等
-                [[NSUserDefaults standardUserDefaults] setFloat:3.5f forKey:@"appVersionC"];
+            if (appVersion < 3.6f) { //新版本的一些新设置等
+                [[NSUserDefaults standardUserDefaults] setFloat:3.6f forKey:@"appVersionC"];
                 [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"haveScore"];
                 [[NSUserDefaults standardUserDefaults] setFloat:1.0f forKey:@"speed"];
                 [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"showSen"];
@@ -338,6 +343,7 @@ void uncaughtExceptionHandler(NSException *exception) {
                 [waitReadCountArray addObject:[NSNumber numberWithInteger:0]];//预置一个无效数
                 [[NSUserDefaults standardUserDefaults] setObject:waitReadCountArray forKey:@"waitReadCount"];
                 [waitReadCountArray release];
+                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"recPlayAgain"];
             }
             
             int lunchTime = [[NSUserDefaults standardUserDefaults] integerForKey:@"firstLaunch"];
@@ -487,7 +493,7 @@ void uncaughtExceptionHandler(NSException *exception) {
     /*
      Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
      */
-    
+    [[NSUserDefaults standardUserDefaults] setObject:@"YES" forKey:kBePro];
     /*
      检测是否正在学习，若未标志正在学习，记录开始时间与日期。并且若有网的话告诉服务器无网时所听的新闻。
      */
