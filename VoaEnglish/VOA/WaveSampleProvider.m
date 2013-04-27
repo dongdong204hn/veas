@@ -18,7 +18,7 @@
 @end
 
 @implementation WaveSampleProvider
-@synthesize status, statusMessage, binSize, minute, sec, delegate,audioURL;
+@synthesize status, statusMessage, binSize, minute, sec, delegate,audioURL, isProcessing;
 
 - (NSString *)title
 {
@@ -57,6 +57,7 @@
 //		path = [[NSString stringWithString:thePath] retain];
 		audioURL = [theURL retain];//[[NSURL fileURLWithPath:path]retain];
 		title = [[theURL lastPathComponent] copy];// @"";//[[path lastPathComponent] copy];
+        isProcessing = NO;
 	}
 	return self;
 }
@@ -77,6 +78,7 @@
 - (void) createSampleData
 {
 	sampleData = [[NSMutableArray array]retain];
+//    [self loadSample];
 	[self performSelectorInBackground:@selector(loadSample) withObject:nil];
 }
 
@@ -100,7 +102,9 @@
 
 - (void) loadSample
 {
-	[self processSample];	
+	[self processSample];
+//    [self informDelegateOfFinish];
+//    [self performSelectorInBackground:@selector(informDelegateOfFinish) withObject:nil];
 	[self performSelectorOnMainThread:@selector(informDelegateOfFinish) withObject:nil waitUntilDone:NO];
 }
 

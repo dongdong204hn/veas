@@ -101,6 +101,10 @@
 	[super dealloc];
 }
 
+- (BOOL)isReady {
+    return !wsp.isProcessing;
+}
+
 #pragma mark -
 #pragma mark Playback
 - (void) setInfoString:(NSString *)newInfo
@@ -141,6 +145,7 @@
 	[progress startAnimating];*/
 	[wsp release];
 	wsp = [[WaveSampleProvider alloc]initWithURL:url];
+    wsp.isProcessing = YES;
 	wsp.delegate = self;
 	[wsp createSampleData];
 }
@@ -604,7 +609,7 @@
         }
 
         
-        NSLog(@"%d",k);
+        NSLog(@"结束：%d",k);
         if(type==0)
            self.linepath1=linepathtmp;
         else
@@ -620,7 +625,7 @@
 		int dsec = wsp.sec;
 		[self setTimeString:[NSString stringWithFormat:@"--:--/%02d:%02d",dmin,dsec]];
 		[self startAudio];
-		
+        wsp.isProcessing = NO;
 	}
 }
 @end

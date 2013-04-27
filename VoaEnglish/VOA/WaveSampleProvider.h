@@ -42,6 +42,7 @@ typedef enum {
 @property (assign, nonatomic) int binSize;
 @property (assign, nonatomic) int minute;
 @property (assign, nonatomic) int sec;
+@property (assign, nonatomic) BOOL isProcessing;
 @property (retain) id<WaveSampleProviderDelegate>delegate;
 @property (readonly) NSString *title;
 

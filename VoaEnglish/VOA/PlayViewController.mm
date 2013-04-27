@@ -149,12 +149,13 @@
 @synthesize notValidInitLyric;
 @synthesize commChangeBtn;
 @synthesize commRecBtn;
-@synthesize wfv;
 @synthesize thisScore;
 @synthesize recorderView;
 @synthesize peakMeterIV;
 @synthesize recPlayAgain;
 @synthesize playAgainButton;
+@synthesize wfvOne;
+@synthesize wfvTwo;
 //@synthesize commRecControl;
 //@synthesize commRecTimer;
 
@@ -1134,10 +1135,10 @@ extern ASIHTTPRequest *nowrequest;
         [self myStopRecord];
         [self stopPlayRecord];
         
-//        NSInteger myStartTime = sen_num > 1? [[timeArray objectAtIndex:sen_num-2] unsignedIntValue]:[[timeArray objectAtIndex:0] unsignedIntValue];
-//        NSInteger myEndTime = sen_num > 1? [[timeArray objectAtIndex:sen_num-1] unsignedIntValue] : [[timeArray objectAtIndex:1] unsignedIntValue];
-//        NSLog(@"start:%d end:%d", myStartTime, myEndTime);
-//        [self cutAudio:myStartTime endTime:myEndTime];
+        NSInteger myStartTime = sen_num > 1? [[timeArray objectAtIndex:sen_num-2] unsignedIntValue]:[[timeArray objectAtIndex:0] unsignedIntValue];
+        NSInteger myEndTime = sen_num > 1? [[timeArray objectAtIndex:sen_num-1] unsignedIntValue] : [[timeArray objectAtIndex:1] unsignedIntValue];
+        NSLog(@"start:%d end:%d", myStartTime, myEndTime);
+        [self cutAudio:myStartTime endTime:myEndTime];
 //        [self loadAudio];
 //        double engHight = [@"a" sizeWithFont:CourierOne].height;
 //        if (![self isPlaying] && sen_num>1) {
@@ -1388,10 +1389,10 @@ extern ASIHTTPRequest *nowrequest;
             [player seekToTime:CMTimeMakeWithSeconds([[timeArray objectAtIndex:sen_num-2] unsignedIntValue], NSEC_PER_SEC)];
         }
         
-//        NSInteger myStartTime = sen_num > 1? [[timeArray objectAtIndex:sen_num-2] unsignedIntValue]:[[timeArray objectAtIndex:0] unsignedIntValue];
-//        NSInteger myEndTime = sen_num > 1? [[timeArray objectAtIndex:sen_num-1] unsignedIntValue] : [[timeArray objectAtIndex:1] unsignedIntValue];
-//        NSLog(@"start:%d end:%d", myStartTime, myEndTime);
-//        [self cutAudio:myStartTime endTime:myEndTime];
+        NSInteger myStartTime = sen_num > 1? [[timeArray objectAtIndex:sen_num-2] unsignedIntValue]:[[timeArray objectAtIndex:0] unsignedIntValue];
+        NSInteger myEndTime = sen_num > 1? [[timeArray objectAtIndex:sen_num-1] unsignedIntValue] : [[timeArray objectAtIndex:1] unsignedIntValue];
+        NSLog(@"start:%d end:%d", myStartTime, myEndTime);
+        [self cutAudio:myStartTime endTime:myEndTime];
 //        [self loadAudio];
 //        NSLog(@"1");
         if (sen_num == [timeArray count]+1) {
@@ -4099,7 +4100,7 @@ void audioRouteChangeListenerCallback (
 //        songURL = [NSURL fileURLWithPath:path];
         
         NSLog(@"1111");
-        [wfv openAudioURL:[NSURL fileURLWithPath:exportPath] own:0];
+        [wfvOne openAudioURL:[NSURL fileURLWithPath:exportPath] own:0];
         
     } else {
     }
@@ -4110,13 +4111,13 @@ void audioRouteChangeListenerCallback (
                                      [NSString stringWithFormat:kRecordFile]];
 	if([[NSFileManager defaultManager] fileExistsAtPath:recordAudioFullPath]) {
         
-		[wfv openAudioURL:[NSURL fileURLWithPath:recordAudioFullPath] own:1];
+		[wfvTwo openAudioURL:[NSURL fileURLWithPath:recordAudioFullPath] own:1];
         
 	} else {
         
 	}
 //    [self score];
-    [NSTimer scheduledTimerWithTimeInterval:5.0f target:self selector:@selector(score) userInfo:nil repeats:NO];
+//    [NSTimer scheduledTimerWithTimeInterval:3.0f target:self selector:@selector(score) userInfo:nil repeats:NO];
     
     
 }
@@ -4126,9 +4127,8 @@ void audioRouteChangeListenerCallback (
 }
 
 -(void)calculateSim{
-    NSMutableArray *array1=wfv.linepath1;
-    NSMutableArray *array2=wfv.linepath2;
-    
+    NSMutableArray *array1=wfvOne.linepath1;
+    NSMutableArray *array2=wfvTwo.linepath2;
     
     float suma=0;
     float sumb=0;
@@ -4246,19 +4246,22 @@ void audioRouteChangeListenerCallback (
     if(thisMy>thisScore)
         self.thisScore=thisMy;
     
-    [displayModeBtn setTitle:[NSString stringWithFormat:@"%d", thisMy] forState:UIControlStateNormal];
+//    [myScroll setScrollEnabled:YES];
+    [btn_record setEnabled:YES];
+    [displayModeBtn setAlpha:0];
+    [displayModeBtn setTitle:[NSString stringWithFormat:@"%d分", thisMy] forState:UIControlStateNormal];
     [UIView beginAnimations:@"Display" context:nil];
     [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-    [UIView setAnimationDuration:0.5];
+    [UIView setAnimationDuration:1.0];
     [displayModeBtn setAlpha:0.8];
-    [wfv setAlpha:0.8];
+//    [wfv setAlpha:0.8];
     [UIView commitAnimations];
     
     [UIView beginAnimations:@"Dismiss" context:nil];
     [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-    [UIView setAnimationDuration:2.0];
+    [UIView setAnimationDuration:1.0];
     [displayModeBtn setAlpha:0];
-    [wfv setAlpha:0];
+//    [wfv setAlpha:0];
     [UIView commitAnimations];
     
     NSLog(@"相似分数:%d 时间:%d,总分:%d",(int)(tem*0.6),(int)(otherScore*0.4),thisMy);
@@ -4293,8 +4296,8 @@ void audioRouteChangeListenerCallback (
 
 -(int)calcucountSim
 {
-    NSMutableArray *array1=wfv.linepath1;
-    NSMutableArray *array2=wfv.linepath2;
+    NSMutableArray *array1=wfvOne.linepath1;
+    NSMutableArray *array2=wfvTwo.linepath2;
     float count1=[array1 count];
     float count2=[array2 count];
     int score2;
@@ -4476,6 +4479,11 @@ void audioRouteChangeListenerCallback (
             
         } else {
 //            NSLog(@"not same!!");
+            CourierOne = [UIFont systemFontOfSize:fontSize];//初始15
+            CourierTwo = [UIFont systemFontOfSize:fontSize-2];
+            [lyricLabel setFont:CourierOne];
+            [lyricCnLabel setFont:CourierTwo];
+            
 //            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                 for (UIView *deleteView in [textScroll subviews]) {
                     [deleteView removeFromSuperview];
@@ -4572,7 +4580,8 @@ void audioRouteChangeListenerCallback (
     isAbMenu = NO;
     isResponse = NO;
     isUpAlertShow = NO;
-//    wfv = [[WaveFormViewIOS alloc] init];
+    wfvOne = [[WaveFormViewIOS alloc] init];
+    wfvTwo = [[WaveFormViewIOS alloc] init];
 //    [[NSUserDefaults standardUserDefaults] setObject:@"YES" forKey:kBePro];
     isFree = ![[NSUserDefaults standardUserDefaults] boolForKey:kBePro] && ![[NSUserDefaults standardUserDefaults] boolForKey:@"isVip"];
 //    isFree = NO;
@@ -5396,7 +5405,8 @@ void audioRouteChangeListenerCallback (
     
     [commChangeBtn release], commChangeBtn = nil;
     [commRecBtn release], commRecBtn = nil;
-    [wfv release], wfv = nil;
+    [wfvOne release], wfvOne = nil;
+    [wfvTwo release], wfvTwo = nil;
 }
 
 /**
@@ -5512,7 +5522,8 @@ void audioRouteChangeListenerCallback (
     [mySentence release];
     [commRecBtn release];
     [commChangeBtn release];
-    [wfv release];
+    [wfvOne release];
+    [wfvTwo release];
     [super dealloc];
 }
 
@@ -7010,10 +7021,10 @@ void audioRouteChangeListenerCallback (
                 }
             }
             //        NSLog(@"lyCnretain1:%i", [lyCn retainCount]);
-//            NSInteger myStartTime = sen_num > 1? [[timeArray objectAtIndex:sen_num-2] unsignedIntValue]:[[timeArray objectAtIndex:0] unsignedIntValue];
-//            NSInteger myEndTime = sen_num > 1? [[timeArray objectAtIndex:sen_num-1] unsignedIntValue] : [[timeArray objectAtIndex:1] unsignedIntValue];
-//            NSLog(@"start:%d end:%d", myStartTime, myEndTime);
-//            [self cutAudio:myStartTime endTime:myEndTime];
+            NSInteger myStartTime = sen_num > 1? [[timeArray objectAtIndex:sen_num-2] unsignedIntValue]:[[timeArray objectAtIndex:0] unsignedIntValue];
+            NSInteger myEndTime = sen_num > 1? [[timeArray objectAtIndex:sen_num-1] unsignedIntValue] : [[timeArray objectAtIndex:1] unsignedIntValue];
+            NSLog(@"start:%d end:%d", myStartTime, myEndTime);
+            [self cutAudio:myStartTime endTime:myEndTime];
 //            [self loadAudio];
             [lyCn release];
             [lyEn release];
@@ -7422,10 +7433,10 @@ void audioRouteChangeListenerCallback (
                 }
             }
             //        NSLog(@"lyCnretain1:%i", [lyCn retainCount]);
-//            NSInteger myStartTime = sen_num > 1? [[timeArray objectAtIndex:sen_num-2] unsignedIntValue]:[[timeArray objectAtIndex:0] unsignedIntValue];
-//            NSInteger myEndTime = sen_num > 1? [[timeArray objectAtIndex:sen_num-1] unsignedIntValue] : [[timeArray objectAtIndex:1] unsignedIntValue];
-//            NSLog(@"start:%d end:%d", myStartTime, myEndTime);
-//            [self cutAudio:myStartTime endTime:myEndTime];
+            NSInteger myStartTime = sen_num > 1? [[timeArray objectAtIndex:sen_num-2] unsignedIntValue]:[[timeArray objectAtIndex:0] unsignedIntValue];
+            NSInteger myEndTime = sen_num > 1? [[timeArray objectAtIndex:sen_num-1] unsignedIntValue] : [[timeArray objectAtIndex:1] unsignedIntValue];
+            NSLog(@"start:%d end:%d", myStartTime, myEndTime);
+            [self cutAudio:myStartTime endTime:myEndTime];
 //            [self loadAudio];
             [lyCn release];
             [lyEn release];
@@ -8929,6 +8940,14 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     }
 }
 
+- (void)testScore {
+    if ([wfvTwo isReady]) {
+        [recordTimer invalidate];
+        recordTimer = nil;
+        [self score];
+    }
+}
+
 /**
  *  停止录音，并根据是否开启自动跟读选择是否自动播放录音
  */
@@ -8950,43 +8969,66 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
         
         [self stopRecordTimer];
         [recorderView setHidden:YES];
+        
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"recordRead"]) {
+            [btn_play setTitle:@"stop" forState:UIControlStateNormal];
+            
+//            [self performSelector:@selector(playRecord) withObject:nil afterDelay:0.5f];
+            //        [self playRecord];
+        } else {
+            [btn_record setEnabled:YES];
+            [btn_play setEnabled:YES];
+        }
+        
+        
         dispatch_queue_t stopQueue;
         stopQueue = dispatch_queue_create("stopQueue", NULL);
         dispatch_async(stopQueue, ^(void){
-            //run in main thread
+//            //run in main thread
             dispatch_async(dispatch_get_main_queue(), ^{
                 [audioRecoder stopRecord];
-                if (![[NSUserDefaults standardUserDefaults] boolForKey:@"recordRead"]) {
-                    [btn_play setEnabled:YES];
+                [self performSelector:@selector(playRecord) withObject:nil afterDelay:0.5f];
+//                if (![[NSUserDefaults standardUserDefaults] boolForKey:@"recordRead"]) {
+//                    [btn_play setEnabled:YES];
+//                }
+                
+                if (recordSeconds < 3.0f) {
+                    [displayModeBtn setTitle:@"录音时间太短" forState:UIControlStateNormal];
+                    [UIView beginAnimations:@"Display" context:nil];
+                    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+                    [UIView setAnimationDuration:0.5];
+                    [displayModeBtn setAlpha:0.8];
+                    [UIView commitAnimations];
+                    
+                    [UIView beginAnimations:@"Dismiss" context:nil];
+                    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+                    [UIView setAnimationDuration:2.0];
+                    [displayModeBtn setAlpha:0];
+                    [UIView commitAnimations];
+                } else {
+//                    [myScroll setScrollEnabled:NO];
+                    [btn_record setEnabled:NO];
+                    [displayModeBtn setTitle:@"语音比对中" forState:UIControlStateNormal];
+                    [displayModeBtn setAlpha:0.8];
+                    
+                    [self loadAudio2];
+                    
+                    if (recordTimer && recordTimer.isValid) {
+                        [recordTimer invalidate];
+                        recordTimer = nil;
+                    }
+                    recordTimer = [NSTimer scheduledTimerWithTimeInterval:0.5f
+                                                                   target:self
+                                                                 selector:@selector(testScore)
+                                                                 userInfo:nil
+                                                                  repeats:YES];
                 }
                 
-//                [self performSelector:@selector(loadAudio2) withObject:nil afterDelay:1.5f];
             });
         });    
         dispatch_release(stopQueue);
-        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"recordRead"]) {
-            [btn_play setTitle:@"stop" forState:UIControlStateNormal];
-            if (![[NSUserDefaults standardUserDefaults] boolForKey:@"recordRead"]) {
-                [btn_record setEnabled:YES];
-            }
-            
-            [self performSelector:@selector(playRecord) withObject:nil afterDelay:0.5f];
-            //        [self playRecord];
-        }
-        if (recordSeconds < 3.0f) {
-            [displayModeBtn setTitle:@"录音时间太短" forState:UIControlStateNormal];
-            [UIView beginAnimations:@"Display" context:nil];
-            [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-            [UIView setAnimationDuration:0.5];
-            [displayModeBtn setAlpha:0.8];
-            [UIView commitAnimations];
-            
-            [UIView beginAnimations:@"Dismiss" context:nil];
-            [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-            [UIView setAnimationDuration:2.0];
-            [displayModeBtn setAlpha:0];
-            [UIView commitAnimations];
-        }
+
+        
         
 //        [NSTimer scheduledTimerWithTimeInterval:5.0f target:self selector:@selector(loadAudio2) userInfo:nil repeats:NO];
         
@@ -9055,12 +9097,6 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
         player = nil;
     }
 //    [player pause];
-    
-//    NSInteger myStartTime = sen_num > 1? [[timeArray objectAtIndex:sen_num-2] unsignedIntValue]:[[timeArray objectAtIndex:0] unsignedIntValue];
-//    NSInteger myEndTime = sen_num > 1? [[timeArray objectAtIndex:sen_num-1] unsignedIntValue] : [[timeArray objectAtIndex:1] unsignedIntValue];
-//    NSLog(@"start:%d end:%d", myStartTime, myEndTime);
-//    [self cutAudio:myStartTime endTime:myEndTime];
-//    [self performSelector:@selector(loadAudio) withObject:nil afterDelay:1.5f];
 
     
     if (wordPlayer) {
@@ -9069,6 +9105,24 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     }
     AVAudioSession *audioSession = [AVAudioSession sharedInstance];
     [audioSession setCategory:AVAudioSessionCategoryRecord error:nil];
+    
+    /*NSInteger myStartTime = sen_num > 1? [[timeArray objectAtIndex:sen_num-2] unsignedIntValue]:[[timeArray objectAtIndex:0] unsignedIntValue];
+    NSInteger myEndTime = sen_num > 1? [[timeArray objectAtIndex:sen_num-1] unsignedIntValue] : [[timeArray objectAtIndex:1] unsignedIntValue];
+    NSLog(@"start:%d end:%d", myStartTime, myEndTime);
+    [self cutAudio:myStartTime endTime:myEndTime];
+//    [self performSelector:@selector(loadAudio) withObject:nil afterDelay:1.5f];
+    NSString *exportPath = [kRecorderDirectory stringByAppendingPathComponent:
+                             [NSString stringWithFormat:kCutFile]];
+	if ([[NSFileManager defaultManager] fileExistsAtPath:exportPath]) {
+		[NSTimer scheduledTimerWithTimeInterval:1.5f target:self selector:@selector(loadAudio) userInfo:nil repeats:NO];
+	}*/
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//        
+//        dispatch_async(dispatch_get_main_queue(), ^{
+            [self loadAudio];
+//        });
+//        
+//    });
     
     if (m_isRecording == NO)
     {
@@ -9087,14 +9141,14 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
                                          [NSString stringWithFormat:kRecordFile]];
         //        NSString *recordAudioFullPath = [kRecorderDirectory stringByAppendingPathComponent:
         //                                         [NSString stringWithFormat:@"recordAudio.caf"]];
-        NSLock* tempLock = [[NSLock alloc]init];
-        [tempLock lock];
-        if ([[NSFileManager defaultManager] fileExistsAtPath:recordAudioFullPath]) 
+//        NSLock* tempLock = [[NSLock alloc]init];
+//        [tempLock lock];
+        if ([[NSFileManager defaultManager] fileExistsAtPath:recordAudioFullPath])
         {
             [[NSFileManager defaultManager] removeItemAtPath:recordAudioFullPath error:nil];
         }
-        [tempLock unlock];
-        [tempLock release];
+//        [tempLock unlock];
+//        [tempLock release];
 //        afterRecord = YES;
 //        if (isiPhone) {
 //            [btn_record setImage:[UIImage imageNamed:@"stopRecordBBC.png"] forState:UIControlStateNormal];
@@ -9303,7 +9357,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     } 
     nowRecordSeconds -= 0.1f;
     recordSeconds += 0.1f;
-    NSLog(@"recordSeconds:%f", recordSeconds);
+//    NSLog(@"recordSeconds:%f", recordSeconds);
 }
 
 /**

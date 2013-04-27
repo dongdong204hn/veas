@@ -45,5 +45,5 @@
 @property (assign)NSInteger wfvLength;
 
 - (void) openAudioURL:(NSURL *)url own:(NSInteger)own;
-
+- (BOOL) isReady ;
 @end
