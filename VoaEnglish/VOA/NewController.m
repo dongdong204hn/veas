@@ -596,7 +596,6 @@ extern ASIHTTPRequest *nowrequest;
         if ([indexPath row]<[voasArray count]) {
             static NSString *FirstLevelCell= @"NewCell";
             VOAView *voa = [self.voasArray objectAtIndex:row];
-            
             //        NSLog(@"-----cell id:%d",voa._voaid);
             VoaViewCell *cell = (VoaViewCell*)[tableView dequeueReusableCellWithIdentifier:FirstLevelCell];
             
@@ -612,7 +611,7 @@ extern ASIHTTPRequest *nowrequest;
                 }
                 
             }
-            cell.myTitle.text = voa._title;
+            cell.myTitle.text = voa._title_Cn;
             cell.myDate.text = voa._creatTime;
             cell.readCount.text = [NSString stringWithFormat:@"%i人已听", [VOAView findReadCount:voa._voaid]+11321];
             //--------->设置内容换行
