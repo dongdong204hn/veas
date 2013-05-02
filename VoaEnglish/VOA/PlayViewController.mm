@@ -396,6 +396,16 @@ extern ASIHTTPRequest *nowrequest;
  */
 - (void) showFix:(id)sender
 {
+    
+    if (isFixing) {
+        int sec = fixSeconds % 60;
+        int min = (fixSeconds / 60) % 60;
+        int hour = fixSeconds / 3600;
+        [myPick selectRow:sec inComponent:kSecComponent animated:YES];
+        [myPick selectRow:min inComponent:kMinComponent animated:YES];
+        [myPick selectRow:hour inComponent:kHourComponent animated:YES];
+    }
+    
     //设置两个View切换时的淡入淡出效果
     [UIView beginAnimations:@"Switch" context:nil];
     [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
@@ -475,35 +485,37 @@ extern ASIHTTPRequest *nowrequest;
 -(void) handleFixTimer {
     fixSeconds--;
     if (fixSeconds != 0) {
-        int sec = [myPick selectedRowInComponent:kSecComponent];
-        int min = [myPick selectedRowInComponent:kMinComponent];
-        int hour = [myPick selectedRowInComponent:kHourComponent];
-        if (sec > 0) {
-            [myPick selectRow:sec-1 inComponent:kSecComponent animated:YES];
-        } else {
-            if (min > 0) {
-                [myPick selectRow:[self.secsArray count]-1 inComponent:kSecComponent animated:YES];
-                [myPick selectRow:min-1 inComponent:kMinComponent animated:YES];
+        if (fixTimeView.alpha > 0.5) {
+            int sec = [myPick selectedRowInComponent:kSecComponent];
+            int min = [myPick selectedRowInComponent:kMinComponent];
+            int hour = [myPick selectedRowInComponent:kHourComponent];
+            if (sec > 0) {
+                [myPick selectRow:sec-1 inComponent:kSecComponent animated:YES];
             } else {
-                if (hour > 0) {
+                if (min > 0) {
                     [myPick selectRow:[self.secsArray count]-1 inComponent:kSecComponent animated:YES];
-                    [myPick selectRow:[self.minsArray count]-1 inComponent:kMinComponent animated:YES];
-                    [myPick selectRow:hour-1 inComponent:kHourComponent animated:YES];
-                }
-                /*这句话其实可以不用写，为了保险起见就写了吧，。。*/
-                else {
-                    if ([self isPlaying]) {
-                        [self playButtonPressed:playButton];
+                    [myPick selectRow:min-1 inComponent:kMinComponent animated:YES];
+                } else {
+                    if (hour > 0) {
+                        [myPick selectRow:[self.secsArray count]-1 inComponent:kSecComponent animated:YES];
+                        [myPick selectRow:[self.minsArray count]-1 inComponent:kMinComponent animated:YES];
+                        [myPick selectRow:hour-1 inComponent:kHourComponent animated:YES];
                     }
-                    [myPick selectRow:0 inComponent:kSecComponent animated:YES];
-                    [fixTimer invalidate];
-                    fixTimer = nil;
-                    isFixing = NO;
-                    [fixButton setTitle:@"开启定时" forState:UIControlStateNormal];
-                    if (isiPhone) {
-                        [clockButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"clockBBC" ofType:@"png"]] forState:UIControlStateNormal];
-                    } else {
-                        [clockButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"clockBBCP" ofType:@"png"]] forState:UIControlStateNormal];
+                    /*这句话其实可以不用写，为了保险起见就写了吧，。。*/
+                    else {
+                        if ([self isPlaying]) {
+                            [self playButtonPressed:playButton];
+                        }
+                        [myPick selectRow:0 inComponent:kSecComponent animated:YES];
+                        [fixTimer invalidate];
+                        fixTimer = nil;
+                        isFixing = NO;
+                        [fixButton setTitle:@"开启定时" forState:UIControlStateNormal];
+                        if (isiPhone) {
+                            [clockButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"clockBBC" ofType:@"png"]] forState:UIControlStateNormal];
+                        } else {
+                            [clockButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"clockBBCP" ofType:@"png"]] forState:UIControlStateNormal];
+                        }
                     }
                 }
             }
@@ -8739,6 +8751,14 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 - (void)endCommRecord
 {
     NSLog(@"结束录音");
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 6.0) {
+        [self performSelector:@selector(endCommRecordImple) withObject:nil afterDelay:1.0f];
+    } else {
+        [self endCommRecordImple];
+    }
+}
+
+- (void)endCommRecordImple {
     if (m_isRecording) {
         m_isRecording = NO;
         [recorderView setHidden:YES];
@@ -8780,13 +8800,6 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
             [UIView commitAnimations];
         }
     }
-    
-    
-     
-    
-//    [commRecBtn setHidden:YES];
-//    [commRecControl setSelectedSegmentIndex:2] ;
-//    [commRecControl setHidden:NO];
 }
 
 /**
@@ -8954,10 +8967,10 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 }
 
 /**
- *  停止录音，并根据是否开启自动跟读选择是否自动播放录音
+ *  停止录音响应事件
  */
 - (void) stopRecord {
-//    NSLog(@"结束录音");
+    
     if (m_isRecording) {
         m_isRecording = NO;
         //    if (isiPhone) {
@@ -8978,123 +8991,82 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
         if ([[NSUserDefaults standardUserDefaults] boolForKey:@"recordRead"]) {
             [btn_play setTitle:@"stop" forState:UIControlStateNormal];
             
-//            [self performSelector:@selector(playRecord) withObject:nil afterDelay:0.5f];
+            //            [self performSelector:@selector(playRecord) withObject:nil afterDelay:0.5f];
             //        [self playRecord];
         } else {
             [btn_record setEnabled:YES];
             [btn_play setEnabled:YES];
         }
         
+        [btn_play setEnabled:NO];
         
-        dispatch_queue_t stopQueue;
-        stopQueue = dispatch_queue_create("stopQueue", NULL);
-        dispatch_async(stopQueue, ^(void){
-//            //run in main thread
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [audioRecoder stopRecord];
-                [self performSelector:@selector(playRecord) withObject:nil afterDelay:0.5f];
-//                if (![[NSUserDefaults standardUserDefaults] boolForKey:@"recordRead"]) {
-//                    [btn_play setEnabled:YES];
-//                }
-                
-                if (recordSeconds < 3.0f) {
-                    [displayModeBtn setTitle:@"录音时间太短" forState:UIControlStateNormal];
-                    [UIView beginAnimations:@"Display" context:nil];
-                    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-                    [UIView setAnimationDuration:0.5];
-                    [displayModeBtn setAlpha:0.8];
-                    [UIView commitAnimations];
-                    
-                    [UIView beginAnimations:@"Dismiss" context:nil];
-                    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-                    [UIView setAnimationDuration:2.0];
-                    [displayModeBtn setAlpha:0];
-                    [UIView commitAnimations];
-                } else {
-//                    [myScroll setScrollEnabled:NO];
-                    if (localFileExist) {
-                        [btn_record setEnabled:NO];
-                        [displayModeBtn setTitle:@"语音比对中" forState:UIControlStateNormal];
-                        [displayModeBtn setAlpha:0.8];
-                        
-                        [self loadAudio2];
-                        
-                        if (recordTimer && recordTimer.isValid) {
-                            [recordTimer invalidate];
-                            recordTimer = nil;
-                        }
-                        recordTimer = [NSTimer scheduledTimerWithTimeInterval:0.5f
-                                                                       target:self
-                                                                     selector:@selector(testScore)
-                                                                     userInfo:nil
-                                                                      repeats:YES];
-                    }
-//                    else {
-//                        [displayModeBtn setTitle:@"本地新闻可打分" forState:UIControlStateNormal];
-//                        [UIView beginAnimations:@"Display" context:nil];
-//                        [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-//                        [UIView setAnimationDuration:0.5];
-//                        [displayModeBtn setAlpha:0.8];
-//                        [UIView commitAnimations];
-//                        
-//                        [UIView beginAnimations:@"Dismiss" context:nil];
-//                        [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-//                        [UIView setAnimationDuration:1.5];
-//                        [displayModeBtn setAlpha:0];
-//                        [UIView commitAnimations];
-//                    }
-                }
-                
-            });
-        });    
-        dispatch_release(stopQueue);
-
+        if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 6.0) {
+            [self performSelector:@selector(stopRecordImple) withObject:nil afterDelay:1.0f];
+        } else {
+            [self stopRecordImple];
+        }
         
-        
-//        [NSTimer scheduledTimerWithTimeInterval:5.0f target:self selector:@selector(loadAudio2) userInfo:nil repeats:NO];
-        
-//#if 1
-//        lyricSynTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 
-//                                                         target:self 
-//                                                       selector:@selector(lyricSyn) 
-//                                                       userInfo:nil 
-//                                                        repeats:YES];
-//#endif
-//#if 1
-//        sliderTimer = [NSTimer scheduledTimerWithTimeInterval:0.2
-//                                                       target:self
-//                                                     selector:@selector(updateSlider)
-//                                                     userInfo:nil 
-//                                                      repeats:YES];
-//#endif
     }
-//    if ([lyricSynTimer isValid]) {
-//        
-//    }else {
-//#if 1
-//        lyricSynTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 
-//                                                         target:self 
-//                                                       selector:@selector(lyricSyn) 
-//                                                       userInfo:nil 
-//                                                        repeats:YES];
-//#endif
-//    }
-//    
-//    if ([sliderTimer isValid]) {
-//        
-//    }else {
-//#if 1
-//        sliderTimer = [NSTimer scheduledTimerWithTimeInterval:0.2
-//                                                       target:self
-//                                                     selector:@selector(updateSlider)
-//                                                     userInfo:nil 
-//                                                      repeats:YES];
-//#endif
-//    }
-    //    AVAudioSession *session = [AVAudioSession sharedInstance];
-    //    [session setCategory:AVAudioSessionCategoryPlayback error:nil];
-    //    
-    //    player = [[AVPlayer alloc] initWithPlayerItem:[AVPlayerItem  playerItemWithAsset:avSet] ];
+    
+}
+
+/**
+ *  停止录音，并根据是否开启自动跟读选择是否自动播放录音
+ */
+- (void) stopRecordImple {
+    //    NSLog(@"结束录音");
+    
+    dispatch_queue_t stopQueue;
+    stopQueue = dispatch_queue_create("stopQueue", NULL);
+    dispatch_async(stopQueue, ^(void){
+        //            //run in main thread
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [audioRecoder stopRecord];
+            [btn_play setEnabled:YES];
+            [self performSelector:@selector(playRecord) withObject:nil afterDelay:0.5f];
+            
+            //                if (![[NSUserDefaults standardUserDefaults] boolForKey:@"recordRead"]) {
+            //                    [btn_play setEnabled:YES];
+            //                }
+            
+            if (recordSeconds < 2.0f) {
+                [displayModeBtn setTitle:@"录音时间太短" forState:UIControlStateNormal];
+                [UIView beginAnimations:@"Display" context:nil];
+                [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+                [UIView setAnimationDuration:0.5];
+                [displayModeBtn setAlpha:0.8];
+                [UIView commitAnimations];
+                
+                [UIView beginAnimations:@"Dismiss" context:nil];
+                [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+                [UIView setAnimationDuration:2.0];
+                [displayModeBtn setAlpha:0];
+                [UIView commitAnimations];
+            } else {
+                
+                //                    if (localFileExist) {
+                //                        [btn_record setEnabled:NO];
+                //                        [displayModeBtn setTitle:@"语音比对中" forState:UIControlStateNormal];
+                //                        [displayModeBtn setAlpha:0.8];
+                //
+                //                        [self loadAudio2];
+                //
+                //                        if (recordTimer && recordTimer.isValid) {
+                //                            [recordTimer invalidate];
+                //                            recordTimer = nil;
+                //                        }
+                //                        recordTimer = [NSTimer scheduledTimerWithTimeInterval:0.5f
+                //                                                                       target:self
+                //                                                                     selector:@selector(testScore)
+                //                                                                     userInfo:nil
+                //                                                                      repeats:YES];
+                //                    }
+                
+            }
+            
+        });
+    });
+    dispatch_release(stopQueue);
     
 }
 

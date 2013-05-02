@@ -19,7 +19,6 @@
 @synthesize scrollView;
 @synthesize pageControl;
 //@synthesize window;
-
 @synthesize left;
 @synthesize right;
 @synthesize leftDefault;
@@ -119,12 +118,12 @@ void uncaughtExceptionHandler(NSException *exception) {
 //            [myNumber release];
             [[NSUserDefaults standardUserDefaults] setObject:@"YES" forKey:@"synContext"]; //
             [[NSUserDefaults standardUserDefaults] setObject:@"YES" forKey:@"keepScreenLight"];
-            [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:1] forKey:@"mulValueColor"];
+            [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:3] forKey:@"mulValueColor"];
             [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:20] forKey:@"mulValueFont"];
             [[NSUserDefaults standardUserDefaults] setObject:@"YES" forKey:@"hightlightLoc"];
             [[NSUserDefaults standardUserDefaults] setObject:@"YES" forKey:@"shakeCtrlPlay"];
             [[NSUserDefaults standardUserDefaults] setObject:@"NO" forKey:@"recordRead"];
-            [[NSUserDefaults standardUserDefaults] setFloat:3.6f forKey:@"appVersionC"];
+            [[NSUserDefaults standardUserDefaults] setFloat:3.7f forKey:@"appVersionC"];
             [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:1] forKey:@"playMode"];
             [[NSUserDefaults standardUserDefaults] setObject:@"NO" forKey:@"autoDownload"];
             [[NSUserDefaults standardUserDefaults] setObject:@"NO" forKey:@"nightMode"];
@@ -188,8 +187,8 @@ void uncaughtExceptionHandler(NSException *exception) {
 //                NSLog(@"已注册推送");
             }
             float appVersion = [[[NSUserDefaults standardUserDefaults] objectForKey:@"appVersionC"] floatValue];
-            if (appVersion < 3.6f) { //新版本的一些新设置等
-                [[NSUserDefaults standardUserDefaults] setFloat:3.6f forKey:@"appVersionC"];
+            if (appVersion < 3.7f) { //新版本的一些新设置等
+                [[NSUserDefaults standardUserDefaults] setFloat:3.7f forKey:@"appVersionC"];
                 [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"haveScore"];
                 [[NSUserDefaults standardUserDefaults] setFloat:1.0f forKey:@"speed"];
                 [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"showSen"];
@@ -200,6 +199,10 @@ void uncaughtExceptionHandler(NSException *exception) {
                 [[NSUserDefaults standardUserDefaults] setObject:waitReadCountArray forKey:@"waitReadCount"];
                 [waitReadCountArray release];
                 [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"recPlayAgain"];
+                
+                UIAlertView *updateAlert = [[UIAlertView alloc] initWithTitle:@"更新内容" message:@"1.优化录音功能\n2.修复了定时播放时有嘀嗒声的问题\n3.列表中文章标题改为了中文显示" delegate:nil cancelButtonTitle:@"我已知晓" otherButtonTitles:nil];
+                [updateAlert show];
+                [updateAlert release], updateAlert = nil;
             }
             int lunchTime = [[NSUserDefaults standardUserDefaults] integerForKey:@"firstLaunch"];
             if (lunchTime < 5) {
@@ -243,12 +246,12 @@ void uncaughtExceptionHandler(NSException *exception) {
             [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:1] forKey:@"firstLaunch"];
             [[NSUserDefaults standardUserDefaults] setObject:@"YES" forKey:@"synContext"]; //初始显示中文翻译
             [[NSUserDefaults standardUserDefaults] setObject:@"YES" forKey:@"keepScreenLight"]; //屏幕常亮
-            [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:1] forKey:@"mulValueColor"]; //高亮色初始设红色
+            [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:3] forKey:@"mulValueColor"]; //高亮色初始设红色
             [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:15] forKey:@"mulValueFont"]; //字体大小15
             [[NSUserDefaults standardUserDefaults] setObject:@"NO" forKey:@"hightlightLoc"]; //高亮区域默认不居中
             [[NSUserDefaults standardUserDefaults] setObject:@"YES" forKey:@"shakeCtrlPlay"]; //默认晃动设备可控制播放
             [[NSUserDefaults standardUserDefaults] setObject:@"NO" forKey:@"recordRead"]; //默认开启跟读模式
-            [[NSUserDefaults standardUserDefaults] setFloat:3.6f forKey:@"appVersionC"]; //版本号3.2
+            [[NSUserDefaults standardUserDefaults] setFloat:3.7f forKey:@"appVersionC"]; //版本号3.2
             [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:1] forKey:@"playMode"]; //默认单曲循环
             [[NSUserDefaults standardUserDefaults] setObject:@"NO" forKey:@"autoDownload"]; //默认自动下载
             [[NSUserDefaults standardUserDefaults] setObject:@"NO" forKey:@"nightMode"]; //默认关闭夜间模式
@@ -332,8 +335,8 @@ void uncaughtExceptionHandler(NSException *exception) {
             });
             
             float appVersion = [[[NSUserDefaults standardUserDefaults] objectForKey:@"appVersionC"] floatValue];
-            if (appVersion < 3.6f) { //新版本的一些新设置等
-                [[NSUserDefaults standardUserDefaults] setFloat:3.6f forKey:@"appVersionC"];
+            if (appVersion < 3.7f) { //新版本的一些新设置等
+                [[NSUserDefaults standardUserDefaults] setFloat:3.7f forKey:@"appVersionC"];
                 [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"haveScore"];
                 [[NSUserDefaults standardUserDefaults] setFloat:1.0f forKey:@"speed"];
                 [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"showSen"];
@@ -344,6 +347,10 @@ void uncaughtExceptionHandler(NSException *exception) {
                 [[NSUserDefaults standardUserDefaults] setObject:waitReadCountArray forKey:@"waitReadCount"];
                 [waitReadCountArray release];
                 [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"recPlayAgain"];
+                
+                UIAlertView *updateAlert = [[UIAlertView alloc] initWithTitle:@"更新内容" message:@"1.优化录音功能\n2.修复了定时播放时有嘀嗒声的问题\n3.列表中文章标题改为了中文显示" delegate:nil cancelButtonTitle:@"我已知晓" otherButtonTitles:nil];
+                [updateAlert show];
+                [updateAlert release], updateAlert = nil;
             }
             
             int lunchTime = [[NSUserDefaults standardUserDefaults] integerForKey:@"firstLaunch"];
