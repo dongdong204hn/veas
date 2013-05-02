@@ -500,7 +500,7 @@ void uncaughtExceptionHandler(NSException *exception) {
     /*
      Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
      */
-    [[NSUserDefaults standardUserDefaults] setObject:@"YES" forKey:kBePro];
+//    [[NSUserDefaults standardUserDefaults] setObject:@"YES" forKey:kBePro];
     /*
      检测是否正在学习，若未标志正在学习，记录开始时间与日期。并且若有网的话告诉服务器无网时所听的新闻。
      */

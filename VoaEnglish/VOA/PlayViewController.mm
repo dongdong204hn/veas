@@ -9043,25 +9043,23 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
                 [displayModeBtn setAlpha:0];
                 [UIView commitAnimations];
             } else {
-                
-                //                    if (localFileExist) {
-                //                        [btn_record setEnabled:NO];
-                //                        [displayModeBtn setTitle:@"语音比对中" forState:UIControlStateNormal];
-                //                        [displayModeBtn setAlpha:0.8];
-                //
-                //                        [self loadAudio2];
-                //
-                //                        if (recordTimer && recordTimer.isValid) {
-                //                            [recordTimer invalidate];
-                //                            recordTimer = nil;
-                //                        }
-                //                        recordTimer = [NSTimer scheduledTimerWithTimeInterval:0.5f
-                //                                                                       target:self
-                //                                                                     selector:@selector(testScore)
-                //                                                                     userInfo:nil
-                //                                                                      repeats:YES];
-                //                    }
-                
+                if (localFileExist) {
+//                    [btn_record setEnabled:NO];
+//                    [displayModeBtn setTitle:@"语音比对中" forState:UIControlStateNormal];
+//                    [displayModeBtn setAlpha:0.8];
+                    
+                    [self loadAudio2];
+                    
+                    if (recordTimer && recordTimer.isValid) {
+                        [recordTimer invalidate];
+                        recordTimer = nil;
+                    }
+                    recordTimer = [NSTimer scheduledTimerWithTimeInterval:0.5f
+                                                                   target:self
+                                                                 selector:@selector(testScore)
+                                                                 userInfo:nil
+                                                                  repeats:YES];
+                }
             }
             
         });
