@@ -398,7 +398,7 @@
 @property NSInteger nowUserId;  //记录当前用户ID
 @property (nonatomic) BOOL notValidInitLyric;   //标记是否有外部打断事件
 @property (nonatomic) BOOL recPlayAgain; //检测是否开启自动跟读复读
-
+@property (nonatomic) BOOL scoreSameSen; //检测是否开启自动跟读复读
 
 void RouteChangeListener(	void *                  inClientData,
                          AudioSessionPropertyID	inID,

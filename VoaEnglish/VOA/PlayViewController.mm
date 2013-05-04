@@ -158,6 +158,7 @@
 @synthesize wfvTwo;
 //@synthesize commRecControl;
 //@synthesize commRecTimer;
+@synthesize scoreSameSen;
 
 //用于批量下载
 extern NSMutableArray *downLoadList;
@@ -1131,6 +1132,7 @@ extern ASIHTTPRequest *nowrequest;
         sen_num--;
     }
     if (readRecord) {
+        scoreSameSen = NO;
         if (notValid) {
             lyricSynTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 
                                                              target:self 
@@ -1301,14 +1303,32 @@ extern ASIHTTPRequest *nowrequest;
         
         //        afterRecord = NO;
     }
-    NSInteger myStartTime = 0;
-    if ([self isPlaying]) {
-        myStartTime = sen_num > 1? [[timeArray objectAtIndex:sen_num-2] unsignedIntValue]:[[timeArray objectAtIndex:0] unsignedIntValue];
-    } else {
-        myStartTime = sen_num > 2? [[timeArray objectAtIndex:sen_num-3] unsignedIntValue]:[[timeArray objectAtIndex:0] unsignedIntValue];
+    
+    if (notValid) {
+        lyricSynTimer = [NSTimer scheduledTimerWithTimeInterval:0.5
+                                                         target:self
+                                                       selector:@selector(lyricSyn)
+                                                       userInfo:nil
+                                                        repeats:YES];
+        sliderTimer = [NSTimer scheduledTimerWithTimeInterval:0.2
+                                                       target:self
+                                                     selector:@selector(updateSlider)
+                                                     userInfo:nil
+                                                      repeats:YES];
+        notValid = NO;
     }
+    
+    NSInteger myStartTime = 0;
+    if (![self isPlaying] && sen_num > 0) {
+        sen_num--;
+    }
+//    else {
+//        myStartTime = sen_num > 2? [[timeArray objectAtIndex:sen_num-3] unsignedIntValue]:[[timeArray objectAtIndex:0] unsignedIntValue];
+//    }
+    myStartTime = sen_num > 1? [[timeArray objectAtIndex:sen_num-2] unsignedIntValue]:[[timeArray objectAtIndex:0] unsignedIntValue];
     [player seekToTime:CMTimeMakeWithSeconds(myStartTime, NSEC_PER_SEC)];
     [player play];
+    NSLog(@"sen_num2:%d", sen_num);
 }
 
 /**
@@ -1373,6 +1393,7 @@ extern ASIHTTPRequest *nowrequest;
     }
 //    AudioServicesPlaySystemSound (soundFileObject);
     if (readRecord) {
+        scoreSameSen = NO;
         if (notValid) {
             lyricSynTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 
                                                              target:self 
@@ -1386,9 +1407,9 @@ extern ASIHTTPRequest *nowrequest;
                                                           repeats:YES];
             notValid = NO;
         }
+        
         [self myStopRecord];
         [self stopPlayRecord];
-        
         
 //        if (sen_num < [timeArray count]+1) {
 //            //        if (sen_num < [timeArray count]) {
@@ -3184,6 +3205,7 @@ void audioRouteChangeListenerCallback (
 {
     [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:contentMode] forKey:@"contentMode"];
     //    NSLog(@"%@",[[UIDevice currentDevice] model]);
+    scoreSameSen = NO;
     
     [myScroll setScrollEnabled:NO];
     [btnTwo setUserInteractionEnabled:NO];
@@ -6989,7 +7011,6 @@ void audioRouteChangeListenerCallback (
             [colSenBtn setHidden:NO];
         } else {
             [shareSenBtn setHidden:YES];
-
             [colSenBtn setHidden:YES];
         }
         
@@ -7045,8 +7066,14 @@ void audioRouteChangeListenerCallback (
 //            [self loadAudio];
             [lyCn release];
             [lyEn release];
-            lyEn = [[NSString alloc] initWithFormat:@"%@", [lyricArray objectAtIndex:(sen_num>2?sen_num-2:0)]];
-            lyCn = [[NSString alloc] initWithFormat:@"%@", [lyricCnArray objectAtIndex:(sen_num>2?sen_num-2:0)]];
+            if ([self isPlaying]) {
+                lyEn = [[NSString alloc] initWithFormat:@"%@", [lyricArray objectAtIndex:(sen_num>2?sen_num-2:0)]];
+                lyCn = [[NSString alloc] initWithFormat:@"%@", [lyricCnArray objectAtIndex:(sen_num>2?sen_num-2:0)]];
+            } else {
+                lyEn = [[NSString alloc] initWithFormat:@"%@", [lyricArray objectAtIndex:(sen_num>3?sen_num-3:0)]];
+                lyCn = [[NSString alloc] initWithFormat:@"%@", [lyricCnArray objectAtIndex:(sen_num>3?sen_num-3:0)]];
+            }
+            
             
             int eLines = 0;
             int cLines = 0;
@@ -7158,7 +7185,7 @@ void audioRouteChangeListenerCallback (
 
             //        [controller.lvlMeter_in setHidden:NO];
         }else {
-            
+            scoreSameSen = NO;
             if (page == 3) {
                 if ([self hasMicphone]) {
                     //该代码是设置手机喇叭与麦克风同时工作 iphone 3.0以上版本 播放类型
@@ -7354,6 +7381,8 @@ void audioRouteChangeListenerCallback (
          dot.image = (pageControl.currentPage == i ? [UIImage imageNamed:@"RedPoint.png"] : [UIImage imageNamed:@"BluePoint.png"]);
          }*/
     }
+    
+    NSLog(@"sen_num1:%d", sen_num);
 }
 
 /**
@@ -7457,8 +7486,13 @@ void audioRouteChangeListenerCallback (
 //            [self loadAudio];
             [lyCn release];
             [lyEn release];
-            lyEn = [[NSString alloc] initWithFormat:@"%@", [lyricArray objectAtIndex:(sen_num>2?sen_num-2:0)]];
-            lyCn = [[NSString alloc] initWithFormat:@"%@", [lyricCnArray objectAtIndex:(sen_num>2?sen_num-2:0)]];
+            if ([self isPlaying]) {
+                lyEn = [[NSString alloc] initWithFormat:@"%@", [lyricArray objectAtIndex:(sen_num>2?sen_num-2:0)]];
+                lyCn = [[NSString alloc] initWithFormat:@"%@", [lyricCnArray objectAtIndex:(sen_num>2?sen_num-2:0)]];
+            } else {
+                lyEn = [[NSString alloc] initWithFormat:@"%@", [lyricArray objectAtIndex:(sen_num>3?sen_num-3:0)]];
+                lyCn = [[NSString alloc] initWithFormat:@"%@", [lyricCnArray objectAtIndex:(sen_num>3?sen_num-3:0)]];
+            }
             
             int eLines = 0;
             int cLines = 0;
@@ -7569,6 +7603,7 @@ void audioRouteChangeListenerCallback (
 //            [self cutAudio:myStartTime endTime:myEndTime];
             //        [controller.lvlMeter_in setHidden:NO];
         }else {
+            scoreSameSen = NO;
             if (page == 3) {
                 if ([self hasMicphone]) {
                     //该代码是设置手机喇叭与麦克风同时工作 iphone 3.0以上版本 播放类型
@@ -8207,7 +8242,7 @@ void audioRouteChangeListenerCallback (
                     [cell addSubview:dateLabel];
                     [dateLabel release];
                     
-                    UILabel *comLabel = [[UILabel alloc] initWithFrame:CGRectMake(70, 15, 240, 45)];
+                    UILabel *comLabel = [[UILabel alloc] initWithFrame:CGRectMake(70, 15, 246, 45)];
                     [comLabel setBackgroundColor:[UIColor clearColor]];
                     [comLabel setFont:CourierF];
                     [comLabel setTag:3];
@@ -8238,7 +8273,7 @@ void audioRouteChangeListenerCallback (
                     [cell addSubview:userImg];
                     [userImg release];
                     
-                    UIButton *reponseBtn = [[UIButton alloc] initWithFrame:CGRectMake(275, 2, 45, 21)];
+                    UIButton *reponseBtn = [[UIButton alloc] initWithFrame:CGRectMake(290, 0, 30, 15)];
 //                    [reponseBtn.titleLabel setFont:[UIFont systemFontOfSize:12]];
 //                    [reponseBtn.titleLabel setTextColor:[UIColor blackColor]];
 //                    [reponseBtn setTitleColor:[UIColor colorWithRed:0.216f green:0.471f blue:0.686f alpha:1.0f] forState:UIControlStateNormal];
@@ -8280,7 +8315,7 @@ void audioRouteChangeListenerCallback (
                     [cell addSubview:dateLabel];
                     [dateLabel release];
                     
-                    UILabel *comLabel = [[UILabel alloc] initWithFrame:CGRectMake(100, 20, 648, 60)];
+                    UILabel *comLabel = [[UILabel alloc] initWithFrame:CGRectMake(100, 20, 658, 60)];
                     [comLabel setBackgroundColor:[UIColor clearColor]];
                     [comLabel setFont:CourieraF];
                     [comLabel setTag:3];
@@ -8311,7 +8346,7 @@ void audioRouteChangeListenerCallback (
                     [cell addSubview:userImg];
                     [userImg release];
                     
-                    UIButton *reponseBtn = [[UIButton alloc] initWithFrame:CGRectMake(700, 4, 60, 30)];
+                    UIButton *reponseBtn = [[UIButton alloc] initWithFrame:CGRectMake(700, 0, 60, 20)];
 //                    [reponseBtn.titleLabel setFont:[UIFont systemFontOfSize:15]];
                     //                    [reponseBtn.titleLabel setTextColor:[UIColor blackColor]];
 //                    [reponseBtn setTitleColor:[UIColor colorWithRed:55.0/255 green:120.0/255 blue:175.0/255 alpha:1.0f] forState:UIControlStateNormal];
@@ -8751,11 +8786,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 - (void)endCommRecord
 {
     NSLog(@"结束录音");
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 6.0) {
-        [self performSelector:@selector(endCommRecordImple) withObject:nil afterDelay:1.0f];
-    } else {
-        [self endCommRecordImple];
-    }
+    [self performSelector:@selector(endCommRecordImple) withObject:nil afterDelay:1.2f];
 }
 
 - (void)endCommRecordImple {
@@ -8774,7 +8805,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
         });
         dispatch_release(stopQueue);
         
-        if (recordSeconds > 3.0f) {
+        if (recordSeconds > 2.0f) {
             [commRecBtn removeTarget:self action:@selector(startCommRecord) forControlEvents:UIControlEventTouchDown];
             [commRecBtn removeTarget:self action:@selector(endCommRecord) forControlEvents:UIControlEventTouchUpInside];
             [commRecBtn removeTarget:self action:@selector(endCommRecord) forControlEvents:UIControlEventTouchUpOutside];
@@ -9000,11 +9031,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
         
         [btn_play setEnabled:NO];
         
-        if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 6.0) {
-            [self performSelector:@selector(stopRecordImple) withObject:nil afterDelay:1.0f];
-        } else {
-            [self stopRecordImple];
-        }
+        [self performSelector:@selector(stopRecordImple) withObject:nil afterDelay:1.2f];
         
     }
     
@@ -9043,10 +9070,10 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
                 [displayModeBtn setAlpha:0];
                 [UIView commitAnimations];
             } else {
-                if (localFileExist) {
-//                    [btn_record setEnabled:NO];
-//                    [displayModeBtn setTitle:@"语音比对中" forState:UIControlStateNormal];
-//                    [displayModeBtn setAlpha:0.8];
+                if (localFileExist && [[NSUserDefaults standardUserDefaults] boolForKey:@"recScore"]) {
+                    [btn_record setEnabled:NO];
+                    [displayModeBtn setTitle:@"语音比对中" forState:UIControlStateNormal];
+                    [displayModeBtn setAlpha:0.8];
                     
                     [self loadAudio2];
                     
@@ -9108,8 +9135,9 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 		[NSTimer scheduledTimerWithTimeInterval:1.5f target:self selector:@selector(loadAudio) userInfo:nil repeats:NO];
 	}*/
     
-    if (localFileExist) {
+    if (localFileExist && [[NSUserDefaults standardUserDefaults] boolForKey:@"recScore"] && !scoreSameSen) {
         [self loadAudio];
+        scoreSameSen = YES;
     }
     
     if (m_isRecording == NO)

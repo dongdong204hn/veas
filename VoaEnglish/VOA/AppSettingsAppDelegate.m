@@ -144,6 +144,7 @@ void uncaughtExceptionHandler(NSException *exception) {
             [waitReadCountArray release];
             [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:1] forKey:@"remCode"];
             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"recPlayAgain"];
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"recScore"];
             
             //展示帮助界面
             numOfPages = 6;
@@ -199,6 +200,7 @@ void uncaughtExceptionHandler(NSException *exception) {
                 [[NSUserDefaults standardUserDefaults] setObject:waitReadCountArray forKey:@"waitReadCount"];
                 [waitReadCountArray release];
                 [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"recPlayAgain"];
+                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"recScore"];
                 
                 UIAlertView *updateAlert = [[UIAlertView alloc] initWithTitle:@"更新内容" message:@"1.优化录音功能\n2.修复了定时播放时有嘀嗒声的问题\n3.列表中文章标题改为了中文显示" delegate:nil cancelButtonTitle:@"我已知晓" otherButtonTitles:nil];
                 [updateAlert show];
@@ -273,6 +275,7 @@ void uncaughtExceptionHandler(NSException *exception) {
             [waitReadCountArray release];
             [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:1] forKey:@"remCode"];
             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"recPlayAgain"];
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"recScore"];
             
             //展示用户帮助
             numOfPages = 6;
@@ -347,6 +350,7 @@ void uncaughtExceptionHandler(NSException *exception) {
                 [[NSUserDefaults standardUserDefaults] setObject:waitReadCountArray forKey:@"waitReadCount"];
                 [waitReadCountArray release];
                 [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"recPlayAgain"];
+                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"recScore"];
                 
                 UIAlertView *updateAlert = [[UIAlertView alloc] initWithTitle:@"更新内容" message:@"1.优化录音功能\n2.修复了定时播放时有嘀嗒声的问题\n3.列表中文章标题改为了中文显示" delegate:nil cancelButtonTitle:@"我已知晓" otherButtonTitles:nil];
                 [updateAlert show];

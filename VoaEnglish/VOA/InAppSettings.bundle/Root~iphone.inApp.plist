@@ -72,6 +72,16 @@
 		</dict>
 		<dict>
 			<key>DefaultValue</key>
+			<string>YES</string>
+			<key>Key</key>
+			<string>recScore</string>
+			<key>Title</key>
+			<string>RECORD_READ_SCORE</string>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+		</dict>
+		<dict>
+			<key>DefaultValue</key>
 			<string>NO</string>
 			<key>Key</key>
 			<string>nightMode</string>
