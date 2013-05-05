@@ -7142,13 +7142,13 @@ void audioRouteChangeListenerCallback (
 //            [self loadAudio];
             [lyCn release];
             [lyEn release];
-            if ([self isPlaying]) {
+//            if ([self isPlaying]) {
                 lyEn = [[NSString alloc] initWithFormat:@"%@", [lyricArray objectAtIndex:(sen_num>2?sen_num-2:0)]];
                 lyCn = [[NSString alloc] initWithFormat:@"%@", [lyricCnArray objectAtIndex:(sen_num>2?sen_num-2:0)]];
-            } else {
-                lyEn = [[NSString alloc] initWithFormat:@"%@", [lyricArray objectAtIndex:(sen_num>3?sen_num-3:0)]];
-                lyCn = [[NSString alloc] initWithFormat:@"%@", [lyricCnArray objectAtIndex:(sen_num>3?sen_num-3:0)]];
-            }
+//            } else {
+//                lyEn = [[NSString alloc] initWithFormat:@"%@", [lyricArray objectAtIndex:(sen_num>3?sen_num-3:0)]];
+//                lyCn = [[NSString alloc] initWithFormat:@"%@", [lyricCnArray objectAtIndex:(sen_num>3?sen_num-3:0)]];
+//            }
             
             
             int eLines = 0;
