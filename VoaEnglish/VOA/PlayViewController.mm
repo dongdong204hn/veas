@@ -159,6 +159,8 @@
 //@synthesize commRecControl;
 //@synthesize commRecTimer;
 @synthesize scoreSameSen;
+@synthesize scoreImg;
+
 
 //用于批量下载
 extern NSMutableArray *downLoadList;
@@ -339,6 +341,33 @@ extern ASIHTTPRequest *nowrequest;
         }
         [lyricCnLabel setHidden:YES];
     }
+}
+
+/**
+ *  切换是否开启语音打分
+ */
+- (IBAction) changeRecScore:(UIButton *)sender {
+    if (sender.selected) {
+        [[NSUserDefaults standardUserDefaults] setObject:@"YES" forKey:@"recScore"];
+        sender.selected = NO;
+        [displayModeBtn setTitle:@"开启语音打分" forState:UIControlStateNormal];
+    }else{
+        [[NSUserDefaults standardUserDefaults] setObject:@"NO" forKey:@"recScore"];
+        sender.selected = YES;
+        [displayModeBtn setTitle:@"关闭语音打分" forState:UIControlStateNormal];
+    }
+    
+    [UIView beginAnimations:@"Display" context:nil];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+    [UIView setAnimationDuration:0.5];
+    [displayModeBtn setAlpha:0.8];
+    [UIView commitAnimations];
+    
+    [UIView beginAnimations:@"Dismiss" context:nil];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+    [UIView setAnimationDuration:2.0];
+    [displayModeBtn setAlpha:0];
+    [UIView commitAnimations];
 }
 
 /**
@@ -1148,6 +1177,10 @@ extern ASIHTTPRequest *nowrequest;
         }
         [self myStopRecord];
         [self stopPlayRecord];
+        [displayModeBtn setAlpha:0];
+        if (![[NSUserDefaults standardUserDefaults] boolForKey:@"recordRead"]) {
+            [btn_record setEnabled:YES];
+        }
         
         NSInteger myStartTime = sen_num > 1? [[timeArray objectAtIndex:sen_num-2] unsignedIntValue]:[[timeArray objectAtIndex:0] unsignedIntValue];
         NSInteger myEndTime = sen_num > 1? [[timeArray objectAtIndex:sen_num-1] unsignedIntValue] : [[timeArray objectAtIndex:1] unsignedIntValue];
@@ -1319,7 +1352,7 @@ extern ASIHTTPRequest *nowrequest;
     }
     
     NSInteger myStartTime = 0;
-    if (![self isPlaying] && sen_num > 0) {
+    if (![self isPlaying] && sen_num > 1) {
         sen_num--;
     }
 //    else {
@@ -1410,12 +1443,11 @@ extern ASIHTTPRequest *nowrequest;
         
         [self myStopRecord];
         [self stopPlayRecord];
+        [displayModeBtn setAlpha:0];
+        if (![[NSUserDefaults standardUserDefaults] boolForKey:@"recordRead"]) {
+            [btn_record setEnabled:YES];
+        }
         
-//        if (sen_num < [timeArray count]+1) {
-//            //        if (sen_num < [timeArray count]) {
-//            sen_num++;
-//            [player seekToTime:CMTimeMakeWithSeconds([[timeArray objectAtIndex:sen_num-2] unsignedIntValue], NSEC_PER_SEC)];
-//        }
         if (sen_num < [timeArray count]+1 && [self isPlaying]) {
             //        if (sen_num < [timeArray count]) {
             sen_num++;
@@ -2371,7 +2403,7 @@ extern ASIHTTPRequest *nowrequest;
 //        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"recordRead"]) {
         if (readRecord) {//开启跟读时，每读一句自动暂停
             [totalTimeLabel setHidden:YES];
-            if (sen_num < [timeArray count]+1 && progress >= [[timeArray objectAtIndex:sen_num-1] floatValue]) {
+            if (sen_num < [timeArray count]+1 && sen_num > 1 && progress >= [[timeArray objectAtIndex:sen_num - 1] floatValue]) {
                 sen_num++;
                 if ([self isPlaying]) {
                     [self playButtonPressed:playButton];
@@ -3212,9 +3244,9 @@ void audioRouteChangeListenerCallback (
     [btnThree setUserInteractionEnabled:NO];
     [btnFour setUserInteractionEnabled:NO];
     
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"recordRead"]) {
-        [btn_record setEnabled:YES];
-    }
+//    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"recordRead"]) {
+//        [btn_record setEnabled:YES];
+//    }
 
     switch (playMode) {
         case 1:
@@ -3992,6 +4024,8 @@ void audioRouteChangeListenerCallback (
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"recordRead"]) {
         [btn_record setEnabled:NO];
         [btn_play setEnabled:NO];
+    } else {
+        [btn_record setEnabled:YES];
     }
     
     recPlayAgain = [[NSUserDefaults standardUserDefaults] boolForKey:@"recPlayAgain"];
@@ -4209,6 +4243,7 @@ void audioRouteChangeListenerCallback (
 {
     [super viewWillDisappear:animated]; 
     newFile = NO;
+    [displayModeBtn setAlpha:0];
     
     CGRect frame = myScroll.frame;
     frame.origin.x = 0;
@@ -5502,20 +5537,52 @@ void audioRouteChangeListenerCallback (
         self.thisScore=thisMy;
     
     //    [myScroll setScrollEnabled:YES];
-    [btn_record setEnabled:YES];
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"recordRead"]) {
+        [btn_record setEnabled:YES];
+    }
+    
+//    NSString *scoreStr = nil;
+    if (thisMy < 50) {
+//        scoreStr = @"";
+        [scoreImg setImage:[UIImage imageNamed:(isiPhone? @"gold5.png": @"gold5-iPad.png") ]];
+    } else if (thisMy < 70) {
+        [scoreImg setImage:[UIImage imageNamed:(isiPhone? @"gold4.png": @"gold4-iPad.png") ]];
+    } else if (thisMy < 80) {
+        [scoreImg setImage:[UIImage imageNamed:(isiPhone? @"gold3.png": @"gold3-iPad.png") ]];
+    } else if (thisMy < 90) {
+        [scoreImg setImage:[UIImage imageNamed:(isiPhone? @"gold2.png": @"gold2-iPad.png") ]];
+    } else {
+        [scoreImg setImage:[UIImage imageNamed:(isiPhone? @"gold1.png": @"gold1-iPad.png") ]];
+    }
+    
     [displayModeBtn setAlpha:0];
+    
     [displayModeBtn setTitle:[NSString stringWithFormat:@"%d分", thisMy] forState:UIControlStateNormal];
     [UIView beginAnimations:@"Display" context:nil];
     [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-    [UIView setAnimationDuration:1.0];
+    [UIView setAnimationDuration:1.5];
     [displayModeBtn setAlpha:0.8];
     //    [wfv setAlpha:0.8];
     [UIView commitAnimations];
     
     [UIView beginAnimations:@"Dismiss" context:nil];
     [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-    [UIView setAnimationDuration:1.0];
+    [UIView setAnimationDuration:1.5];
     [displayModeBtn setAlpha:0];
+    //    [wfv setAlpha:0];
+    [UIView commitAnimations];
+    
+    [UIView beginAnimations:@"Display" context:nil];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+    [UIView setAnimationDuration:1.5];
+    [scoreImg setAlpha:0.8];
+    //    [wfv setAlpha:0.8];
+    [UIView commitAnimations];
+    
+    [UIView beginAnimations:@"Dismiss" context:nil];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+    [UIView setAnimationDuration:1.5];
+    [scoreImg setAlpha:0];
     //    [wfv setAlpha:0];
     [UIView commitAnimations];
     
@@ -5542,10 +5609,19 @@ void audioRouteChangeListenerCallback (
     //        [image setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"gold5" ofType:@"png"]]];
     //    [image setHidden:FALSE];
     
-    
-    
     // [wrongArray addObject:[wordArray objectAtIndex:i-1]];
     //    [NSTimer scheduledTimerWithTimeInterval:2.0f target:self selector:@selector(imagedismiss) userInfo:nil repeats:NO];
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"recordRead"] && [[NSUserDefaults standardUserDefaults] boolForKey:@"recScore"] && displayModeBtn.tag == 1) {
+        if (recPlayAgain) {
+            recPlayAgain = NO;
+            [self performSelector:@selector(prePlay:) withObject:nil afterDelay:0.2f];
+        } else {
+            recPlayAgain = [[NSUserDefaults standardUserDefaults] boolForKey:@"recPlayAgain"];
+            [self performSelector:@selector(aftPlay:) withObject:nil afterDelay:0.2f];
+        }
+    } else {
+        [displayModeBtn setTag:1];
+    }
     
 }
 
@@ -7138,8 +7214,11 @@ void audioRouteChangeListenerCallback (
             }
             
             if (![[NSUserDefaults standardUserDefaults] boolForKey:@"recordRead"] && [self hasMicphone]) {
-                [btn_play setEnabled:YES];
+//                [btn_play setEnabled:YES];
                 [btn_record setEnabled:YES];
+            } else {
+                [btn_play setEnabled:NO];
+                [btn_record setEnabled:NO];
             }
             if (sen_num>1) {
                 VOADetail *myVoaDetail=[VOADetail findByVoaidAndTime:self.voa._voaid timing:[[timeArray objectAtIndex:sen_num-2]unsignedIntValue]];
@@ -7271,10 +7350,10 @@ void audioRouteChangeListenerCallback (
             [btn_record setHidden:YES];
             [recordLabel setHidden:YES];
 //            [modeBtn setHidden:NO];
-            if ([self hasMicphone]) {
-                [btn_play setEnabled:NO];
-                [btn_record setEnabled:NO];
-            }
+//            if (![self hasMicphone]) {
+//                [btn_play setEnabled:NO];
+//                [btn_record setEnabled:NO];
+//            }
             //        [controller.lvlMeter_in setHidden:YES];
             if (localFileExist) {
                 [downloadFlg setHidden:NO];
@@ -7557,8 +7636,11 @@ void audioRouteChangeListenerCallback (
             }
             
             if (![[NSUserDefaults standardUserDefaults] boolForKey:@"recordRead"] && [self hasMicphone]) {
-                [btn_play setEnabled:YES];
+//                [btn_play setEnabled:YES];
                 [btn_record setEnabled:YES];
+            } else {
+                [btn_play setEnabled:NO];
+                [btn_record setEnabled:NO];
             }
             if (sen_num>1) {
                 VOADetail *myVoaDetail=[VOADetail findByVoaidAndTime:self.voa._voaid timing:[[timeArray objectAtIndex:sen_num-2]unsignedIntValue]];
@@ -7685,10 +7767,10 @@ void audioRouteChangeListenerCallback (
             [btn_record setHidden:YES];
             [recordLabel setHidden:YES];
 //            [modeBtn setHidden:NO];
-            if ([self hasMicphone]) {
-                [btn_play setEnabled:NO];
-                [btn_record setEnabled:NO];
-            }
+//            if ([self hasMicphone]) {
+//                [btn_play setEnabled:NO];
+//                [btn_record setEnabled:NO];
+//            }
             //        [controller.lvlMeter_in setHidden:YES];
             if (localFileExist) {
                 [downloadFlg setHidden:NO];
@@ -8805,7 +8887,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
         });
         dispatch_release(stopQueue);
         
-        if (recordSeconds > 2.0f) {
+        if (recordSeconds > 3.0f) {
             [commRecBtn removeTarget:self action:@selector(startCommRecord) forControlEvents:UIControlEventTouchDown];
             [commRecBtn removeTarget:self action:@selector(endCommRecord) forControlEvents:UIControlEventTouchUpInside];
             [commRecBtn removeTarget:self action:@selector(endCommRecord) forControlEvents:UIControlEventTouchUpOutside];
@@ -9016,23 +9098,17 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
             [btn_record setImage:[UIImage imageNamed:@"startRecord-iPad.png"] forState:UIControlStateNormal];
         }
         
-        [self stopRecordTimer];
         [recorderView setHidden:YES];
         
-        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"recordRead"]) {
-            [btn_play setTitle:@"stop" forState:UIControlStateNormal];
-            
-            //            [self performSelector:@selector(playRecord) withObject:nil afterDelay:0.5f];
-            //        [self playRecord];
-        } else {
-            [btn_record setEnabled:YES];
-            [btn_play setEnabled:YES];
-        }
+//        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"recordRead"]) {
+//            [btn_play setTitle:@"stop" forState:UIControlStateNormal];
+//        } 
         
+        [btn_record setEnabled:NO];
         [btn_play setEnabled:NO];
         
-        [self performSelector:@selector(stopRecordImple) withObject:nil afterDelay:1.2f];
         
+        [self performSelector:@selector(stopRecordImple) withObject:nil afterDelay:1.2f];
     }
     
 }
@@ -9049,14 +9125,19 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
         //            //run in main thread
         dispatch_async(dispatch_get_main_queue(), ^{
             [audioRecoder stopRecord];
-            [btn_play setEnabled:YES];
-            [self performSelector:@selector(playRecord) withObject:nil afterDelay:0.5f];
+            [self stopRecordTimer];
+            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"recordRead"]) {
+                [btn_play setTitle:@"stop" forState:UIControlStateNormal];
+            } else {
+                [btn_play setEnabled:YES];
+            }
             
             //                if (![[NSUserDefaults standardUserDefaults] boolForKey:@"recordRead"]) {
             //                    [btn_play setEnabled:YES];
             //                }
             
-            if (recordSeconds < 2.0f) {
+            if (recordSeconds < 3.0f) {
+                
                 [displayModeBtn setTitle:@"录音时间太短" forState:UIControlStateNormal];
                 [UIView beginAnimations:@"Display" context:nil];
                 [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
@@ -9069,12 +9150,15 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
                 [UIView setAnimationDuration:2.0];
                 [displayModeBtn setAlpha:0];
                 [UIView commitAnimations];
+                
+                [btn_record setEnabled:YES];
             } else {
+                [self performSelector:@selector(playRecord) withObject:nil afterDelay:0.5f];
                 if (localFileExist && [[NSUserDefaults standardUserDefaults] boolForKey:@"recScore"]) {
-                    [btn_record setEnabled:NO];
-                    [displayModeBtn setTitle:@"语音比对中" forState:UIControlStateNormal];
-                    [displayModeBtn setAlpha:0.8];
-                    
+//                    [btn_record setEnabled:NO];
+//                    [displayModeBtn setTitle:@"语音比对中" forState:UIControlStateNormal];
+//                    [displayModeBtn setAlpha:0.8];
+                    [displayModeBtn setTag:0];
                     [self loadAudio2];
                     
                     if (recordTimer && recordTimer.isValid) {
@@ -9290,6 +9374,9 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     [self stopPlayRecordTimer];
     [wordPlayer pause];
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"recordRead"]) {
+        [btn_record setEnabled:YES];
+    }
 //    if ([lyricSynTimer isValid]) {
 //        
 //    }else {
@@ -9468,12 +9555,27 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
         }
         
         if ([[NSUserDefaults standardUserDefaults] boolForKey:@"recordRead"]) {
-            if (recPlayAgain) {
-                recPlayAgain = NO;
-                [self performSelector:@selector(prePlay:) withObject:nil afterDelay:0.3f];
+            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"recScore"] && displayModeBtn.tag == 0) {
+                [displayModeBtn setTitle:@"语音比对中" forState:UIControlStateNormal];
+                [displayModeBtn setAlpha:0.8];
+                [displayModeBtn setTag:1];
             } else {
-                recPlayAgain = [[NSUserDefaults standardUserDefaults] boolForKey:@"recPlayAgain"];
-                [self performSelector:@selector(aftPlay:) withObject:nil afterDelay:0.3f];
+                if (recPlayAgain) {
+                    recPlayAgain = NO;
+                    [self performSelector:@selector(prePlay:) withObject:nil afterDelay:0.3f];
+                } else {
+                    recPlayAgain = [[NSUserDefaults standardUserDefaults] boolForKey:@"recPlayAgain"];
+                    [self performSelector:@selector(aftPlay:) withObject:nil afterDelay:0.3f];
+                }
+            }
+            
+        } else {
+            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"recScore"] && displayModeBtn.tag == 0) {
+                [displayModeBtn setTitle:@"语音比对中" forState:UIControlStateNormal];
+                [displayModeBtn setAlpha:0.8];
+                [displayModeBtn setTag:1];
+            } else {
+                [btn_record setEnabled:YES];
             }
         }
     }

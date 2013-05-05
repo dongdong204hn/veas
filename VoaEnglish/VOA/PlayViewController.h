@@ -285,11 +285,11 @@
 @property (nonatomic, retain) IBOutlet UIButton    *modeBtn;    //播放模式选择按钮
 @property (nonatomic, retain) IBOutlet UIButton  *displayModeBtn;   //播放模式展示
 
-@property (nonatomic, retain) IBOutlet WaveFormViewIOS *wfvOne;
-@property (nonatomic, retain) IBOutlet WaveFormViewIOS *wfvTwo;
+@property (nonatomic, retain) WaveFormViewIOS *wfvOne;
+@property (nonatomic, retain) WaveFormViewIOS *wfvTwo;
 @property (nonatomic, retain) IBOutlet UIImageView *peakMeterIV;
 @property (nonatomic, retain) IBOutlet UIView *recorderView;
-
+@property (nonatomic, retain) IBOutlet UIImageView *scoreImg;
 
 
 @property (nonatomic) NSInteger thisScore;

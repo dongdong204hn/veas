@@ -201,6 +201,7 @@ void uncaughtExceptionHandler(NSException *exception) {
                 [waitReadCountArray release];
                 [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"recPlayAgain"];
                 [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"recScore"];
+                [[NSUserDefaults standardUserDefaults] setObject:@"NO" forKey:kBePro];
                 
                 UIAlertView *updateAlert = [[UIAlertView alloc] initWithTitle:@"更新内容" message:@"1.优化录音功能\n2.修复了定时播放时有嘀嗒声的问题\n3.列表中文章标题改为了中文显示" delegate:nil cancelButtonTitle:@"我已知晓" otherButtonTitles:nil];
                 [updateAlert show];
@@ -351,6 +352,7 @@ void uncaughtExceptionHandler(NSException *exception) {
                 [waitReadCountArray release];
                 [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"recPlayAgain"];
                 [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"recScore"];
+                [[NSUserDefaults standardUserDefaults] setObject:@"NO" forKey:kBePro];
                 
                 UIAlertView *updateAlert = [[UIAlertView alloc] initWithTitle:@"更新内容" message:@"1.优化录音功能\n2.修复了定时播放时有嘀嗒声的问题\n3.列表中文章标题改为了中文显示" delegate:nil cancelButtonTitle:@"我已知晓" otherButtonTitles:nil];
                 [updateAlert show];
