@@ -481,6 +481,9 @@
         case 9:
             [loveClassLab setText:[NSString stringWithFormat:@"%@", kClassTen]];
             break;
+        case 10:
+            [loveClassLab setText:[NSString stringWithFormat:@"%@", kClassTwelve]];
+            break;
         default:
             break;
     }

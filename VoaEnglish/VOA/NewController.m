@@ -216,10 +216,10 @@ extern ASIHTTPRequest *nowrequest;
         [self setMytitleDown];
         [sender setBackgroundColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.44f]];
         if (isiPhone) {
-            [classTableView setFrame:CGRectMake(85, 0, 150, 250)];
+            [classTableView setFrame:CGRectMake(85, 0, 150, 275)];
 
         } else {
-            [classTableView setFrame:CGRectMake(284, 0, 200, 400)];
+            [classTableView setFrame:CGRectMake(284, 0, 200, 440)];
 
         }
                 [UIView commitAnimations];
@@ -353,7 +353,7 @@ extern ASIHTTPRequest *nowrequest;
     [search release];//$$
     
     
-    classArray = [[NSArray alloc] initWithObjects:kClassAll,kClassTwo,kClassThree,kClassFour,kClassFive,kClassSix,kClassSeven,kClassEight,kClassNine,kClassTen,nil];
+    classArray = [[NSArray alloc] initWithObjects:kClassAll,kClassTwo,kClassThree,kClassFour,kClassFive,kClassSix,kClassSeven,kClassEight,kClassNine,kClassTen,kClassTwelve,nil];
     if (isiPhone) {
         classTableView = [[UITableView alloc] initWithFrame:CGRectMake(85, 0, 150, 0)];
 
@@ -535,7 +535,7 @@ extern ASIHTTPRequest *nowrequest;
             addNum = 1;
             if (category == 0) {
                 self.voasArray = [VOAView findNew:10*(pageNum-1) newVoas:self.voasArray];
-            } else if (category<10) {
+            } else if (category<11) {
                 self.voasArray = [VOAView findNewByCategory:10*(pageNum-1) category:category myArray:self.voasArray];
             } else {
                 
@@ -782,7 +782,7 @@ extern ASIHTTPRequest *nowrequest;
                             NSMutableArray *addArray = [[NSMutableArray alloc]init];
                             if (category == 0) {
                                 addArray = [VOAView findNew:10*(pageNum-1) newVoas:addArray];
-                            } else if (category<10) {
+                            } else if (category<11) {
                                 addArray = [VOAView findNewByCategory:10*(pageNum-1) category:category myArray:addArray];
                             } else {
                                 
@@ -834,10 +834,10 @@ extern ASIHTTPRequest *nowrequest;
             cellThree = [[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:ClsssCell] autorelease];
             UILabel *classLabel = [[UILabel alloc] init];
             if (isiPhone) {
-                [classLabel setFrame:CGRectMake(50, 0, 50, 25)];
+                [classLabel setFrame:CGRectMake(40, 0, 80, 25)];
                 [classLabel setFont:classFo];
             } else {
-                [classLabel setFrame:CGRectMake(60, 0, 80, 40)];
+                [classLabel setFrame:CGRectMake(60, 0, 100, 40)];
                 [classLabel setFont:classFo];
             }
             
@@ -877,7 +877,7 @@ extern ASIHTTPRequest *nowrequest;
 #pragma mark Table View Delegate Methods
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return ((tableView.tag == 1)? ( category == 10? (isiPhone?80.0f:160.0f):(([indexPath row]<[voasArray count])?(isiPhone?80.0f:160.0f):(([indexPath row]==[voasArray count]+1)?1.0f:(isiPhone?28.0f:48.0f)))): (isiPhone?25.0f:40.0f));
+    return ((tableView.tag == 1)? ( category == 11? (isiPhone?80.0f:160.0f):(([indexPath row]<[voasArray count])?(isiPhone?80.0f:160.0f):(([indexPath row]==[voasArray count]+1)?1.0f:(isiPhone?28.0f:48.0f)))): (isiPhone?25.0f:40.0f));
 }
 
 - (void)tableView:(UITableView *)tableView 
@@ -1131,7 +1131,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
         //        addNum = 1;
         if (category == 0) {
             self.voasArray = [VOAView findNew:10*(pageNum-1) newVoas:self.voasArray];
-        } else if (category<10) {
+        } else if (category<11) {
             self.voasArray = [VOAView findNewByCategory:10*(pageNum-1) category:category myArray:self.voasArray];
         } else {
             
@@ -1311,7 +1311,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 //    addArray = [VOAView findNew:10*(pageNum-1) newVoas:addArray];
     if (category == 0) {
         addArray = [VOAView findNew:10*(pageNum-1) newVoas:addArray];
-    } else if (category<10) {
+    } else if (category<11) {
         addArray = [VOAView findNewByCategory:10*(pageNum-1) category:category myArray:addArray];
     } else {
         
@@ -1431,7 +1431,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
             NSMutableArray *addArray = [[NSMutableArray alloc]init];
             if (category == 0) {
                 addArray = [VOAView findNew:10*(pageNum-1) newVoas:addArray];
-            } else if (category<10) {
+            } else if (category<11) {
                 addArray = [VOAView findNewByCategory:10*(pageNum-1) category:category myArray:addArray];
             } else {
                 

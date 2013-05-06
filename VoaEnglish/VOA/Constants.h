@@ -120,6 +120,7 @@ extern NSString * const kClassEight;
 extern NSString * const kClassNine;
 extern NSString * const kClassTen;
 extern NSString * const kClassEleven;
+extern NSString * const kClassTwelve;
 
 extern NSString * const kPlayOne;
 extern NSString * const kPlayTwo;

@@ -120,6 +120,7 @@ NSString * const kClassEight = @"商务";
 NSString * const kClassNine = @"科技";
 NSString * const kClassTen = @"历史";
 NSString * const kClassEleven = @"对本类新闻进行搜索";
+NSString * const kClassTwelve = @"单词故事";
 
 NSString * const kPlayOne = @"自动切换本地播放,为您节省上网流量";
 NSString * const kPlayTwo = @"确定下载";

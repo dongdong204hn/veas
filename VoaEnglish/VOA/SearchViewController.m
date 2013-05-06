@@ -98,7 +98,7 @@
     self.navigationItem.rightBarButtonItem = editButton;
     [editButton release], editButton = nil;
     self.title = [NSString stringWithFormat:@"%@\"%@\"%@", kSearchThree,_searchWords,kSearchFour];
-    if (_searchFlg<10) {
+    if (_searchFlg<11) {
         [self catchResultSy:_searchWords page:1];
     }
     [super viewDidLoad];
