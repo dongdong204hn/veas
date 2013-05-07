@@ -20,12 +20,13 @@
     return self;
 }
 
-//- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-//    [delegate touchUpInside :touches mylabel:self ];
-//}
+- (void)dealloc {
+    self.delegate = nil;
+    [super dealloc];
+}
 
+#pragma mark - reload UIResponder's method
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    //    [delegate touchUpInside :touches mylabel:self ];
     touchTime = 0;
     turnOff = NO;
     myTouches = touches;
@@ -34,16 +35,6 @@
                                                 selector:@selector(handleTimer)
                                                 userInfo:nil
                                                  repeats:YES];
-}
-
-- (void)handleTimer {
-    touchTime++;
-    if (touchTime>0) {
-        [delegate touchUpInsideLong:myTouches mylabel:self ];
-        [touchTimer invalidate];
-        touchTimer = nil;
-        turnOff = YES;
-    }
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
@@ -55,9 +46,15 @@
     }
 }
 
-- (void)dealloc {
-    self.delegate = nil;
-    [super dealloc];
+
+- (void)handleTimer {
+    touchTime++;
+    if (touchTime>0) {
+        [delegate touchUpInsideLong:myTouches mylabel:self ];
+        [touchTimer invalidate];
+        touchTimer = nil;
+        turnOff = YES;
+    }
 }
 
 @end

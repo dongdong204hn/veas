@@ -48,6 +48,10 @@
     // Release any cached data, images, etc that aren't in use.
 }
 
+#pragma mark - action
+/**
+ called when touch the pageControl
+ */
 - (IBAction)changePage:(UIPageControl *)sender
 {
     int page = pageControl.currentPage;
@@ -56,17 +60,8 @@
     frame.origin.y = 0;
     [scrollView scrollRectToVisible:frame animated:YES];  
 }
-//
-//- (BOOL)isPad {
-//	BOOL isPad = NO;
-//#if (__IPHONE_OS_VERSION_MAX_ALLOWED >= 30200)
-//	isPad = UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad;
-//#endif
-//	return isPad;
-//}
 
 #pragma mark - View lifecycle
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -127,37 +122,6 @@
             [scrollView setContentSize:CGSizeMake(scrollView.frame.size.width * numOfPages, scrollView.frame.size.height)];
         }
     }
-//    isiPhone = ![Constants isPad];
-//    if (!isiPhone) {
-//        [self.view setFrame:CGRectMake(0, 0, 768, 980)]; 
-//        [self.pageControl setFrame:CGRectMake(350, -5, 68, 36)];
-//    }
-//    self.title = kHelpOne;
-//    scrollView.pagingEnabled = YES;
-//    scrollView.showsVerticalScrollIndicator = NO;
-//    scrollView.showsHorizontalScrollIndicator = NO;
-//    scrollView.scrollEnabled = YES;
-//    scrollView.clipsToBounds = YES;
-//    scrollView.delegate = self;
-//    if (showStartButton) {
-//        scrollView.frame = CGRectMake(0, 0, 320, 460);
-//        pageControl.frame = CGRectMake(pageControl.frame.origin.x, 20, pageControl.frame.size.width, pageControl.frame.size.height);
-//    }
-//    for (NSUInteger i = 1; i <= numOfPages; i++)
-//	{
-//		NSString *imageName = [NSString stringWithFormat:@"help%d.png", i];
-//        UIView * pageView = [[UIView alloc] initWithFrame:CGRectMake(scrollView.frame.size.width * (i-1), 0, scrollView.frame.size.width, scrollView.frame.size.height)];
-//		UIImage *image = [UIImage imageNamed:imageName];
-//		UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
-//		// setup each frame to a default height and width, it will be properly placed when we call "updateScrollList"
-//		imageView.frame = CGRectMake(0, 0, scrollView.frame.size.width, scrollView.frame.size.height);
-//		pageView.tag = i;	// tag our images for later use when we place them in serial fashion
-//        [pageView addSubview:imageView];
-//		[scrollView addSubview:pageView];
-//		[imageView release];
-//        [pageView release];
-//	}
-//    [scrollView setContentSize:CGSizeMake(scrollView.frame.size.width * numOfPages, scrollView.frame.size.height)];
 }
 
 - (void)viewDidUnload

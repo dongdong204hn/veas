@@ -12,7 +12,7 @@
 @synthesize webView;
 @synthesize isiPhone;
 
-#pragma mark * Setup
+#pragma mark - Setup
 
 - (void)_loadInfoContent
 {
@@ -21,7 +21,7 @@
     
 //    infoFilePath = [[NSBundle mainBundle] pathForResource:@"Info" ofType:@"html"];
 //    assert(infoFilePath != nil);
-//    
+//    called when the web is local
 //    request = [NSURLRequest requestWithURL:[NSURL fileURLWithPath:infoFilePath]];
 //    assert(request != nil);
     
@@ -32,6 +32,9 @@
 }
 
 #pragma mark - My Action
+/**
+ *  web control action
+ */
 - (void)doSeg:(UISegmentedControl *)sender
 {
     if (sender.selectedSegmentIndex == 0) {
@@ -42,15 +45,7 @@
     }
 }
 
-#pragma mark * View controller boilerplate
-//
-//- (BOOL)isPad {
-//	BOOL isPad = NO;
-//#if (__IPHONE_OS_VERSION_MAX_ALLOWED >= 30200)
-//	isPad = UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad;
-//#endif
-//	return isPad;
-//}
+#pragma mark - View controller boilerplate
 
 - (void)viewDidLoad
 {

@@ -12,6 +12,9 @@
 #import "database.h"
 #import "VOAView.h"
 
+/**
+ *
+ */
 @interface DataBaseClass : NSObject {
 }
    

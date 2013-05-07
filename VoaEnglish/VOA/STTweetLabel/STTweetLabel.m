@@ -1,6 +1,6 @@
 //
 //  STTweetLabel.m
-//  STTweetLabel
+//  VOA
 //
 //  Created by Sebastien Thiebaud on 12/14/12.
 //  Copyright (c) 2012 Sebastien Thiebaud. All rights reserved.
@@ -31,6 +31,9 @@
     return self;
 }
 
+/**
+ draw the label on the rect
+ */
 - (void)drawTextInRect:(CGRect)rect
 {
     if (_fontHashtag == nil)
@@ -143,7 +146,10 @@
         drawPoint = CGPointMake(drawPoint.x + sizeSpace.width, drawPoint.y);
     }
 }
-    
+
+/**
+ 点击结束时的响应事件
+ */
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
     UITouch *touch = event.allTouches.anyObject;

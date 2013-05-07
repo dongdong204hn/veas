@@ -9,7 +9,9 @@
 #import <Foundation/Foundation.h>
 #import "ASIHTTPRequest.h"
 
-
+/**
+ *
+ */
 @interface NetTest : NSObject <ASIHTTPRequestDelegate>
 
 @property (nonatomic) BOOL isExisitNet; //标识是否存在网络

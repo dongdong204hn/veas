@@ -12,6 +12,9 @@
 
 #define ONE_MINUTE 60
 
+/**
+ *
+ */
 @interface timeSwitchClass : NSObject {
 
 }

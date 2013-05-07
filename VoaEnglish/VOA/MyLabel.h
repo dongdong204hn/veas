@@ -15,6 +15,9 @@
 - (void)touchUpInsideLong: (NSSet *)touches mylabel:(MyLabel *)mylabel ;
 @end
 
+/**
+ *  
+ */
 @interface MyLabel : UILabel {
     id <MyLabelDelegate> delegate;
     NSInteger touchTime;

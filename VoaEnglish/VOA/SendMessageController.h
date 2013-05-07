@@ -12,6 +12,9 @@
 #import "NSString+URLEncoding.h"
 #import "LogController.h"
 
+/**
+ *
+ */
 @interface SendMessageController : UIViewController
 
 @property (nonatomic, retain) IBOutlet UILabel *nameLab; //姓名标签
@@ -19,4 +22,5 @@
 @property (nonatomic, retain) IBOutlet UIButton *sendBtn; //发送按钮
 @property (nonatomic, retain) UserMessage *userMsg;
 @property (nonatomic, retain) UIAlertView *sucAlert;
+
 @end

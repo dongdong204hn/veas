@@ -1,11 +1,14 @@
 //
 //  MyPageControl.h
-//  NewPageControl
+//  VOA
 //
 //  Created by Miaohz on 11-8-31.
 //  Copyright 2011 Etop. All rights reserved.
 //
 
+/**
+ *  custom UIPageControl
+ */
 @interface MyPageControl : UIPageControl {
 	UIImage *imagePageStateNormal;
 	UIImage *imagePageStateHightlighted;

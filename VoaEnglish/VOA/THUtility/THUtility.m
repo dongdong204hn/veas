@@ -1,6 +1,6 @@
 //
 //  THUtility.m
-//  FileToText
+//  VOA
 //
 //  Created by TanHao on 12-12-10.
 //  Copyright (c) 2012年 tanhao.me. All rights reserved.

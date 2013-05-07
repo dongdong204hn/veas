@@ -9,7 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "Constants.h"
 
-
+/**
+ *
+ */
 @interface TabViewController : UITabBarController {
 	UIImage                             *_tabBarBackgroundImage;  //整个tabBar的背景
     NSMutableArray                       *_unSelectedImageArray;   //非选中效果的tabBarItem数组

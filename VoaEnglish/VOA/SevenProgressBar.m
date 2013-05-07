@@ -1,6 +1,6 @@
 //
 //  SevenProgressBar.m
-//  FinalTest
+//  VOA
 //
 //  Created by Seven Lee on 12-1-31.
 //  Copyright (c) 2012年 iyuba. All rights reserved.

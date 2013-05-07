@@ -14,6 +14,9 @@
 #import "RegexKitLite.h"
 #import "ROUtility.h"
 
+/**
+ *
+ */
 @interface RegistViewController : UIViewController<UITextFieldDelegate>
 {
     UITableView *logTable;

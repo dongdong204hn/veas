@@ -19,6 +19,9 @@
 #import "Reachability.h"//isExistenceNetwork
 #import "EGORefreshTableHeaderView.h" 
 
+/**
+ *
+ */
 @interface NewController : UIViewController <UITableViewDelegate,UITableViewDataSource,UISearchBarDelegate,ASIHTTPRequestDelegate,MBProgressHUDDelegate,EGORefreshTableHeaderDelegate,UIActionSheetDelegate>
 {
     UITableView *voasTableView;

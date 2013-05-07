@@ -12,6 +12,9 @@
 #import "Reachability.h"//contain method isExistenceNetwork
 #import "ROUtility.h"
 
+/**
+ *
+ */
 @interface LogController : UIViewController<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate>
 {
     UITableView *logTable;

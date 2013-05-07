@@ -16,6 +16,9 @@ typedef enum {
 	ERROR
 } WaveSampleStatus;
 
+/**
+ *  
+ */
 @interface WaveSampleProvider : NSObject 
 {
 	ExtAudioFileRef extAFRef;

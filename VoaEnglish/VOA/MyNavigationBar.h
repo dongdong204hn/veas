@@ -6,8 +6,12 @@
 //  Copyright (c) 2012年 buaa. All rights reserved.
 //
 
+/**
+ *
+ */
 @interface MyNavigationBar : UINavigationBar
 {
 
 }
+
 @end

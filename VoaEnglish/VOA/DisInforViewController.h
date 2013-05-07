@@ -17,6 +17,9 @@
 #import "JMWhenTapped.h"
 #import "StudyTime.h"
 
+/**
+ *
+ */
 @interface DisInforViewController : UIViewController <STLinkProtocol,UITableViewDelegate,UITableViewDataSource,MBProgressHUDDelegate>
 
 @property (nonatomic, retain) IBOutlet TextScrollView *inforScroll; //三屏滑动视图

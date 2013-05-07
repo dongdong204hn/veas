@@ -70,7 +70,6 @@
 		B00CF0DD15160EF10012E3D9 /* helpView.m in Sources */ = {isa = PBXBuildFile; fileRef = B00CF0D615160EF10012E3D9 /* helpView.m */; };
 		B00CF0DE15160EF10012E3D9 /* helpView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B00CF0D715160EF10012E3D9 /* helpView.xib */; };
 		B00CF0DF15160EF10012E3D9 /* InformationView.m in Sources */ = {isa = PBXBuildFile; fileRef = B00CF0D915160EF10012E3D9 /* InformationView.m */; };
-		B016E8D316B769FE00F5AFCC /* MyImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = B016E8D216B769FE00F5AFCC /* MyImageView.m */; };
 		B016E8EF16B7ACA900F5AFCC /* cet4-72@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B016E8D716B7ACA900F5AFCC /* cet4-72@2x.png */; };
 		B016E8F016B7ACA900F5AFCC /* cet4free-72@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B016E8D816B7ACA900F5AFCC /* cet4free-72@2x.png */; };
 		B016E8F116B7ACA900F5AFCC /* cet6-72@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B016E8D916B7ACA900F5AFCC /* cet6-72@2x.png */; };
@@ -855,8 +854,6 @@
 		B00CF0D715160EF10012E3D9 /* helpView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = helpView.xib; sourceTree = "<group>"; };
 		B00CF0D815160EF10012E3D9 /* InformationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InformationView.h; sourceTree = "<group>"; };
 		B00CF0D915160EF10012E3D9 /* InformationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InformationView.m; sourceTree = "<group>"; };
-		B016E8D116B769FE00F5AFCC /* MyImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyImageView.h; sourceTree = "<group>"; };
-		B016E8D216B769FE00F5AFCC /* MyImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyImageView.m; sourceTree = "<group>"; };
 		B016E8D716B7ACA900F5AFCC /* cet4-72@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cet4-72@2x.png"; sourceTree = "<group>"; };
 		B016E8D816B7ACA900F5AFCC /* cet4free-72@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cet4free-72@2x.png"; sourceTree = "<group>"; };
 		B016E8D916B7ACA900F5AFCC /* cet6-72@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cet6-72@2x.png"; sourceTree = "<group>"; };
@@ -1949,8 +1946,6 @@
 				B0C5681114F12FD20024F542 /* TextScrollView.m */,
 				B043A25316A7E49000DEC567 /* MyTextView.h */,
 				B043A25416A7E49100DEC567 /* MyTextView.m */,
-				B016E8D116B769FE00F5AFCC /* MyImageView.h */,
-				B016E8D216B769FE00F5AFCC /* MyImageView.m */,
 			);
 			name = my;
 			sourceTree = "<group>";
@@ -4257,7 +4252,6 @@
 				B0A7EBFB16B029F5006F0097 /* UserMessage.m in Sources */,
 				B0A7EC0016B02B31006F0097 /* SendMessageController.m in Sources */,
 				B0F6FC1216B3C1EF00A0ACA1 /* StudyTime.m in Sources */,
-				B016E8D316B769FE00F5AFCC /* MyImageView.m in Sources */,
 				DBB49C3B16BCE644003AB95D /* DACircularProgressView.m in Sources */,
 				B020AEFF1701D17A00CC5D7D /* UIImage+SplitImageIntoTwoParts.m in Sources */,
 				B03567C81703D8A6001EA96B /* Demo2Transition.m in Sources */,

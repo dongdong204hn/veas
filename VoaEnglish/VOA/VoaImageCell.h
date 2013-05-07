@@ -6,6 +6,9 @@
 //  Copyright (c) 2012年 buaa. All rights reserved.
 //
 
+/**
+ *
+ */
 @interface VoaImageCell : UITableViewCell
 {
     UIImageView *myImage;

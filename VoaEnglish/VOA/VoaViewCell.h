@@ -7,6 +7,9 @@
 //
 #import "DACircularProgress/DACircularProgressView.h"
 
+/**
+ *
+ */
 @interface VoaViewCell : UITableViewCell
 {
     UIImageView *myImage;

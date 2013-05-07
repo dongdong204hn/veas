@@ -1,12 +1,12 @@
 //
 //  HSCButton.h
-//  AAAA
-//
+//  VOA
+//  custom button that can drag move
 //  Created by zhangmh on 12-7-20.
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 /*
-其实,
+ custom button that can drag move
  */
 #import <UIKit/UIKit.h>
 
@@ -18,6 +18,9 @@
 - (void)dragEnd:(HSCButton *)myButton;
 @end
 
+/**
+ *
+ */
 @interface HSCButton : UIButton
 {
     CGPoint beginPoint;

@@ -79,7 +79,9 @@
 #define kSpeakImage7         @"speaker_7.png"
 #define kSpeakImage8         @"speaker_8.png"
 
-
+/**
+ *
+ */
 @interface PlayViewController : UIViewController <UIAlertViewDelegate, AVAudioPlayerDelegate, ASIHTTPRequestDelegate,MyLabelDelegate,MBProgressHUDDelegate, AVAudioSessionDelegate, UIScrollViewDelegate,UIActionSheetDelegate,UITableViewDelegate,UITableViewDataSource,UIPickerViewDelegate,UIPickerViewDataSource,HPGrowingTextViewDelegate,HSCButtonDelegate, UITextViewDelegate>
 {
     CL_AudioRecorder* audioRecoder;

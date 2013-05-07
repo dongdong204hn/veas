@@ -1,6 +1,6 @@
 //
 //  UIImage+SplitImageIntoTwoParts.m
-//  TapRepublic
+//  VOA
 //
 //  Created by Terry Lin on 12-5-11.
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.

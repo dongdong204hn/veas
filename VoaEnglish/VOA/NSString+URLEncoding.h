@@ -1,6 +1,6 @@
 //
 //  NSString+URLEncoding.h
-//
+//  URL encode&decode
 //  Created by Jon Crosby on 10/19/07.
 //  Copyright 2007 Kaboomerang LLC. All rights reserved.
 //
@@ -25,7 +25,9 @@
 
 #import <Foundation/Foundation.h>
 
-
+/**
+ *
+ */
 @interface NSString (OAURLEncodingAdditions)
 
 - (NSString *)URLEncodedString;

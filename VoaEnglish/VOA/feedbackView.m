@@ -1,8 +1,8 @@
 //
 //  feedbackView.m
-//  FinalTest
-//
-//  Created by Seven Lee on 12-2-1.
+//  VOA
+//  用户反馈容器
+//  Created by song zhao on 12-2-11.
 //  Copyright (c) 2012年 iyuba. All rights reserved.
 //
 
@@ -32,15 +32,6 @@
     [super didReceiveMemoryWarning];
     // Release any cached data, images, etc that aren't in use.
 }
-//
-//- (BOOL)isPad {
-//	BOOL isPad = NO;
-//#if (__IPHONE_OS_VERSION_MAX_ALLOWED >= 30200)
-//	isPad = UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad;
-//#endif
-//	return isPad;
-//}
-
 
 #pragma mark - View lifecycle
 
@@ -101,11 +92,11 @@
 
 #pragma mark - http connect
 
+/** 
+ asyn request to send feedback
+ */
 - (void)sendFeedback{
     if (sendLock) {
-//        UIAlertView *alertOne = [[UIAlertView alloc] initWithTitle:kVoaWordOne message:kFeedbackSeven delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-//        [alertOne show];
-//        [alertOne release];
     } else {
         if ([self isExistenceNetwork]) {
             sendLock = YES;
@@ -125,16 +116,16 @@
             [request startAsynchronous];
         }
     }
-    
+
 }
+
 
 - (void)request:(ASIHTTPRequest *)request didReceiveResponseHeaders:(NSDictionary *)responseHeaders{
     if ([request responseStatusCode] >= 400) {
-        UIAlertView *alertOne = [[UIAlertView alloc] initWithTitle:kSearchEleven message:[NSString stringWithFormat:@"%@,%@",kSearchEleven,kSearchTwelve] delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        UIAlertView *alertOne = [[UIAlertView alloc] initWithTitle:kSearchEleven message:[NSString stringWithFormat:@"%@,%@",kSearchEleven,kSearchTwelve] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
         [alertOne show];
         [alertOne release];
     }
-//    NSLog(@"httpCode:%d",[request responseStatusCode]);
 }
 
 - (void)requestFailed:(ASIHTTPRequest *)request {
@@ -158,9 +149,7 @@
     if (items) {
         for (DDXMLElement *obj in items) {
             NSString *status = [[obj elementForName:@"status"] stringValue];
-//            NSLog(@"status:%@",status);
             if ([status isEqualToString:@"OK"]) {
-//                NSLog(@"反馈成功");
                 _alert = [[UIAlertView alloc] initWithTitle:kFeedbackTwo message:nil delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
                 
                 [_alert setBackgroundColor:[UIColor clearColor]];
@@ -169,20 +158,10 @@
                 
                 [_alert show];
                 
-                //            UIActivityIndicatorView *active = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-                //            
-                //            active.center = CGPointMake(alert.bounds.size.width/2, alert.bounds.size.height-40);
-                //            
-                //            [alert addSubview:active];
-                //            
-                //            [active startAnimating];
-                
                 [NSTimer scheduledTimerWithTimeInterval:1.5 target:self selector:@selector(c) userInfo:nil repeats:NO];
             }else
             {
-//                NSLog(@"反馈失败");
                 NSString *msg = [[obj elementForName:@"msg"] stringValue] ;
-//                NSLog(@"msg:%@",msg);
                 UIAlertView * alertOne = [[UIAlertView alloc] initWithTitle:kFeedbackThree message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
                 [alertOne show];
                 [alertOne release];
@@ -194,7 +173,7 @@
 }
 
 /**
- *  对网路情况进行判断，若无网络弹出提示框
+ 对网路情况进行判断，若无网络弹出提示框
  */
 -(BOOL) isExistenceNetwork
 {
@@ -220,6 +199,9 @@
 	return isExistenceNetwork;
 }
 
+/**
+ alert自动消失时调用的函数
+ */
 -(void)c
 {
     [_alert dismissWithClickedButtonIndex:0 animated:YES];

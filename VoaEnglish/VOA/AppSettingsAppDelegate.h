@@ -15,6 +15,9 @@
 #import "StudyTime.h" //学习时间统计
 #import "UIImage+SplitImageIntoTwoParts.h"
 
+/**
+ *
+ */
 @interface AppSettingsAppDelegate : UIResponder <UIApplicationDelegate,UIScrollViewDelegate,ASIHTTPRequestDelegate> 
 {
     UIView * myView; //用户帮助视图

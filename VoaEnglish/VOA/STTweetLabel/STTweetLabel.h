@@ -1,7 +1,7 @@
 //
 //  STTweetLabel.h
-//  STTweetLabel
-//
+//  VOA
+//  realize special UILabel that can be touched
 //  Created by Sebastien Thiebaud on 12/14/12.
 //  Copyright (c) 2012 Sebastien Thiebaud. All rights reserved.
 //
@@ -17,6 +17,9 @@
 
 @end
 
+/**
+ *
+ */
 @interface STTweetLabel : UILabel
 {
     NSMutableArray *touchLocations;

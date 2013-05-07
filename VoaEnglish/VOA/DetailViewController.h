@@ -16,6 +16,9 @@
 #import "Reachability.h"
 #import "EGORefreshTableHeaderView.h" 
 
+/**
+ *
+ */
 @interface DetailViewController : UIViewController <UITableViewDelegate,UITableViewDataSource,UISearchBarDelegate,ASIHTTPRequestDelegate,EGORefreshTableHeaderDelegate> 
 {
     UITableView *voasTableView;

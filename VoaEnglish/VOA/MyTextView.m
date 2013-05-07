@@ -30,20 +30,8 @@
 */
 
 - (void)touchesBegan:(NSSet*)touches withEvent:(UIEvent*)event{
-//    if(!self.dragging)
-//    {
-//        [[self nextResponder]touchesBegan:touches withEvent:event];
-//    }
-    
-//    NSLog(@"my text touch");
-//    selectWord = [textViewOne.text substringWithRange:textViewOne.selectedRange];
-//    [selectWord retain];
     @try {
         PlayViewController *player = [PlayViewController sharedPlayer];
-////        [player.selectWord release];
-//        player.selectWord = [self.text substringWithRange:self.selectedRange];
-//        [player.selectWord retain];
-//        NSLog(@"ca");
         player.wordTouches = touches;
         if (player.nowTextView.tag != self.tag) {
             player.nowTextView = self;

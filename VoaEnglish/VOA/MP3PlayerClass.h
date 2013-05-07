@@ -8,6 +8,9 @@
 
 #import <AVFoundation/AVFoundation.h>
 
+/**
+ *
+ */
 @interface MP3PlayerClass : NSObject {
 }
 

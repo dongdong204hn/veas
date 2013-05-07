@@ -6,6 +6,9 @@
 //  Copyright (c) 2012年 buaa. All rights reserved.
 //
 
+/**
+ *  custom UIScrollView that push the touch event to super view
+ */
 @interface TextScrollView : UIScrollView
 
 @end

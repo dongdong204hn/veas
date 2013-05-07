@@ -1,12 +1,16 @@
 //
 //  helpView.h
-//  FinalTest
+//  VOA
 //  用户帮助容器
-//  Created by Seven Lee on 12-2-10.
+//  Created by song zhao on 12-2-10.
 //  Copyright (c) 2012年 iyuba. All rights reserved.
 //
+
 #import "Constants.h"
 
+/**
+ *
+ */
 @interface helpView : UIViewController<UIScrollViewDelegate>{
     UIScrollView * scrollView;
     UIPageControl * pageControl;

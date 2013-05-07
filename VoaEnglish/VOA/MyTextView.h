@@ -9,6 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "PlayViewController.h"
 
+/**
+ *  custom UITextView that can distinguish if is touched
+ */
 @interface MyTextView : UITextView
 
 @end

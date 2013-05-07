@@ -1,8 +1,8 @@
 //
 //  InformationView.h
-//  FinalTest
+//  VOA
 //  “关于爱语吧”容器
-//  Created by Seven Lee on 12-1-12.
+//  Created by song zhao on 12-1-12.
 //  Copyright (c) 2012年 iyuba. All rights reserved.
 //
 
@@ -10,6 +10,9 @@
 #import "Reachability.h"//isExistenceNetwork
 #import "Constants.h"
 
+/**
+ *
+ */
 @interface InformationView : UIViewController{
     BOOL isiPhone;
 }

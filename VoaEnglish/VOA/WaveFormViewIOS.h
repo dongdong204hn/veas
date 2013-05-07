@@ -11,6 +11,9 @@
 #import "WaveSampleProvider.h"
 #import "WaveSampleProviderDelegate.h"
 
+/**
+ *
+ */
 @interface WaveFormViewIOS : UIControl<WaveSampleProviderDelegate>
 {
 	UIActivityIndicatorView *progress;

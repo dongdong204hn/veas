@@ -172,6 +172,9 @@ extern NSString * const kSendOne;
 #define kFiveAdd (isiPhone5?88:0) 
 #define kFiveAddHalf (isiPhone5?44:0)
 
+/**
+ *
+ */
 @interface Constants : NSObject
 + (BOOL)isPad;
 @end

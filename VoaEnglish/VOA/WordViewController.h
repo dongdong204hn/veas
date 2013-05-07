@@ -21,6 +21,9 @@
 #import "NSString+URLEncoding.h"
 #import "MyTextView.h"
 
+/**
+ *
+ */
 @interface WordViewController : UIViewController <UITableViewDelegate,UITableViewDataSource,UISearchBarDelegate,MyLabelDelegate,ASIHTTPRequestDelegate,UIAlertViewDelegate>{
     UITableView *wordsTableView;
     NSMutableArray *wordsArray;

@@ -11,8 +11,9 @@
 #import "SVStoreKit.h"
 #import "MBProgressHUD.h"
 
-
-
+/**
+ *
+ */
 @interface InnerBuyController : UIViewController <SVStoreKitDelegate> {
     BOOL isIphone;
     UILabel *intro; //内购秒数

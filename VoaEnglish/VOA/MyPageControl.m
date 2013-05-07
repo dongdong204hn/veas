@@ -1,6 +1,6 @@
 //
 //  MyPageControl.m
-//  NewPageControl
+//  VOA
 //
 //  Created by Miaohz on 11-8-31.
 //  Copyright 2011 Etop. All rights reserved.
@@ -28,6 +28,15 @@
     return self;
 }
 
+- (void)dealloc {
+	[imagePageStateNormal release];
+	imagePageStateNormal = nil;
+	[imagePageStateHightlighted release];
+	imagePageStateHightlighted = nil;
+    [super dealloc];
+}
+
+#pragma mark - custom control methods
 - (void) setImagePageStateNormal:(UIImage *)image
 {
 	[imagePageStateNormal release];
@@ -48,7 +57,7 @@
 	[self updateDots];
 }
 
-- (void) updateAfterScroll 
+- (void) updateAfterScroll
 {
     [self updateDots];
 }
@@ -64,14 +73,5 @@
 		}
 	}
 }
-
-- (void)dealloc {
-	[imagePageStateNormal release];
-	imagePageStateNormal = nil;
-	[imagePageStateHightlighted release];
-	imagePageStateHightlighted = nil;
-    [super dealloc];
-}
-
 
 @end

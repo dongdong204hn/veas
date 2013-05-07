@@ -22,7 +22,6 @@
     }
     if (self) {
         //        NSLog(@"%@",nibNameOrNil);
-        
     }
     return self;
 }
@@ -35,6 +34,10 @@
     // Release any cached data, images, etc that aren't in use.
 }
 
+#pragma mark - action
+/**
+ called when touch the sender
+ */
 - (IBAction)goUrl:(id)sender
 {
     if ([self isExistenceNetwork:1]) {
@@ -43,15 +46,6 @@
         [myInfor release], myInfor = nil;
     }
 }
-//
-//- (BOOL)isPad {
-//	BOOL isPad = NO;
-//#if (__IPHONE_OS_VERSION_MAX_ALLOWED >= 30200)
-//	isPad = UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad;
-//#endif
-//	return isPad;
-//}
-
 
 #pragma mark - View lifecycle
 

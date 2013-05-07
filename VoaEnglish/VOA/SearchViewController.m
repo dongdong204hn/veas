@@ -38,7 +38,7 @@
     // Release any cached data, images, etc that aren't in use.
 }
 
-#pragma mark - My Action
+#pragma mark - Request Queue
 /**
  *  建立一个网络请求队列
  */
@@ -56,23 +56,17 @@
     }
 }
 
+#pragma mark - My Action
+/**
+ *  表视图编辑事件
+ */
 - (void) doEdit{
-	
 	[_voasTableView setEditing:!_voasTableView.editing animated:YES];
 	if(_voasTableView.editing)
 		self.navigationItem.rightBarButtonItem.title = kSearchOne;
 	else
 		self.navigationItem.rightBarButtonItem.title = kSearchTwo;
 }
-
-//- (BOOL)isPad {
-//	BOOL isPad = NO;
-//#if (__IPHONE_OS_VERSION_MAX_ALLOWED >= 30200)
-//	isPad = UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad;
-//#endif
-//	return isPad;
-//}
-
 
 #pragma mark - View lifecycle
 
@@ -85,7 +79,6 @@
 
 - (void)viewDidLoad
 {
-    //    myRequest = [[ASIHTTPRequest alloc]init];
     _isiPhone = ![Constants isPad];
     if (_isiPhone) {
         [_voasTableView setFrame:CGRectMake(0, 0, 320, self.view.frame.size.height)];
@@ -116,7 +109,6 @@
     [_contentsSrArray release], _contentsSrArray = nil;
     [_searchWords release], _searchWords = nil;
     [sharedSingleQueue release], sharedSingleQueue = nil;
-//    [_HUD release], _HUD = nil;
     [_contentsArray release], _contentsArray = nil;
 }
 
@@ -127,13 +119,10 @@
 }
 
 - (void)dealloc {
-    //    [myRequest clearDelegatesAndCancel];
-    //    [myRequest release];
     [_voasTableView release];
     [_contentsSrArray release];
     [_searchWords release];
     [sharedSingleQueue release];
-//    [_HUD release];
     [_contentsArray release];
     [super dealloc];
 }
@@ -148,7 +137,6 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSUInteger row = [indexPath row];
-    //    NSLog(@"row:%d",row);
     static NSString *FirstLevelCell= @"SearchCell";
     VoaViewCell *cell = (VoaViewCell*)[tableView dequeueReusableCellWithIdentifier:FirstLevelCell];
     if (!cell) {
@@ -168,8 +156,6 @@
         content = [_contentsArray objectAtIndex:row];
     }else{
         if (row == [_contentsSrArray count]) {
-            //            UITableViewCell *cellTwo = [[UITableViewCell alloc]init];
-            //            [cellTwo setSelectionStyle:UITableViewCellSelectionStyleNone];
             static NSString *SecondLevelCell= @"SearchCellOne";
             UITableViewCell *cellTwo = (UITableViewCell*)[tableView dequeueReusableCellWithIdentifier:SecondLevelCell];
             if (!cellTwo) {
@@ -182,7 +168,6 @@
                 }
             }
             if (_addNum == 10) {
-                //                [cellTwo.imageView setImage:[UIImage imageNamed:@"load.png"]];
                 if (_isiPhone) {
                     [cellTwo.imageView setImage:[UIImage imageNamed:@"load.png"]];
                 }
@@ -198,7 +183,6 @@
                 UITableViewCell *cellThree = (UITableViewCell*)[tableView dequeueReusableCellWithIdentifier:ThirdLevelCell];
                 if (!cellThree) {
                     cellThree = [[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ThirdLevelCell] autorelease];
-                    //                    cellThree = [[UITableViewCell alloc]init];
                 }
                 [cellThree setSelectionStyle:UITableViewCellSelectionStyleNone];
                 if (_addNum == 10) {
@@ -220,7 +204,6 @@
     cell.myDate.text = [NSString stringWithFormat:@"%@%d%@;%@%d%@",kSearchSix, content._titleNum, kSearchEight, kSearchSeven,content._number,kSearchEight];
     [cell.collectDate setTextColor:[UIColor purpleColor]];
     cell.collectDate.text = nowVoa._creatTime;
-//    cell.collectDate.text = content._creattime;
     //--------->设置内容换行
     [cell.myTitle setLineBreakMode:UILineBreakModeClip];
     //--------->设置最大行数
@@ -236,7 +219,6 @@
 #pragma mark Table View Delegate Methods
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
     return self.searchFlg>10?(_isiPhone?80.0f:160.0f):( [indexPath row] < [_contentsSrArray count]? (_isiPhone?80.0f:160.0f): (([indexPath row] < [_contentsSrArray count]+1)?(_isiPhone?28.0f:48.0f):1.0f));
 }
 
@@ -265,12 +247,6 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
         content = [_contentsSrArray objectAtIndex:row];
     }
     VOAView *voa = [VOAView find:content._voaid];
-    //    NSLog(@"没有：%d",voa._voaid);
-//    _HUD = [[MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES] retain];
-//    _HUD.delegate = self;
-//    _HUD.dimBackground = YES;
-//    _HUD.labelText = @"connecting!";
-    
     _HUD = [[MBProgressHUD alloc] initWithWindow:[UIApplication sharedApplication].keyWindow ];
     [[UIApplication sharedApplication].keyWindow addSubview:_HUD];
     _HUD.delegate = self;
@@ -280,54 +256,28 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
         
         dispatch_async(dispatch_get_main_queue(), ^{  
-//            NSLog(@"选中：%d-%d",row,voa._voaid);
             VOADetail *myDetail = [VOADetail find:voa._voaid];
+            PlayViewController *play = [PlayViewController sharedPlayer];//新建新界面的controller实例
             if (!myDetail) {
                 [VOADetail deleteByVoaid: voa._voaid];
                 [self catchDetails:voa];
-                PlayViewController *play = [PlayViewController sharedPlayer];//新建新界面的controller实例
-                if(play.voa._voaid == voa._voaid)
-                {
-                    play.newFile = NO;
-                }else
-                {
-                    play.newFile = YES;
-                    play.voa = voa;
-                }
-//                [voa release];
-//                if (play.contentMode != self.contentMode) {
-                    play.flushList = YES;
-                    play.contentMode = self.contentMode;
-                    play.category = self.category;
-//                }
-                [play setHidesBottomBarWhenPushed:YES];//设置推到新界面时无bottomBar
-                [self.navigationController pushViewController:play animated:NO]; 
-                [_HUD hide:YES];
-            } else {
-//                [myDetail release];
-                PlayViewController *play = [PlayViewController sharedPlayer];//新建新界面的controller实例
-                if(play.voa._voaid == voa._voaid)
-                {
-                    play.newFile = NO;
-                }else
-                {
-                    play.newFile = YES;
-                    play.voa = voa;
-                }
-//                [voa release];
-//                if (play.contentMode != self.contentMode) {
-                    play.flushList = YES;
-                    play.contentMode = self.contentMode;
-                play.category = self.category;
-               
-                //                }
-                [play setHidesBottomBarWhenPushed:YES];//设置推到新界面时无bottomBar
-                [self.navigationController pushViewController:play animated:NO]; 
-                [_HUD hide:YES];
             }
-            
-        });  
-    });     
+            if(play.voa._voaid == voa._voaid)
+            {
+                play.newFile = NO;
+            }else
+            {
+                play.newFile = YES;
+                play.voa = voa;
+            }
+            play.flushList = YES;
+            play.contentMode = self.contentMode;
+            play.category = self.category;
+            [play setHidesBottomBarWhenPushed:YES];//设置推到新界面时无bottomBar
+            [self.navigationController pushViewController:play animated:NO];
+            [_HUD hide:YES];
+        });
+    });
 }
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -337,19 +287,12 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
 #pragma mark - Http connect
 
-
-
+/**
+ 用队列异步从服务器获取搜索的结果
+ @param searchWord the keyWord of search
+ @param page the pageNumber of the result
+ */
 - (void)catchResult:(NSString *) searchWord page:(NSInteger)page{
-    //    self.lastId = [VOAView findLastId];
-    //    NSString *url = [NSString stringWithFormat:@"http://apps.iyuba.com/voa/searchApi.jsp?key=%@&format=xml&pages=%d&pageNum=10&parentID=%d&fields=all",searchWord,page,_searchFlg];
-    ////    NSLog(@"url:%@",url);
-    ////    [myRequest setURL:[NSURL URLWithString:url]];
-    //    _myRequest = [[ASIHTTPRequest alloc] initWithURL:[NSURL URLWithString:url]];
-    ////    myRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
-    //    _myRequest.delegate = self;
-    //    [_myRequest setUsername:@"search"];
-    //    [_myRequest startSynchronous];
-    
     NSString *url = [NSString stringWithFormat:@"http://apps.iyuba.com/voa/searchApi.jsp?key=%@&format=xml&pages=%d&pageNum=10&parentID=%d&fields=all",searchWord,page,_searchFlg];
     NSOperationQueue *myQueue = [self sharedQueue];
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
@@ -358,21 +301,15 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     //    [request setDidStartSelector:@selector(requestMyStarted:)];
     [request setDidFinishSelector:@selector(requestDone:)];
     [request setDidFailSelector:@selector(requestWentWrong:)];
-    
     [myQueue addOperation:request];
 }
 
+/**
+ catch search result by syn request from sever
+ @param searchWord the keyWord of search
+ @param page the pageNumber of the result
+ */
 - (void)catchResultSy:(NSString *) searchWord page:(NSInteger)page{
-    //    self.lastId = [VOAView findLastId];
-    //    NSString *url = [NSString stringWithFormat:@"http://apps.iyuba.com/voa/searchApi.jsp?key=%@&format=xml&pages=%d&pageNum=10&parentID=%d&fields=all",searchWord,page,_searchFlg];
-    ////    NSLog(@"url:%@",url);
-    ////    [myRequest setURL:[NSURL URLWithString:url]];
-    //    _myRequest = [[ASIHTTPRequest alloc] initWithURL:[NSURL URLWithString:url]];
-    ////    myRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
-    //    _myRequest.delegate = self;
-    //    [_myRequest setUsername:@"search"];
-    //    [_myRequest startSynchronous];
-    
     NSString *url = [NSString stringWithFormat:@"http://apps.iyuba.com/voa/searchApi.jsp?key=%@&format=xml&pages=%d&pageNum=10&parentID=%d&fields=all",searchWord,page,_searchFlg];
     ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
     request.delegate = self;
@@ -380,27 +317,18 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [request startSynchronous];
 }
 
+/**
+ catch specific content by syn request from sever
+ @param voaid 
+ */
 - (void)catchDetails:(VOAView *) voaid
 {
     NSString *url = [NSString stringWithFormat:@"http://apps.iyuba.com/voa/textApi.jsp?voaid=%d&format=xml",voaid._voaid];
-    //    ASIHTTPRequest * request = [[ASIHTTPRequest alloc] initWithURL:[NSURL URLWithString:url]];
     ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
     request.delegate = self;
     [request setUsername:@"detail"];
     [request setTag:voaid._voaid];
     [request startSynchronous];
-    //    request = nil;
-    //    [request release];
-    //    
-    ////    NSString *url = [NSString stringWithFormat:@"http://apps.iyuba.com/voa/searchApi.jsp?key=%@&format=xml&pages=%d&pageNum=10&parentID=%d&fields=all",searchWord,page,_searchFlg];
-    //    NSOperationQueue *myQueue = [self sharedQueue];
-    //    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
-    //    [request setDelegate:self];
-    //    [request setUsername:@"detail"];
-    //    //    [request setDidStartSelector:@selector(requestMyStarted:)];
-    //    [request setDidFinishSelector:@selector(requestDone:)];
-    //    [request setDidFailSelector:@selector(requestWentWrong:)];
-    //    [myQueue addOperation:request];
 }
 
 - (void)requestWentWrong:(ASIHTTPRequest *)request
@@ -451,21 +379,12 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
 - (void)requestDone:(ASIHTTPRequest *)request
 {
-//    NSLog(@"2");
     kNetEnable;
     NSData *myData = [request responseData];
     DDXMLDocument *doc = [[DDXMLDocument alloc] initWithData:myData options:0 error:nil];
     if ([request.username isEqualToString:@"search" ]) {
         /////解析      
         _addNum = 0;
-        //        NSArray *items = [doc nodesForXPath:@"data" error:nil];
-        //        if (items) {
-        //            for (DDXMLElement *obj in items) {
-        ////                NSInteger total = [[[obj elementForName:@"total"] stringValue] integerValue] ;
-        ////                NSLog(@"total:%d",total);
-        //            }
-        //        }
-        
         NSArray *items = [doc nodesForXPath:@"data/voatitle" error:nil];
         if (items) {
             //            addNum = 0;
@@ -494,24 +413,17 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
                 }
                 
                 VOAContent *voaCon = [[VOAContent alloc] init];
-                //                voaCon._voaid = [[[obj elementForName:@"voaid"] stringValue] integerValue] ;
                 voaCon._voaid = [[[obj elementForName:@"voaid"] stringValue] integerValue] ;
                 voaCon._titleNum = [[[obj elementForName:@"titleFind"] stringValue] integerValue];
                 voaCon._number = [[[obj elementForName:@"textFind"] stringValue] integerValue];
                 voaCon._title = [[[obj elementForName:@"Title"] stringValue] isEqualToString: @"null"] ? nil :[[obj elementForName:@"Title"] stringValue];
                 voaCon._pic = [[obj elementForName:@"Pic"] stringValue];
                 voaCon._creattime = [[obj elementForName:@"CreatTime"] stringValue];
-//                NSLog(@"title:%@",voaCon._title );
-                //                voaCon._title = newVoa._title;
-                //                voaCon._pic = newVoa._pic;
-                //                voaCon._creattime = newVoa._creatTime;
                 [_contentsSrArray addObject:voaCon];
                 _addNum++;
                 [newVoa release],newVoa = nil;
                 [voaCon release],voaCon = nil;
             }
-            
-            //            NSLog(@"addNum:%d",addNum);
         }
         else{
             
@@ -541,24 +453,13 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
                         //                        NSLog(@"插入%d成功",newVoaDetail._voaid);
                     }
                     [newVoaDetail release],newVoaDetail = nil;
-                    
                 }
-                
             } 
-            
-            //            else {
-            //                [VOAView deleteByVoaid:request.tag];
-            //            }
             [_HUD hide:YES];
         }
         
     }
     [doc release],doc = nil;
-    //    [myData release], myData = nil;
-    //    [request clearDelegatesAndCancel];
-    //    [request release];
-    //    request.delegate = nil;
-    //    [request release];
 }
 
 - (void)requestFinished:(ASIHTTPRequest *)request
@@ -569,17 +470,8 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if ([request.username isEqualToString:@"search" ]) {
         /////解析      
         _addNum = 0;
-        //        NSArray *items = [doc nodesForXPath:@"data" error:nil];
-        //        if (items) {
-        //            for (DDXMLElement *obj in items) {
-        ////                NSInteger total = [[[obj elementForName:@"total"] stringValue] integerValue] ;
-        ////                NSLog(@"total:%d",total);
-        //            }
-        //        }
-        
         NSArray *items = [doc nodesForXPath:@"data/voatitle" error:nil];
         if (items) {
-            //            addNum = 0;
             for (DDXMLElement *obj in items) {
                 VOAView *newVoa = [[VOAView alloc] init];
                 newVoa._voaid = [[[obj elementForName:@"voaid"] stringValue] integerValue] ;
@@ -606,24 +498,17 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
                 }
                 
                 VOAContent *voaCon = [[VOAContent alloc] init];
-                //                voaCon._voaid = [[[obj elementForName:@"voaid"] stringValue] integerValue] ;
                 voaCon._voaid = [[[obj elementForName:@"voaid"] stringValue] integerValue] ;
                 voaCon._titleNum = [[[obj elementForName:@"titleFind"] stringValue] integerValue];
                 voaCon._number = [[[obj elementForName:@"textFind"] stringValue] integerValue];
                 voaCon._title = [[[obj elementForName:@"Title"] stringValue] isEqualToString: @"null"] ? nil :[[obj elementForName:@"Title"] stringValue];
                 voaCon._pic = [[obj elementForName:@"Pic"] stringValue];
                 voaCon._creattime = [[obj elementForName:@"CreatTime"] stringValue];
-//                NSLog(@"title:%@",voaCon._title );
-                //                voaCon._title = newVoa._title;
-                //                voaCon._pic = newVoa._pic;
-                //                voaCon._creattime = newVoa._creatTime;
                 [_contentsSrArray addObject:voaCon];
                 _addNum++;
                 [newVoa release],newVoa = nil;
                 [voaCon release],voaCon = nil;
             }
-            
-            //            NSLog(@"addNum:%d",addNum);
         }
         else{
             
@@ -657,22 +542,14 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
                 }
                 
             } 
-            
-            //            else {
-            //                [VOAView deleteByVoaid:request.tag];
-            //            }
             [_HUD hide:YES];
         }
         
     }
     [doc release],doc = nil;
-    //    [myData release], myData = nil;
-    //    [request clearDelegatesAndCancel];
-    //    [request release];
-    //    request.delegate = nil;
-    //    [request release];
 }
 
+#pragma mark- Alert Delegate
 - (void)modalView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == 0) {//点击确定下载为0，取消为1
@@ -683,7 +560,6 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
         else{
         }
     }
-    
 }
 
 

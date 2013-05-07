@@ -1,8 +1,8 @@
 //
 //  feedbackView.h
-//  FinalTest
+//  VOA
 //  用户反馈容器
-//  Created by Seven Lee on 12-2-1.
+//  Created by song zhao on 12-2-11.
 //  Copyright (c) 2012年 iyuba. All rights reserved.
 //
 
@@ -12,6 +12,9 @@
 #import "Reachability.h"//isExistenceNetwork
 #import "Constants.h"
 
+/**
+ *  
+ */
 @interface feedbackView : UIViewController<ASIHTTPRequestDelegate,UITextFieldDelegate,UITextViewDelegate>{
     UITextView *_feedback; //反馈内容文本框
     UITextField *_mail; //反馈邮箱文本框

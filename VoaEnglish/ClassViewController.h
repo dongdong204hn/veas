@@ -8,6 +8,9 @@
 #import "DetailViewController.h"
 #import <QuartzCore/QuartzCore.h>
 
+/**
+ *
+ */
 @interface ClassViewController : UIViewController
 {
     UIButton *at;

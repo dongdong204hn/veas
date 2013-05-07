@@ -11,6 +11,9 @@
 #import "UIImageView+WebCache.h"
 #import "PlayViewController.h"
 
+/**
+ *  展示搜索结果的容器
+ */
 @interface SearchViewController : UIViewController <UITableViewDelegate,UITableViewDataSource,ASIHTTPRequestDelegate,MBProgressHUDDelegate,UIAlertViewDelegate> 
 {
     NSMutableArray *_contentsArray; //存放本地搜索的结果
@@ -37,9 +40,7 @@
 @property (nonatomic) BOOL isiPhone;
 @property (nonatomic) NSInteger category;
 
-
 - (void)catchDetails:(VOAView *) voaid;
 - (void)catchResult:(NSString *) searchWord page:(NSInteger)page;
-
 
 @end

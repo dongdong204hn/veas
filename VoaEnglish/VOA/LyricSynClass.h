@@ -13,6 +13,9 @@
 #import "MyTextView.h"
 //#import "MyLabel.h"
 
+/**
+ *
+ */
 @interface LyricSynClass : NSObject{
 //    id <UITextViewDelegate> delegate;
 }
