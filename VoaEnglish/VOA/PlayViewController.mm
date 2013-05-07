@@ -4366,7 +4366,6 @@ void audioRouteChangeListenerCallback (
     lyricCnScroll = [[TextScrollView alloc] initWithFrame:CGRectMake(320, 300, 320, 40)];
     [lyricCnScroll setBackgroundColor:[UIColor clearColor]];
     
-    
     if (isiPhone) {
         [myScroll setFrame:CGRectMake(0, 70, 320, (isFree?300:350) + kFiveAdd)];
         textScroll = [[TextScrollView alloc]initWithFrame:CGRectMake(354, 10, 260, (isFree?280:330) + kFiveAdd)];

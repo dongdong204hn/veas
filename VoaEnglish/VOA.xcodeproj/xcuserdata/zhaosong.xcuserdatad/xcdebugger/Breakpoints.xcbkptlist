@@ -150,7 +150,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "9171"
          endingLineNumber = "9171"
-         landmarkName = "-startToRecord"
+         landmarkName = "-playRecord"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -175,9 +175,7 @@
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "9550"
-         endingLineNumber = "9550"
-         landmarkName = "-handlePlayRecordTimer"
-         landmarkType = "5">
+         endingLineNumber = "9550">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "Yes"
@@ -202,7 +200,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "9057"
          endingLineNumber = "9057"
-         landmarkName = "-testScore"
+         landmarkName = "-startToRecord"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -241,7 +239,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "9136"
          endingLineNumber = "9136"
-         landmarkName = "-stopRecordImple"
+         landmarkName = "-recordPlayTouch:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -254,7 +252,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "9201"
          endingLineNumber = "9201"
-         landmarkName = "-startToRecord"
+         landmarkName = "-stopPlayRecord"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -267,7 +265,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "2406"
          endingLineNumber = "2406"
-         landmarkName = "-updateSlider"
+         landmarkName = "-isExistenceNetwork:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
