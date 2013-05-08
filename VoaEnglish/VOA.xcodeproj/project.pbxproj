@@ -496,6 +496,8 @@
 		B0ED470B15789EBC00BFD8CC /* PlayViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0ED470A15789EBC00BFD8CC /* PlayViewController-iPad.xib */; };
 		B0ED47111578C27400BFD8CC /* CollectViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0ED47101578C27300BFD8CC /* CollectViewController-iPad.xib */; };
 		B0ED47131578D7F400BFD8CC /* LogController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0ED47121578D7F300BFD8CC /* LogController-iPad.xib */; };
+		B0ED49AE1739DE0800F32766 /* CommentView.m in Sources */ = {isa = PBXBuildFile; fileRef = B0ED49AD1739DE0800F32766 /* CommentView.m */; };
+		B0ED49B1173A53B500F32766 /* ColorPickerControllerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B0ED49B0173A53B500F32766 /* ColorPickerControllerViewController.m */; };
 		B0F01B6C16AD486C00DF3C53 /* toolBoxOpen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B0F01B5C16AD486C00DF3C53 /* toolBoxOpen@2x.png */; };
 		B0F01B6D16AD486C00DF3C53 /* toolBoxOpen.png in Resources */ = {isa = PBXBuildFile; fileRef = B0F01B5D16AD486C00DF3C53 /* toolBoxOpen.png */; };
 		B0F01B6E16AD486C00DF3C53 /* toolBoxClose@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B0F01B5E16AD486C00DF3C53 /* toolBoxClose@2x.png */; };
@@ -1405,6 +1407,10 @@
 		B0ED470A15789EBC00BFD8CC /* PlayViewController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "PlayViewController-iPad.xib"; sourceTree = "<group>"; };
 		B0ED47101578C27300BFD8CC /* CollectViewController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "CollectViewController-iPad.xib"; sourceTree = "<group>"; };
 		B0ED47121578D7F300BFD8CC /* LogController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "LogController-iPad.xib"; sourceTree = "<group>"; };
+		B0ED49AC1739DE0800F32766 /* CommentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentView.h; sourceTree = "<group>"; };
+		B0ED49AD1739DE0800F32766 /* CommentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentView.m; sourceTree = "<group>"; };
+		B0ED49AF173A53B500F32766 /* ColorPickerControllerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorPickerControllerViewController.h; sourceTree = "<group>"; };
+		B0ED49B0173A53B500F32766 /* ColorPickerControllerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorPickerControllerViewController.m; sourceTree = "<group>"; };
 		B0F01B5C16AD486C00DF3C53 /* toolBoxOpen@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "toolBoxOpen@2x.png"; sourceTree = "<group>"; };
 		B0F01B5D16AD486C00DF3C53 /* toolBoxOpen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = toolBoxOpen.png; sourceTree = "<group>"; };
 		B0F01B5E16AD486C00DF3C53 /* toolBoxClose@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "toolBoxClose@2x.png"; sourceTree = "<group>"; };
@@ -1891,6 +1897,8 @@
 				B00CF0D915160EF10012E3D9 /* InformationView.m */,
 				B0F4C9EC1526ECB8003928CB /* InforController.h */,
 				B0F4C9ED1526ECB8003928CB /* InforController.m */,
+				B0ED49AF173A53B500F32766 /* ColorPickerControllerViewController.h */,
+				B0ED49B0173A53B500F32766 /* ColorPickerControllerViewController.m */,
 			);
 			name = setting;
 			sourceTree = "<group>";
@@ -2249,6 +2257,7 @@
 		B081C15E14E388A80015D894 /* play */ = {
 			isa = PBXGroup;
 			children = (
+				B0ED49AB1739DDC500F32766 /* views */,
 				B048C64C172273A3008B9E22 /* record */,
 				B048C64417227383008B9E22 /* speak */,
 				B06AFB9114F7F915001E5574 /* PlayViewController.h */,
@@ -3108,6 +3117,15 @@
 				B0E9571515255F8B00BAB997 /* libGoogleAdMobAds.a */,
 			);
 			name = Ad;
+			sourceTree = "<group>";
+		};
+		B0ED49AB1739DDC500F32766 /* views */ = {
+			isa = PBXGroup;
+			children = (
+				B0ED49AC1739DE0800F32766 /* CommentView.h */,
+				B0ED49AD1739DE0800F32766 /* CommentView.m */,
+			);
+			name = views;
 			sourceTree = "<group>";
 		};
 		B0EF04A4151027D3007558E1 /* list */ = {
@@ -4261,6 +4279,8 @@
 				B04C87C5171694A000897859 /* THUtility.m in Sources */,
 				B048C64A1722739D008B9E22 /* WaveFormViewIOS.m in Sources */,
 				B048C64B1722739D008B9E22 /* WaveSampleProvider.m in Sources */,
+				B0ED49AE1739DE0800F32766 /* CommentView.m in Sources */,
+				B0ED49B1173A53B500F32766 /* ColorPickerControllerViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

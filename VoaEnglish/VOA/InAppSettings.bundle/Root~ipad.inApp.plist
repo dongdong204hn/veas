@@ -11,6 +11,16 @@
 			<string>PSGroupSpecifier</string>
 		</dict>
 		<dict>
+			<key>IASKViewControllerClass</key>
+			<string>ColorPickerController</string>
+			<key>IASKViewControllerSelector</key>
+			<string>init</string>
+			<key>Title</key>
+			<string>BACK_COLOR</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
 			<key>DefaultValue</key>
 			<string>YES</string>
 			<key>Key</key>
