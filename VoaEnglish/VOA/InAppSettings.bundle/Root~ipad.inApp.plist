@@ -12,7 +12,7 @@
 		</dict>
 		<dict>
 			<key>IASKViewControllerClass</key>
-			<string>ColorPickerController</string>
+			<string>InfColorPickerController</string>
 			<key>IASKViewControllerSelector</key>
 			<string>init</string>
 			<key>Title</key>

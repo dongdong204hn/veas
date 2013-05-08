@@ -70,6 +70,13 @@
 		B00CF0DD15160EF10012E3D9 /* helpView.m in Sources */ = {isa = PBXBuildFile; fileRef = B00CF0D615160EF10012E3D9 /* helpView.m */; };
 		B00CF0DE15160EF10012E3D9 /* helpView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B00CF0D715160EF10012E3D9 /* helpView.xib */; };
 		B00CF0DF15160EF10012E3D9 /* InformationView.m in Sources */ = {isa = PBXBuildFile; fileRef = B00CF0D915160EF10012E3D9 /* InformationView.m */; };
+		B0121182173A9F9700C7733D /* InfColorBarPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = B0121175173A9F9700C7733D /* InfColorBarPicker.m */; };
+		B0121183173A9F9700C7733D /* InfColorIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = B0121177173A9F9700C7733D /* InfColorIndicatorView.m */; };
+		B0121184173A9F9700C7733D /* InfColorPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = B012117A173A9F9700C7733D /* InfColorPickerController.m */; };
+		B0121185173A9F9700C7733D /* InfColorPickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B012117B173A9F9700C7733D /* InfColorPickerView.xib */; };
+		B0121186173A9F9700C7733D /* InfColorSquarePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = B012117D173A9F9700C7733D /* InfColorSquarePicker.m */; };
+		B0121187173A9F9700C7733D /* InfHSBSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = B012117F173A9F9700C7733D /* InfHSBSupport.m */; };
+		B0121188173A9F9700C7733D /* InfSourceColorView.m in Sources */ = {isa = PBXBuildFile; fileRef = B0121181173A9F9700C7733D /* InfSourceColorView.m */; };
 		B016E8EF16B7ACA900F5AFCC /* cet4-72@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B016E8D716B7ACA900F5AFCC /* cet4-72@2x.png */; };
 		B016E8F016B7ACA900F5AFCC /* cet4free-72@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B016E8D816B7ACA900F5AFCC /* cet4free-72@2x.png */; };
 		B016E8F116B7ACA900F5AFCC /* cet6-72@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B016E8D916B7ACA900F5AFCC /* cet6-72@2x.png */; };
@@ -856,6 +863,20 @@
 		B00CF0D715160EF10012E3D9 /* helpView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = helpView.xib; sourceTree = "<group>"; };
 		B00CF0D815160EF10012E3D9 /* InformationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InformationView.h; sourceTree = "<group>"; };
 		B00CF0D915160EF10012E3D9 /* InformationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InformationView.m; sourceTree = "<group>"; };
+		B0121174173A9F9700C7733D /* InfColorBarPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfColorBarPicker.h; sourceTree = "<group>"; };
+		B0121175173A9F9700C7733D /* InfColorBarPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfColorBarPicker.m; sourceTree = "<group>"; };
+		B0121176173A9F9700C7733D /* InfColorIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfColorIndicatorView.h; sourceTree = "<group>"; };
+		B0121177173A9F9700C7733D /* InfColorIndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfColorIndicatorView.m; sourceTree = "<group>"; };
+		B0121178173A9F9700C7733D /* InfColorPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfColorPicker.h; sourceTree = "<group>"; };
+		B0121179173A9F9700C7733D /* InfColorPickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfColorPickerController.h; sourceTree = "<group>"; };
+		B012117A173A9F9700C7733D /* InfColorPickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfColorPickerController.m; sourceTree = "<group>"; };
+		B012117B173A9F9700C7733D /* InfColorPickerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InfColorPickerView.xib; sourceTree = "<group>"; };
+		B012117C173A9F9700C7733D /* InfColorSquarePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfColorSquarePicker.h; sourceTree = "<group>"; };
+		B012117D173A9F9700C7733D /* InfColorSquarePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfColorSquarePicker.m; sourceTree = "<group>"; };
+		B012117E173A9F9700C7733D /* InfHSBSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfHSBSupport.h; sourceTree = "<group>"; };
+		B012117F173A9F9700C7733D /* InfHSBSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfHSBSupport.m; sourceTree = "<group>"; };
+		B0121180173A9F9700C7733D /* InfSourceColorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfSourceColorView.h; sourceTree = "<group>"; };
+		B0121181173A9F9700C7733D /* InfSourceColorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfSourceColorView.m; sourceTree = "<group>"; };
 		B016E8D716B7ACA900F5AFCC /* cet4-72@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cet4-72@2x.png"; sourceTree = "<group>"; };
 		B016E8D816B7ACA900F5AFCC /* cet4free-72@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cet4free-72@2x.png"; sourceTree = "<group>"; };
 		B016E8D916B7ACA900F5AFCC /* cet6-72@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cet6-72@2x.png"; sourceTree = "<group>"; };
@@ -1926,6 +1947,27 @@
 			name = "Main Icon";
 			sourceTree = "<group>";
 		};
+		B0121173173A9F9700C7733D /* InfColorPicker */ = {
+			isa = PBXGroup;
+			children = (
+				B0121174173A9F9700C7733D /* InfColorBarPicker.h */,
+				B0121175173A9F9700C7733D /* InfColorBarPicker.m */,
+				B0121176173A9F9700C7733D /* InfColorIndicatorView.h */,
+				B0121177173A9F9700C7733D /* InfColorIndicatorView.m */,
+				B0121178173A9F9700C7733D /* InfColorPicker.h */,
+				B0121179173A9F9700C7733D /* InfColorPickerController.h */,
+				B012117A173A9F9700C7733D /* InfColorPickerController.m */,
+				B012117B173A9F9700C7733D /* InfColorPickerView.xib */,
+				B012117C173A9F9700C7733D /* InfColorSquarePicker.h */,
+				B012117D173A9F9700C7733D /* InfColorSquarePicker.m */,
+				B012117E173A9F9700C7733D /* InfHSBSupport.h */,
+				B012117F173A9F9700C7733D /* InfHSBSupport.m */,
+				B0121180173A9F9700C7733D /* InfSourceColorView.h */,
+				B0121181173A9F9700C7733D /* InfSourceColorView.m */,
+			);
+			path = InfColorPicker;
+			sourceTree = "<group>";
+		};
 		B016B58215107FF6008C75E9 /* my */ = {
 			isa = PBXGroup;
 			children = (
@@ -2562,6 +2604,7 @@
 		B0BB9A1A1598515C006B3D2E /* Reference */ = {
 			isa = PBXGroup;
 			children = (
+				B0121173173A9F9700C7733D /* InfColorPicker */,
 				DBB49C3816BCE644003AB95D /* DACircularProgress */,
 				B0CEB3E01604787D003AEDE1 /* InnerBuy */,
 				B0F7B8491602BEEE002CF296 /* HPGrowingTextView */,
@@ -4104,6 +4147,7 @@
 				B02B6CD617365EC6001C8EFC /* gold3-iPad.png in Resources */,
 				B02B6CD717365EC6001C8EFC /* gold4-iPad.png in Resources */,
 				B02B6CD817365EC6001C8EFC /* gold5-iPad.png in Resources */,
+				B0121185173A9F9700C7733D /* InfColorPickerView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4281,6 +4325,12 @@
 				B048C64B1722739D008B9E22 /* WaveSampleProvider.m in Sources */,
 				B0ED49AE1739DE0800F32766 /* CommentView.m in Sources */,
 				B0ED49B1173A53B500F32766 /* ColorPickerControllerViewController.m in Sources */,
+				B0121182173A9F9700C7733D /* InfColorBarPicker.m in Sources */,
+				B0121183173A9F9700C7733D /* InfColorIndicatorView.m in Sources */,
+				B0121184173A9F9700C7733D /* InfColorPickerController.m in Sources */,
+				B0121186173A9F9700C7733D /* InfColorSquarePicker.m in Sources */,
+				B0121187173A9F9700C7733D /* InfHSBSupport.m in Sources */,
+				B0121188173A9F9700C7733D /* InfSourceColorView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
