@@ -203,7 +203,7 @@ void uncaughtExceptionHandler(NSException *exception) {
                 [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"recScore"];
                 [[NSUserDefaults standardUserDefaults] setObject:@"NO" forKey:kBePro];
                 
-                UIAlertView *updateAlert = [[UIAlertView alloc] initWithTitle:@"更新内容" message:@"1.优化录音功能\n2.修复了定时播放时有嘀嗒声的问题\n3.列表中文章标题改为了中文显示" delegate:nil cancelButtonTitle:@"我已知晓" otherButtonTitles:nil];
+                UIAlertView *updateAlert = [[UIAlertView alloc] initWithTitle:@"更新内容" message:@"1.优化录音功能\n2.增加设置项：自定义背景色\n3.增加内容分类：单词故事\n4.解决了定时播放时有嘀嗒声的问题\n5.列表文章标题改为了中文显示\n6.评论界面调整" delegate:nil cancelButtonTitle:@"我已知晓" otherButtonTitles:nil];
                 [updateAlert show];
                 [updateAlert release], updateAlert = nil;
             }
@@ -354,7 +354,7 @@ void uncaughtExceptionHandler(NSException *exception) {
                 [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"recScore"];
                 [[NSUserDefaults standardUserDefaults] setObject:@"NO" forKey:kBePro];
                 
-                UIAlertView *updateAlert = [[UIAlertView alloc] initWithTitle:@"更新内容" message:@"1.优化录音功能\n2.修复了定时播放时有嘀嗒声的问题\n3.列表中文章标题改为了中文显示" delegate:nil cancelButtonTitle:@"我已知晓" otherButtonTitles:nil];
+                UIAlertView *updateAlert = [[UIAlertView alloc] initWithTitle:@"更新内容" message:@"1.优化录音功能\n2.增加设置项：自定义背景色\n3.增加内容分类：单词故事\n4.解决了定时播放时有嘀嗒声的问题\n5.列表文章标题改为了中文显示\n6.评论界面调整" delegate:nil cancelButtonTitle:@"我已知晓" otherButtonTitles:nil];
                 [updateAlert show];
                 [updateAlert release], updateAlert = nil;
             }

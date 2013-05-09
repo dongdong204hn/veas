@@ -22,6 +22,7 @@
 @synthesize segmentedControl;
 @synthesize rightCharacter;
 @synthesize notSelect;
+@synthesize sharedSingleQueue;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -100,6 +101,7 @@
 //        NSLog(@"1");
         UIBarButtonItem *searchButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(doSearch)];
         
+        self.navigationItem.leftBarButtonItem=nil;
         self.navigationItem.leftBarButtonItem = searchButton;
         
         [searchButton release], searchButton = nil;
@@ -118,8 +120,11 @@
     }else
     {
         isSentence = YES;
+        UIBarButtonItem *synButton = [[UIBarButtonItem alloc] initWithTitle:kWordNine style:UIBarButtonItemStylePlain target:self action:@selector(doSyn)];
         self.navigationItem.leftBarButtonItem=nil;
-
+        self.navigationItem.leftBarButtonItem = synButton;
+        [synButton release], synButton = nil;
+        
 //        self.title = kColSix;
         NSArray *senViews = [VOASentence findSentences:nowUserId];
         [senArray removeAllObjects];
@@ -239,7 +244,6 @@
     [segmentedControl release];
 
     [super viewDidLoad];
-    
     // Do any additional setup after loading the view from its nib.
 }
 
@@ -275,7 +279,7 @@
 }
 
 - (void) doEdit{
-
+    
 	[voasTableView setEditing:!voasTableView.editing animated:YES];
     
 	if(voasTableView.editing)
@@ -454,28 +458,29 @@
         [senArray removeObjectAtIndex:indexPath.row];
         
     }else{
-    VOAFav *fav = [favArray objectAtIndex:indexPath.row];
+        VOAFav *fav = [favArray objectAtIndex:indexPath.row];
+        
+        NSFileManager *deleteFile = [NSFileManager defaultManager];
+        
+        NSString *documentPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+        
+        NSString *audioPath = [documentPath stringByAppendingPathComponent:[NSString stringWithFormat:@"audio"]];
+        
+        NSString *userPath = [audioPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%d.mp3", fav._voaid]];
+        
+        //    NSLog(@"yunsi:%@",userPath);
+        
+        NSError *error = nil;
+        
+        if ([deleteFile removeItemAtPath:userPath error:&error]) {
+            //		NSLog(@"delete succeed");
+        }
+        
+        [VOAFav deleteCollect:[fav _voaid]];
+        
+        [favArray removeObjectAtIndex:indexPath.row];
+    }
     
-    NSFileManager *deleteFile = [NSFileManager defaultManager];
-    
-    NSString *documentPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    
-    NSString *audioPath = [documentPath stringByAppendingPathComponent:[NSString stringWithFormat:@"audio"]];
-    
-    NSString *userPath = [audioPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%d.mp3", fav._voaid]];
-    
-//    NSLog(@"yunsi:%@",userPath);
-    
-    NSError *error = nil;
-    
-	if ([deleteFile removeItemAtPath:userPath error:&error]) {
-//		NSLog(@"delete succeed");
-	}
-	
-	[VOAFav deleteCollect:[fav _voaid]];
-    
-	[favArray removeObjectAtIndex:indexPath.row];
-}
 	[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationRight];
 }
 
@@ -821,6 +826,20 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 }
 
 #pragma mark - Http connect
+- (NSOperationQueue *)sharedQueue
+{
+    //    static NSOperationQueue *sharedSingleQueue;
+    
+    @synchronized(self)
+    {
+        if (!sharedSingleQueue){
+            sharedSingleQueue = [[NSOperationQueue alloc] init];
+            [sharedSingleQueue setMaxConcurrentOperationCount:1];
+        }
+        return sharedSingleQueue;
+    }
+}
+
 - (void)catchDetails:(VOAView *) voaid
 {
     //    NSLog(@"获取内容-%d",voaid._voaid);
@@ -834,6 +853,62 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [request startSynchronous];
     //    [request release];
 }
+
+- (void)catchAllByPageNumber:(NSInteger) number
+{
+    NSString *url = [NSString stringWithFormat:@"http://apps.iyuba.com/voa/getCollect.jsp?userId=%d&groupName=Iyuba&type=voa&sentenceFlg=1&pageNumber=%d&pageCounts=1000",nowUserId,number];
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
+    request.delegate = self;
+    [request setTag:number];
+    NSOperationQueue *myQueue = [self sharedQueue];
+    request.delegate = self;
+    [request setUsername:@"all"];
+    //        [request setDidStartSelector:@selector(requestMyStarted:)];
+    [request setDidFinishSelector:@selector(requestDone:)];
+    [request setDidFailSelector:@selector(requestWentWrong:)];
+    [myQueue addOperation:request];
+}
+
+/*
+- (void)requestDone:(ASIHTTPRequest *)request{
+    kNetEnable;
+    NSData *myData = [request responseData];
+    DDXMLDocument *doc = [[DDXMLDocument alloc] initWithData:myData options:0 error:nil];
+    if ([request.username isEqualToString:@"all"]) {
+        NSArray *items = [doc nodesForXPath:@"response/row" error:nil];
+        NSInteger lastPage = 0;
+        if (items) {
+            for (DDXMLElement *obj in items) {
+//                lastPage = [[[obj elementForName:@"lastPage"] stringValue] integerValue];
+                NSString *key = [[obj elementForName:@"voaid"] stringValue];
+                NSString *audio = [[obj elementForName:@"sentenceid"] stringValue];
+                NSString *pron = [[obj elementForName:@"endTime"] stringValue];
+                NSString *def = [[obj elementForName:@"content"] stringValue];
+                VOAWord *nowWord = [[VOAWord alloc] initWithVOAWord:([VOAWord findLastId]+1) key:key audio:audio pron:pron def:def date:nil checks:0 remember:0 userId:nowUserId flag:0];
+                //                NSLog(@"初始化");
+                [nowWord alterSynchroCollect];
+                [nowWord release];
+            }
+        }
+        if (lastPage <= request.tag) {
+            //            NSLog(@"%d,同步圆满完成。",request.tag);
+            [VOAWord deleteSynchro:nowUserId];
+            NSArray *words = [VOAWord findWords:nowUserId];
+            [wordsArray removeAllObjects];
+            for (id fav in words) {
+                [wordsArray addObject:fav];
+            }
+            [self.wordsTableView reloadData];
+            //            [words release], words = nil;
+            [VOAWord clearSynchro];
+        }else
+        {
+            [self catchAllByPageNumber:request.tag+1];
+        }
+    }
+    [doc release], doc = nil;
+}
+*/
 
 - (void)requestFinished:(ASIHTTPRequest *)request{
     kNetEnable;

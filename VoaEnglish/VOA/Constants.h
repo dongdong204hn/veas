@@ -176,5 +176,8 @@ extern NSString * const kSendOne;
  *
  */
 @interface Constants : NSObject
-+ (BOOL)isPad;
+
++ (BOOL) isPad;
+
++ (void) beginAnimationWithName: (NSString *)name duration: (float)duration;
 @end

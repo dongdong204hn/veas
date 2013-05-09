@@ -1219,7 +1219,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 - (void)requestDoneTwo:(ASIHTTPRequest *)request{
     kNetEnable;
     NSData *myData = [request responseData];
-    DDXMLDocument *doc = [[DDXMLDocument alloc] initWithData:myData options:0 error:nil];;
+    DDXMLDocument *doc = [[DDXMLDocument alloc] initWithData:myData options:0 error:nil];
     /////解析
     if (request.tag == 0) {
 //        NSLog(@"查词接收到了");

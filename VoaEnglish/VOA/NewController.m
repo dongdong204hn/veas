@@ -158,9 +158,7 @@ extern ASIHTTPRequest *nowrequest;
     if (classTableView.frame.size.height!=0.0) {
         [titleBtn setSelected:NO];
         
-        [UIView beginAnimations:@"classAniOne" context:nil];
-        [UIView setAnimationDuration:0.6];
-        [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+        [Constants beginAnimationWithName:@"classAniOne" duration:0.6f];
         [self setMytitleUp];
         [titleBtn setBackgroundColor:[UIColor clearColor]];
         if (isiPhone) {
@@ -196,9 +194,7 @@ extern ASIHTTPRequest *nowrequest;
     if ([sender isSelected]) {
         [sender setSelected:NO];
         
-        [UIView beginAnimations:@"classAniOne" context:nil];
-        [UIView setAnimationDuration:0.6];
-        [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+        [Constants beginAnimationWithName:@"classAniOne" duration:0.6f];
         [self setMytitleUp];
         [sender setBackgroundColor:[UIColor clearColor]];
         if (isiPhone) {
@@ -210,9 +206,7 @@ extern ASIHTTPRequest *nowrequest;
     } else {
         [sender setSelected:YES];
         
-        [UIView beginAnimations:@"classAniTwo" context:nil];
-        [UIView setAnimationDuration:0.6];
-        [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+        [Constants beginAnimationWithName:@"classAniTwo" duration:0.6f];
         [self setMytitleDown];
         [sender setBackgroundColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.44f]];
         if (isiPhone) {

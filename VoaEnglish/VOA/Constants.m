@@ -167,5 +167,10 @@ ASIHTTPRequest *nowrequest;//正在下载的全局变量，用于给cell的progr
 	return isPad;
 }
 
++ (void) beginAnimationWithName: (NSString *)name duration: (float)duration {
+    [UIView beginAnimations:name context:nil];
+    [UIView setAnimationDuration:duration];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+}
 
 @end

@@ -34,6 +34,7 @@
 }
 
 @property (nonatomic, retain) IBOutlet UITableView *voasTableView;
+@property (nonatomic, retain) NSOperationQueue *sharedSingleQueue;
 @property (nonatomic, retain) UISegmentedControl *segmentedControl;
 @property (nonatomic, retain) NSMutableArray *favArray;
 @property (nonatomic, retain) NSMutableArray *senArray;

@@ -70,9 +70,7 @@ lyricCnLabelArray: (NSMutableArray *)lyricCnLabelArray
             [lyricLabel setTextColor:swColor];
             
             //设置动画效果
-            [UIView beginAnimations:@"lyricSynAni" context:nil];
-            [UIView setAnimationDuration:2.5f];
-            [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+            [Constants beginAnimationWithName:@"lyricSynAni" duration:2.5f];
             //设置你要运行的代码
             
             
