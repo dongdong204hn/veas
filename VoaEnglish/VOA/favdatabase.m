@@ -70,7 +70,7 @@ static PLSqliteDatabase * dbPointer;
         if ([rs next]) {
             NSString *count=[rs objectForColumn:@"count"];
             if (count.intValue == 0) {
-                 NSString *findSql1 = [NSString stringWithFormat:@"CREATE TABLE favsentence (SentenceId integer NOT NULL PRIMARY KEY,VoaId integer,ParaId integer,IdIndex integer,StartTime integer,EndTime integer DEFAULT 1800,Sentence varchar,SentenceCn varchar,userId integer NOT NULL DEFAULT 0,collected integer DEFAULT 0)"];
+                 NSString *findSql1 = [NSString stringWithFormat:@"CREATE TABLE favsentence (SentenceId integer NOT NULL PRIMARY KEY,VoaId integer,ParaId integer,IdIndex integer,StartTime integer,EndTime integer DEFAULT 1800,Sentence varchar,SentenceCn varchar,userId integer NOT NULL DEFAULT 0,collected integer DEFAULT 0, synchroFlg integer NOT NULL DEFAULT 0)"];
                 [dbPointer executeUpdate:findSql1];
             }
         }

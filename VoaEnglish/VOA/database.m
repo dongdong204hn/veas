@@ -13,6 +13,9 @@ static PLSqliteDatabase * dbPointer;
 
 @implementation database
 
+/**
+ *  announce the url don't need to be backed up to iCloud
+ */
 + (BOOL)addSkipBackupAttributeToItemAtURL:(NSURL *)URL
 {
     const char* filePath = [[URL path] fileSystemRepresentation];
@@ -23,6 +26,7 @@ static PLSqliteDatabase * dbPointer;
     int result = setxattr(filePath, attrName, &attrValue, sizeof(attrValue), 0, 0);
     return result == 0;
 }
+
 /*
 + (PLSqliteDatabase *) setup{
 	
@@ -65,7 +69,6 @@ static PLSqliteDatabase * dbPointer;
 	if (dbPointer) {
 		return dbPointer;
 	}
-    
 	
 //	NSLog(@"%@",NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES));
     NSFileManager *fileManager = [NSFileManager defaultManager];

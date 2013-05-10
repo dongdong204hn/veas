@@ -19,8 +19,9 @@
 @synthesize Sentence_cn;
 @synthesize userId;
 @synthesize collected;
+@synthesize synchroFlg;
 
--(id) initWithVOASentence:(NSInteger) _SentenceId VoaId:(NSInteger)_VoaId ParaId:(NSInteger)_ParaId IdIndex:(NSInteger)_IdIndex StartTime:(NSInteger)_StartTime EndTime:(NSInteger)_EndTime Sentence:(NSString *)_Sentence Sentence_cn:(NSString *)_Sentence_cn userId:(NSInteger)_userId collected:(NSInteger)_collected
+-(id) initWithVOASentence:(NSInteger) _SentenceId VoaId:(NSInteger)_VoaId ParaId:(NSInteger)_ParaId IdIndex:(NSInteger)_IdIndex StartTime:(NSInteger)_StartTime EndTime:(NSInteger)_EndTime Sentence:(NSString *)_Sentence Sentence_cn:(NSString *)_Sentence_cn userId:(NSInteger)_userId collected:(NSInteger) _collected  synchroFlg:(NSInteger) _synchroFlg
 {
     
     if (self = [super init]) {
@@ -35,6 +36,7 @@
         self.Sentence_cn=[_Sentence_cn retain];
         self.userId=_userId;
         self.collected =_collected;
+        self.synchroFlg = _synchroFlg;
     }
     return self;
 
@@ -113,7 +115,8 @@
 
         NSInteger userId = [rs intForColumn:@"userId"];
         NSInteger collected = [rs intForColumn:@"collected"];
-        VOASentence *sentence=[[VOASentence alloc]initWithVOASentence:SentenceId VoaId:VoaId ParaId:ParaId IdIndex:IdIndex StartTime:StartTime EndTime:EndTime Sentence:Sentence Sentence_cn:Sentence_cn userId:userId collected:collected];
+        NSInteger synchroFlg = [rs intForColumn:@"synchroFlg"];
+        VOASentence *sentence=[[VOASentence alloc]initWithVOASentence:SentenceId VoaId:VoaId ParaId:ParaId IdIndex:IdIndex StartTime:StartTime EndTime:EndTime Sentence:Sentence Sentence_cn:Sentence_cn userId:userId collected:collected synchroFlg:synchroFlg];
 		[sentences addObject:sentence];
 		[sentence release];
 	}
@@ -194,7 +197,8 @@
         NSString *Sentence_cn = [[rs objectForColumn:@"SentenceCn"] autorelease];
         NSInteger userId = [rs intForColumn:@"userId"];
         NSInteger collected = [rs intForColumn:@"collected"];
-        VOASentence *voaSen=[[VOASentence alloc]initWithVOASentence:SentenceId VoaId:VoaId ParaId:ParaId IdIndex:IdIndex StartTime:StartTime EndTime:EndTime Sentence:Sentence Sentence_cn:Sentence_cn userId:userId collected:collected];
+        NSInteger synchroFlg = [rs intForColumn:@"synchroFlg"];
+        VOASentence *voaSen=[[VOASentence alloc]initWithVOASentence:SentenceId VoaId:VoaId ParaId:ParaId IdIndex:IdIndex StartTime:StartTime EndTime:EndTime Sentence:Sentence Sentence_cn:Sentence_cn userId:userId collected:collected synchroFlg:synchroFlg];
         [rs close];
         //	[dataBase close];//
         return [voaSen autorelease];
@@ -221,6 +225,15 @@
     }
     [rs close];
     return count;
+}
+
+/**
+    在表favsentence中增加字段：synchroFlg
+ */
++ (void) creatSynFlg {
+    PLSqliteDatabase *dataBase = [favdatabase setup];
+    NSString *findSql = [NSString stringWithFormat:@"ALTER TABLE favsentence ADD synchroFlg integer DEFAULT 0"];
+    [dataBase executeUpdate:findSql];
 }
 
 @end

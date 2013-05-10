@@ -73,11 +73,7 @@ typedef enum {
 
 #pragma mark Testing
 
-// Test ads are returned to these devices.  Device identifiers are the same used
-// to register as a development device with Apple.  To obtain a value open the
-// Organizer (Window -> Organizer from Xcode), control-click or right-click on
-// the device's name, and choose "Copy Device Identifier".  Alternatively you
-// can obtain it through code using [[UIDevice currentDevice] uniqueIdentifier].
+
 //
 // For example:
 //   request.testDevices = [NSArray arrayWithObjects:

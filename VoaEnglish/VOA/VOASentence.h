@@ -20,6 +20,7 @@
     NSString *Sentence_cn;
     NSInteger userId;
     NSInteger collected; //-1：被删除 1：被收藏
+    NSInteger synchroFlg;//标志服务器同步时是否有此词 0没有 1有
 }
 
 @property NSInteger SentenceId;
@@ -32,8 +33,9 @@
 @property (nonatomic,retain) NSString * Sentence_cn;
 @property NSInteger userId;
 @property NSInteger collected;
+@property NSInteger synchroFlg;
 
-- (id) initWithVOASentence:(NSInteger) _SentenceId VoaId:(NSInteger) _VoaId ParaId:(NSInteger) _ParaId IdIndex:(NSInteger) _IdIndex StartTime:(NSInteger) _StartTime EndTime:(NSInteger) _EndTime  Sentence:(NSString *) _Sentence Sentence_cn:(NSString *) _Sentence_cn  userId:(NSInteger)_userId collected:(NSInteger) _collected;
+- (id) initWithVOASentence:(NSInteger) _SentenceId VoaId:(NSInteger) _VoaId ParaId:(NSInteger) _ParaId IdIndex:(NSInteger) _IdIndex StartTime:(NSInteger) _StartTime EndTime:(NSInteger) _EndTime  Sentence:(NSString *) _Sentence Sentence_cn:(NSString *) _Sentence_cn  userId:(NSInteger)_userId collected:(NSInteger) _collected synchroFlg:(NSInteger) _synchroFlg;
 - (BOOL) alterCollect;
 - (BOOL) isExist;
 + (NSInteger) findLastId;
@@ -41,6 +43,8 @@
 + (void) deleteSentence:(NSInteger ) SentenceId userId:(NSInteger)userId;
 + (id ) findBySentenceId:(NSInteger) SentenceId userId:(NSInteger)userId;
 + (NSInteger) countOfCollected;
+
++ (void) creatSynFlg;
 
 //+ (id) find:(NSString *) key userId:(NSInteger)userId;
 @end
