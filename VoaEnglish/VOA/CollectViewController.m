@@ -456,7 +456,6 @@
         VOASentence *sen = [senArray objectAtIndex:indexPath.row];
         [VOASentence deleteSentence:sen.SentenceId userId:nowUserId];
         [senArray removeObjectAtIndex:indexPath.row];
-        
     }else{
         VOAFav *fav = [favArray objectAtIndex:indexPath.row];
         

@@ -19,7 +19,7 @@
     NSString *Sentence;
     NSString *Sentence_cn;
     NSInteger userId;
-    NSInteger collected; //-1：被删除 1：被收藏
+    NSInteger collected; //-1：被删除 1：被收藏 （均尚未与服务器同步）
     NSInteger synchroFlg;//标志服务器同步时是否有此词 0没有 1有
 }
 
