@@ -82,7 +82,7 @@
 /**
  *
  */
-@interface PlayViewController : UIViewController <UIAlertViewDelegate, AVAudioPlayerDelegate, ASIHTTPRequestDelegate,MyLabelDelegate,MBProgressHUDDelegate, AVAudioSessionDelegate, UIScrollViewDelegate,UIActionSheetDelegate,UITableViewDelegate,UITableViewDataSource,UIPickerViewDelegate,UIPickerViewDataSource,HPGrowingTextViewDelegate,HSCButtonDelegate, UITextViewDelegate>
+@interface PlayViewController : UIViewController <UIAlertViewDelegate, AVAudioPlayerDelegate, ASIHTTPRequestDelegate,MyLabelDelegate,MBProgressHUDDelegate, AVAudioSessionDelegate, UIScrollViewDelegate,UIActionSheetDelegate,UITableViewDelegate,UITableViewDataSource,UIPickerViewDelegate,UIPickerViewDataSource,HPGrowingTextViewDelegate,HSCButtonDelegate, UITextViewDelegate, GADBannerViewDelegate>
 {
     CL_AudioRecorder* audioRecoder;
     BOOL              m_isRecording;

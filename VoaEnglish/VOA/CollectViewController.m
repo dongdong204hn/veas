@@ -120,10 +120,10 @@
     }else
     {
         isSentence = YES;
-        UIBarButtonItem *synButton = [[UIBarButtonItem alloc] initWithTitle:kWordNine style:UIBarButtonItemStylePlain target:self action:@selector(doSyn)];
-        self.navigationItem.leftBarButtonItem=nil;
-        self.navigationItem.leftBarButtonItem = synButton;
-        [synButton release], synButton = nil;
+//        UIBarButtonItem *synButton = [[UIBarButtonItem alloc] initWithTitle:kWordNine style:UIBarButtonItemStylePlain target:self action:@selector(doSyn)];
+//        self.navigationItem.leftBarButtonItem=nil;
+//        self.navigationItem.leftBarButtonItem = synButton;
+//        [synButton release], synButton = nil;
         
 //        self.title = kColSix;
         NSArray *senViews = [VOASentence findSentences:nowUserId];

@@ -273,6 +273,10 @@ extern ASIHTTPRequest *nowrequest;
 {
     [self initSettings];
     
+    [self initBtnState];
+    
+    [self handleReadCount];
+    
     [self loadPlayRes];
     
     [self loadLyric];
@@ -1447,17 +1451,23 @@ extern ASIHTTPRequest *nowrequest;
 }
 
 /**
- *  load Advertisement
+ *  load Advertisement - (id)initWithAdSize:(GADAdSize)size origin:(CGPoint)origin;
  */
 - (void) loadAdv {
+    
     // Create a view of the standard size at the bottom of the screen.
     if (isiPhone) {
+//        bannerView_ = [[GADBannerView alloc] initWithAdSize:kGADAdSizeBanner];
+        
         bannerView_ = [[GADBannerView alloc]
+//                       initWithAdSize:GADAdSizeFromCGSize(CGSizeMake(GAD_SIZE_320x50.width, GAD_SIZE_320x50.height)) origin:CGPointMake(20.0, self.view.frame.size.height - GAD_SIZE_320x50.height)];
                        initWithFrame:CGRectMake(0.0,
                                                 self.view.frame.size.height -
                                                 GAD_SIZE_320x50.height + kFiveAdd,
                                                 GAD_SIZE_320x50.width,
                                                 GAD_SIZE_320x50.height)];
+//        NSLog(@"ha:%f", self.view.frame.size.height -
+//              GAD_SIZE_320x50.height + kFiveAdd);
     }else{
         bannerView_ = [[GADBannerView alloc]
                        initWithFrame:CGRectMake(20.0,
@@ -1473,11 +1483,16 @@ extern ASIHTTPRequest *nowrequest;
     // Let the runtime know which UIViewController to restore after taking
     // the user wherever the ad goes and add it to the view hierarchy.
     bannerView_.rootViewController = self;
+    [bannerView_ setDelegate:self];
     [self.view addSubview:bannerView_];
-    [bannerView_ release];
+//    [bannerView_ release];
     
+    
+    
+    GADRequest *request = [GADRequest request];
+    request.testDevices = [NSArray arrayWithObjects:@"07899f5f8cdeddbfd6221639aa7acab7", nil];
     // Initiate a generic request to load it with an ad.
-    [bannerView_ loadRequest:[GADRequest request]];
+    [bannerView_ loadRequest:request];
     //    [bannerView_ setBackgroundColor:[UIColor blueColor]];
     
     if (!kNetIsExist) {
@@ -1485,6 +1500,23 @@ extern ASIHTTPRequest *nowrequest;
     }
     [bannerView_ setHidden:NO];
 }
+
+- (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
+    [UIView beginAnimations:@"BannerSlide" context:nil];
+    bannerView.frame = CGRectMake(0.0,
+                                  self.view.frame.size.height -
+                                  bannerView.frame.size.height,
+                                  bannerView.frame.size.width,
+                                  bannerView.frame.size.height);
+    [UIView commitAnimations];
+}
+
+- (void)adView:(GADBannerView *)bannerView
+    didFailToReceiveAdWithError:(GADRequestError *)error {
+    NSLog(@"adView:didFailToReceiveAdWithError:%@", [error localizedDescription]);
+}
+
+
 
 - (void)viewDidUnload
 {
