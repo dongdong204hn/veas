@@ -7,7 +7,7 @@
 //
 
 #import "AppSettingsAppDelegate.h" 
-#import "FlurryAnalytics.h" //Flurry对应用信息进行统计
+#import "Flurry.h" //Flurry对应用信息进行统计
 
 @implementation AppSettingsAppDelegate
 
@@ -42,7 +42,7 @@
  *  Flurry所需函数
  */
 void uncaughtExceptionHandler(NSException *exception) {
-    [FlurryAnalytics logError:@"Uncaught" message:@"Crash!" exception:exception];
+    [Flurry logError:@"Uncaught" message:@"Crash!" exception:exception];
 }
 
 /**
@@ -72,7 +72,7 @@ void uncaughtExceptionHandler(NSException *exception) {
     
     //设置Flurry
     NSSetUncaughtExceptionHandler(&uncaughtExceptionHandler);
-    [FlurryAnalytics startSession:@"VW6JCSWF6MQPCGZBIAND"]; //引号内为注册得到的应用编号
+    [Flurry startSession:@"VW6JCSWF6MQPCGZBIAND"]; //引号内为注册得到的应用编号
 //    kNetTest;
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"alertShowed"]; //设置尚未检测队列下载情况
 

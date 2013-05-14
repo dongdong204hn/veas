@@ -18,7 +18,7 @@
 - (void)setProgress:(float)newProgress;
 #else
 - (void)setDoubleValue:(double)newProgress;
-- (void)setMaxValue:(double)newMax;
+//- (void)setMaxValue:(double)newMax; //有可能报错所以
 #endif
 
 // Called when the request receives some data - bytes is the length of that data

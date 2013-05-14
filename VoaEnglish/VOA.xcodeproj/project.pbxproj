@@ -12,7 +12,6 @@
 		B000059714F3677B00254595 /* DDXMLElementAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = B000058F14F3677B00254595 /* DDXMLElementAdditions.m */; };
 		B000059814F3677B00254595 /* DDXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = B000059114F3677B00254595 /* DDXMLNode.m */; };
 		B000059914F3677B00254595 /* NSStringAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = B000059414F3677B00254595 /* NSStringAdditions.m */; };
-		B000059C14F367C500254595 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B000059B14F367C500254595 /* libxml2.dylib */; };
 		B002D05516BB90CA0044B819 /* Pbg-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = B002D05316BB90C90044B819 /* Pbg-ipad.png */; };
 		B002D05616BB90CA0044B819 /* Pbg-ipad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B002D05416BB90C90044B819 /* Pbg-ipad@2x.png */; };
 		B002D05916BB90DA0044B819 /* Pbg.png in Resources */ = {isa = PBXBuildFile; fileRef = B002D05716BB90D80044B819 /* Pbg.png */; };
@@ -107,6 +106,7 @@
 		B0184F2B1532BC1000B2E5DA /* lineSep@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B0184F291532BC1000B2E5DA /* lineSep@2x.png */; };
 		B0184F2E1532CABB00B2E5DA /* bgRg.png in Resources */ = {isa = PBXBuildFile; fileRef = B0184F2C1532CABA00B2E5DA /* bgRg.png */; };
 		B0184F2F1532CABB00B2E5DA /* bgRg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B0184F2D1532CABA00B2E5DA /* bgRg@2x.png */; };
+		B018534517421B040095A36D /* libxml2.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B018534417421B040095A36D /* libxml2.2.dylib */; };
 		B01E291216BBE64500A5BDA1 /* readCount.png in Resources */ = {isa = PBXBuildFile; fileRef = B01E291016BBE64500A5BDA1 /* readCount.png */; };
 		B01E291316BBE64500A5BDA1 /* readCount@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B01E291116BBE64500A5BDA1 /* readCount@2x.png */; };
 		B01E291616BBE65600A5BDA1 /* readCount-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = B01E291516BBE65600A5BDA1 /* readCount-ipad.png */; };
@@ -320,6 +320,7 @@
 		B091668A14ED03C2005E96F6 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = B091668914ED03C0005E96F6 /* Reachability.m */; };
 		B091668C14ED0514005E96F6 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B091668B14ED0513005E96F6 /* Security.framework */; };
 		B091668E14ED0562005E96F6 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B091668D14ED0561005E96F6 /* libz.dylib */; };
+		B099AABE1742253000822AF2 /* libFlurry.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B099AABD1742253000822AF2 /* libFlurry.a */; };
 		B09BC1C715770DF900CDD774 /* IASKAppSettingsView-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = B09BC1C615770DF900CDD774 /* IASKAppSettingsView-iPad.xib */; };
 		B09FC2A314E4CF44006DE38B /* SDImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = B09FC29214E4CF44006DE38B /* SDImageCache.m */; };
 		B09FC2A414E4CF44006DE38B /* SDWebImageDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = B09FC29614E4CF44006DE38B /* SDWebImageDecoder.m */; };
@@ -496,7 +497,6 @@
 		B0E1518914DF7B3B00A90EFE /* WordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B0E1518714DF7B3B00A90EFE /* WordViewController.m */; };
 		B0E647FB168376ED0056671C /* sliderTran.png in Resources */ = {isa = PBXBuildFile; fileRef = B0E647F9168376ED0056671C /* sliderTran.png */; };
 		B0E647FC168376ED0056671C /* sliderTran@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B0E647FA168376ED0056671C /* sliderTran@2x.png */; };
-		B0E69A3415351F3900E20BE9 /* libFlurryAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B0E69A3315351F3900E20BE9 /* libFlurryAnalytics.a */; };
 		B0E69A4815355C1400E20BE9 /* versionOne.png in Resources */ = {isa = PBXBuildFile; fileRef = B0E69A4615355C1400E20BE9 /* versionOne.png */; };
 		B0E69A4915355C1400E20BE9 /* versionOne@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B0E69A4715355C1400E20BE9 /* versionOne@2x.png */; };
 		B0ED4706157897C800BFD8CC /* VoaViewCell-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0ED4705157897C700BFD8CC /* VoaViewCell-iPad.xib */; };
@@ -908,6 +908,7 @@
 		B0184F291532BC1000B2E5DA /* lineSep@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lineSep@2x.png"; sourceTree = "<group>"; };
 		B0184F2C1532CABA00B2E5DA /* bgRg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bgRg.png; sourceTree = "<group>"; };
 		B0184F2D1532CABA00B2E5DA /* bgRg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bgRg@2x.png"; sourceTree = "<group>"; };
+		B018534417421B040095A36D /* libxml2.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.dylib; path = usr/lib/libxml2.2.dylib; sourceTree = SDKROOT; };
 		B01E291016BBE64500A5BDA1 /* readCount.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = readCount.png; sourceTree = "<group>"; };
 		B01E291116BBE64500A5BDA1 /* readCount@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "readCount@2x.png"; sourceTree = "<group>"; };
 		B01E291516BBE65600A5BDA1 /* readCount-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "readCount-ipad.png"; sourceTree = "<group>"; };
@@ -1179,6 +1180,8 @@
 		B091668914ED03C0005E96F6 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		B091668B14ED0513005E96F6 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		B091668D14ED0561005E96F6 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		B099AABC1742253000822AF2 /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
+		B099AABD1742253000822AF2 /* libFlurry.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry.a; sourceTree = "<group>"; };
 		B09BC1C615770DF900CDD774 /* IASKAppSettingsView-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "IASKAppSettingsView-iPad.xib"; sourceTree = "<group>"; };
 		B09FC29114E4CF44006DE38B /* SDImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDImageCache.h; sourceTree = "<group>"; };
 		B09FC29214E4CF44006DE38B /* SDImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDImageCache.m; sourceTree = "<group>"; };
@@ -1425,8 +1428,6 @@
 		B0E1518714DF7B3B00A90EFE /* WordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WordViewController.m; sourceTree = "<group>"; };
 		B0E647F9168376ED0056671C /* sliderTran.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sliderTran.png; sourceTree = "<group>"; };
 		B0E647FA168376ED0056671C /* sliderTran@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sliderTran@2x.png"; sourceTree = "<group>"; };
-		B0E69A3215351F3900E20BE9 /* FlurryAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlurryAnalytics.h; sourceTree = "<group>"; };
-		B0E69A3315351F3900E20BE9 /* libFlurryAnalytics.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurryAnalytics.a; sourceTree = "<group>"; };
 		B0E69A4615355C1400E20BE9 /* versionOne.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = versionOne.png; sourceTree = "<group>"; };
 		B0E69A4715355C1400E20BE9 /* versionOne@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "versionOne@2x.png"; sourceTree = "<group>"; };
 		B0ED4705157897C700BFD8CC /* VoaViewCell-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "VoaViewCell-iPad.xib"; sourceTree = "<group>"; };
@@ -1777,6 +1778,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B018534517421B040095A36D /* libxml2.2.dylib in Frameworks */,
 				B0A62CD81740DDE30084FA5E /* AdSupport.framework in Frameworks */,
 				B0CEB3EB16047D05003AEDE1 /* StoreKit.framework in Frameworks */,
 				B0747CF815B13E6C007C1FA2 /* OpenGLES.framework in Frameworks */,
@@ -1784,7 +1786,6 @@
 				B0BA41C7156C8BBA00E3AE1B /* CoreMedia.framework in Frameworks */,
 				B0214BA215149D4C00AE3351 /* MessageUI.framework in Frameworks */,
 				B09FC2DB14E50F23006DE38B /* SystemConfiguration.framework in Frameworks */,
-				B000059C14F367C500254595 /* libxml2.dylib in Frameworks */,
 				B0DB4C2F14EDECC500778BCC /* CoreFoundation.framework in Frameworks */,
 				B091668E14ED0562005E96F6 /* libz.dylib in Frameworks */,
 				B091668C14ED0514005E96F6 /* Security.framework in Frameworks */,
@@ -1799,7 +1800,7 @@
 				B0B055EE14DA29A8008ABF07 /* UIKit.framework in Frameworks */,
 				B0B055F014DA29A8008ABF07 /* Foundation.framework in Frameworks */,
 				B08CE96F14F27D68007B6A57 /* PlausibleDatabase.framework in Frameworks */,
-				B0E69A3415351F3900E20BE9 /* libFlurryAnalytics.a in Frameworks */,
+				B099AABE1742253000822AF2 /* libFlurry.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2517,6 +2518,7 @@
 		B0B055DE14DA29A8008ABF07 = {
 			isa = PBXGroup;
 			children = (
+				B018534417421B040095A36D /* libxml2.2.dylib */,
 				B0A62CDA1740F0F20084FA5E /* libGoogleAdMobAds.a */,
 				B0A62CD71740DDE30084FA5E /* AdSupport.framework */,
 				B08AFF601727D57600F4ABFC /* Default-568h.png */,
@@ -3151,8 +3153,8 @@
 		B0E69A3115351F3900E20BE9 /* FlurryAnalytics */ = {
 			isa = PBXGroup;
 			children = (
-				B0E69A3215351F3900E20BE9 /* FlurryAnalytics.h */,
-				B0E69A3315351F3900E20BE9 /* libFlurryAnalytics.a */,
+				B099AABC1742253000822AF2 /* Flurry.h */,
+				B099AABD1742253000822AF2 /* libFlurry.a */,
 			);
 			path = FlurryAnalytics;
 			sourceTree = "<group>";

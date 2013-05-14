@@ -896,9 +896,7 @@ extern ASIHTTPRequest *nowrequest;
     [self becomeFirstResponder];
     
     if (isFree) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             [self loadAdv];
-        });
     }
     
     [timeSlider addTarget:self
@@ -1460,12 +1458,12 @@ extern ASIHTTPRequest *nowrequest;
 //        bannerView_ = [[GADBannerView alloc] initWithAdSize:kGADAdSizeBanner];
         
         bannerView_ = [[GADBannerView alloc]
-//                       initWithAdSize:GADAdSizeFromCGSize(CGSizeMake(GAD_SIZE_320x50.width, GAD_SIZE_320x50.height)) origin:CGPointMake(20.0, self.view.frame.size.height - GAD_SIZE_320x50.height)];
                        initWithFrame:CGRectMake(0.0,
                                                 self.view.frame.size.height -
                                                 GAD_SIZE_320x50.height + kFiveAdd,
                                                 GAD_SIZE_320x50.width,
                                                 GAD_SIZE_320x50.height)];
+        //                       initWithAdSize:GADAdSizeFromCGSize(CGSizeMake(GAD_SIZE_320x50.width, GAD_SIZE_320x50.height)) origin:CGPointMake(20.0, self.view.frame.size.height - GAD_SIZE_320x50.height)];
 //        NSLog(@"ha:%f", self.view.frame.size.height -
 //              GAD_SIZE_320x50.height + kFiveAdd);
     }else{
@@ -1490,7 +1488,8 @@ extern ASIHTTPRequest *nowrequest;
     
     
     GADRequest *request = [GADRequest request];
-    request.testDevices = [NSArray arrayWithObjects:@"07899f5f8cdeddbfd6221639aa7acab7", nil];
+//    request.testDevices = [NSArray arrayWithObjects:@"07899f5f8cdeddbfd6221639aa7acab7", nil];
+//    request.testDevices = [NSArray arrayWithObjects:@"GAD_SIMULATOR_ID", nil];
     // Initiate a generic request to load it with an ad.
     [bannerView_ loadRequest:request];
     //    [bannerView_ setBackgroundColor:[UIColor blueColor]];
@@ -1502,18 +1501,20 @@ extern ASIHTTPRequest *nowrequest;
 }
 
 - (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
-    [UIView beginAnimations:@"BannerSlide" context:nil];
-    bannerView.frame = CGRectMake(0.0,
-                                  self.view.frame.size.height -
-                                  bannerView.frame.size.height,
-                                  bannerView.frame.size.width,
-                                  bannerView.frame.size.height);
-    [UIView commitAnimations];
+    needFlushAdv = NO;
+//    [UIView beginAnimations:@"BannerSlide" context:nil];
+//    bannerView.frame = CGRectMake(0.0,
+//                                  self.view.frame.size.height -
+//                                  bannerView.frame.size.height,
+//                                  bannerView.frame.size.width,
+//                                  bannerView.frame.size.height);
+//    [UIView commitAnimations];
 }
 
 - (void)adView:(GADBannerView *)bannerView
     didFailToReceiveAdWithError:(GADRequestError *)error {
-    NSLog(@"adView:didFailToReceiveAdWithError:%@", [error localizedDescription]);
+    needFlushAdv = YES;
+//    NSLog(@"adView:didFailToReceiveAdWithError:%@", [error localizedDescription]);
 }
 
 
@@ -1694,7 +1695,7 @@ extern ASIHTTPRequest *nowrequest;
     [avSet release];
     [mp3Url release];
     [loadProgress release];
-    [bannerView_ release];
+//    [bannerView_ release];
     [voa release];
     [myImageView release];
     [senImage release];
@@ -1748,6 +1749,9 @@ extern ASIHTTPRequest *nowrequest;
 //    [wfvOne release];
 //    [wfvTwo release];
     [playAgainButton release];
+    if (isFree) {
+        [bannerView_ release];
+    }
     [super dealloc];
 }
 
@@ -5032,7 +5036,7 @@ void audioRouteChangeListenerCallback (
         //    ASIHTTPRequest * request = [[ASIHTTPRequest alloc] initWithURL:[NSURL URLWithString:url]];
         ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
         [sendBtn setUserInteractionEnabled:NO];
-        NSLog(@"url:%@", url);
+//        NSLog(@"url:%@", url);
         request.delegate = self;
         [request setUsername:@"comment"];
         [request startAsynchronous];
@@ -6339,7 +6343,7 @@ void audioRouteChangeListenerCallback (
          }*/
     }
     
-    NSLog(@"sen_num1:%d", sen_num);
+//    NSLog(@"sen_num1:%d", sen_num);
 }
 
 /**
