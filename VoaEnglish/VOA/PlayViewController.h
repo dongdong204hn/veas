@@ -53,6 +53,8 @@
 #import "Demo3Transition.h"
 #import "THUtility.h"
 #import "WaveFormViewIOS.h"
+#import "TCWBEngine.h"
+#import "Constants.h"
 
 
 @class timeSwitchClass;
@@ -78,6 +80,11 @@
 #define kSpeakImage6         @"speaker_6.png"
 #define kSpeakImage7         @"speaker_7.png"
 #define kSpeakImage8         @"speaker_8.png"
+
+#define TCWB_APP_KEY         @"801189027"
+#define TCWB_APP_SEC         @"3c220dea270a72c5c56a7b3d9a65c80a"
+#define TCWB_URL             @"https://play.google.com/store/apps/details?id=com.iyuba.voa"
+
 
 /**
  *
@@ -361,6 +368,7 @@
 @property (nonatomic, retain) HPGrowingTextView *textView; //可换行的输入框控件
 @property (nonatomic, retain) NSSet *wordTouches;
 @property (nonatomic, retain) VOASentence *mySentence;  //记录要收藏的句子的基本信息
+@property (nonatomic, retain) TCWBEngine *tcEngine;  //腾讯微博分享
 
 @property int				playerFlag; //0:local 1:net
 @property (nonatomic) CGFloat             recordSeconds;    //记录实际录音时长

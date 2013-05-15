@@ -106,11 +106,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "VOA/PlayViewController.mm"
-         timestampString = "390192435.311598"
+         timestampString = "390303942.808441"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "6143"
-         endingLineNumber = "6143"
+         startingLineNumber = "6235"
+         endingLineNumber = "6235"
          landmarkName = "-scrollViewDidEndScrollingAnimation:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -119,11 +119,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "VOA/PlayViewController.mm"
-         timestampString = "390192435.311598"
+         timestampString = "390303942.808441"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "6504"
-         endingLineNumber = "6504"
+         startingLineNumber = "6596"
+         endingLineNumber = "6596"
          landmarkName = "-scrollViewDidEndDecelerating:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -132,11 +132,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "VOA/PlayViewController.mm"
-         timestampString = "390192435.311598"
+         timestampString = "390303942.808441"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "8105"
-         endingLineNumber = "8105"
+         startingLineNumber = "8201"
+         endingLineNumber = "8201"
          landmarkName = "-playRecord"
          landmarkType = "5">
       </FileBreakpoint>
@@ -145,11 +145,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "VOA/PlayViewController.mm"
-         timestampString = "390192435.311598"
+         timestampString = "390303942.808441"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "8498"
-         endingLineNumber = "8498">
+         startingLineNumber = "8594"
+         endingLineNumber = "8594">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "Yes"
@@ -182,11 +182,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "VOA/PlayViewController.mm"
-         timestampString = "390192435.311598"
+         timestampString = "390303942.808441"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "8070"
-         endingLineNumber = "8070"
+         startingLineNumber = "8166"
+         endingLineNumber = "8166"
          landmarkName = "-recordPlayTouch:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -195,12 +195,77 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "VOA/PlayViewController.mm"
-         timestampString = "390192435.311598"
+         timestampString = "390303942.808441"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "8135"
-         endingLineNumber = "8135"
+         startingLineNumber = "8231"
+         endingLineNumber = "8231"
          landmarkName = "-stopPlayRecord"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "VOA/TCWeiBoSDK/TCWBEngine/AuthorizeDelegate.m"
+         timestampString = "390295362.56532"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "31"
+         endingLineNumber = "31"
+         landmarkName = "-authorize:didFailuredWithError:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "VOA/TCWeiBoSDK/TCWBEngine/AuthorizeDelegate.m"
+         timestampString = "390295396.293247"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "25"
+         endingLineNumber = "25"
+         landmarkName = "-authorize:didSucceedWithAccessToken:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "VOA/TCWeiBoSDK/TCWBEngine/TCWBEngine.m"
+         timestampString = "390304802.156113"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "1420"
+         endingLineNumber = "1420"
+         landmarkName = "-UIBroadCastMsgWithContent:andImage:parReserved:delegate:onPostStart:onPostSuccess:onPostFailure:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "VOA/TCWeiBoSDK/TCWBEngine/TCWBEngine.m"
+         timestampString = "390304802.156113"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "1421"
+         endingLineNumber = "1421"
+         landmarkName = "-UIBroadCastMsgWithContent:andImage:parReserved:delegate:onPostStart:onPostSuccess:onPostFailure:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "VOA/TCWeiBoSDK/TCWBEngine/TCWBEngine.m"
+         timestampString = "390304802.156113"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "1432"
+         endingLineNumber = "1432"
+         landmarkName = "-UIBroadCastMsgWithContent:andImage:parReserved:delegate:onPostStart:onPostSuccess:onPostFailure:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

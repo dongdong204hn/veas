@@ -75,6 +75,7 @@ void uncaughtExceptionHandler(NSException *exception) {
     [Flurry startSession:@"VW6JCSWF6MQPCGZBIAND"]; //引号内为注册得到的应用编号
 //    kNetTest;
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"alertShowed"]; //设置尚未检测队列下载情况
+    isPlayPage = NO;
 
 //    [VOAView clearAllDownload];
 //    [YISwipeShiftCaret install];
@@ -100,6 +101,7 @@ void uncaughtExceptionHandler(NSException *exception) {
 //     object:nil];
     
 //    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"isStudying"];
+    
     
     
     if ([Constants isPad]) {
@@ -205,7 +207,7 @@ void uncaughtExceptionHandler(NSException *exception) {
                 
                 [VOASentence creatSynFlg];
                 
-                UIAlertView *updateAlert = [[UIAlertView alloc] initWithTitle:@"更新内容" message:@"1.优化录音功能\n2.增加设置项：自定义背景色\n3.增加内容分类：单词故事\n4.解决了定时播放时有嘀嗒声的问题\n5.列表文章标题改为了中文显示\n6.评论界面调整" delegate:nil cancelButtonTitle:@"我已知晓" otherButtonTitles:nil];
+                UIAlertView *updateAlert = [[UIAlertView alloc] initWithTitle:@"重要更新" message:@"1.优化录音功能\n2.增加设置项：自定义背景色\n3.增加内容分类：单词故事\n4.解决了定时播放时有嘀嗒声的问题\n5.列表文章标题改为了中文显示\n6.评论界面调整\n7.修复下载闪退问题。" delegate:nil cancelButtonTitle:@"我已知晓" otherButtonTitles:nil];
                 [updateAlert show];
                 [updateAlert release], updateAlert = nil;
             }
@@ -375,11 +377,11 @@ void uncaughtExceptionHandler(NSException *exception) {
                 }
             }
             
-            
         }
         [self.windowOne makeKeyAndVisible];//最后两句基本都一样
     }
-    
+//    [[NSUserDefaults standardUserDefaults] setFloat:3.6f forKey:@"appVersionC"];
+//    [[NSUserDefaults standardUserDefaults] setObject:@"YES" forKey:kBePro];
     //向服务器发送token值
     if(![[NSUserDefaults standardUserDefaults] boolForKey:@"pushToken"]){
         NSString *deviceTokenStr = [[NSUserDefaults standardUserDefaults] objectForKey:@"DeviceTokenStringVOAC"];

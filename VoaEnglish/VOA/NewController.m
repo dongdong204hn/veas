@@ -265,6 +265,7 @@ extern ASIHTTPRequest *nowrequest;
     });
     
     notSelect = YES;
+    isPlayPage = NO;
 //    [self setTitle:@"最新"];
 //    isExisitNet = [self isExistenceNetwork:0];
 
@@ -584,7 +585,6 @@ extern ASIHTTPRequest *nowrequest;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
     if (tableView.tag == 1) {
         NSUInteger row = [indexPath row];
         if ([indexPath row]<[voasArray count]) {
@@ -603,7 +603,6 @@ extern ASIHTTPRequest *nowrequest;
                                                                         owner:self
                                                                       options:nil] objectAtIndex:0];
                 }
-                
             }
             cell.myTitle.text = voa._title_Cn;
             cell.myDate.text = voa._creatTime;
@@ -653,16 +652,29 @@ extern ASIHTTPRequest *nowrequest;
                         [cell.downloadBtn addTarget:self action:@selector(WaitingBtnPressed:) forControlEvents:UIControlEventTouchUpInside];
                         
                         if (isiPhone) {
-                            cell.progress=[[[DACircularProgressView alloc]initWithFrame:CGRectMake(278, 43, 37, 37)] autorelease];
+                            DACircularProgressView *test = [[DACircularProgressView alloc]initWithFrame:CGRectMake(278, 43, 37, 37)];
+                            cell.progress = test;
+                            NSLog(@"progress1:%d", [cell.progress retainCount]);
+                            NSLog(@"test1:%d",   test.retainCount);
+                            [cell.progress retain];
+                            NSLog(@"progress1:%d", [cell.progress retainCount]);
+                            [test release], test = nil;
+                            
+//                            cell.progress=[[[DACircularProgressView alloc]initWithFrame:CGRectMake(278, 43, 37, 37)] autorelease];
                             [cell.downloadBtn setImage:[UIImage imageNamed:@"stopdl.png"] forState:UIControlStateNormal];
                         } else {
-                            cell.progress=[[[DACircularProgressView alloc]initWithFrame:CGRectMake(666, 40, 71, 71)] autorelease];
+                            DACircularProgressView *test = [[DACircularProgressView alloc]initWithFrame:CGRectMake(666, 40, 71, 71)];
+                            cell.progress = test;
+                            [cell.progress retain];
+                            [test release], test = nil;
+                            
                             [cell.downloadBtn setImage:[UIImage imageNamed:@"stopdl@2x.png"] forState:UIControlStateNormal];
                         }
                         
                         nowrequest.downloadProgressDelegate = cell.progress;
                         [nowrequest updateDownloadProgress];
                         [cell addSubview:cell.progress];
+//                        [cell.progress release];
                         
                     }else{
                         [cell.downloadBtn addTarget:self action:@selector(WaitingBtnPressed:) forControlEvents:UIControlEventTouchUpInside];
@@ -1593,21 +1605,27 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
         [cell.downloadBtn setImage:[UIImage imageNamed:@"stopdl.png"] forState:UIControlStateNormal];
         DACircularProgressView *test = [[DACircularProgressView alloc]initWithFrame:CGRectMake(278, 43, 37, 37)];
         cell.progress = test;
-//        [test release];
+//        NSLog(@"progress:%d", [cell.progress retainCount]);
+//        NSLog(@"test:%d",   test.retainCount);
+        [cell.progress retain];
+//        NSLog(@"progress:%d", [cell.progress retainCount]);
+        [test release], test = nil;
     } else {
         [cell.downloadBtn setImage:[UIImage imageNamed:@"stopdl@2x.png"] forState:UIControlStateNormal];
         DACircularProgressView *test = [[DACircularProgressView alloc]initWithFrame:CGRectMake(666, 40, 71, 71)];
         cell.progress = test;
-//        [test release];
+        [cell.progress retain];
+        [test release], test = nil;
     }
     
     //    [cell.progress setTrackTintColor:[UIColor yellowColor]];
     request.downloadProgressDelegate = cell.progress;
     [request updateDownloadProgress];
     [cell insertSubview:cell.progress belowSubview:cell.downloadBtn];
+//    [cell.progress release];
+//    NSLog(@"progress release:%d", [cell.progress retainCount]);
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        
         if (![VOADetail isExist:voa._voaid]) {
             NSString *url = [NSString stringWithFormat:@"http://apps.iyuba.com/voa/textApi.jsp?voaid=%d&format=xml",request.tag];
             //    NSLog(@"catch:%d",voaid._voaid);
@@ -1619,7 +1637,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
             [detailRequest startAsynchronous];
         }
         
-    });
+//    });
     
     
     //[MusicView alterDownload:request.tag];

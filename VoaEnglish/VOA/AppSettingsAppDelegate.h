@@ -14,6 +14,7 @@
 #import "PlayViewController.h" //播放界面
 #import "StudyTime.h" //学习时间统计
 #import "UIImage+SplitImageIntoTwoParts.h"
+#import "Constants.h"
 
 /**
  *

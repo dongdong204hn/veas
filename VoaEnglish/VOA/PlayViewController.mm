@@ -158,7 +158,7 @@
 //@synthesize wfvTwo;
 @synthesize scoreSameSen;
 @synthesize scoreImg;
-
+@synthesize tcEngine;
 
 //用于批量下载
 extern NSMutableArray *downLoadList;
@@ -674,8 +674,11 @@ extern ASIHTTPRequest *nowrequest;
 - (void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.navigationController.navigationBarHidden = YES;
+    [self.view becomeFirstResponder];
+    
     recPlayAgain = [[NSUserDefaults standardUserDefaults] boolForKey:@"recPlayAgain"];
     isInterupted = NO;
+    isPlayPage = YES;
     nowUserId = 0;
     nowUserId = [[[NSUserDefaults standardUserDefaults] objectForKey:@"nowUser"] integerValue];
     
@@ -875,6 +878,11 @@ extern ASIHTTPRequest *nowrequest;
     //    //有关外部控制音频播放
     //    [[UIApplication sharedApplication] endReceivingRemoteControlEvents];
     [self resignFirstResponder];
+    
+//    for (UIView *myViewOne in [self.view subviews]) {
+//        [myViewOne resignFirstResponder];
+//    }
+//    [];
 }
 
 /**
@@ -987,7 +995,7 @@ extern ASIHTTPRequest *nowrequest;
     
     [btn_play setEnabled:NO];
     [speedSlider setValue:[[NSUserDefaults standardUserDefaults] floatForKey:@"speed"]];
-    [lightSlider setValue:[UIScreen mainScreen].brightness];
+    if([[[UIDevice currentDevice] systemVersion] floatValue] >= 4.99f) [lightSlider setValue:[UIScreen mainScreen].brightness];
     
     NSArray *myHrsArray = [[NSArray alloc] initWithObjects:@"0",@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"10",@"11",@"12",@"13",@"14",@"15",@"16",@"17",@"18",@"19",@"20",@"21",@"22",@"23", nil];
     self.hoursArray = myHrsArray;
@@ -2653,7 +2661,7 @@ extern ASIHTTPRequest *nowrequest;
         //
         //        }
         //        else {
-        UIActionSheet *share = [[UIActionSheet alloc] initWithTitle:@"分享当前新闻到" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"新浪微博",@"人人网", nil];
+        UIActionSheet *share = [[UIActionSheet alloc] initWithTitle:@"分享当前新闻到" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"新浪微博",@"人人网",@"腾讯微博", nil];
         [share showInView:self.view.window];
         
         //        }
@@ -2737,6 +2745,90 @@ extern ASIHTTPRequest *nowrequest;
     //        [alertShare show];
     //        [alertShare release];
     //    }
+}
+
+/**
+ *  腾讯微博分享
+ */
+- (void)shareToQQWeibo{
+    //    if (isExisitNet) {
+    NSString * url = Nil;
+    //    url = [NSString stringWithFormat:@"http://apps.iyuba.com/voa/showItem.jsp?voaId=%d&network=weibo",voa._voaid];
+    int nowUserID = [[[NSUserDefaults standardUserDefaults] objectForKey:@"nowUser"] integerValue];
+    if (nowUserID > 0) {
+        url = [NSString stringWithFormat:@"http://apps.iyuba.com/voa/showItem.jsp?voaId=%d&network=weibo&userId=%d",voa._voaid,nowUserID];
+    } else {
+        url = [NSString stringWithFormat:@"http://apps.iyuba.com/voa/showItem.jsp?voaId=%d&network=weibo",voa._voaid];
+    }
+//    NSString * time = [[voa._creatTime componentsMatchedByRegex:@"\\S+"] objectAtIndex:0];
+    //    NSLog(@"shijian : %@",time);
+//    NSString * Message = [NSString stringWithFormat:@"爱语吧VOA英语听力%@的新闻",time];
+    NSString *message = (isShareSen?[NSString stringWithFormat:@"@yulusoftware 好喜欢这个句子\\^o^/:%@...", (lyEn.length > 80? [lyEn substringToIndex:80]: lyEn)]: [NSString stringWithFormat:@"@爱语吧 VOA英语听力\"%@\":%@", voa._title, [NSString stringWithFormat:@"%@...",(voa._descCn.length > 40? [voa._descCn substringToIndex:40]: voa._descCn)]]);
+    //    NSString * WeiboContent = [NSString stringWithFormat:@"%@%@",Message,url];
+//    SVShareTool * shareTool = [SVShareTool DefaultShareTool];
+    
+    if (!tcEngine) {
+        tcEngine = [[TCWBEngine alloc] initWithAppKey:TCWB_APP_KEY andSecret:TCWB_APP_SEC andRedirectUrl:TCWB_URL];
+        [tcEngine setRootViewController:[PlayViewController sharedPlayer]];
+    }
+//    [tcEngine logOut];
+    [tcEngine UIBroadCastMsgWithContent:message
+                                andImage:[ShareToCNBox screenshot]
+                             parReserved:nil
+                                delegate:self
+                             onPostStart:@selector(postStart)
+                           onPostSuccess:@selector(createSuccess:)
+                           onPostFailure:@selector(createFail:)];
+    
+//    NSMutableDictionary *params=[NSMutableDictionary dictionaryWithObjectsAndKeys:
+//                                 url,@"url",
+//                                 Message,@"name",
+//                                 @"VOA英语伴旅",@"action_name",
+//                                 kMyWebLink,@"action_link",
+//                                 (voa._descCn == nil ? [voa._descCn substringToIndex:120] : @"轻松学外语,快乐交朋友,一切尽在爱语吧"),@"description",
+//                                 @"VOA英语伴旅",@"caption",
+//                                 kMyRenRenImage,@"image",
+//                                 (isShareSen?[NSString stringWithFormat:@"这个句子不错哦\\^o^/:%@...", (lyEn.length > 80? [lyEn substringToIndex:80]: lyEn)]: [NSString stringWithFormat:@"\"%@\"——%@", voa._title, [NSString stringWithFormat:@"%@...", (voa._descCn.length > 40? [voa._descCn substringToIndex:40]: voa._descCn)]]),@"message",
+//                                 nil];
+    //    NSLog(@"param:%@",[params valueForKey:@"action_name"]);
+//    [shareTool PublishFeedOnRenRen:self WithFeedParam:params TitleId:[NSString stringWithFormat:@"%d",voa._voaid]];
+    //    } else {
+    //        UIAlertView * alertShare = [[UIAlertView alloc] initWithTitle:@"分享失败" message:@"请您确保已连接网络" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    //        [alertShare show];
+    //        [alertShare release];
+    //    }
+}
+
+//#pragma mark -
+//#pragma mark - creatSuccessOrFail
+
+- (void)postStart {
+    NSLog(@"%s", __FUNCTION__);
+    //    [self showAlertMessage:@"开始发送"];
+}
+
+- (void)createSuccess:(NSDictionary *)dict {
+    NSLog(@"%s %@", __FUNCTION__,dict);
+    if ([[dict objectForKey:@"ret"] intValue] == 0) {
+        [self showAlertMessage:@"发送成功！"];
+    }else {
+        [self showAlertMessage:@"发送失败！"];
+    }
+}
+
+- (void)createFail:(NSError *)error {
+    NSLog(@"error is %@",error);
+    [self showAlertMessage:@"发送失败！"];
+}
+
+- (void)showAlertMessage:(NSString *)msg {
+    UIAlertView* alertView = [[UIAlertView alloc]initWithTitle:nil
+                                                       message:msg
+                                                      delegate:self
+                                             cancelButtonTitle:@"确定"
+                                             otherButtonTitles:nil];
+    [alertView show];
+    
 }
 
 /**
@@ -2944,7 +3036,7 @@ extern ASIHTTPRequest *nowrequest;
 
 //--------------拖动屏幕亮度控制条
 - (IBAction) brightSliderChanged:(UISlider *)slider{
-    [[UIScreen mainScreen] setBrightness:slider.value];
+    if([[[UIDevice currentDevice] systemVersion] floatValue] >= 4.99f) [[UIScreen mainScreen] setBrightness:slider.value];
 }
 
 //--------------当播放器进度条值被拖动改变时响应事件
@@ -7059,6 +7151,10 @@ void audioRouteChangeListenerCallback (
             case 1:
                 //人人分享：
                 [self ShareThisQuestion];
+                break;
+            case 2:
+                //QQ微博分享：
+                [self shareToQQWeibo];
                 break;
             default:
                 break;

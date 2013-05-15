@@ -152,10 +152,16 @@
     if (progress > 0.99) {
         [self setHidden:YES];
         [self performSelector:@selector(caca) withObject:self afterDelay:0.5];
-    }else if (progress > 0.0) {
-        _preProgress = progress;
-        [self performSelector:@selector(haha) withObject:self afterDelay:1.0];
     }
+    if (!isPlayPage) {
+         _preProgress = progress;
+        [self performSelector:@selector(haha) withObject:self afterDelay:1.0];
+        isPlayPage = YES;
+    }
+//    else if (progress > 0.0) {
+//        _preProgress = progress;
+//        [self performSelector:@selector(haha) withObject:self afterDelay:1.0];
+//    }
     
     [self setNeedsDisplay];
 }
