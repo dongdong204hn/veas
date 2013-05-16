@@ -13,8 +13,8 @@
 #import "TCWBGlobalUtil.h"
 #import "GetIPAddress.h"
 #import "FileStreame.h"
-#import "AuthorizeDelegate.h"
 #import "TCWBRepeatViewController.h"
+#import "PlayViewController.h"
 
 #define BUFFERSIZE    4000  
 #define MAXADDRS    32  
@@ -70,6 +70,9 @@ static BOOL G_LOGOUT = NO;
 @synthesize publishImage;
 @synthesize isRefreshTokenSuccess;
 @synthesize rootViewController;
+@synthesize myTimer;
+@synthesize myAuthDelegate;
+@synthesize afterLog;
 
 #pragma mark - TCWBEngine Life Circle
 
@@ -79,6 +82,7 @@ static BOOL G_LOGOUT = NO;
         self.appKey = theAppKey;
         self.appSecret = theAppSecret;
         self.redirectURI = theRedirectUrl;
+        self.afterLog = NO;
         
         httpRequests = [[NSMutableArray alloc] initWithCapacity:2];
         [self readAuthorizeDataFromKeychain];
@@ -1394,7 +1398,7 @@ static BOOL G_LOGOUT = NO;
     
     onSuccessCallback = successCallback;
     onFailureCallback = failureCallback;
-    if (![self isLoggedIn]) {
+    if (![self isLoggedIn] && !afterLog) {
         NSDictionary *params = [[NSDictionary alloc]initWithObjectsAndKeys:appKey,CLIENT_ID,
                                 TOKEN, RESPONSE_TYPE,
                                 redirectURI,REDIRECT_URI,
@@ -1405,29 +1409,43 @@ static BOOL G_LOGOUT = NO;
                                                  params:params
                                              httpMethod:@"GET"];
         
+//        TCWBAuthorizeViewController *authViewController = [[TCWBAuthorizeViewController alloc] init];
+//        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:authViewController];
+//        authViewController.requestURLString = urlString;
+//        CFRunLoopRef currentRunLoop = CFRunLoopGetCurrent();
+//        AuthorizeDelegate *authDelegate = [[AuthorizeDelegate alloc] initWithRunLoop:currentRunLoop];
+//        [authViewController setDelegate:authDelegate];    
+//        [rootViewController presentModalViewController:nav animated:NO];
+//        [nav.view becomeFirstResponder];
+//        [authViewController becomeFirstResponder];
+//        [authViewController release];
+//        [nav release];
+//        CFRunLoopRun();
+        //**..
         TCWBAuthorizeViewController *authViewController = [[TCWBAuthorizeViewController alloc] init];
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:authViewController];
         authViewController.requestURLString = urlString;
-        CFRunLoopRef currentRunLoop = CFRunLoopGetCurrent();
-        AuthorizeDelegate *authDelegate = [[AuthorizeDelegate alloc] initWithRunLoop:currentRunLoop];
-        [authViewController setDelegate:authDelegate];    
+        myAuthDelegate = [[AuthorizeDelegate alloc] init];
+        [authViewController setDelegate:myAuthDelegate];
         [rootViewController presentModalViewController:nav animated:NO];
         [nav.view becomeFirstResponder];
         [authViewController becomeFirstResponder];
         [authViewController release];
         [nav release];
         
-        CFRunLoopRun();
-        if (authDelegate.returnCode != nil) {
-            [self saveAccessTokenInfo:authDelegate.returnCode];
-            BOOL saveKeychainOK = [self saveAuthorizeDataToKeychain];
-            if (!saveKeychainOK) {
-                BOOL deleteKeychainOK = [self deleteAuthorizeDataInKeychain];
-                if (deleteKeychainOK) {
-                    [self saveAuthorizeDataToKeychain];
-                }
-            }
-        }
+        myTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(myMethod) userInfo:nil repeats:YES];
+        
+//        if (authDelegate.returnCode != nil) {
+//            [self saveAccessTokenInfo:authDelegate.returnCode];
+//            BOOL saveKeychainOK = [self saveAuthorizeDataToKeychain];
+//            if (!saveKeychainOK) {
+//                BOOL deleteKeychainOK = [self deleteAuthorizeDataInKeychain];
+//                if (deleteKeychainOK) {
+//                    [self saveAuthorizeDataToKeychain];
+//                }
+//            }
+//        }
+        return;
     }
     if ([self isLoggedIn]) {
         NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithCapacity:3];
@@ -1455,7 +1473,28 @@ static BOOL G_LOGOUT = NO;
     }
 }
 
-- (void)UICreatRebroadWithContent:(NSString *)content 
+- (void)myMethod {
+    if ([NetTest sharedNet].hasResultQQWeibo) {
+        [myTimer invalidate];
+        if (myAuthDelegate.returnCode != nil) {
+            [self saveAccessTokenInfo:myAuthDelegate.returnCode];
+            BOOL saveKeychainOK = [self saveAuthorizeDataToKeychain];
+            if (!saveKeychainOK) {
+                BOOL deleteKeychainOK = [self deleteAuthorizeDataInKeychain];
+                if (deleteKeychainOK) {
+                    [self saveAuthorizeDataToKeychain];
+                }
+            }
+        }
+        afterLog = YES;
+        if([self isLoggedIn]) [[PlayViewController sharedPlayer] shareToQQWeibo];
+    }
+
+
+}
+
+
+- (void)UICreatRebroadWithContent:(NSString *)content
                       imageRefURL:(NSString *)imageRefURL 
                  videoImageRefURL:(NSString *)videoImageRefURL 
                       parReserved:(NSDictionary *)reserved 

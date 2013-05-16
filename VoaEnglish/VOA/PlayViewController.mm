@@ -2672,7 +2672,7 @@ extern ASIHTTPRequest *nowrequest;
         //            [share showInView:self.view];
         //
         //        } else {
-        UIActionSheet *share = [[UIActionSheet alloc] initWithTitle:@"分享当前新闻到" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"新浪微博",@"人人网", nil];
+        UIActionSheet *share = [[UIActionSheet alloc] initWithTitle:@"分享当前新闻到" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"新浪微博",@"人人网",@"腾讯微博", nil];
         [share showInView:self.view];
         
         //        }
@@ -2751,21 +2751,16 @@ extern ASIHTTPRequest *nowrequest;
  *  腾讯微博分享
  */
 - (void)shareToQQWeibo{
-    //    if (isExisitNet) {
     NSString * url = Nil;
-    //    url = [NSString stringWithFormat:@"http://apps.iyuba.com/voa/showItem.jsp?voaId=%d&network=weibo",voa._voaid];
+
     int nowUserID = [[[NSUserDefaults standardUserDefaults] objectForKey:@"nowUser"] integerValue];
     if (nowUserID > 0) {
         url = [NSString stringWithFormat:@"http://apps.iyuba.com/voa/showItem.jsp?voaId=%d&network=weibo&userId=%d",voa._voaid,nowUserID];
     } else {
         url = [NSString stringWithFormat:@"http://apps.iyuba.com/voa/showItem.jsp?voaId=%d&network=weibo",voa._voaid];
     }
-//    NSString * time = [[voa._creatTime componentsMatchedByRegex:@"\\S+"] objectAtIndex:0];
-    //    NSLog(@"shijian : %@",time);
-//    NSString * Message = [NSString stringWithFormat:@"爱语吧VOA英语听力%@的新闻",time];
+
     NSString *message = (isShareSen?[NSString stringWithFormat:@"@yulusoftware 好喜欢这个句子\\^o^/:%@...", (lyEn.length > 80? [lyEn substringToIndex:80]: lyEn)]: [NSString stringWithFormat:@"@爱语吧 VOA英语听力\"%@\":%@", voa._title, [NSString stringWithFormat:@"%@...",(voa._descCn.length > 40? [voa._descCn substringToIndex:40]: voa._descCn)]]);
-    //    NSString * WeiboContent = [NSString stringWithFormat:@"%@%@",Message,url];
-//    SVShareTool * shareTool = [SVShareTool DefaultShareTool];
     
     if (!tcEngine) {
         tcEngine = [[TCWBEngine alloc] initWithAppKey:TCWB_APP_KEY andSecret:TCWB_APP_SEC andRedirectUrl:TCWB_URL];
@@ -2779,24 +2774,6 @@ extern ASIHTTPRequest *nowrequest;
                              onPostStart:@selector(postStart)
                            onPostSuccess:@selector(createSuccess:)
                            onPostFailure:@selector(createFail:)];
-    
-//    NSMutableDictionary *params=[NSMutableDictionary dictionaryWithObjectsAndKeys:
-//                                 url,@"url",
-//                                 Message,@"name",
-//                                 @"VOA英语伴旅",@"action_name",
-//                                 kMyWebLink,@"action_link",
-//                                 (voa._descCn == nil ? [voa._descCn substringToIndex:120] : @"轻松学外语,快乐交朋友,一切尽在爱语吧"),@"description",
-//                                 @"VOA英语伴旅",@"caption",
-//                                 kMyRenRenImage,@"image",
-//                                 (isShareSen?[NSString stringWithFormat:@"这个句子不错哦\\^o^/:%@...", (lyEn.length > 80? [lyEn substringToIndex:80]: lyEn)]: [NSString stringWithFormat:@"\"%@\"——%@", voa._title, [NSString stringWithFormat:@"%@...", (voa._descCn.length > 40? [voa._descCn substringToIndex:40]: voa._descCn)]]),@"message",
-//                                 nil];
-    //    NSLog(@"param:%@",[params valueForKey:@"action_name"]);
-//    [shareTool PublishFeedOnRenRen:self WithFeedParam:params TitleId:[NSString stringWithFormat:@"%d",voa._voaid]];
-    //    } else {
-    //        UIAlertView * alertShare = [[UIAlertView alloc] initWithTitle:@"分享失败" message:@"请您确保已连接网络" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    //        [alertShare show];
-    //        [alertShare release];
-    //    }
 }
 
 //#pragma mark -

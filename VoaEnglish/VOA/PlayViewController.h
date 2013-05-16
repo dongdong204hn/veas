@@ -442,6 +442,7 @@ void RouteChangeListener(	void *                  inClientData,
 - (void) stopRecord;
 - (void) aniToPlay:(UITextView *) myTextView ;
 - (BOOL)isPlaying;
+- (void)shareToQQWeibo;
 
 //- (void) stopRecordPlay;
 //- (BOOL)addSkipBackupAttributeToItemAtURL:(NSURL *)URL;

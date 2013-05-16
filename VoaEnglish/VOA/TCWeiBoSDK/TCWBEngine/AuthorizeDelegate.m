@@ -22,12 +22,14 @@
 //授权成功回调
 - (void)authorize:(TCWBAuthorizeViewController *)authorize didSucceedWithAccessToken:(NSString *)code {
     self.returnCode = code;
-    CFRunLoopStop(currentLoop);
+    [NetTest sharedNet].hasResultQQWeibo = YES;
+//    CFRunLoopStop(currentLoop);
 }
 
 //授权失败回调
 - (void)authorize:(TCWBAuthorizeViewController *)authorize didFailuredWithError:(NSError *)error {
     self.err = error;
-    CFRunLoopStop(currentLoop);
+    [NetTest sharedNet].hasResultQQWeibo = YES;
+//    CFRunLoopStop(currentLoop);
 }
 @end

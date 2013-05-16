@@ -12,6 +12,7 @@
 #import "TCWBRequest.h"
 #import "TCWBGlobalUtil.h"
 #import "TCWBAuthorizeViewController.h"
+#import "AuthorizeDelegate.h"
 
 #define USE_UI_TWEET
 
@@ -61,10 +62,15 @@
 @property (nonatomic, retain) NSString          *ip_iphone;
 @property (nonatomic, retain) NSString          *publishContent;
 @property (nonatomic, retain) UIImage           *publishImage;
+
+@property (nonatomic, retain) NSTimer           *myTimer;
+@property (nonatomic, retain) AuthorizeDelegate *myAuthDelegate;
            
 @property (nonatomic, assign) UIViewController  *rootViewController;
 @property (nonatomic, assign) NSTimeInterval    expireTime;
 @property (nonatomic, assign) BOOL              isRefreshTokenSuccess;
+@property (nonatomic, assign) BOOL              afterLog;
+
 
 /*
  *

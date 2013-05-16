@@ -208,11 +208,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "VOA/TCWeiBoSDK/TCWBEngine/AuthorizeDelegate.m"
-         timestampString = "390295362.56532"
+         timestampString = "390362337.895297"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "31"
-         endingLineNumber = "31"
+         startingLineNumber = "33"
+         endingLineNumber = "33"
          landmarkName = "-authorize:didFailuredWithError:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -221,24 +221,24 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "VOA/TCWeiBoSDK/TCWBEngine/AuthorizeDelegate.m"
-         timestampString = "390295396.293247"
+         timestampString = "390362337.895297"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "25"
-         endingLineNumber = "25"
+         startingLineNumber = "26"
+         endingLineNumber = "26"
          landmarkName = "-authorize:didSucceedWithAccessToken:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
+         shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "VOA/TCWeiBoSDK/TCWBEngine/TCWBEngine.m"
-         timestampString = "390304802.156113"
+         timestampString = "390364336.082325"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1420"
-         endingLineNumber = "1420"
+         startingLineNumber = "1427"
+         endingLineNumber = "1427"
          landmarkName = "-UIBroadCastMsgWithContent:andImage:parReserved:delegate:onPostStart:onPostSuccess:onPostFailure:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -247,11 +247,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "VOA/TCWeiBoSDK/TCWBEngine/TCWBEngine.m"
-         timestampString = "390304802.156113"
+         timestampString = "390364336.082325"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1421"
-         endingLineNumber = "1421"
+         startingLineNumber = "1450"
+         endingLineNumber = "1450"
          landmarkName = "-UIBroadCastMsgWithContent:andImage:parReserved:delegate:onPostStart:onPostSuccess:onPostFailure:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -260,12 +260,25 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "VOA/TCWeiBoSDK/TCWBEngine/TCWBEngine.m"
-         timestampString = "390304802.156113"
+         timestampString = "390364336.082325"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1432"
-         endingLineNumber = "1432"
+         startingLineNumber = "1436"
+         endingLineNumber = "1436"
          landmarkName = "-UIBroadCastMsgWithContent:andImage:parReserved:delegate:onPostStart:onPostSuccess:onPostFailure:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "VOA/PlayViewController.mm"
+         timestampString = "390368290.300139"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "2754"
+         endingLineNumber = "2754"
+         landmarkName = "-shareToQQWeibo"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

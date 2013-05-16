@@ -10,6 +10,7 @@
 
 @implementation NetTest
 @synthesize isExisitNet = _isExisitNet;
+@synthesize hasResultQQWeibo = _hasResultQQWeibo;
 
 #pragma mark - static method
 /**
@@ -24,6 +25,7 @@
         if (!sharedNet){
             sharedNet = [[NetTest alloc] init];
             sharedNet.isExisitNet = YES;
+            sharedNet.hasResultQQWeibo = NO;
         }
         else{
         }

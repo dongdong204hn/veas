@@ -118,6 +118,245 @@ static float		g_keyboardFrameHeightLastTime = 216;		// 默认初始键盘高度
  */
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
+//- (void)viewDidLoad
+//{
+//    [super viewDidLoad];
+//    
+//    curSelectedRange.location = 0;
+//    [self.navigationController setNavigationBarHidden:YES];
+//    self.view.backgroundColor = [UIColor whiteColor];
+//
+//
+//    // 导航条
+//    UIImageView *imageViewNavBar = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"composeupbg.png"]];
+//    [imageViewNavBar setFrame:CGRectMake(0, 0, self.view.frame.size.width, NavBarHeight)];
+//    [imageViewNavBar setUserInteractionEnabled:YES];
+//    [self.view addSubview:imageViewNavBar];
+//    [imageViewNavBar release];
+//    
+//
+//    
+//    // 标题
+//    UILabel *labelTitle = [[UILabel alloc] init];
+//    [labelTitle setTag:TAG_LABEL_TITLE];
+//    
+//    [labelTitle setBackgroundColor:[UIColor clearColor]];
+//    [labelTitle setFont:[UIFont systemFontOfSize:17]];
+//    [labelTitle setTextColor:[UIColor whiteColor]];
+//    [labelTitle setTextAlignment:UITextAlignmentCenter];
+//    
+//    NSBundle *main = [NSBundle mainBundle];
+//    NSString *strRebroadcast = [main localizedStringForKey:kLanguageRebroadcast value:nil table:kTCWBTable];    
+//    
+//    [labelTitle setText:strRebroadcast];
+//    
+//    CGSize szTitle = [labelTitle.text sizeWithFont:labelTitle.font];
+//    [labelTitle setFrame:CGRectMake((320 - szTitle.width)/2, (44 - szTitle.height)/2, szTitle.width, szTitle.height)];
+//    
+//    [self.view addSubview:labelTitle];
+//    [labelTitle release];
+//    
+//    
+//    // 取消
+//    UIButton *buttonLeft = [UIButton buttonWithType:UIButtonTypeCustom];
+//    buttonLeft.frame = CGRectMake(5, 5.5, 52, 33);
+//	buttonLeft.titleLabel.font = [UIFont systemFontOfSize:14];
+//    
+//    NSString *strCancel = [main localizedStringForKey:KLanguageCancel value:nil table:kTCWBTable];
+//    [buttonLeft setTitle:strCancel forState:UIControlStateNormal];
+//    
+//    [buttonLeft setBackgroundImage:[UIImage imageNamed:@"composequxiaobtn.png"] forState:UIControlStateNormal];
+//	[buttonLeft addTarget:self action:@selector(cancelCompose:) forControlEvents:UIControlEventTouchUpInside];
+//    [self.view addSubview:buttonLeft];
+//   
+//    // 发送
+//    NSString *strSend = [main localizedStringForKey:kLanguageSend value:nil table:kTCWBTable];
+//    UIButton *buttonRight = [UIButton buttonWithType:UIButtonTypeCustom];
+//	buttonRight.frame = CGRectMake(263, 5, 52, 33);
+//    buttonRight.tag = ButtonRightTag;
+//	[buttonRight setTitle:strSend forState:UIControlStateNormal];
+//    buttonRight.titleLabel.font = [UIFont systemFontOfSize:14];
+//	[buttonRight setBackgroundImage:[UIImage imageNamed:@"composesentbtn.png"] forState:UIControlStateNormal];
+//    [buttonRight setBackgroundImage:[UIImage imageNamed:@"composesentbtnhover.png"] forState:UIControlStateHighlighted];
+//    [buttonRight addTarget:self action:@selector(DoneCompose:) forControlEvents:UIControlEventTouchUpInside];
+////    buttonRight.autoresizesSubviews = YES;
+////    buttonRight.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
+//    [self.view addSubview:buttonRight];
+//    
+//    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 6.0) {
+//        // 上方背景视图
+//        viewUpBase = [[UIView alloc] initWithFrame:CGRectMake(0, NavBarHeight, self.view.frame.size.width, 126 + AltituteScrent)];
+//        textView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, 320, 122 + AltituteScrent)];
+//        // 中间背景视图
+//        viewMidBase = [[UIView alloc] initWithFrame:CGRectMake(0, 126 + NavBarHeight + AltituteScrent, 320, 59)];
+//        //  底部底层背景
+//        viewDownBase = [[UIView alloc] initWithFrame:CGRectMake(0, 200 + NavBarHeight + AltituteScrent, self.view.frame.size.width, 216)];		// 默认键盘高度216
+//
+//    }else {
+//        // 上方背景视图
+//        viewUpBase = [[UIView alloc] initWithFrame:CGRectMake(0, NavBarHeight, self.view.frame.size.width, 126)];
+//        textView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, 320, 122)];
+//        // 中间背景视图
+//        viewMidBase = [[UIView alloc] initWithFrame:CGRectMake(0, 126 + NavBarHeight, 320, 59)];
+//        //  底部底层背景
+//        viewDownBase = [[UIView alloc] initWithFrame:CGRectMake(0, 200 + NavBarHeight, self.view.frame.size.width, 216)];		// 默认键盘高度216
+//
+//
+//    }   
+//    	// 文本输入框默认高度141
+//    [self.view addSubview:viewUpBase];
+//    [self.view addSubview:viewMidBase];
+//    
+//	textView.font = [UIFont systemFontOfSize:18];
+//	textView.delegate = self;
+//    textView.tag = 100;
+//    textView.text = [self.myDict objectForKey:@"content"];
+//    curSelectedRange.location = textView.text.length;
+//    curSelectedRange.length = 0;
+//    [viewUpBase addSubview:textView];
+//    
+//    // 中间放按钮视图
+//	imageViewPlaceBtn = [[UIImageView alloc] initWithFrame:CGRectMake(0, 30, 320, 45)];
+//	imageViewPlaceBtn.image = [UIImage imageNamed:@"composeiconbg.png"];
+//	[viewMidBase addSubview:imageViewPlaceBtn];
+//	imageViewPlaceBtn.userInteractionEnabled = YES;
+//    
+//    // 字数统计　
+//	viewWordNum = [[WordsLeftView alloc] initWithFrame:CGRectMake(0, 15, self.view.frame.size.width, 17)];
+//	[imageViewPlaceBtn addSubview:viewWordNum];
+//	viewWordNum.wordsNum = MaxInputWords;
+//    
+//    viewDownBase.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"composeEmotionBg"]];
+//	[self.view addSubview:viewDownBase];
+//   
+//    // 照相机
+//    UIButton *btnPhotoFromCamera = [UIButton buttonWithType:UIButtonTypeCustom];
+//	[btnPhotoFromCamera setImage:[UIImage imageNamed:@"composeCameraEnable.png"] forState:UIControlStateNormal];
+//	[btnPhotoFromCamera setImage:[UIImage imageNamed:@"composeCamerahover.png"] forState:UIControlStateHighlighted];
+//	btnPhotoFromCamera.frame =  PhotoFromCameraBtnFrame;
+//    btnPhotoFromCamera.tag = PhotoFromCameraBtnTag;
+//	[btnPhotoFromCamera addTarget:self action:@selector(pickImageBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+//	[viewMidBase addSubview:btnPhotoFromCamera];
+//    
+//    // 定位
+//    UIButton *btnPosition = [UIButton buttonWithType:UIButtonTypeCustom];
+//    [btnPosition setFrame:PositionBtnFrame];
+//    [btnPosition setTag:PositionBtnTag];
+//    [btnPosition setImage:[UIImage imageNamed:@"composedingwei.png"] forState:UIControlStateNormal];
+//    [btnPosition addTarget:self action:@selector(positionBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+//    bShowPosition = YES;
+//    [viewMidBase addSubview:btnPosition];
+//    
+//    // 好友
+//    UIButton *btnFriendsSearch = [UIButton buttonWithType:UIButtonTypeCustom];
+//	[btnFriendsSearch setImage:[UIImage imageNamed:@"composeAt.png"] forState:UIControlStateNormal];
+//	[btnFriendsSearch setImage:[UIImage imageNamed:@"composeAthover.png"] forState:UIControlStateHighlighted];
+//	btnFriendsSearch.frame = FriendsearchBtnFrame;			// 23*22
+//	btnFriendsSearch.tag = FriendSearchBtnTag;
+//	[btnFriendsSearch addTarget:self action:@selector(friendSearchBtnClicked) forControlEvents:UIControlEventTouchUpInside];
+//	[viewMidBase addSubview:btnFriendsSearch];
+//    
+//	// 话题
+//	UIButton *btnTopicSearch = [UIButton buttonWithType:UIButtonTypeCustom];
+//	[btnTopicSearch setImage:[UIImage imageNamed:@"compose#.png"] forState:UIControlStateNormal];
+//	[btnTopicSearch setImage:[UIImage imageNamed:@"compose#hover.png"] forState:UIControlStateHighlighted];
+//	btnTopicSearch.frame = TopicSearchBtnFrame;
+//	btnTopicSearch.tag = TopicSearchBtnTag;
+//	[btnTopicSearch addTarget:self action:@selector(topicSearchBtnClicked) forControlEvents:UIControlEventTouchUpInside];
+//	[viewMidBase addSubview:btnTopicSearch];
+//    
+//    // loading视图
+//    loadingView = [[UIActivityIndicatorView alloc] initWithFrame:PositionBtnFrame];
+//    loadingView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
+//    loadingView.hidden = YES;
+//    [viewMidBase addSubview:loadingView];
+//
+//    
+//    // 图片缩略图
+//    imageReadyPost = [self.myDict objectForKey:@"image"];
+//    if (imageReadyPost) {
+//        viewImage = [[AttachedPictureView alloc]initWithFrame:CGRectMake(5 - 43, -2, 43, 32)];
+//        viewImage.myAttachedPictureViewDelegate = self;
+//        [viewMidBase addSubview:viewImage];
+//        [imageReadyPost rotateImage:imageReadyPost.imageOrientation];
+//        [viewImage setAttachedImage:imageReadyPost];
+//        viewImage.backgroundColor = [UIColor clearColor];
+//        
+//        CATransition *animation = [CATransition animation];
+//        animation.delegate = self;
+//        animation.duration = 0.7;
+//        animation.timingFunction = UIViewAnimationCurveEaseInOut;
+//        animation.type = kCATransitionPush;
+//        viewImage.frame = CGRectMake(5, -2, 43, 32);
+//        [[viewImage layer] addAnimation:animation forKey:@"animation"];
+//    }
+//        
+//    UINoteView *noteview = [[UINoteView alloc] initWithFrame:CGRectMake((320 - NOTEVIEW_WIDTH)/2, 50, NOTEVIEW_WIDTH, NOTEVIEW_HEIGHT)];
+//    [noteview setTag:TAG_NOTEVIEW];
+//    
+//    [self.view addSubview:noteview];
+//    [noteview release];
+//    
+//    
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWasShown:) name:UIKeyboardDidShowNotification object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+//
+//    
+//    // 定位
+//    locationManager = [[CLLocationManager alloc] init];
+//    [locationManager setDelegate:self];
+//    
+//    [locationManager setDesiredAccuracy:kCLLocationAccuracyBest];
+//    [locationManager setDistanceFilter:1000.0f];
+//    
+//    
+//    NSString *strName = [weiboEngine name];
+//    NSString *strOpenId = [weiboEngine openId];
+//    
+//    // 请求 互听好友
+//    [weiboEngine getFriendMutualListWithFormat:kJson 
+//                                          name:strName 
+//                                       fopenID:strOpenId 
+//                                        reqNum:10
+//                                    startIndex:nMutualIndex ++
+//                                       andInstall:0 
+//                                   parReserved:nil 
+//                                      delegate:self 
+//                                     onSuccess:@selector(didRequestMutualList:) 
+//                                     onFailure:@selector(failedRequestMutualList:)];
+//    
+//    // 请求 最近联系人
+//    [weiboEngine getFriendIntimateListWithFormat:kJson 
+//                                      andReqNum:20
+//                                 parReserved:nil
+//                                    delegate:self 
+//                                   onSuccess:@selector(didRequestIntimateFriend:) 
+//                                   onFailure:@selector(failedRequestIntimateFriend:)]; 
+//    
+//    // 最近使用话题
+//    [weiboEngine gethtRecentUsedWithFormat:kJson
+//                                    reqNum:kRecentHtReqNum
+//                                      page:nRecentHtIndex ++
+//                               andSortType:0
+//                               parReserved:nil
+//                                  delegate:self
+//                                 onSuccess:@selector(didRequestTopic:)
+//                                 onFailure:@selector(failedRequestTopic:)]; 
+//    
+//     
+//
+//    
+//    // 检测网络
+//    if (([[Reachability reachabilityForLocalWiFi] currentReachabilityStatus] == NotReachable) 
+//		&& ([[Reachability reachabilityForInternetConnection] currentReachabilityStatus] == NotReachable)){
+//        
+//        NSString *strNote = [NSString stringWithString:@"网络请求失败,稍候请重试"];
+//        [self performSelector:@selector(showNoteView:) withObject:strNote afterDelay:1.5];
+//    }
+//
+//}
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -125,16 +364,15 @@ static float		g_keyboardFrameHeightLastTime = 216;		// 默认初始键盘高度
     curSelectedRange.location = 0;
     [self.navigationController setNavigationBarHidden:YES];
     self.view.backgroundColor = [UIColor whiteColor];
-
-
+    
+    
     // 导航条
     UIImageView *imageViewNavBar = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"composeupbg.png"]];
     [imageViewNavBar setFrame:CGRectMake(0, 0, self.view.frame.size.width, NavBarHeight)];
     [imageViewNavBar setUserInteractionEnabled:YES];
-    [self.view addSubview:imageViewNavBar];
-    [imageViewNavBar release];
     
-
+    
+    
     
     // 标题
     UILabel *labelTitle = [[UILabel alloc] init];
@@ -146,15 +384,14 @@ static float		g_keyboardFrameHeightLastTime = 216;		// 默认初始键盘高度
     [labelTitle setTextAlignment:UITextAlignmentCenter];
     
     NSBundle *main = [NSBundle mainBundle];
-    NSString *strRebroadcast = [main localizedStringForKey:kLanguageRebroadcast value:nil table:kTCWBTable];    
+    NSString *strRebroadcast = [main localizedStringForKey:kLanguageRebroadcast value:nil table:kTCWBTable];
     
     [labelTitle setText:strRebroadcast];
     
     CGSize szTitle = [labelTitle.text sizeWithFont:labelTitle.font];
-    [labelTitle setFrame:CGRectMake((320 - szTitle.width)/2, (44 - szTitle.height)/2, szTitle.width, szTitle.height)];
+    [labelTitle setFrame:CGRectMake((self.view.frame.size.width - szTitle.width)/2, (44 - szTitle.height)/2, szTitle.width, szTitle.height)];
     
-    [self.view addSubview:labelTitle];
-    [labelTitle release];
+    
     
     
     // 取消
@@ -167,44 +404,54 @@ static float		g_keyboardFrameHeightLastTime = 216;		// 默认初始键盘高度
     
     [buttonLeft setBackgroundImage:[UIImage imageNamed:@"composequxiaobtn.png"] forState:UIControlStateNormal];
 	[buttonLeft addTarget:self action:@selector(cancelCompose:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:buttonLeft];
-   
+    
+    
     // 发送
     NSString *strSend = [main localizedStringForKey:kLanguageSend value:nil table:kTCWBTable];
     UIButton *buttonRight = [UIButton buttonWithType:UIButtonTypeCustom];
-	buttonRight.frame = CGRectMake(263, 5, 52, 33);
+	buttonRight.frame = CGRectMake(self.view.frame.size.width - 57, 5, 52, 33);
     buttonRight.tag = ButtonRightTag;
 	[buttonRight setTitle:strSend forState:UIControlStateNormal];
     buttonRight.titleLabel.font = [UIFont systemFontOfSize:14];
 	[buttonRight setBackgroundImage:[UIImage imageNamed:@"composesentbtn.png"] forState:UIControlStateNormal];
     [buttonRight setBackgroundImage:[UIImage imageNamed:@"composesentbtnhover.png"] forState:UIControlStateHighlighted];
     [buttonRight addTarget:self action:@selector(DoneCompose:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:buttonRight];
+    //    buttonRight.autoresizesSubviews = YES;
+    //    buttonRight.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
     
     
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 6.0) {
         // 上方背景视图
         viewUpBase = [[UIView alloc] initWithFrame:CGRectMake(0, NavBarHeight, self.view.frame.size.width, 126 + AltituteScrent)];
-        textView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, 320, 122 + AltituteScrent)];
+        textView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 122 + AltituteScrent)];
         // 中间背景视图
-        viewMidBase = [[UIView alloc] initWithFrame:CGRectMake(0, 126 + NavBarHeight + AltituteScrent, 320, 59)];
+        viewMidBase = [[UIView alloc] initWithFrame:CGRectMake(0, 126 + NavBarHeight + AltituteScrent, self.view.frame.size.width, 59)];
         //  底部底层背景
         viewDownBase = [[UIView alloc] initWithFrame:CGRectMake(0, 200 + NavBarHeight + AltituteScrent, self.view.frame.size.width, 216)];		// 默认键盘高度216
-
+        
     }else {
         // 上方背景视图
         viewUpBase = [[UIView alloc] initWithFrame:CGRectMake(0, NavBarHeight, self.view.frame.size.width, 126)];
-        textView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, 320, 122)];
+        textView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 122)];
         // 中间背景视图
-        viewMidBase = [[UIView alloc] initWithFrame:CGRectMake(0, 126 + NavBarHeight, 320, 59)];
+        viewMidBase = [[UIView alloc] initWithFrame:CGRectMake(0, 126 + NavBarHeight, self.view.frame.size.width, 59)];
         //  底部底层背景
         viewDownBase = [[UIView alloc] initWithFrame:CGRectMake(0, 200 + NavBarHeight, self.view.frame.size.width, 216)];		// 默认键盘高度216
-
-
-    }   
-    	// 文本输入框默认高度141
+        
+    }
+    
+    [self.view addSubview:imageViewNavBar];
+    [imageViewNavBar release];
+    [self.view addSubview:labelTitle];
+    [labelTitle release];
+    [self.view addSubview:buttonLeft];
+    [self.view addSubview:buttonRight];
+    
+    // 文本输入框默认高度141
     [self.view addSubview:viewUpBase];
     [self.view addSubview:viewMidBase];
+    
+    
     
 	textView.font = [UIFont systemFontOfSize:18];
 	textView.delegate = self;
@@ -215,19 +462,19 @@ static float		g_keyboardFrameHeightLastTime = 216;		// 默认初始键盘高度
     [viewUpBase addSubview:textView];
     
     // 中间放按钮视图
-	imageViewPlaceBtn = [[UIImageView alloc] initWithFrame:CGRectMake(0, 30, 320, 45)];
+	imageViewPlaceBtn = [[UIImageView alloc] initWithFrame:CGRectMake(0, 30, self.view.frame.size.width, 45)];
 	imageViewPlaceBtn.image = [UIImage imageNamed:@"composeiconbg.png"];
 	[viewMidBase addSubview:imageViewPlaceBtn];
 	imageViewPlaceBtn.userInteractionEnabled = YES;
     
-    // 字数统计　
+    // 字数统计
 	viewWordNum = [[WordsLeftView alloc] initWithFrame:CGRectMake(0, 15, self.view.frame.size.width, 17)];
 	[imageViewPlaceBtn addSubview:viewWordNum];
 	viewWordNum.wordsNum = MaxInputWords;
     
     viewDownBase.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"composeEmotionBg"]];
 	[self.view addSubview:viewDownBase];
-   
+    
     // 照相机
     UIButton *btnPhotoFromCamera = [UIButton buttonWithType:UIButtonTypeCustom];
 	[btnPhotoFromCamera setImage:[UIImage imageNamed:@"composeCameraEnable.png"] forState:UIControlStateNormal];
@@ -269,7 +516,7 @@ static float		g_keyboardFrameHeightLastTime = 216;		// 默认初始键盘高度
     loadingView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
     loadingView.hidden = YES;
     [viewMidBase addSubview:loadingView];
-
+    
     
     // 图片缩略图
     imageReadyPost = [self.myDict objectForKey:@"image"];
@@ -289,8 +536,8 @@ static float		g_keyboardFrameHeightLastTime = 216;		// 默认初始键盘高度
         viewImage.frame = CGRectMake(5, -2, 43, 32);
         [[viewImage layer] addAnimation:animation forKey:@"animation"];
     }
-        
-    UINoteView *noteview = [[UINoteView alloc] initWithFrame:CGRectMake((320 - NOTEVIEW_WIDTH)/2, 50, NOTEVIEW_WIDTH, NOTEVIEW_HEIGHT)];
+    
+    UINoteView *noteview = [[UINoteView alloc] initWithFrame:CGRectMake((self.view.frame.size.width - NOTEVIEW_WIDTH)/2, 50, NOTEVIEW_WIDTH, NOTEVIEW_HEIGHT)];
     [noteview setTag:TAG_NOTEVIEW];
     
     [self.view addSubview:noteview];
@@ -299,7 +546,7 @@ static float		g_keyboardFrameHeightLastTime = 216;		// 默认初始键盘高度
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWasShown:) name:UIKeyboardDidShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-
+    
     
     // 定位
     locationManager = [[CLLocationManager alloc] init];
@@ -313,24 +560,24 @@ static float		g_keyboardFrameHeightLastTime = 216;		// 默认初始键盘高度
     NSString *strOpenId = [weiboEngine openId];
     
     // 请求 互听好友
-    [weiboEngine getFriendMutualListWithFormat:kJson 
-                                          name:strName 
-                                       fopenID:strOpenId 
+    [weiboEngine getFriendMutualListWithFormat:kJson
+                                          name:strName
+                                       fopenID:strOpenId
                                         reqNum:10
                                     startIndex:nMutualIndex ++
-                                       andInstall:0 
-                                   parReserved:nil 
-                                      delegate:self 
-                                     onSuccess:@selector(didRequestMutualList:) 
+                                    andInstall:0
+                                   parReserved:nil
+                                      delegate:self
+                                     onSuccess:@selector(didRequestMutualList:)
                                      onFailure:@selector(failedRequestMutualList:)];
     
     // 请求 最近联系人
-    [weiboEngine getFriendIntimateListWithFormat:kJson 
-                                      andReqNum:20
-                                 parReserved:nil
-                                    delegate:self 
-                                   onSuccess:@selector(didRequestIntimateFriend:) 
-                                   onFailure:@selector(failedRequestIntimateFriend:)]; 
+    [weiboEngine getFriendIntimateListWithFormat:kJson
+                                       andReqNum:20
+                                     parReserved:nil
+                                        delegate:self
+                                       onSuccess:@selector(didRequestIntimateFriend:)
+                                       onFailure:@selector(failedRequestIntimateFriend:)];
     
     // 最近使用话题
     [weiboEngine gethtRecentUsedWithFormat:kJson
@@ -340,21 +587,20 @@ static float		g_keyboardFrameHeightLastTime = 216;		// 默认初始键盘高度
                                parReserved:nil
                                   delegate:self
                                  onSuccess:@selector(didRequestTopic:)
-                                 onFailure:@selector(failedRequestTopic:)]; 
+                                 onFailure:@selector(failedRequestTopic:)];
     
-     
-
+    
+    
     
     // 检测网络
-    if (([[Reachability reachabilityForLocalWiFi] currentReachabilityStatus] == NotReachable) 
+    if (([[Reachability reachabilityForLocalWiFi] currentReachabilityStatus] == NotReachable)
 		&& ([[Reachability reachabilityForInternetConnection] currentReachabilityStatus] == NotReachable)){
         
         NSString *strNote = [NSString stringWithString:@"网络请求失败,稍候请重试"];
         [self performSelector:@selector(showNoteView:) withObject:strNote afterDelay:1.5];
     }
-
+    
 }
-
 
 // 键盘即将消失时调用
 - (void)keyboardWillHide:(NSNotification *)notification {
