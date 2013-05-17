@@ -675,7 +675,7 @@ extern ASIHTTPRequest *nowrequest;
     [super viewWillAppear:animated];
     self.navigationController.navigationBarHidden = YES;
     [self.view becomeFirstResponder];
-    
+    [[NSUserDefaults standardUserDefaults] setObject:@"YES" forKey:kBePro];
     recPlayAgain = [[NSUserDefaults standardUserDefaults] boolForKey:@"recPlayAgain"];
     isInterupted = NO;
     isPlayPage = YES;

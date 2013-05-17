@@ -133,7 +133,7 @@ static BOOL G_LOGOUT = NO;
                 [requestItem disconnect];
             }
         }
-    } 
+    }
 }
 
 - (NSString *)urlSchemeString{
@@ -628,7 +628,7 @@ static BOOL G_LOGOUT = NO;
         [dic setObject:@"0" forKey:@"htid"];
         [dic setObject:httext forKey:@"httext"];
     }
-   
+    
     [dic setObject:[NSNumber numberWithInteger:pageflag] forKey:@"pageflag"];
     [dic setObject:[NSNumber numberWithInteger:flag] forKey:@"flag"];
     [dic setObject:[NSNumber numberWithInteger:type] forKey:@"type"];

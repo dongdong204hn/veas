@@ -137,7 +137,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "8201"
          endingLineNumber = "8201"
-         landmarkName = "-playRecord"
+         landmarkName = "-stopPlayRecord"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -187,7 +187,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "8166"
          endingLineNumber = "8166"
-         landmarkName = "-recordPlayTouch:"
+         landmarkName = "-playRecord"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
