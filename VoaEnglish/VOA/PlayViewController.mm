@@ -3843,6 +3843,22 @@ extern ASIHTTPRequest *nowrequest;
     }
 }
 
+- (void)setRecordSetting {
+    if ([self hasMicphone]) {
+        //该代码是设置手机喇叭与麦克风同时工作 iphone 3.0以上版本 播放类型
+        UInt32 audioCategory = kAudioSessionCategory_PlayAndRecord;
+        AudioSessionSetProperty(kAudioSessionProperty_AudioCategory, sizeof(audioCategory), &audioCategory);
+        //设置采样率的
+        Float64 smpl=kAudioSessionProperty_CurrentHardwareSampleRate;
+        AudioSessionSetProperty(kAudioSessionProperty_PreferredHardwareSampleRate, sizeof(smpl), &smpl);
+    }
+    if (![self hasHeadset]) {
+        //设置声音输出扬声器 还是默认的接收器kAudioSessionOverrideAudioRoute_None
+        UInt32 audioRoute = kAudioSessionOverrideAudioRoute_Speaker;
+        AudioSessionSetProperty(kAudioSessionProperty_OverrideAudioRoute, sizeof(UInt32), &audioRoute);
+    }
+}
+
 /*检测声音输入设备(即有无麦克风)*/
 - (BOOL)hasMicphone {
     return [[AVAudioSession sharedInstance] inputIsAvailable];
@@ -4711,7 +4727,6 @@ void audioRouteChangeListenerCallback (
 - (void)updateReadCount:(NSInteger) voaid   {
     NSString *url = [NSString stringWithFormat:@"http://voa.iyuba.com/voa/UnicomApi?protocol=70001&voaids=%d&counts=1&format=xml",voaid];
 //    NSLog(@"url:%@",url);
-    //    ASIHTTPRequest * request = [[ASIHTTPRequest alloc] initWithURL:[NSURL URLWithString:url]];
     ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
     request.delegate = self;
     [request setUsername:@"readCount"];
@@ -4726,13 +4741,11 @@ void audioRouteChangeListenerCallback (
     //    NSLog(@"获取内容-%d",voaid._voaid);
     NSString *url = [NSString stringWithFormat:@"http://apps.iyuba.com/voa/textApi.jsp?voaid=%d&format=xml",voaid._voaid];
     //    NSLog(@"catch:%d",voaid._voaid);
-    //    ASIHTTPRequest * request = [[ASIHTTPRequest alloc] initWithURL:[NSURL URLWithString:url]];
     ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
     request.delegate = self;
     [request setUsername:@"detail"];
     [request setTag:voaid._voaid];
     [request startSynchronous];
-    //    [request release];
 }
 
 /**
@@ -4999,68 +5012,6 @@ void audioRouteChangeListenerCallback (
                 myWord.chnArray = chi;
                 
                 [self wordExistDisplay];
-//                for (UIView *sView in [explainView subviews]) {
-//                    if (![sView isKindOfClass:[UIImageView class]]) {
-//                        [sView removeFromSuperview];
-//                    }
-//                }
-//
-//                UIFont *Courier = [UIFont fontWithName:@"Arial" size:15];
-//                UIFont *CourierT = [UIFont fontWithName:@"Arial" size:14];
-//                
-//                UIButton *addButton = [UIButton buttonWithType:UIButtonTypeCustom] ;
-//                [addButton setImage:[UIImage imageNamed:@"addWord.png"] forState:UIControlStateNormal];
-//                [addButton addTarget:self action:@selector(addWordPressed:) forControlEvents:UIControlEventTouchUpInside];
-//                [addButton setFrame:CGRectMake(10, 5, 20, 20)];
-//                [explainView addSubview:addButton];
-//                
-//                UILabel *wordLabel = [[UILabel alloc]initWithFrame:CGRectMake(30, 5, [myWord.key sizeWithFont:Courier].width+10, 20)];
-//                [wordLabel setFont :Courier];
-//                [wordLabel setTextAlignment:UITextAlignmentCenter];
-//                wordLabel.text = myWord.key;
-//                wordLabel.backgroundColor = [UIColor clearColor];
-//                [explainView addSubview:wordLabel];
-//                [wordLabel release];
-//                
-//                UILabel *pronLabel = [[UILabel alloc]initWithFrame:CGRectMake(40+[myWord.key sizeWithFont:Courier].width, 5, [[NSString stringWithFormat:@"[%@]", myWord.pron] sizeWithFont:Courier].width+10, 20)];
-//                [pronLabel setFont :CourierT];
-//                [pronLabel setTextAlignment:UITextAlignmentLeft];
-//                if ([myWord.pron isEqualToString:@" "]) {
-//                    pronLabel.text = @"";
-//                }else
-//                {
-//                    pronLabel.text = [NSString stringWithFormat:@"[%@]", myWord.pron];
-//                }
-//                pronLabel.backgroundColor = [UIColor clearColor];
-//                [explainView addSubview:pronLabel];
-//                [pronLabel release];
-//                
-//                if (wordPlayer) {
-//                    [wordPlayer release];
-//                }
-//                wordPlayer =[[AVPlayer alloc]initWithURL:[NSURL URLWithString:myWord.audio]];
-//                [wordPlayer play];
-//                
-//                UIButton *audioButton = [UIButton buttonWithType:UIButtonTypeCustom] ;
-//                [audioButton setImage:[UIImage imageNamed:@"wordSound.png"] forState:UIControlStateNormal];
-//                [audioButton addTarget:self action:@selector(playWord:) forControlEvents:UIControlEventTouchUpInside];
-//                [audioButton setFrame:CGRectMake(50+[myWord.key sizeWithFont:Courier].width + [[NSString stringWithFormat:@"[%@]", myWord.pron] sizeWithFont:Courier].width, 5, 20, 20)];
-//                [explainView addSubview:audioButton];
-//                
-//                UITextView *defTextView = [[UITextView alloc] initWithFrame:CGRectMake(0, 22, explainView.frame.size.width, 80)];
-//                if ([myWord.def isEqualToString:@" "]) {
-//                    defTextView.text = kPlaySeven;
-////                    NSLog(@"未联网无法查看释义!");             
-//                }else{
-//                    defTextView.text = myWord.def;
-//                }
-//                [defTextView setEditable:NO];
-//                [defTextView setFont :CourierT];
-//                defTextView.backgroundColor = [UIColor clearColor];
-//                [explainView addSubview:defTextView];  
-//                [defTextView release];
-//                [explainView setAlpha:1];
-//                [explainView setHidden:NO];
                 
             }else
             {
@@ -5102,7 +5053,6 @@ void audioRouteChangeListenerCallback (
 - (void)catchComments:(NSInteger)pages{
     if (kNetIsExist) {
         NSString *url = [NSString stringWithFormat:@"http://voa.iyuba.com/voa/UnicomApi?protocol=60001&platform=ios&format=xml&voaid=%i&pageNumber=%i&pageCounts=15",voa._voaid,pages];
-        //    ASIHTTPRequest * request = [[ASIHTTPRequest alloc] initWithURL:[NSURL URLWithString:url]];
         ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
         [sendBtn setUserInteractionEnabled:NO];
 //        NSLog(@"url:%@", url);
@@ -5113,16 +5063,6 @@ void audioRouteChangeListenerCallback (
         kNetTest;
     }
     
-    
-    /* 旧版获取评论API
-    NSString *url = [NSString stringWithFormat:@"http://apps.iyuba.com/voa/updateShuoShuo.jsp?groupName=iyuba&mod=select&topicId=%i&pageNumber=%i&pageCounts=15",voa._voaid,pages];
-    //    ASIHTTPRequest * request = [[ASIHTTPRequest alloc] initWithURL:[NSURL URLWithString:url]];
-    ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
-    [sendBtn setUserInteractionEnabled:NO];
-    request.delegate = self;
-    [request setUsername:@"comment"];
-    [request startAsynchronous];
-     */
 }
 
 /**
@@ -5164,42 +5104,6 @@ void audioRouteChangeListenerCallback (
     [request startAsynchronous];
     
 }
-
-/**
- *  发表评论
- */
-/*
-- (void)sendComments{
- 
-    NSInteger uid = [[NSUserDefaults standardUserDefaults] integerForKey:@"nowUser"];
-    //    NSLog(@"$$$:%d", uid);
-    if (uid>0) {
-        NSString *url;
-        if (isResponse) {
-            url = [NSString stringWithFormat:@"http://apps.iyuba.com/voa/updateShuoShuo.jsp?userId=%i&groupName=ios&mod=insert&topicId=%i&comment=%@&toId=%i",uid, voa._voaid, [[textView text] URLEncodedString], [textView tag]];
-        } else {
-            url = [NSString stringWithFormat:@"http://apps.iyuba.com/voa/updateShuoShuo.jsp?userId=%i&groupName=ios&mod=insert&topicId=%i&comment=%@",uid, voa._voaid, [[textView text] URLEncodedString]];
-        }
-        
-        //        ASIHTTPRequest * request = [[ASIHTTPRequest alloc] initWithURL:[NSURL URLWithString:url]];
-        ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
-        request.delegate = self;
-        [request setUsername:@"send"];
-        [request startAsynchronous];
-    } else {
-        LogController *myLog = [[LogController alloc]init];
-        [self.navigationController  pushViewController:myLog animated:YES];
-        
-        //        id nextResponder = [self.view nextResponder];
-        //        UIView *test = [[UIView alloc] init];
-        //        tes
-        //        [[(UIView *)self.view firstViewController:self.view] presentModalViewController:myLog animated:YES];
-        [myLog release];
-        //        PlayViewController *player = [PlayViewController sharedPlayer];
-        //        [player.navigationController pushViewController:myLog animated:YES];
-    }
-}
-*/
 
 /**
  *  评论获取失败
@@ -5247,6 +5151,9 @@ void audioRouteChangeListenerCallback (
     }
 }
 
+/**
+ *  获取联网请求服务器返回结果的默认函数
+ */
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
     kNetEnable;
@@ -5309,35 +5216,6 @@ void audioRouteChangeListenerCallback (
                 
             }
         }
-//        items = [doc nodesForXPath:@"data/Row" error:nil];
-//        if (items) {
-//            for (DDXMLElement *obj in items) {
-//                [commArray addObject:[[obj elementForName:@"id"] stringValue]];
-//                [commArray addObject:[[obj elementForName:@"UserName"] stringValue]];
-//                [commArray addObject:[[obj elementForName:@"ImgSrc"] stringValue]];
-//                [commArray addObject: [[obj elementForName:@"ShuoShuoType"] stringValue].intValue == 1 ?[NSString stringWithFormat:@"http://voa.iyuba.com/voa/%@", [[obj elementForName:@"ShuoShuo"] stringValue].URLDecodedString] : [[obj elementForName:@"ShuoShuo"] stringValue].URLDecodedString];
-//                [commArray addObject:[[obj elementForName:@"CreateDate"] stringValue]];
-//                [commArray addObject:[[obj elementForName:@"Userid"] stringValue]];
-//                [commArray addObject:[[obj elementForName:@"ShuoShuoType"] stringValue]];
-//            }
-//        }
-//        if (isiPhone) { //动态改变表的大小，防止背景出现灰色
-//            if ([commArray count]/7<(isFree?(isFive?6:5):(isFive?7:6))) {
-//                [self.commTableView setFrame:CGRectMake(0, 0, 320, [commArray count]/7*kCommTableHeightPh)];
-//                //                NSLog(@"表高:%f", [commArray count]/4*kCommTableHeightPh);
-//            }
-//            else {
-//                [self.commTableView setFrame:CGRectMake(0, 0, 320, (isFree?260:310) + kFiveAdd)];
-//            }
-//        } else {
-//            if ([commArray count]/7<(isFree?9:10)) {
-//                [self.commTableView setFrame:CGRectMake(0, 0, 768, [commArray count]/7*80.0f)];
-//                //                NSLog(@"表高:%f", [commArray count]/4*80.0f);
-//            }
-//            else {
-//                [self.commTableView setFrame:CGRectMake(0, 0, 768,(isFree?665:755))];
-//            }
-//        }
         
         [commTableView reloadData];
         if (isNewComm) {
@@ -5410,7 +5288,7 @@ void audioRouteChangeListenerCallback (
 }
 
 
-#pragma mark - Touch
+#pragma mark - Touch screen
 /**
  *  点击主视图
  */
@@ -5472,7 +5350,6 @@ void audioRouteChangeListenerCallback (
             //            [downloadFlg setHidden:YES];
             //            [downloadingFlg setHidden:NO];
         } else if (alertView.tag == 2){
-            
             [myWord alterCollect];
         } else if (alertView.tag == 3)
         {
@@ -5535,25 +5412,6 @@ void audioRouteChangeListenerCallback (
 //    NSLog(@"拖动结束");
     [self becomeFirstResponder];
     [speedMenu setMenuVisible:NO animated:YES];
-//    if (myButton.tag == 1) {
-//        noBuffering = NO;
-//        seekTo = [timeSlider value] - 1;//#$$#
-//        CMTime playerProgress = [player currentTime];
-//        double progress = CMTimeGetSeconds(playerProgress);
-//        [self setButtonImage:loadingImage];
-//        [MP3PlayerClass timeSliderChanged:timeSlider
-//                               timeSlider:timeSlider
-//                              localPlayer:player
-//                                   button:playButton];
-//        //    [timeSlider setEnabled:NO];
-//        int i = 0;
-//        for (; i < [timeArray count]; i++) {
-//            if ((int)progress < [[timeArray objectAtIndex:i] unsignedIntValue]) {
-//                sen_num = i;//跟读标识句子号
-//                return;
-//            }
-//        }
-//    }
     isAbMenu = NO;
     UIMenuItem *menuItem = [[UIMenuItem alloc]initWithTitle:@"中译" action:@selector(showChDefine)];
     UIMenuController *menu = [UIMenuController sharedMenuController];
@@ -5594,13 +5452,6 @@ void audioRouteChangeListenerCallback (
         }
         
     }
-//    NSLog(@"x:%f,y:%f",point.x,point.y);
-//    int fontSize = [[NSUserDefaults standardUserDefaults] integerForKey:@"nowValueFont"];
-//    NSLog(@"nowValueFont:%d",fontSize);
-//    UIFont *Courier = [UIFont fontWithName:@"Courier" size:fontSize];
-    
-    //    int numberoflines = self.frame.size.height / lineHeight;
-//    int tagetline = ceilf((point.y- mylabel.frame.origin.y)/lineHeight);
     NSString * sepratorString = @", ，。.?!:\"“”-()'‘";
     //    NSString * text = @"...idowrhu wpe gre dddd.. 'eow.ei, we u";
     NSCharacterSet * sepratorSet = [NSCharacterSet characterSetWithCharactersInString:sepratorString];
@@ -5671,14 +5522,6 @@ void audioRouteChangeListenerCallback (
         }
         
         CGFloat pointX = [str sizeWithFont:mylabel.font].width;
-//        if (readRecord) {
-//            pointX = [str sizeWithFont:mylabel.font].width;
-//        }
-        
-//        if (wordBack) {
-//            [wordBack removeFromSuperview];
-//            wordBack = nil;
-//        }
         LocalWord *word = [LocalWord findByKey:WordIFind];
         myWord.wordId = [VOAWord findLastId] + 1;
 
@@ -5731,10 +5574,6 @@ void audioRouteChangeListenerCallback (
         }
         
         [myHighLightWord setHidden:NO];
-//        wordBack = [[UIView alloc] initWithFrame:CGRectMake(pointX, pointY, width, lineHeight)];
-//        wordBack.backgroundColor = [UIColor colorWithRed:1.0 green:0.651 blue:0.098 alpha:0.5];
-//        [self insertSubview:wordBack atIndex:0];
-//        [self GetExplain:WordIFind];
     }   
     
 }
@@ -6073,25 +5912,6 @@ void audioRouteChangeListenerCallback (
         // Switch the indicator when more than 50% of the previous/next page is visible
         CGFloat pageWidth = myScroll.frame.size.width;
         int page = floor((myScroll.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
-        //    if (page == 3) {
-        //        //该代码是设置手机喇叭与麦克风同时工作 iphone 3.0以上版本 播放类型
-        //        UInt32 audioCategory = kAudioSessionCategory_PlayAndRecord;
-        //        AudioSessionSetProperty(kAudioSessionProperty_AudioCategory, sizeof(audioCategory), &audioCategory);
-        //        //设置采样率的
-        //        Float64 smpl=kAudioSessionProperty_CurrentHardwareSampleRate;
-        //        AudioSessionSetProperty(kAudioSessionProperty_PreferredHardwareSampleRate, sizeof(smpl), &smpl);
-        //        //设置声音输出扬声器 还是默认的接收器kAudioSessionOverrideAudioRoute_None
-        //        UInt32 audioRoute = kAudioSessionOverrideAudioRoute_Speaker; 
-        //        AudioSessionSetProperty(kAudioSessionProperty_OverrideAudioRoute, sizeof(UInt32), &audioRoute);
-        ////        page = 1;
-        //        if (isiPhone) {
-        //            [myScroll scrollRectToVisible:CGRectMake(640, 0, 320, 288) animated:YES];
-        //        } else {
-        //            [myScroll scrollRectToVisible:CGRectMake(1536, 0, 768, 665) animated:NO];
-        //        }
-        //        [self aftPlay:nextButton];
-        //        return;
-        //    }
         if (page == 2) {
              [shareSenBtn setHidden:NO];
             [colSenBtn setHidden:NO];
@@ -6101,11 +5921,6 @@ void audioRouteChangeListenerCallback (
         }
         
         if (page == 2) {
-            //        [lyricCnLabel setNumberOfLines:cLines];
-            //        [lyricLabel setNumberOfLines:eLines];
-            //        NSLog(@"progress:%f",progress);
-            //        NSLog(@"sen_num2:%d",sen_num);
-            //        int cLines = (288-eLines * engHight-70) / engHight;
             
             //该代码是设置手机喇叭与麦克风同时工作 iphone 3.0以上版本 播放类型
 //            UInt32 audioCategory = kAudioSessionCategory_PlayAndRecord;
@@ -6116,22 +5931,9 @@ void audioRouteChangeListenerCallback (
 //            //设置声音输出扬声器 还是默认的接收器kAudioSessionOverrideAudioRoute_None
 //            UInt32 audioRoute = kAudioSessionOverrideAudioRoute_Speaker; 
 //            AudioSessionSetProperty(kAudioSessionProperty_OverrideAudioRoute, sizeof(UInt32), &audioRoute);
-            if ([self hasMicphone]) {
-                //该代码是设置手机喇叭与麦克风同时工作 iphone 3.0以上版本 播放类型
-                UInt32 audioCategory = kAudioSessionCategory_PlayAndRecord;
-                AudioSessionSetProperty(kAudioSessionProperty_AudioCategory, sizeof(audioCategory), &audioCategory);
-                //设置采样率的
-                Float64 smpl=kAudioSessionProperty_CurrentHardwareSampleRate;
-                AudioSessionSetProperty(kAudioSessionProperty_PreferredHardwareSampleRate, sizeof(smpl), &smpl);
-            }
-            if (![self hasHeadset]) {
-                //设置声音输出扬声器 还是默认的接收器kAudioSessionOverrideAudioRoute_None
-                UInt32 audioRoute = kAudioSessionOverrideAudioRoute_Speaker; 
-                AudioSessionSetProperty(kAudioSessionProperty_OverrideAudioRoute, sizeof(UInt32), &audioRoute);
-            }
             
-            double engHight = [@"a" sizeWithFont:CourierOne].height;
-            double cnHight = [@"赵" sizeWithFont:CourierOne].height;
+            [self setRecordSetting];
+            
             //        NSLog(@"sen_num1:%d",sen_num);
             CMTime playerProgress = [player currentTime];
             double progress = CMTimeGetSeconds(playerProgress);
@@ -6144,152 +5946,43 @@ void audioRouteChangeListenerCallback (
                     break;
                 }
             }
+
+            [self updateRecSenLabel];
             
-            /*
-            NSInteger myStartTime = sen_num > 1? [[timeArray objectAtIndex:sen_num-2] unsignedIntValue]:[[timeArray objectAtIndex:0] unsignedIntValue];
-            NSInteger myEndTime = sen_num > 1? [[timeArray objectAtIndex:sen_num-1] unsignedIntValue] : [[timeArray objectAtIndex:1] unsignedIntValue];
-            NSLog(@"start:%d end:%d", myStartTime, myEndTime);
-            [self cutAudio:myStartTime endTime:myEndTime];
-            */
-            
-            [lyCn release];
-            [lyEn release];
-//            if ([self isPlaying]) {
-                lyEn = [[NSString alloc] initWithFormat:@"%@", [lyricArray objectAtIndex:(sen_num>2?sen_num-2:0)]];
-                lyCn = [[NSString alloc] initWithFormat:@"%@", [lyricCnArray objectAtIndex:(sen_num>2?sen_num-2:0)]];
-//            } else {
-//                lyEn = [[NSString alloc] initWithFormat:@"%@", [lyricArray objectAtIndex:(sen_num>3?sen_num-3:0)]];
-//                lyCn = [[NSString alloc] initWithFormat:@"%@", [lyricCnArray objectAtIndex:(sen_num>3?sen_num-3:0)]];
-//            }
-            
-            int eLines = 0;
-            int cLines = 0;
             if (isiPhone) {
-                eLines = lyEn != Nil ? [lyEn sizeWithFont:CourierOne constrainedToSize:CGSizeMake(260, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap].height / engHight : 0;
-                cLines = lyCn != Nil ? [lyCn sizeWithFont:CourierTwo constrainedToSize:CGSizeMake(260, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap].height / cnHight + 1 : 0;
-                [lyricScroll setContentSize:CGSizeMake(260, eLines * engHight)];
-                [lyricCnScroll setContentSize:CGSizeMake(260, cLines * cnHight)];
-                [lyricLabel setFrame:CGRectMake(0, 0, 260, eLines * engHight)];
-                [lyricCnLabel setFrame:CGRectMake(0, 0, 260, cLines * cnHight)];
-                
-//                if ([[[UIDevice currentDevice] model] isEqualToString:@"iPod touch"]) {
-//                    [preButton setFrame:CGRectMake(5, 10, 30, 30)];
-//                    [nextButton setFrame:CGRectMake(115, 10, 30, 30)];
-//                } else {
-                    [preButton setFrame:CGRectMake(35, 10, 30, 30)];
-                    [nextButton setFrame:CGRectMake(255, 10, 30, 30)];
-//                }
-//                if (isiPhone) {
-                   
-//                }
-            }else {
-                eLines = lyEn != Nil ? [lyEn sizeWithFont:CourierOne constrainedToSize:CGSizeMake(568, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap].height / engHight : 0;
-                cLines = lyCn != Nil ? [lyCn sizeWithFont:CourierTwo constrainedToSize:CGSizeMake(568, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap].height / cnHight + 1 : 0;
-                [lyricScroll setContentSize:CGSizeMake(568, eLines * engHight)];
-                [lyricCnScroll setContentSize:CGSizeMake(568, cLines * cnHight)];
-                [lyricLabel setFrame:CGRectMake(0, 0, 568, eLines * engHight)];
-                [lyricCnLabel setFrame:CGRectMake(0, 0, 568, cLines * cnHight)];
-                
+                [preButton setFrame:CGRectMake(35, 10, 30, 30)];
+                [nextButton setFrame:CGRectMake(255, 10, 30, 30)];
+            } else {
                 [preButton setFrame:CGRectMake(50, 10, 70, 60)];
                 [nextButton setFrame:CGRectMake(648, 10, 70, 60)];
-                [preButton setImage:[UIImage imageNamed:@"preSen-iPad.png"] forState:UIControlStateNormal];
-                [nextButton setImage:[UIImage imageNamed:@"nextSen-iPad.png"] forState:UIControlStateNormal];
             }
-            
-            lyricLabel.text = lyEn;
-            //        [lyEn release];
-            
-            if (![lyCn isEqualToString:@"null"] && ![lyCn isEqualToString:@""] && ![lyCn isEqualToString:@"test"]) {
-                lyricCnLabel.text = lyCn;
-                //            [lyCn release];
-            }else{
-                lyricCnLabel.text = @"";
-            }
-            //        NSLog(@"lyCnretain2:%i", [lyCn retainCount]);
             readRecord = YES;
             [playButton setHidden:YES];
             [timeSlider setHidden:YES];
             [currentTimeLabel setHidden:YES];
             [totalTimeLabel  setHidden:YES];
             [loadProgress setHidden:YES];
-//            [downloadFlg setHidden:YES];
-//            [collectButton setHidden:YES];
-//            [downloadingFlg setHidden:YES];
             [btn_play setHidden:NO];
             [btn_record setHidden:NO];
             [recordLabel setHidden:NO];
-//            [modeBtn setHidden:YES];
             
             if ([abBtn isSelected]) {
                 [self showRepeat:abBtn];
             }
             
             if (![[NSUserDefaults standardUserDefaults] boolForKey:@"recordRead"] && [self hasMicphone]) {
-//                [btn_play setEnabled:YES];
                 [btn_record setEnabled:YES];
             } else {
                 [btn_play setEnabled:NO];
                 [btn_record setEnabled:NO];
             }
-            if (sen_num>1) {
-                VOADetail *myVoaDetail=[VOADetail findByVoaidAndTime:self.voa._voaid timing:[[timeArray objectAtIndex:sen_num-2]unsignedIntValue]];
-                [mySentence init];
-                
-                mySentence.SentenceId=[VOASentence findLastId]+1;
-                mySentence.VoaId = myVoaDetail._voaid;
-                mySentence.ParaId = myVoaDetail._paraid;
-                mySentence.IdIndex = myVoaDetail._idIndex;
-                mySentence.Sentence = myVoaDetail._sentence;
-                mySentence.Sentence_cn = myVoaDetail._sentence_cn;
-//                NSLog(@"%d,%d",sen_num,[timeArray count]);
-//                NSLog(@"%d,%d,%d,%d",mySentence.SentenceId,mySentence.VoaId,mySentence.ParaId,mySentence.IdIndex);
-                mySentence.StartTime = [[timeArray objectAtIndex:sen_num-2]unsignedIntValue];
-                if ([timeArray count]>sen_num) {
-                    mySentence.EndTime = [[timeArray objectAtIndex:sen_num-1]unsignedIntValue];
-                }else{
-                    mySentence.EndTime = 1800 ;//默认30分钟
-                }
-//                NSLog(@"%d,%d,%d,%d,%d,%d,%d,%@",self.voa._voaid,[[timeArray objectAtIndex:sen_num-2]unsignedIntValue],myVoaDetail._voaid,myVoaDetail._paraid,myVoaDetail._idIndex,mySentence.StartTime,mySentence.EndTime,mySentence.Sentence);
-            } else {
-                VOADetail *myVoaDetail=[VOADetail findByVoaidAndTime:self.voa._voaid timing:[[timeArray objectAtIndex:0]unsignedIntValue]];
-                [mySentence init];
-                
-                mySentence.SentenceId=[VOASentence findLastId]+1;
-                mySentence.VoaId = myVoaDetail._voaid;
-                mySentence.ParaId = myVoaDetail._paraid;
-                mySentence.IdIndex = myVoaDetail._idIndex;
-                mySentence.Sentence = myVoaDetail._sentence;
-                mySentence.Sentence_cn = myVoaDetail._sentence_cn;
-//                NSLog(@"%d,%d",sen_num,[timeArray count]);
-//                NSLog(@"%d,%d,%d,%d",mySentence.SentenceId,mySentence.VoaId,mySentence.ParaId,mySentence.IdIndex);
-                mySentence.StartTime = [[timeArray objectAtIndex:0]unsignedIntValue];
-                if ([timeArray count]>sen_num-1) {
-                    mySentence.EndTime = [[timeArray objectAtIndex:sen_num]unsignedIntValue];
-                }else{
-                    mySentence.EndTime = 1800 ;//默认30分钟
-                }
-//                NSLog(@"%d,%d,%d,%d,%d,%d,%d,%@",self.voa._voaid,[[timeArray objectAtIndex:0]unsignedIntValue],myVoaDetail._voaid,myVoaDetail._paraid,myVoaDetail._idIndex,mySentence.StartTime,mySentence.EndTime,mySentence.Sentence);
-            }
             
+            [self creatSen];
             
-
-            //        [controller.lvlMeter_in setHidden:NO];
         }else {
             scoreSameSen = NO;
             if (page == 3) {
-                if ([self hasMicphone]) {
-                    //该代码是设置手机喇叭与麦克风同时工作 iphone 3.0以上版本 播放类型
-                    UInt32 audioCategory = kAudioSessionCategory_PlayAndRecord;
-                    AudioSessionSetProperty(kAudioSessionProperty_AudioCategory, sizeof(audioCategory), &audioCategory);
-                    //设置采样率的
-                    Float64 smpl=kAudioSessionProperty_CurrentHardwareSampleRate;
-                    AudioSessionSetProperty(kAudioSessionProperty_PreferredHardwareSampleRate, sizeof(smpl), &smpl);
-                }
-                if (![self hasHeadset]) {
-                    //设置声音输出扬声器 还是默认的接收器kAudioSessionOverrideAudioRoute_None
-                    UInt32 audioRoute = kAudioSessionOverrideAudioRoute_Speaker;
-                    AudioSessionSetProperty(kAudioSessionProperty_OverrideAudioRoute, sizeof(UInt32), &audioRoute);
-                }
+                [self setRecordSetting];
             } else {
                 //此种模式下无法播放的同时录音
                 [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
@@ -6299,14 +5992,14 @@ void audioRouteChangeListenerCallback (
             if (isiPhone) {
                 [preButton setFrame:CGRectMake(245, 10, 25, 25)];
                 [nextButton setFrame:CGRectMake(285, 10, 25, 25)];
-                [preButton setImage:[UIImage imageNamed:@"preSen.png"] forState:UIControlStateNormal];
-                [nextButton setImage:[UIImage imageNamed:@"nextSen.png"] forState:UIControlStateNormal];
+//                [preButton setImage:[UIImage imageNamed:@"preSen.png"] forState:UIControlStateNormal];
+//                [nextButton setImage:[UIImage imageNamed:@"nextSen.png"] forState:UIControlStateNormal];
             
             } else {
                 [preButton setFrame:CGRectMake(588, 10, 70, 60)];
                 [nextButton setFrame:CGRectMake(678, 10, 70, 60)];
-                [preButton setImage:[UIImage imageNamed:@"preSen-iPad.png"] forState:UIControlStateNormal];
-                [nextButton setImage:[UIImage imageNamed:@"nextSen-iPad.png"] forState:UIControlStateNormal];
+//                [preButton setImage:[UIImage imageNamed:@"preSen-iPad.png"] forState:UIControlStateNormal];
+//                [nextButton setImage:[UIImage imageNamed:@"nextSen-iPad.png"] forState:UIControlStateNormal];
             }
             
             [self myStopRecord];
@@ -6479,26 +6172,12 @@ void audioRouteChangeListenerCallback (
 //            UInt32 audioRoute = kAudioSessionOverrideAudioRoute_Speaker; 
 //            AudioSessionSetProperty(kAudioSessionProperty_OverrideAudioRoute, sizeof(UInt32), &audioRoute);
             
-            if ([self hasMicphone]) {
-                //该代码是设置手机喇叭与麦克风同时工作 iphone 3.0以上版本 播放类型
-                UInt32 audioCategory = kAudioSessionCategory_PlayAndRecord;
-                AudioSessionSetProperty(kAudioSessionProperty_AudioCategory, sizeof(audioCategory), &audioCategory);
-                //设置采样率的
-                Float64 smpl=kAudioSessionProperty_CurrentHardwareSampleRate;
-                AudioSessionSetProperty(kAudioSessionProperty_PreferredHardwareSampleRate, sizeof(smpl), &smpl);
-            }
-            if (![self hasHeadset]) {
-                //设置声音输出扬声器 还是默认的接收器kAudioSessionOverrideAudioRoute_None
-                UInt32 audioRoute = kAudioSessionOverrideAudioRoute_Speaker; 
-                AudioSessionSetProperty(kAudioSessionProperty_OverrideAudioRoute, sizeof(UInt32), &audioRoute);
-            }
-            
-            double engHight = [@"a" sizeWithFont:CourierOne].height;
+            [self setRecordSetting];
             
             //        NSLog(@"sen_num1:%d",sen_num);
             CMTime playerProgress = [player currentTime];
             double progress = CMTimeGetSeconds(playerProgress);
-            double cnHight = [@"赵" sizeWithFont:CourierOne].height;
+            
             int i = 0;
             for (; i < [timeArray count]; i++) {
                 if ((int)progress < [[timeArray objectAtIndex:i] unsignedIntValue]) {
@@ -6516,58 +6195,16 @@ void audioRouteChangeListenerCallback (
             [self cutAudio:myStartTime endTime:myEndTime];
             */
             
-            [lyCn release];
-            [lyEn release];
-            if ([self isPlaying]) {
-                lyEn = [[NSString alloc] initWithFormat:@"%@", [lyricArray objectAtIndex:(sen_num>2?sen_num-2:0)]];
-                lyCn = [[NSString alloc] initWithFormat:@"%@", [lyricCnArray objectAtIndex:(sen_num>2?sen_num-2:0)]];
-            } else {
-                lyEn = [[NSString alloc] initWithFormat:@"%@", [lyricArray objectAtIndex:(sen_num>3?sen_num-3:0)]];
-                lyCn = [[NSString alloc] initWithFormat:@"%@", [lyricCnArray objectAtIndex:(sen_num>3?sen_num-3:0)]];
-            }
+            [self updateRecSenLabel];
             
-            int eLines = 0;
-            int cLines = 0;
             if (isiPhone) {
-                eLines = lyEn != Nil ? [lyEn sizeWithFont:CourierOne constrainedToSize:CGSizeMake(260, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap].height / engHight : 0;
-                cLines = lyCn != Nil ? [lyCn sizeWithFont:CourierTwo constrainedToSize:CGSizeMake(260, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap].height / cnHight + 1 : 0;
-                [lyricScroll setContentSize:CGSizeMake(260, eLines * engHight)];
-                [lyricCnScroll setContentSize:CGSizeMake(260, cLines * cnHight)];
-                [lyricLabel setFrame:CGRectMake(0, 0, 260, eLines * engHight)];
-                [lyricCnLabel setFrame:CGRectMake(0, 0, 260, cLines * cnHight)];
-                
-//                if ([[[UIDevice currentDevice] model] isEqualToString:@"iPod touch"]) {
-//                    [preButton setFrame:CGRectMake(5, 10, 30, 30)];
-//                    [nextButton setFrame:CGRectMake(115, 10, 30, 30)];
-//                } else {
-                    [preButton setFrame:CGRectMake(35, 10, 30, 30)];
-                    [nextButton setFrame:CGRectMake(255, 10, 30, 30)];
-//                }
-                    [preButton setImage:[UIImage imageNamed:@"preSen.png"] forState:UIControlStateNormal];
-                    [nextButton setImage:[UIImage imageNamed:@"nextSen.png"] forState:UIControlStateNormal];
-            }else {
-                eLines = lyEn != Nil ? [lyEn sizeWithFont:CourierOne constrainedToSize:CGSizeMake(568, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap].height / engHight : 0;
-                cLines = lyCn != Nil ? [lyCn sizeWithFont:CourierTwo constrainedToSize:CGSizeMake(568, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap].height / cnHight + 1 : 0;
-                [lyricScroll setContentSize:CGSizeMake(568, eLines * engHight)];
-                [lyricCnScroll setContentSize:CGSizeMake(568, cLines * cnHight)];
-                [lyricLabel setFrame:CGRectMake(0, 0, 568, eLines * engHight)];
-                [lyricCnLabel setFrame:CGRectMake(0, 0, 568, cLines * cnHight)];
-                
+                [preButton setFrame:CGRectMake(35, 10, 30, 30)];
+                [nextButton setFrame:CGRectMake(255, 10, 30, 30)];
+            } else {
                 [preButton setFrame:CGRectMake(50, 10, 70, 60)];
                 [nextButton setFrame:CGRectMake(648, 10, 70, 60)];
-                [preButton setImage:[UIImage imageNamed:@"preSen-iPad.png"] forState:UIControlStateNormal];
-                [nextButton setImage:[UIImage imageNamed:@"nextSen-iPad.png"] forState:UIControlStateNormal];
-
-            }
-            
-            lyricLabel.text = lyEn;
-            //        [lyEn release];
-            
-            if (![lyCn isEqualToString:@"null"] && ![lyCn isEqualToString:@""] && ![lyCn isEqualToString:@"test"]) {
-                lyricCnLabel.text = lyCn;
-                //            [lyCn release];
-            }else{
-                lyricCnLabel.text = @"";
+                //                [preButton setImage:[UIImage imageNamed:@"preSen-iPad.png"] forState:UIControlStateNormal];
+                //                [nextButton setImage:[UIImage imageNamed:@"nextSen-iPad.png"] forState:UIControlStateNormal];
             }
             //        NSLog(@"lyCnretain2:%i", [lyCn retainCount]);
             readRecord = YES;
@@ -6595,64 +6232,13 @@ void audioRouteChangeListenerCallback (
                 [btn_play setEnabled:NO];
                 [btn_record setEnabled:NO];
             }
-            if (sen_num>1) {
-                VOADetail *myVoaDetail=[VOADetail findByVoaidAndTime:self.voa._voaid timing:[[timeArray objectAtIndex:sen_num-2]unsignedIntValue]];
-                [mySentence init];
-                
-                mySentence.SentenceId=[VOASentence findLastId]+1;
-                mySentence.VoaId = myVoaDetail._voaid;
-                mySentence.ParaId = myVoaDetail._paraid;
-                mySentence.IdIndex = myVoaDetail._idIndex;
-                mySentence.Sentence = myVoaDetail._sentence;
-                mySentence.Sentence_cn = myVoaDetail._sentence_cn;
-//                NSLog(@"%d,%d",sen_num,[timeArray count]);
-//                NSLog(@"%d,%d,%d,%d",mySentence.SentenceId,mySentence.VoaId,mySentence.ParaId,mySentence.IdIndex);
-                mySentence.StartTime = [[timeArray objectAtIndex:sen_num-2]unsignedIntValue];
-                if ([timeArray count]>sen_num) {
-                    mySentence.EndTime = [[timeArray objectAtIndex:sen_num-1]unsignedIntValue];
-                }else{
-                    mySentence.EndTime = 1800 ;//默认30分钟
-                }
-//                NSLog(@"%d,%d,%d,%d,%d,%d,%d,%@",self.voa._voaid,[[timeArray objectAtIndex:sen_num-2]unsignedIntValue],myVoaDetail._voaid,myVoaDetail._paraid,myVoaDetail._idIndex,mySentence.StartTime,mySentence.EndTime,mySentence.Sentence);
-            } else {
-                VOADetail *myVoaDetail=[VOADetail findByVoaidAndTime:self.voa._voaid timing:[[timeArray objectAtIndex:0]unsignedIntValue]];
-                [mySentence init];
-                
-                mySentence.SentenceId=[VOASentence findLastId]+1;
-                mySentence.VoaId = myVoaDetail._voaid;
-                mySentence.ParaId = myVoaDetail._paraid;
-                mySentence.IdIndex = myVoaDetail._idIndex;
-                mySentence.Sentence = myVoaDetail._sentence;
-                mySentence.Sentence_cn = myVoaDetail._sentence_cn;
-//                NSLog(@"%d,%d",sen_num,[timeArray count]);
-//                NSLog(@"%d,%d,%d,%d",mySentence.SentenceId,mySentence.VoaId,mySentence.ParaId,mySentence.IdIndex);
-                mySentence.StartTime = [[timeArray objectAtIndex:0]unsignedIntValue];
-                if ([timeArray count]>sen_num-1) {
-                    mySentence.EndTime = [[timeArray objectAtIndex:sen_num]unsignedIntValue];
-                }else{
-                    mySentence.EndTime = 1800 ;//默认30分钟
-                }
-//                NSLog(@"%d,%d,%d,%d,%d,%d,%d,%@",self.voa._voaid,[[timeArray objectAtIndex:0]unsignedIntValue],myVoaDetail._voaid,myVoaDetail._paraid,myVoaDetail._idIndex,mySentence.StartTime,mySentence.EndTime,mySentence.Sentence);
-            }
             
-//            [self cutAudio:myStartTime endTime:myEndTime];
-            //        [controller.lvlMeter_in setHidden:NO];
+            [self creatSen];
+
         }else {
             scoreSameSen = NO;
             if (page == 3) {
-                if ([self hasMicphone]) {
-                    //该代码是设置手机喇叭与麦克风同时工作 iphone 3.0以上版本 播放类型
-                    UInt32 audioCategory = kAudioSessionCategory_PlayAndRecord;
-                    AudioSessionSetProperty(kAudioSessionProperty_AudioCategory, sizeof(audioCategory), &audioCategory);
-                    //设置采样率的
-                    Float64 smpl=kAudioSessionProperty_CurrentHardwareSampleRate;
-                    AudioSessionSetProperty(kAudioSessionProperty_PreferredHardwareSampleRate, sizeof(smpl), &smpl);
-                }
-                if (![self hasHeadset]) {
-                    //设置声音输出扬声器 还是默认的接收器kAudioSessionOverrideAudioRoute_None
-                    UInt32 audioRoute = kAudioSessionOverrideAudioRoute_Speaker;
-                    AudioSessionSetProperty(kAudioSessionProperty_OverrideAudioRoute, sizeof(UInt32), &audioRoute);
-                }
+                [self setRecordSetting];
             } else {
                 //此种模式下无法播放的同时录音
                 [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
@@ -6673,30 +6259,6 @@ void audioRouteChangeListenerCallback (
             [self stopPlayRecord];
             if ([self isPlaying]) {
                 [self restoreTimerSelector];
-//                if ([lyricSynTimer isValid]) {
-//                    
-//                }else {
-//#if 1
-//                    lyricSynTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 
-//                                                                     target:self 
-//                                                                   selector:@selector(lyricSyn) 
-//                                                                   userInfo:nil 
-//                                                                    repeats:YES];
-//#endif
-//                }
-//                
-//                if ([sliderTimer isValid]) {
-//                    
-//                }else {
-//#if 1
-//                    sliderTimer = [NSTimer scheduledTimerWithTimeInterval:0.2
-//                                                                   target:self
-//                                                                 selector:@selector(updateSlider)
-//                                                                 userInfo:nil 
-//                                                                  repeats:YES];
-//#endif
-//                }
-
             }
             readRecord = NO;
             [playButton setHidden:NO];
@@ -6722,33 +6284,6 @@ void audioRouteChangeListenerCallback (
             }
         }
         
-//        float deviation = 5.0;
-//        if (isiPhone) {
-//            [RoundBack setImage:[UIImage imageNamed:@"RoundBack.png"]];
-//            
-//        } else {
-//            [RoundBack setImage:[UIImage imageNamed:@"RoundBack-iPad.png"]];
-//            
-//        }
-//        if (pageControl.currentPage>page) {
-////            if (isiPhone) {
-////                [RoundBack setImage:[UIImage imageNamed:@"RoundBackTwo.png"]];
-////
-////            } else {
-////                [RoundBack setImage:[UIImage imageNamed:@"RoundBackTwo-iPad.png"]];
-////
-////            }
-//                        deviation = 0.0;
-//        }else{
-////            if (isiPhone) {
-////                [RoundBack setImage:[UIImage imageNamed:@"RoundBack.png"]];
-////
-////            } else {
-////                [RoundBack setImage:[UIImage imageNamed:@"RoundBack-iPad.png"]];
-////
-////            }
-//                        deviation = 5.0;
-//        }
         pageControl.currentPage = page;
 
         [Constants beginAnimationWithName:@"Switch" duration:.5f];
@@ -6772,22 +6307,7 @@ void audioRouteChangeListenerCallback (
             default:
                 break;
         }
-//        switch (page) {
-//            case 0:
-//                [RoundBack setCenter:CGPointMake(btnOne.center.x-deviation, btnOne.center.y)];
-//                break;
-//            case 1:
-//                [RoundBack setCenter:CGPointMake(btnTwo.center.x-deviation, btnTwo.center.y)];
-//                break;
-//            case 2:
-//                [RoundBack setCenter:CGPointMake(btnThree.center.x-deviation, btnThree.center.y)];
-//                break;
-//            case 3:
-//                [RoundBack setCenter:CGPointMake(btnFour.center.x-deviation, btnFour.center.y)];
-//                break;
-//            default:
-//                break;
-//        }
+
         
         [UIView commitAnimations];
         [pageControl updateAfterScroll];
@@ -6804,171 +6324,6 @@ void audioRouteChangeListenerCallback (
     }
     //    NSLog(@"222");
 }
-
-
-//- (void)scrollViewDidScroll:(UIScrollView *)sender
-//{
-//    // Switch the indicator when more than 50% of the previous/next page is visible
-//    CGFloat pageWidth = myScroll.frame.size.width;
-//    int page = floor((myScroll.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
-////    if (page == 3) {
-////        //该代码是设置手机喇叭与麦克风同时工作 iphone 3.0以上版本 播放类型
-////        UInt32 audioCategory = kAudioSessionCategory_PlayAndRecord;
-////        AudioSessionSetProperty(kAudioSessionProperty_AudioCategory, sizeof(audioCategory), &audioCategory);
-////        //设置采样率的
-////        Float64 smpl=kAudioSessionProperty_CurrentHardwareSampleRate;
-////        AudioSessionSetProperty(kAudioSessionProperty_PreferredHardwareSampleRate, sizeof(smpl), &smpl);
-////        //设置声音输出扬声器 还是默认的接收器kAudioSessionOverrideAudioRoute_None
-////        UInt32 audioRoute = kAudioSessionOverrideAudioRoute_Speaker; 
-////        AudioSessionSetProperty(kAudioSessionProperty_OverrideAudioRoute, sizeof(UInt32), &audioRoute);
-//////        page = 1;
-////        if (isiPhone) {
-////            [myScroll scrollRectToVisible:CGRectMake(640, 0, 320, 288) animated:YES];
-////        } else {
-////            [myScroll scrollRectToVisible:CGRectMake(1536, 0, 768, 665) animated:NO];
-////        }
-////        [self aftPlay:nextButton];
-////        return;
-////    }
-//    if (page == 2) {
-//        //        [lyricCnLabel setNumberOfLines:cLines];
-//        //        [lyricLabel setNumberOfLines:eLines];
-//        //        NSLog(@"progress:%f",progress);
-//        //        NSLog(@"sen_num2:%d",sen_num);
-//        //        int cLines = (288-eLines * engHight-70) / engHight;
-//        
-//        //该代码是设置手机喇叭与麦克风同时工作 iphone 3.0以上版本 播放类型
-//        UInt32 audioCategory = kAudioSessionCategory_PlayAndRecord;
-//        AudioSessionSetProperty(kAudioSessionProperty_AudioCategory, sizeof(audioCategory), &audioCategory);
-//        //设置采样率的
-//        Float64 smpl=kAudioSessionProperty_CurrentHardwareSampleRate;
-//        AudioSessionSetProperty(kAudioSessionProperty_PreferredHardwareSampleRate, sizeof(smpl), &smpl);
-//        //设置声音输出扬声器 还是默认的接收器kAudioSessionOverrideAudioRoute_None
-//        UInt32 audioRoute = kAudioSessionOverrideAudioRoute_Speaker; 
-//        AudioSessionSetProperty(kAudioSessionProperty_OverrideAudioRoute, sizeof(UInt32), &audioRoute);
-//        
-//        double engHight = [@"a" sizeWithFont:CourierOne].height;
-//        
-////        NSLog(@"sen_num1:%d",sen_num);
-//        CMTime playerProgress = [player currentTime];
-//        double progress = CMTimeGetSeconds(playerProgress);
-//        int i = 0;
-//        for (; i < [timeArray count]; i++) {
-//            if ((int)progress < [[timeArray objectAtIndex:i] unsignedIntValue]) {
-//                sen_num = i+1;//跟读标识句子号
-//                recordTime = (i > 0 ? [[timeArray objectAtIndex:i] unsignedIntValue] - [[timeArray objectAtIndex:i-1] unsignedIntValue] : [[timeArray objectAtIndex:i] unsignedIntValue]) ;
-//                break;
-//            }
-//        }
-////        NSLog(@"lyCnretain1:%i", [lyCn retainCount]);
-//        [lyCn release];
-//        [lyEn release];
-//        lyEn = [[NSString alloc] initWithFormat:@"%@", [lyricArray objectAtIndex:(sen_num>2?sen_num-2:0)]];
-//        lyCn = [[NSString alloc] initWithFormat:@"%@", [lyricCnArray objectAtIndex:(sen_num>2?sen_num-2:0)]];
-//        
-//        int eLines = 0;
-//        
-//        if (isiPhone) {
-//            eLines = [lyEn sizeWithFont:CourierOne constrainedToSize:CGSizeMake(260, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap].height / engHight;
-//            [lyricLabel setFrame:CGRectMake(670, 20, 260, eLines * engHight)];
-//            [lyricCnLabel setFrame:CGRectMake(670, 20+eLines * engHight, 260, 268-eLines * engHight)];
-//            
-//            [preButton setFrame:CGRectMake(15, 353, 45, 35)];
-//            [nextButton setFrame:CGRectMake(260, 353, 45, 35)];
-//            if (isiPhone) {
-//                [preButton setImage:[UIImage imageNamed:@"preSen@2x.png"] forState:UIControlStateNormal];
-//                [nextButton setImage:[UIImage imageNamed:@"nextSen@2x.png"] forState:UIControlStateNormal];
-//            }
-//        }else {
-//            eLines = [lyEn sizeWithFont:CourierOne constrainedToSize:CGSizeMake(568, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap].height / engHight;
-//            [lyricLabel setFrame:CGRectMake(1636, 50, 568, eLines * engHight)];
-//            [lyricCnLabel setFrame:CGRectMake(1636, 50+eLines * engHight, 568, 615-eLines * engHight)];
-//            
-//            [preButton setFrame:CGRectMake(41, 841, 120, 58)];
-//            [nextButton setFrame:CGRectMake(583, 841, 120, 58)];
-//        }
-//        
-//        lyricLabel.text = lyEn;
-////        [lyEn release];
-//        
-//        if (![lyCn isEqualToString:@"null"] && ![lyCn isEqualToString:@""] && ![lyCn isEqualToString:@"test"]) {
-//            lyricCnLabel.text = lyCn;
-////            [lyCn release];
-//        }else{
-//            lyricCnLabel.text = @"";
-//        }
-////        NSLog(@"lyCnretain2:%i", [lyCn retainCount]);
-//        readRecord = YES;
-//        [playButton setHidden:YES];
-//        [timeSlider setHidden:YES];
-//        [currentTimeLabel setHidden:YES];
-//        [totalTimeLabel  setHidden:YES];
-//        [loadProgress setHidden:YES];
-//        [downloadFlg setHidden:YES];
-//        [collectButton setHidden:YES];
-//        [downloadingFlg setHidden:YES];
-////        [controller.btn_play setHidden:NO];
-////        [controller.btn_record setHidden:NO];
-////        [controller.lvlMeter_in setHidden:NO];
-//    }else {
-//        //此种模式下无法播放的同时录音
-//        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
-//        if (isiPhone) {
-//            [preButton setFrame:CGRectMake(70, 380, 50, 29)];
-//            [nextButton setFrame:CGRectMake(200, 380, 50, 29)];
-//            if (isiPhone) {
-//                [preButton setImage:[UIImage imageNamed:@"preSen.png"] forState:UIControlStateNormal];
-//                [nextButton setImage:[UIImage imageNamed:@"nextSen.png"] forState:UIControlStateNormal];
-//            }
-//        } else {
-//            [preButton setFrame:CGRectMake(192, 855, 120, 58)];
-//            [nextButton setFrame:CGRectMake(445, 855, 120, 58)];
-//        }
-//        
-//        [self stopRecord];
-//        if ([self isPlaying]) {
-//            if ([lyricSynTimer isValid]) {
-//                
-//            }else {
-//#if 1
-//                lyricSynTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 
-//                                                                 target:self 
-//                                                               selector:@selector(lyricSyn) 
-//                                                               userInfo:nil 
-//                                                                repeats:YES];
-//#endif
-//            }
-//        }
-//        readRecord = NO;
-//        [playButton setHidden:NO];
-//        [timeSlider setHidden:NO];
-//        [currentTimeLabel setHidden:NO];
-//        [totalTimeLabel  setHidden:NO];
-//        [loadProgress setHidden:NO];
-//        [btn_play setHidden:YES];
-//        [btn_record setHidden:YES];
-////        [controller.lvlMeter_in setHidden:YES];
-//        if (localFileExist) {
-//            [downloadFlg setHidden:NO];
-//        } else if ([VOAView isDownloading:voa._voaid]) {
-//            [downloadingFlg setHidden:NO];
-//        } else {
-//            [collectButton setHidden:NO];
-//        }
-//    }
-//    
-//    pageControl.currentPage = page;
-//    [pageControl updateAfterScroll];
-//    
-//    /**
-//     *  更新系统的pageControl图片时用如下方法.
-//     */
-//    /*NSArray *subView = pageControl.subviews;     // UIPageControl的每个点
-//    for (int i = 0; i < [subView count]; i++) {
-//		UIImageView *dot = [subView objectAtIndex:i];
-//		dot.image = (pageControl.currentPage == i ? [UIImage imageNamed:@"RedPoint.png"] : [UIImage imageNamed:@"BluePoint.png"]);
-//	}*/
-//}
 
 #pragma mark - AVAudioSessionDelegate
 /**
@@ -7074,9 +6429,6 @@ void audioRouteChangeListenerCallback (
 //    NSLog(@"%d",[[NSUserDefaults standardUserDefaults] boolForKey:@"shakeCtrlPlay"]);
     if ((motion == UIEventSubtypeMotionShake)&&([[NSUserDefaults standardUserDefaults] boolForKey:@"shakeCtrlPlay"]))
     {
-//        UIAlertView *servicesDisabledAlert = [[UIAlertView alloc] initWithTitle:@"title" message:@"this is a test." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-//        [servicesDisabledAlert show];
-//        [servicesDisabledAlert release];
         if (readRecord) {
 //            [player pause];
 //            [playButton setImage:[UIImage imageNamed:@"PpausePressed.png"] forState:UIControlStateNormal];
@@ -7100,25 +6452,6 @@ void audioRouteChangeListenerCallback (
  *  分享时出现的UIActionSheet点击选项时响应协议
  */
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex{
-//    if (isShareSen) {
-//        switch (buttonIndex) {
-//            case 0:
-//                [self collectThisSentence];
-//                break;
-//            case 1://新浪微博
-//                // 微博分享：
-//                [self shareAll];
-//                break;
-//            case 2:
-//                //人人分享：
-//                [self ShareThisQuestion];
-//                break;
-//            default:
-//                break;
-//        }
-//
-//        
-//    } else {
         switch (buttonIndex) {
             case 0://新浪微博
                 // 微博分享：
@@ -7150,83 +6483,6 @@ void audioRouteChangeListenerCallback (
 - (UITableViewCell *)tableView:(UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSUInteger row = [indexPath row];
-//    if (tableView.tag==1) {
-//        if (![explainView isHidden]) {
-//            [explainView setHidden:YES];
-//            [myHighLightWord setHidden:YES];
-//        }
-//        UIFont *defFo = [UIFont systemFontOfSize:14];
-//        UIFont *defFoPad = [UIFont systemFontOfSize:18];
-//        UIFont *wordFo = [UIFont fontWithName:@"AmericanTypewriter-Bold" size:16];
-//        UIFont *wordFoPad = [UIFont fontWithName:@"AmericanTypewriter-Bold" size:20];
-//        static NSString *FirstLevelCell= @"AnswerCell";
-//        UITableViewCell *tablecell = (UITableViewCell*)[tableView dequeueReusableCellWithIdentifier:FirstLevelCell];
-//        if (!tablecell) {
-//            tablecell = [[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:FirstLevelCell] autorelease];
-//            //            UILabel *defLabel = [[UILabel alloc] init];
-//            //            UILabel *wordLabel = [[UILabel alloc] init];
-//            MyLabel *defLabel = [[MyLabel alloc] init];
-//            MyLabel *wordLabel = [[MyLabel alloc] init];
-//            defLabel.delegate = self;
-//            wordLabel.delegate = self;
-//            if (isiPhone) {
-//                [wordLabel setFrame:CGRectMake(30, 0, 290, 20)];
-//                [defLabel setFrame:CGRectMake(30, 20, 290, 40)];
-//                [wordLabel setFont:wordFo];
-//                [defLabel setFont:defFo];
-//            } else {
-//                [wordLabel setFrame:CGRectMake(100, 0, 568, 30)];
-//                [defLabel setFrame:CGRectMake(100, 30, 568, 70)];
-//                [wordLabel setFont:wordFoPad];
-//                [defLabel setFont:defFoPad];
-//            }
-//            
-//            [wordLabel setBackgroundColor:[UIColor clearColor]];
-//            [wordLabel setTag:1];
-//            [wordLabel setTextColor:[UIColor colorWithRed:0.2f green:0.2f blue:0.2f alpha:1.0f]];
-//            //            [wordLabel setTextColor:[UIColor colorWithRed:0.112f green:0.112f blue:0.112f alpha:1.0f]];
-//            [wordLabel  setLineBreakMode:UILineBreakModeClip];
-//            [wordLabel setNumberOfLines:1];
-//            [tablecell addSubview:wordLabel];
-//            [wordLabel release];
-//            
-//            [defLabel setBackgroundColor:[UIColor clearColor]];
-//            [defLabel setTag:2];
-//            [defLabel setTextColor:[UIColor colorWithRed:0.28f green:0.28f blue:0.28f alpha:1.0f]];
-//            [defLabel setLineBreakMode:UILineBreakModeClip];
-//            [defLabel setNumberOfLines:3];
-//            [tablecell addSubview:defLabel];
-//            [defLabel release];
-//            
-//        }
-//        
-//        for (UIView *nLabel in [tablecell subviews]) {
-//            
-//            if (nLabel.tag == 1) {
-//                [(MyLabel*)nLabel setText:[listData objectAtIndex:row*2]];
-//            }
-//            if (nLabel.tag == 2) {
-//                MyLabel *myDef = (MyLabel*)nLabel ;
-//                NSString *que = [listData objectAtIndex:1+row*2];
-//                [myDef setText:que];
-//                [myDef setBackgroundColor:[UIColor clearColor]];
-//                int engHight = [@"a" sizeWithFont:myDef.font].height;
-//                int eLines = [que sizeWithFont:myDef.font constrainedToSize:CGSizeMake(myDef.frame.size.width, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap].height / engHight;
-//                [myDef setNumberOfLines:eLines];
-//                if (isiPhone) {
-//                    [myDef setFrame:CGRectMake(30, 20, 290, eLines * engHight)];
-//                }else {
-//                    [myDef setFrame:CGRectMake(100, 30, 568, eLines * engHight)];
-//                }
-//                
-//                [(UILabel*)nLabel setText:[listData objectAtIndex:1+row*2]];
-//            }
-//            
-//        }
-//        [tablecell setBackgroundColor:[UIColor clearColor]];
-//        [tablecell setSelectionStyle:UITableViewCellSelectionStyleNone];
-//        return tablecell;
-//    } else {
         if (row == [commArray count]/7) {
             static NSString *ThirdLevelCell= @"NewCellTwo";
             UITableViewCell *cellThree = (UITableViewCell*)[tableView dequeueReusableCellWithIdentifier:ThirdLevelCell];
@@ -7300,11 +6556,6 @@ void audioRouteChangeListenerCallback (
                     [userImg release];
                     
                     UIButton *reponseBtn = [[UIButton alloc] initWithFrame:CGRectMake(290, 0, 30, 15)];
-//                    [reponseBtn.titleLabel setFont:[UIFont systemFontOfSize:12]];
-//                    [reponseBtn.titleLabel setTextColor:[UIColor blackColor]];
-//                    [reponseBtn setTitleColor:[UIColor colorWithRed:0.216f green:0.471f blue:0.686f alpha:1.0f] forState:UIControlStateNormal];
-//                    [reponseBtn setTitle:kPlayNine forState:UIControlStateNormal];
-//                    [reponseBtn setBackgroundColor:[UIColor whiteColor]];
                     [reponseBtn addTarget:self action:@selector(doResponse:) forControlEvents:
                      UIControlEventTouchUpInside];
                     [reponseBtn setImage:[UIImage imageNamed:@"commResp.png"] forState:UIControlStateNormal];
