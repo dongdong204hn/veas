@@ -37,10 +37,16 @@
 
 - (id) initWithVOASentence:(NSInteger) _SentenceId VoaId:(NSInteger) _VoaId ParaId:(NSInteger) _ParaId IdIndex:(NSInteger) _IdIndex StartTime:(NSInteger) _StartTime EndTime:(NSInteger) _EndTime  Sentence:(NSString *) _Sentence Sentence_cn:(NSString *) _Sentence_cn  userId:(NSInteger)_userId collected:(NSInteger) _collected synchroFlg:(NSInteger) _synchroFlg;
 - (BOOL) alterCollect;
++ (void) alterCollectBySenId:(NSInteger)SentenceId;
+- (void) alterSynchroCollect;
 - (BOOL) isExist;
 + (NSInteger) findLastId;
 + (NSMutableArray *) findSentences: (NSInteger) userId;
-+ (void) deleteSentence:(NSInteger ) SentenceId userId:(NSInteger)userId;
++ (NSArray*) findAlterSentences:(NSInteger)userId;
++ (void) deleteSentence:(NSInteger ) SentenceId;
++ (void) deleteSenBySenId:(NSInteger)SentenceId;
++ (void) deleteSynchro:(NSInteger) userId;
++ (void) clearSynchro;
 + (id ) findBySentenceId:(NSInteger) SentenceId userId:(NSInteger)userId;
 + (NSInteger) countOfCollected;
 

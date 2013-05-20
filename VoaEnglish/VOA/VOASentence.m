@@ -46,7 +46,7 @@
 {
     PLSqliteDatabase *dataBase = [favdatabase setup];
 	id<PLResultSet> rs;
-	NSString *findSql = [NSString stringWithFormat:@"select * FROM favsentence WHERE VoaId=%d and ParaId=%d and IdIndex=%d and userId = %d and collected = 1",self.VoaId,self.ParaId,self.IdIndex,self.userId];
+	NSString *findSql = [NSString stringWithFormat:@"select * FROM favsentence WHERE VoaId=%d and StartTime=%d and userId = %d and collected > -1",self.VoaId,self.StartTime,self.userId];
     rs = [dataBase executeQuery:findSql];
 	BOOL myflag = NO;
 	
@@ -65,13 +65,13 @@
 }
 
 /**
- *  收藏句子
+ *  收藏句子， 并标记
  */
 - (BOOL) alterCollect{
     PLSqliteDatabase *dataBase = [favdatabase setup];
     BOOL flg;
     if (![self isExist]) {
-        NSString *findSql = [NSString stringWithFormat:@"insert into favsentence(SentenceId,VoaId,ParaId,IdIndex,StartTime,EndTime,Sentence,SentenceCn,userId,collected) values(%d,%d,%d,%d,%d,%d,\"%@\",\"%@\",%d,1);",SentenceId,VoaId,ParaId,IdIndex,StartTime,EndTime,Sentence,Sentence_cn,userId];
+        NSString *findSql = [NSString stringWithFormat:@"insert into favsentence(SentenceId,VoaId,ParaId,IdIndex,StartTime,EndTime,Sentence,SentenceCn,userId,collected,synchroFlg) values(%d,%d,%d,%d,%d,%d,\"%@\",\"%@\",%d,1,0);",SentenceId,VoaId,ParaId,IdIndex,StartTime,EndTime,Sentence,Sentence_cn,userId];
         if([dataBase executeUpdate:findSql]) {
             //            NSLog(@"--success!");
         }
@@ -89,6 +89,51 @@
         flg = NO;
     }
     return flg;
+}
+
+/**
+ *  完成告知服务器，取消标记
+ */
++ (void) alterCollectBySenId:(NSInteger)SentenceId{
+    PLSqliteDatabase *dataBase = [favdatabase setup];
+    NSString *findSql = [NSString stringWithFormat:@"update favsentence set collected = 0  WHERE SentenceId = %d;",SentenceId];
+	if([dataBase executeUpdate:findSql]) {
+        //               NSLog(@"sentence delete success!");
+	}
+	else {
+        //		UIAlertView *errAlert = [[UIAlertView alloc] initWithTitle:@"Error!" message:@"Update failture!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        //		[errAlert show];
+        //        [errAlert release];
+	}
+}
+
+/**
+ *  同步用户生词时标识此词是存在的
+ */
+- (void) alterSynchroCollect
+{
+    PLSqliteDatabase *dataBase = [favdatabase setup];
+    NSString* myDate;
+    NSDateFormatter* formatter = [[NSDateFormatter alloc]init];
+    [formatter setDateFormat:@"YYYY-MM-dd"];
+    myDate = [formatter stringFromDate:[NSDate date]];
+    //    NSLog(@"%@",myDate);
+    if (![self isExist]) {
+        NSString *findSql = [NSString stringWithFormat:@"insert into favsentence(SentenceId,VoaId,ParaId,IdIndex,StartTime,EndTime,Sentence,SentenceCn,userId,collected,synchroFlg) values(%d,%d,%d,%d,%d,%d,\"%@\",\"%@\",%d,0,1);",SentenceId,VoaId,ParaId,IdIndex,StartTime,EndTime,Sentence,Sentence_cn,userId];
+        if([dataBase executeUpdate:findSql]) {
+            //            NSLog(@"--success!");
+        }
+        else {
+            
+        }
+    }else
+    {
+        NSString *findSql = [NSString stringWithFormat:@"update favsentence set synchroFlg = 1 WHERE VoaId = %d and userId= %d and StartTime =%d;", VoaId,userId,StartTime];
+        if([dataBase executeUpdate:findSql]) {
+            //            NSLog(@"--success!");
+        }
+    }
+    [formatter release],formatter = nil;
 }
 
 +(NSArray*) findSentences:(NSInteger)userId
@@ -126,7 +171,42 @@
     return [sentences autorelease];
 }
 
-+ (void) deleteSentence:(NSInteger)SentenceId userId:(NSInteger)userId{
++(NSArray*) findAlterSentences:(NSInteger)userId
+{
+    PLSqliteDatabase *dataBase = [favdatabase setup];
+	
+	id<PLResultSet> rs;
+	rs = [dataBase executeQuery:[NSString stringWithFormat:@"SELECT * FROM favsentence where collected!=0 and userId = %d",userId]];
+    
+	//定义一个数组存放所有信息
+	NSMutableArray *sentences = [[NSMutableArray alloc] init];
+	
+	//把rs中的数据库信息遍历到voaViews数组
+	while ([rs next]) {
+        NSInteger SentenceId = [rs intForColumn:@"SentenceId"];
+        //        NSString *lang = [rs objectForColumn:@"lang"];
+        NSInteger VoaId =[rs intForColumn:@"VoaId"];
+        NSInteger ParaId = [rs intForColumn:@"ParaId"];
+        NSInteger IdIndex = [rs intForColumn:@"IdIndex"];
+        NSInteger StartTime = [rs intForColumn:@"StartTime"];
+        NSInteger EndTime = [rs intForColumn:@"EndTime"];
+        NSString *Sentence =[[rs objectForColumn:@"Sentence"] autorelease];
+        NSString *Sentence_cn = [[rs objectForColumn:@"SentenceCn"] autorelease];
+        
+        NSInteger userId = [rs intForColumn:@"userId"];
+        NSInteger collected = [rs intForColumn:@"collected"];
+        NSInteger synchroFlg = [rs intForColumn:@"synchroFlg"];
+        VOASentence *sentence=[[VOASentence alloc]initWithVOASentence:SentenceId VoaId:VoaId ParaId:ParaId IdIndex:IdIndex StartTime:StartTime EndTime:EndTime Sentence:Sentence Sentence_cn:Sentence_cn userId:userId collected:collected synchroFlg:synchroFlg];
+		[sentences addObject:sentence];
+		[sentence release];
+	}
+	//关闭数据库
+	[rs close];
+    //	[dataBase close];//
+    return [sentences autorelease];
+}
+
++ (void) deleteSentence:(NSInteger)SentenceId{
 	PLSqliteDatabase *dataBase = [favdatabase setup];
     //	NSString* date;
     //    NSDateFormatter* formatter = [[NSDateFormatter alloc]init];
@@ -134,7 +214,7 @@
     //    date = [formatter stringFromDate:[NSDate date]];
     //    NSLog(@"%@",date);
     //	NSString *findSql = [NSString stringWithFormat:@"delete from favword WHERE key = \"%@\" and userId = %d ;",key,userId];
-    NSString *findSql = [NSString stringWithFormat:@"update favsentence set collected = -1  WHERE SentenceId = %d and userId = %d ;",SentenceId,userId];
+    NSString *findSql = [NSString stringWithFormat:@"update favsentence set collected = -1  WHERE SentenceId = %d;",SentenceId];
 	if([dataBase executeUpdate:findSql]) {
 //               NSLog(@"sentence delete success!");
 	}
@@ -142,6 +222,51 @@
 //		UIAlertView *errAlert = [[UIAlertView alloc] initWithTitle:@"Error!" message:@"Update failture!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 //		[errAlert show];
 //        [errAlert release];
+	}
+}
+
++ (void) deleteSenBySenId:(NSInteger)SentenceId
+{
+    PLSqliteDatabase *dataBase = [favdatabase setup];
+	NSString *findSql = [NSString stringWithFormat:@"delete from favsentence where SentenceId = %d",SentenceId];
+    if([dataBase executeUpdate:findSql]) {
+        //        NSLog(@"--success!");
+	}
+	else {
+        //		UIAlertView *errAlert = [[UIAlertView alloc] initWithTitle:@"Error!" message:@"Can not find!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        //		[errAlert show];
+	}
+    //	[dataBase close];//
+}
+
+/**
+ *  同步后删除服务器该用户没有的句子
+ */
++ (void) deleteSynchro:(NSInteger) userId
+{
+    PLSqliteDatabase *dataBase = [favdatabase setup];
+	NSString *findSql = [NSString stringWithFormat:@"delete from favsentence where synchroFlg = 0 and collected = 0 and userId = %d;",userId];
+    if([dataBase executeUpdate:findSql]) {
+        //        NSLog(@"--success!");
+	}
+	else {
+        //		UIAlertView *errAlert = [[UIAlertView alloc] initWithTitle:@"Error!" message:@"Can not find!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        //		[errAlert show];
+	}
+}
+
+/**
+ *  全部句子标记已同步
+ */
++ (void) clearSynchro
+{
+    PLSqliteDatabase *dataBase = [favdatabase setup];
+	NSString *findSql = [NSString stringWithFormat:@"update favsentence set synchroFlg = 0;"];
+    if([dataBase executeUpdate:findSql]) {
+        //        NSLog(@"--success!");
+	}
+	else {
+        
 	}
 }
 

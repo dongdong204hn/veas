@@ -343,7 +343,7 @@ void uncaughtExceptionHandler(NSException *exception) {
             });
             
             float appVersion = [[[NSUserDefaults standardUserDefaults] objectForKey:@"appVersionC"] floatValue];
-            if (appVersion < 3.7f) { //新版本的一些新设置等
+            if (appVersion < 3.8f) { //新版本的一些新设置等
                 [[NSUserDefaults standardUserDefaults] setFloat:3.7f forKey:@"appVersionC"];
                 [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"haveScore"];
                 [[NSUserDefaults standardUserDefaults] setFloat:1.0f forKey:@"speed"];

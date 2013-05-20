@@ -1118,7 +1118,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
 - (void)catchAllByPageNumber:(NSInteger) number 
 {
-    NSString *url = [NSString stringWithFormat:@"http://word.iyuba.com/words/wordListService.jsp?u=%d&pageNumber=%d&pageCounts=1000",nowUserId,number];
+    NSString *url = [NSString stringWithFormat:@"http://word.iyuba.com/words/wordListService.jsp?u=%d&pageNumber=%d&pageCounts=10000",nowUserId,number];
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
     request.delegate = self;
     [request setTag:number];

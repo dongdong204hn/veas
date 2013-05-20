@@ -169,6 +169,7 @@
     //    }
 	return voaDetail;
 }
+
 /*
  + (NSArray *) findAll{
  PLSqliteDatabase *dataBase = [database setup];

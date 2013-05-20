@@ -120,12 +120,11 @@
     }else
     {
         isSentence = YES;
-//        UIBarButtonItem *synButton = [[UIBarButtonItem alloc] initWithTitle:kWordNine style:UIBarButtonItemStylePlain target:self action:@selector(doSyn)];
-//        self.navigationItem.leftBarButtonItem=nil;
-//        self.navigationItem.leftBarButtonItem = synButton;
-//        [synButton release], synButton = nil;
+        UIBarButtonItem *synButton = [[UIBarButtonItem alloc] initWithTitle:kWordNine style:UIBarButtonItemStylePlain target:self action:@selector(doSyn:)];
+        self.navigationItem.leftBarButtonItem=nil;
+        self.navigationItem.leftBarButtonItem = synButton;
+        [synButton release], synButton = nil;
         
-//        self.title = kColSix;
         NSArray *senViews = [VOASentence findSentences:nowUserId];
         [senArray removeAllObjects];
         for (id sen in senViews) {
@@ -135,6 +134,15 @@
         [sender setSelectedSegmentIndex:1];
 //        [senViews release],senViews =nil;
     }
+}
+
+- (void)doSyn:(UIButton *) synBtn {
+    
+    NSArray *senViews = [VOASentence findAlterSentences:nowUserId];
+    for (VOASentence *sen in senViews) {
+        [self catchSenAsFlg:sen mode:(sen.collected == 1? @"insert": @"del")];
+    }
+    [self catchSensByPageNumber:1];
 }
 
 #pragma mark - View lifecycle
@@ -454,7 +462,7 @@
 {
     if (isSentence) {
         VOASentence *sen = [senArray objectAtIndex:indexPath.row];
-        [VOASentence deleteSentence:sen.SentenceId userId:nowUserId];
+        [VOASentence deleteSentence:sen.SentenceId];
         [senArray removeObjectAtIndex:indexPath.row];
     }else{
         VOAFav *fav = [favArray objectAtIndex:indexPath.row];
@@ -853,61 +861,110 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     //    [request release];
 }
 
-- (void)catchAllByPageNumber:(NSInteger) number
+- (void)catchSensByPageNumber:(NSInteger) number
 {
-    NSString *url = [NSString stringWithFormat:@"http://apps.iyuba.com/voa/getCollect.jsp?userId=%d&groupName=Iyuba&type=voa&sentenceFlg=1&pageNumber=%d&pageCounts=1000",nowUserId,number];
+    NSString *url = [NSString stringWithFormat:@"http://apps.iyuba.com/voa/getCollect.jsp?userId=%d&groupName=Iyuba&type=voa&sentenceFlg=1&pageNumber=%d&pageCounts=10000",nowUserId,number];
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
     request.delegate = self;
     [request setTag:number];
     NSOperationQueue *myQueue = [self sharedQueue];
     request.delegate = self;
-    [request setUsername:@"all"];
+    [request setUsername:@"allSen"];
     //        [request setDidStartSelector:@selector(requestMyStarted:)];
     [request setDidFinishSelector:@selector(requestDone:)];
     [request setDidFailSelector:@selector(requestWentWrong:)];
     [myQueue addOperation:request];
 }
 
-/*
+- (void)catchSenAsFlg:(VOASentence *) sen mode:(NSString *) mode
+{
+    //    NSLog(@"!!!!!!!_____________!!!!!!!!!!!");
+//    VOAWord *nowWord = [VOAWord findById:wordId userId:nowUserId];
+    //        NSLog(@"下载");
+    //        NSLog(@"Queue 预备: %d",wordId);
+    NSOperationQueue *myQueue = [self sharedQueue];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://apps.iyuba.com/voa/updateCollect.jsp?userId=%d&type=%@&voaId=%d&sentenceId=%d&groupName=Iyuba&sentenceFlg=1", sen.userId, mode, sen.VoaId, sen.StartTime]];
+    NSLog(@"url:%@", url);
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
+    [request setDelegate:self];
+    [request setUsername:[NSString stringWithFormat:@"%d", sen.SentenceId]];
+    if ([mode isEqualToString:@"insert"]) {
+        [request setTag:1];
+    }else{
+        [request setTag:-1];
+    }
+    //        [request setDidStartSelector:@selector(requestMyStarted:)];
+    [request setDidFinishSelector:@selector(requestDone:)];
+    //        [request setDidFailSelector:@selector(requestWentWrong:)];
+    [myQueue addOperation:request];
+}
+
 - (void)requestDone:(ASIHTTPRequest *)request{
     kNetEnable;
     NSData *myData = [request responseData];
     DDXMLDocument *doc = [[DDXMLDocument alloc] initWithData:myData options:0 error:nil];
-    if ([request.username isEqualToString:@"all"]) {
+    if ([request.username isEqualToString:@"allSen"]) {
         NSArray *items = [doc nodesForXPath:@"response/row" error:nil];
-        NSInteger lastPage = 0;
         if (items) {
             for (DDXMLElement *obj in items) {
 //                lastPage = [[[obj elementForName:@"lastPage"] stringValue] integerValue];
-                NSString *key = [[obj elementForName:@"voaid"] stringValue];
-                NSString *audio = [[obj elementForName:@"sentenceid"] stringValue];
-                NSString *pron = [[obj elementForName:@"endTime"] stringValue];
-                NSString *def = [[obj elementForName:@"content"] stringValue];
-                VOAWord *nowWord = [[VOAWord alloc] initWithVOAWord:([VOAWord findLastId]+1) key:key audio:audio pron:pron def:def date:nil checks:0 remember:0 userId:nowUserId flag:0];
+                NSInteger voaid = [[obj elementForName:@"voaid"] stringValue].integerValue;
+                NSInteger sentenceid = [[obj elementForName:@"sentenceid"] stringValue].integerValue;
+                NSInteger endTime = [[obj elementForName:@"endTime"] stringValue].integerValue;
+                NSString *content = [[[[[obj elementForName:@"content"] stringValue]stringByReplacingOccurrencesOfString:@"\"" withString:@"”"] stringByReplacingOccurrencesOfString:@"<b>" withString:@""] stringByReplacingOccurrencesOfString:@"</b>" withString:@""];
+                NSString *contentcn = [[[[[obj elementForName:@"contentcn"] stringValue]stringByReplacingOccurrencesOfString:@"\"" withString:@"”"] stringByReplacingOccurrencesOfString:@"<b>" withString:@""] stringByReplacingOccurrencesOfString:@"</b>" withString:@""];
+                VOASentence *nowSen = [[VOASentence alloc] initWithVOASentence:[VOASentence findLastId]+1 VoaId:voaid ParaId:0 IdIndex:0 StartTime:sentenceid EndTime:endTime Sentence:content Sentence_cn:contentcn userId:nowUserId collected:0 synchroFlg:1];
                 //                NSLog(@"初始化");
-                [nowWord alterSynchroCollect];
-                [nowWord release];
+                [nowSen alterSynchroCollect];
+                [nowSen release];
             }
         }
-        if (lastPage <= request.tag) {
-            //            NSLog(@"%d,同步圆满完成。",request.tag);
-            [VOAWord deleteSynchro:nowUserId];
-            NSArray *words = [VOAWord findWords:nowUserId];
-            [wordsArray removeAllObjects];
-            for (id fav in words) {
-                [wordsArray addObject:fav];
+        //            NSLog(@"%d,同步圆满完成。",request.tag);
+        [VOASentence deleteSynchro:nowUserId];
+        [VOASentence clearSynchro];
+        NSArray *sens = [VOASentence findSentences:nowUserId];
+        [senArray removeAllObjects];
+        for (id fav in sens) {
+            [senArray addObject:fav];
+        }
+        [self.voasTableView reloadData];
+    } else {
+        NSArray *items = [doc nodesForXPath:@"response" error:nil];
+        if (items) {
+            for (DDXMLElement *obj in items) {
+                NSInteger result= [[[obj elementForName:@"result"] stringValue] integerValue];
+//                NSString *type = [[obj elementForName:@"type"] stringValue];
+                //                NSLog(@"result:%d", result);
+                //                NSLog(@"word:%@", word);
+                if (result==1 || result==2) {
+                    if (request.tag < 0) {
+                        //                        NSLog(@"删除:%@",word);
+                        [VOASentence deleteSenBySenId:request.username.integerValue];
+                    }
+                    else{
+                        [VOASentence alterCollectBySenId:request.username.integerValue];
+                    }
+                }
+//                else if(result==2) {
+//                    [VOASentence deleteSenBySenId:request.username.integerValue];
+//                }
             }
-            [self.wordsTableView reloadData];
-            //            [words release], words = nil;
-            [VOAWord clearSynchro];
-        }else
-        {
-            [self catchAllByPageNumber:request.tag+1];
         }
     }
     [doc release], doc = nil;
 }
-*/
+
+- (void)requestWentWrong:(ASIHTTPRequest *)request {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        kNetTest;
+    });
+    NSArray *sens = [VOASentence findSentences:nowUserId];
+    [senArray removeAllObjects];
+    for (id fav in sens) {
+        [senArray addObject:fav];
+    }
+    [self.voasTableView reloadData];
+}
 
 - (void)requestFinished:(ASIHTTPRequest *)request{
     kNetEnable;

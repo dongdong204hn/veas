@@ -11,10 +11,11 @@
 #import "VoaViewCell.h"
 #import "SearchViewController.h"
 #import "VOAFav.h"
-#import "VOASentence.h"
 #import "PlayViewController.h"
 #import "SentenceViewController.h"
 #import "ASIFormDataRequest.h"
+#import "VOASentence.h"
+#import "VOADetail.h"
 
 /**
  *
