@@ -137,12 +137,19 @@
 }
 
 - (void)doSyn:(UIButton *) synBtn {
-    
-    NSArray *senViews = [VOASentence findAlterSentences:nowUserId];
-    for (VOASentence *sen in senViews) {
-        [self catchSenAsFlg:sen mode:(sen.collected == 1? @"insert": @"del")];
+    if (nowUserId>0) {
+        NSArray *senViews = [VOASentence findAlterSentences:nowUserId];
+        for (VOASentence *sen in senViews) {
+            [self catchSenAsFlg:sen mode:(sen.collected == 1? @"insert": @"del")];
+        }
+        [self catchSensByPageNumber:1];
+    }else
+    {
+        LogController *myLog = [[LogController alloc]init];
+        [myLog setHidesBottomBarWhenPushed:YES];
+        [self.navigationController pushViewController:myLog animated:YES];
+        [myLog release], myLog = nil;
     }
-    [self catchSensByPageNumber:1];
 }
 
 #pragma mark - View lifecycle

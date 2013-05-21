@@ -12,7 +12,7 @@
 /**
  *  展示收藏句子详细内容的容器
  */
-@interface SentenceViewController : UIViewController{
+@interface SentenceViewController : UIViewController <MyLabelDelegate>{
     NSInteger row; //正在展示的句子序列
     NSInteger nowUserId; //当前用户id
     UITextView *SenEn; //英文内容
@@ -27,8 +27,10 @@
 @property (nonatomic, retain) IBOutlet UIImageView *myImageView;
 @property (nonatomic, retain) MBProgressHUD *HUD;
 @property (nonatomic, retain) NSArray *sentences;
-@property (nonatomic) NSInteger row;
-@property (nonatomic) NSInteger nowUserId;
+@property (nonatomic, retain) MyLabel *explainView; //取词翻译结果展示标签
+@property (nonatomic, assign) NSInteger row;
+@property (nonatomic, assign) NSInteger nowUserId;
+@property (nonatomic, assign) BOOL isiPhone;
 
 -(IBAction)preSen:(id)sender;
 -(IBAction)nextSen:(id)sender;

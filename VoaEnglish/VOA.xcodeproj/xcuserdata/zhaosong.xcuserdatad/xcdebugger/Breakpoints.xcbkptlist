@@ -231,35 +231,9 @@
          timestampString = "390364336.082325"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1450"
-         endingLineNumber = "1450"
-         landmarkName = "-UIBroadCastMsgWithContent:andImage:parReserved:delegate:onPostStart:onPostSuccess:onPostFailure:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "VOA/TCWeiBoSDK/TCWBEngine/TCWBEngine.m"
-         timestampString = "390364336.082325"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
          startingLineNumber = "1436"
          endingLineNumber = "1436"
          landmarkName = "-UIBroadCastMsgWithContent:andImage:parReserved:delegate:onPostStart:onPostSuccess:onPostFailure:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "VOA/PlayViewController.mm"
-         timestampString = "390368290.300139"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "2754"
-         endingLineNumber = "2754"
-         landmarkName = "-shareToQQWeibo"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
