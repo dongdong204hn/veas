@@ -427,6 +427,7 @@ extern ASIHTTPRequest *nowrequest;
 
 }
 
+/*
 - (void)viewDidUnload
 {
     self.voasTableView = nil;
@@ -441,6 +442,7 @@ extern ASIHTTPRequest *nowrequest;
     [returnButton release], returnButton = nil;
     [super viewDidUnload];
 }
+ */
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
@@ -449,12 +451,17 @@ extern ASIHTTPRequest *nowrequest;
 }
 
 - (void)dealloc {
+    voasTableView.delegate = nil;
+    voasTableView.dataSource = nil;
     [voasTableView release];
     [voasArray release];
     [sharedSingleQueue release];
     [classArray release];
     [titleBtn release];
+    search.delegate = nil;
     [search release];
+    classTableView.delegate = nil;
+    classTableView.dataSource = nil;
     [classTableView release];
     [nowTitle release];
     [refreshHeaderView release];

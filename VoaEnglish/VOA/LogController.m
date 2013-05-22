@@ -249,6 +249,7 @@
     // Do any additional setup after loading the view from its nib.
 }
 
+/*
 - (void)viewDidUnload
 {
     [super viewDidUnload];
@@ -270,9 +271,12 @@
     [userF release], userF = nil;
     [codeF release], codeF = nil;
 }
-
+*/
+ 
 - (void) dealloc
 {
+    logTable.dataSource = nil;
+    logTable.delegate = nil;
     [logTable release];
     [registBtnTwo release];
     [logBtnTwo release];

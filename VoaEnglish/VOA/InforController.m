@@ -82,6 +82,7 @@
 
 - (void)dealloc
 {
+    [_webView stopLoading];
     [webView release], _webView = nil;
     [super dealloc];
 }

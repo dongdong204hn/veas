@@ -907,6 +907,7 @@
     // Do any additional setup after loading the view from its nib.
 }
 
+/*
 - (void)viewDidUnload
 {
 //    self.wordsTableView.delegate = nil;
@@ -920,6 +921,7 @@
     [sharedSingleQueue release], sharedSingleQueue = nil;
     [super viewDidUnload];
 }
+ */
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
@@ -928,12 +930,22 @@
 }
 
 - (void)dealloc {
+    wordsTableView.delegate = nil;
+    wordsTableView.dataSource = nil;
     [wordsTableView release];
     [wordPlayerTwo release];
     [wordsArray release];
     [myWord release];
+    search.delegate = nil;
     [search release];
-    [explainView release];
+    
+    explainView.delegate = nil;
+    for (UIView *sView in [explainView subviews]) {
+        if (![sView isKindOfClass:[UIImageView class]]) {
+            [sView removeFromSuperview];
+        }
+    }
+//    [explainView release];
     [sharedSingleQueue release];
     [super dealloc];
 }

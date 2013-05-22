@@ -262,6 +262,7 @@
     // Do any additional setup after loading the view from its nib.
 }
 
+/*
 - (void)viewDidUnload
 {
     self.voasTableView = nil;
@@ -271,14 +272,17 @@
     [search release], search = nil;
     [super viewDidUnload];
     
-}
+}*/
 
 - (void)dealloc
 {
+    voasTableView.delegate = nil;
+    voasTableView.dataSource = nil;
     [voasTableView release];
     [segmentedControl release];
     [favArray release];
     [senArray release];
+    search.delegate = nil;
     [search release];
     //    [favArray release];
     //    [search release];

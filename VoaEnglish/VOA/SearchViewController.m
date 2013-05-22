@@ -98,8 +98,7 @@
     // Do any additional setup after loading the view from its nib.
 }
 
-
-
+/*
 - (void)viewDidUnload
 {
     [super viewDidUnload];
@@ -111,6 +110,7 @@
     [sharedSingleQueue release], sharedSingleQueue = nil;
     [_contentsArray release], _contentsArray = nil;
 }
+ */
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
@@ -119,6 +119,8 @@
 }
 
 - (void)dealloc {
+    _voasTableView.delegate = nil;
+    _voasTableView.dataSource = nil;
     [_voasTableView release];
     [_contentsSrArray release];
     [_searchWords release];

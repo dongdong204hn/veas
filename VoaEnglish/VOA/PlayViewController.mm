@@ -1736,7 +1736,12 @@ extern ASIHTTPRequest *nowrequest;
     
     [downloadFlg release];
     [downloadingFlg release];
-    [explainView release];
+//    [explainView release];
+    for (UIView *sView in [explainView subviews]) {
+        if (![sView isKindOfClass:[UIImageView class]]) {
+            [sView removeFromSuperview];
+        }
+    }
     [myWord release];
     [textScroll release];
     [imgWords release];
@@ -6683,6 +6688,14 @@ void audioRouteChangeListenerCallback (
 //    }
     
     return nil;
+}
+
+#pragma mark MyTextViewDelegate
+- (void)catchTouches:(NSSet *)touches myTextView:(MyTextView *)myTextView {
+    wordTouches = touches;
+    if (nowTextView.tag != myTextView.tag) {
+        nowTextView = myTextView;
+    }
 }
 
 #pragma mark -

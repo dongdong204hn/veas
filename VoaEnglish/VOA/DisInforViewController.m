@@ -529,6 +529,7 @@
     }
 }
 
+/*
 - (void)viewDidUnload {
     self.inforScroll = nil;
     self.appScroll = nil;
@@ -583,6 +584,7 @@
     
     [super viewDidUnload];
 }
+*/
 
 - (void)dealloc {
     [inforScroll release];
@@ -629,6 +631,8 @@
     [img27 release];
     
     [segmentedControl release];
+    msgTv.delegate = nil;
+    msgTv.dataSource = nil;
     [msgTv release];
     [disMsgLab release];
     [alertLab release];

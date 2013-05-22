@@ -55,7 +55,7 @@
 #import "WaveFormViewIOS.h"
 #import "TCWBEngine.h"
 #import "Constants.h"
-
+#import "MyTextView.h"
 
 @class timeSwitchClass;
 //@class SpeakHereController;
@@ -89,7 +89,7 @@
 /**
  *
  */
-@interface PlayViewController : UIViewController <UIAlertViewDelegate, AVAudioPlayerDelegate, ASIHTTPRequestDelegate,MyLabelDelegate,MBProgressHUDDelegate, AVAudioSessionDelegate, UIScrollViewDelegate,UIActionSheetDelegate,UITableViewDelegate,UITableViewDataSource,UIPickerViewDelegate,UIPickerViewDataSource,HPGrowingTextViewDelegate,HSCButtonDelegate, UITextViewDelegate, GADBannerViewDelegate>
+@interface PlayViewController : UIViewController <UIAlertViewDelegate, AVAudioPlayerDelegate, ASIHTTPRequestDelegate,MyLabelDelegate,MBProgressHUDDelegate, AVAudioSessionDelegate, UIScrollViewDelegate,UIActionSheetDelegate,UITableViewDelegate,UITableViewDataSource,UIPickerViewDelegate,UIPickerViewDataSource,HPGrowingTextViewDelegate,HSCButtonDelegate, UITextViewDelegate, GADBannerViewDelegate, MyTextViewDelegate>
 {
     CL_AudioRecorder* audioRecoder;
     BOOL              m_isRecording;
