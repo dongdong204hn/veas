@@ -16,7 +16,7 @@
 /**
  *
  */
-@interface LyricSynClass : NSObject{
+@interface LyricSynClass : NSObject {
 //    id <UITextViewDelegate> delegate;
 }
 
@@ -70,7 +70,7 @@ lyricCnLabelArray: (NSMutableArray *)lyricCnLabelArray
             time : (NSMutableArray *)timeArray
      localPlayer : (AVPlayer *)mp3Player
           scroll : (TextScrollView *)textScroll;
-//  myLabelDelegate: (id <UITextViewDelegate>) myLabelDelegate
+//  myLabelDelegate: (id <MyTextViewDelegate>) myLabelDelegate
 //        engLines : (int *)engLines //歌词显示
 //         cnLines : (int *)cnLines ;//歌词显示
 

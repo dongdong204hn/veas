@@ -35,11 +35,14 @@
         if ([myDelegate respondsToSelector:@selector(catchTouches:myTextView:)]) {
             [myDelegate catchTouches:touches myTextView:self];
         }
-//        PlayViewController *player = [PlayViewController sharedPlayer];
-//        player.wordTouches = touches;
-//        if (player.nowTextView.tag != self.tag) {
-//            player.nowTextView = self;
-//        }
+        if (self.tag > 199) {
+            PlayViewController *player = [PlayViewController sharedPlayer];
+            player.wordTouches = touches;
+            if (player.nowTextView.tag != self.tag) {
+                player.nowTextView = self;
+            }
+
+        }
         
 //        NSLog(@"my text touch:%@", [self.text substringWithRange:self.selectedRange]);
     }

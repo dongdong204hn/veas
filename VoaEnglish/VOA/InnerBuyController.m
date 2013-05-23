@@ -99,7 +99,7 @@
     [super viewDidLoad];
     self.navigationController.navigationBarHidden = NO;
 	// Do any additional setup after loading the view.
-    [intro setText:@"升级为专业版,享受最佳体验:\n1.去除广告条(重启应用后生效)\n2.开启离线词库,无网环境照常学习,全面提升英语能力!\n3.功能加强!\n4.永久更新!"];
+    [intro setText:@"升级为专业版,享受最佳体验:\n1.去除广告条(重启应用后生效)\n2.开启离线词库,无网环境照常学习,全面提升英语能力!\n3.功能加强!\n4.一次购买，无论之后更新哪些功能，永久全部开放!"];
     [intro setNumberOfLines:0];
     [intro setBackgroundColor:[UIColor clearColor]];
     [intro setTextColor:[UIColor colorWithRed:1.0/255 green:151.0/255 blue:211.0/255 alpha:1]];

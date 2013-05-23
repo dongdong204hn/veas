@@ -98,7 +98,6 @@
     // Do any additional setup after loading the view from its nib.
 }
 
-/*
 - (void)viewDidUnload
 {
     [super viewDidUnload];
@@ -110,7 +109,6 @@
     [sharedSingleQueue release], sharedSingleQueue = nil;
     [_contentsArray release], _contentsArray = nil;
 }
- */
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {

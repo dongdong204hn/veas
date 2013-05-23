@@ -65,9 +65,7 @@
         @finally {
 //            NSLog(@"--last：%i!", last );
         }
-        
 //        last = [rs intForColumn:@"last"];
-        
 	}
 	else {
         //		UIAlertView *errAlert = [[UIAlertView alloc] initWithTitle:@"Error!" message:@"Can not find!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -91,7 +89,7 @@
     NSInteger num = 0;
     while([rs next]) {
         @try {
-            count = [[rs objectForColumn:@"sumSec"] integerValue];
+            count = [rs intForColumn:@"sumSec"];
         }
         @catch (NSException *exception) {
             count = 0;
@@ -116,7 +114,7 @@
     NSInteger count = 0;
     if([rs next]) {
         @try {
-            count = [[rs objectForColumn:@"sumSec"] integerValue];
+            count = [rs intForColumn:@"sumSec"];
         }
         @catch (NSException *exception) {
             count = 0;

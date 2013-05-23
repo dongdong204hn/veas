@@ -99,7 +99,6 @@
     [myHighLightWord setAlpha:0.5];
 }
 
-/*
 - (void)viewDidUnload {
     self.SenEn = nil;
     self.SenCn = nil;
@@ -111,7 +110,6 @@
     [myHighLightWord release], myHighLightWord = nil;
     [super viewDidUnload];
 }
-*/
 
 - (void)dealloc
 {

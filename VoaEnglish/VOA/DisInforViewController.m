@@ -529,7 +529,6 @@
     }
 }
 
-/*
 - (void)viewDidUnload {
     self.inforScroll = nil;
     self.appScroll = nil;
@@ -584,7 +583,6 @@
     
     [super viewDidUnload];
 }
-*/
 
 - (void)dealloc {
     [inforScroll release];

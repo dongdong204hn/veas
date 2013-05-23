@@ -103,7 +103,6 @@
     // Do any additional setup after loading the view from its nib.
 }
 
-/*
 - (void)viewDidUnload
 {
     [super viewDidUnload];
@@ -120,7 +119,6 @@
     [mailF release], mailF = nil;
     [registBtn release], registBtn = nil;
 }
- */
 
 - (void)dealloc
 {

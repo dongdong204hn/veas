@@ -190,7 +190,7 @@ lyricCnLabelArray: (NSMutableArray *)lyricCnLabelArray
             time : (NSMutableArray *)timeArray
      localPlayer : (AVPlayer *)mp3Player
           scroll : (TextScrollView *)textScroll 
-//  myLabelDelegate: (id <UITextViewDelegate>) myLabelDelegate
+//  myLabelDelegate: (id <MyTextViewDelegate>) myLabelDelegate
 //        engLines : (int *)engLines
 //         cnLines : (int *)cnLines
 {
@@ -270,8 +270,8 @@ lyricCnLabelArray: (NSMutableArray *)lyricCnLabelArray
         [lyricLabel whenDoubleTapped:^{ //避免双击时仍触发上面的单击事件
 //            NSLog(@"22");
         }];
-        
         [labelText release];
+//        lyricLabel.myDelegate = self;
         lyricLabel.tag = 200 + i;
         [lyricLabel setFont:Courier];
         [lyricLabel setTextColor:[UIColor grayColor]];
@@ -447,5 +447,14 @@ lyricCnLabelArray: (NSMutableArray *)lyricCnLabelArray
     UIImage *croppedImage = [UIImage imageWithCGImage:imageRef];
     return croppedImage;
 }
+
+//#pragma mark MyTextViewDelegate
+//- (void)catchTouches:(NSSet *)touches myTextView:(MyTextView *)myTextView {
+//    PlayViewController *player = [PlayViewController sharedPlayer];
+//    player.wordTouches = touches;
+//    if (player.nowTextView.tag != myTextView.tag) {
+//        player.nowTextView = myTextView;
+//    }
+//}
 
 @end

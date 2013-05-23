@@ -2349,6 +2349,8 @@
 				B0C5681114F12FD20024F542 /* TextScrollView.m */,
 				B043A25316A7E49000DEC567 /* MyTextView.h */,
 				B043A25416A7E49100DEC567 /* MyTextView.m */,
+				DBDA8B151677095700147798 /* TabViewController.h */,
+				DBDA8B161677095800147798 /* TabViewController.m */,
 			);
 			name = my;
 			sourceTree = "<group>";
@@ -3000,8 +3002,6 @@
 				B081C15E14E388A80015D894 /* play */,
 				B0B055FA14DA29A8008ABF07 /* AppSettingsAppDelegate.h */,
 				B0B055FB14DA29A8008ABF07 /* AppSettingsAppDelegate.m */,
-				DBDA8B151677095700147798 /* TabViewController.h */,
-				DBDA8B161677095800147798 /* TabViewController.m */,
 				B06DFF91166F23F500BBA320 /* NetTest.h */,
 				B06DFF92166F23F500BBA320 /* NetTest.m */,
 				B029BE40154A34EF00D4E225 /* Constants.h */,

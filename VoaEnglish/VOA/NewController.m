@@ -427,7 +427,6 @@ extern ASIHTTPRequest *nowrequest;
 
 }
 
-/*
 - (void)viewDidUnload
 {
     self.voasTableView = nil;
@@ -442,7 +441,6 @@ extern ASIHTTPRequest *nowrequest;
     [returnButton release], returnButton = nil;
     [super viewDidUnload];
 }
- */
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {

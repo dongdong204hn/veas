@@ -907,7 +907,6 @@
     // Do any additional setup after loading the view from its nib.
 }
 
-/*
 - (void)viewDidUnload
 {
 //    self.wordsTableView.delegate = nil;
@@ -921,7 +920,6 @@
     [sharedSingleQueue release], sharedSingleQueue = nil;
     [super viewDidUnload];
 }
- */
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {

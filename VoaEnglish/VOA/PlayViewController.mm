@@ -624,6 +624,7 @@ extern ASIHTTPRequest *nowrequest;
                                            time : (NSMutableArray *)timeArray
                                     localPlayer : (AVPlayer *)player
                                          scroll : (TextScrollView *)textScroll];
+//                                myLabelDelegate : self];
             
             nowTextView = [lyricLabelArray objectAtIndex:0];
             CGSize newSize = CGSizeMake(textScroll.frame.size.width, setY);
@@ -849,6 +850,7 @@ extern ASIHTTPRequest *nowrequest;
                                        time : (NSMutableArray *)timeArray
                                 localPlayer : (AVPlayer *)player
                                      scroll : (TextScrollView *)textScroll];
+//                            myLabelDelegate : self
         
         nowTextView = [lyricLabelArray objectAtIndex:0];
         CGSize newSize = CGSizeMake(textScroll.frame.size.width, setY);
@@ -1526,7 +1528,7 @@ extern ASIHTTPRequest *nowrequest;
 }
 
 
-
+/*
 - (void)viewDidUnload
 {
     [super viewDidUnload];
@@ -1639,6 +1641,7 @@ extern ASIHTTPRequest *nowrequest;
 //    [wfvTwo release], wfvTwo = nil;
     [playAgainButton release], playAgainButton = nil;
 }
+ */
 
 /**
  * 外部控制音频播放所需函数
@@ -6691,12 +6694,12 @@ void audioRouteChangeListenerCallback (
 }
 
 #pragma mark MyTextViewDelegate
-- (void)catchTouches:(NSSet *)touches myTextView:(MyTextView *)myTextView {
-    wordTouches = touches;
-    if (nowTextView.tag != myTextView.tag) {
-        nowTextView = myTextView;
-    }
-}
+//- (void)catchTouches:(NSSet *)touches myTextView:(MyTextView *)myTextView {
+//    wordTouches = touches;
+//    if (nowTextView.tag != myTextView.tag) {
+//        nowTextView = myTextView;
+//    }
+//}
 
 #pragma mark -
 #pragma mark TableView Delegate Methods
