@@ -185,6 +185,12 @@
 		B0184F2E1532CABB00B2E5DA /* bgRg.png in Resources */ = {isa = PBXBuildFile; fileRef = B0184F2C1532CABA00B2E5DA /* bgRg.png */; };
 		B0184F2F1532CABB00B2E5DA /* bgRg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B0184F2D1532CABA00B2E5DA /* bgRg@2x.png */; };
 		B018534517421B040095A36D /* libxml2.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B018534417421B040095A36D /* libxml2.2.dylib */; };
+		B01B8A13174F614F00151D5A /* StrategyController.m in Sources */ = {isa = PBXBuildFile; fileRef = B01B8A11174F614F00151D5A /* StrategyController.m */; };
+		B01B8A14174F614F00151D5A /* StrategyController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B01B8A12174F614F00151D5A /* StrategyController.xib */; };
+		B01B8A1D174F618B00151D5A /* CollapseClick.m in Sources */ = {isa = PBXBuildFile; fileRef = B01B8A17174F618B00151D5A /* CollapseClick.m */; };
+		B01B8A1E174F618B00151D5A /* CollapseClickArrow.m in Sources */ = {isa = PBXBuildFile; fileRef = B01B8A19174F618B00151D5A /* CollapseClickArrow.m */; };
+		B01B8A1F174F618B00151D5A /* CollapseClickCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B01B8A1B174F618B00151D5A /* CollapseClickCell.m */; };
+		B01B8A20174F618B00151D5A /* CollapseClickCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B01B8A1C174F618B00151D5A /* CollapseClickCell.xib */; };
 		B01E291216BBE64500A5BDA1 /* readCount.png in Resources */ = {isa = PBXBuildFile; fileRef = B01E291016BBE64500A5BDA1 /* readCount.png */; };
 		B01E291316BBE64500A5BDA1 /* readCount@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B01E291116BBE64500A5BDA1 /* readCount@2x.png */; };
 		B01E291616BBE65600A5BDA1 /* readCount-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = B01E291516BBE65600A5BDA1 /* readCount-ipad.png */; };
@@ -1090,6 +1096,16 @@
 		B0184F2C1532CABA00B2E5DA /* bgRg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bgRg.png; sourceTree = "<group>"; };
 		B0184F2D1532CABA00B2E5DA /* bgRg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bgRg@2x.png"; sourceTree = "<group>"; };
 		B018534417421B040095A36D /* libxml2.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.dylib; path = usr/lib/libxml2.2.dylib; sourceTree = SDKROOT; };
+		B01B8A10174F614F00151D5A /* StrategyController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StrategyController.h; sourceTree = "<group>"; };
+		B01B8A11174F614F00151D5A /* StrategyController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StrategyController.m; sourceTree = "<group>"; };
+		B01B8A12174F614F00151D5A /* StrategyController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StrategyController.xib; sourceTree = "<group>"; };
+		B01B8A16174F618B00151D5A /* CollapseClick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollapseClick.h; sourceTree = "<group>"; };
+		B01B8A17174F618B00151D5A /* CollapseClick.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollapseClick.m; sourceTree = "<group>"; };
+		B01B8A18174F618B00151D5A /* CollapseClickArrow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollapseClickArrow.h; sourceTree = "<group>"; };
+		B01B8A19174F618B00151D5A /* CollapseClickArrow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollapseClickArrow.m; sourceTree = "<group>"; };
+		B01B8A1A174F618B00151D5A /* CollapseClickCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollapseClickCell.h; sourceTree = "<group>"; };
+		B01B8A1B174F618B00151D5A /* CollapseClickCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollapseClickCell.m; sourceTree = "<group>"; };
+		B01B8A1C174F618B00151D5A /* CollapseClickCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CollapseClickCell.xib; sourceTree = "<group>"; };
 		B01E291016BBE64500A5BDA1 /* readCount.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = readCount.png; sourceTree = "<group>"; };
 		B01E291116BBE64500A5BDA1 /* readCount@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "readCount@2x.png"; sourceTree = "<group>"; };
 		B01E291516BBE65600A5BDA1 /* readCount-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "readCount-ipad.png"; sourceTree = "<group>"; };
@@ -2110,6 +2126,9 @@
 				B0F4C9ED1526ECB8003928CB /* InforController.m */,
 				B0ED49AF173A53B500F32766 /* ColorPickerControllerViewController.h */,
 				B0ED49B0173A53B500F32766 /* ColorPickerControllerViewController.m */,
+				B01B8A10174F614F00151D5A /* StrategyController.h */,
+				B01B8A11174F614F00151D5A /* StrategyController.m */,
+				B01B8A12174F614F00151D5A /* StrategyController.xib */,
 			);
 			name = setting;
 			sourceTree = "<group>";
@@ -2324,6 +2343,7 @@
 		B016B58215107FF6008C75E9 /* my */ = {
 			isa = PBXGroup;
 			children = (
+				B01B8A15174F618B00151D5A /* CollapseClick */,
 				B04C87C2171694A000897859 /* THUtility */,
 				B03567BF1703D8A6001EA96B /* EPGLTransitionView */,
 				B020AEFC1701D17A00CC5D7D /* ImageSplit */,
@@ -2386,6 +2406,20 @@
 				B016E8ED16B7ACA900F5AFCC /* TOEIC_Offline144.png */,
 			);
 			path = iconAppsiPad;
+			sourceTree = "<group>";
+		};
+		B01B8A15174F618B00151D5A /* CollapseClick */ = {
+			isa = PBXGroup;
+			children = (
+				B01B8A16174F618B00151D5A /* CollapseClick.h */,
+				B01B8A17174F618B00151D5A /* CollapseClick.m */,
+				B01B8A18174F618B00151D5A /* CollapseClickArrow.h */,
+				B01B8A19174F618B00151D5A /* CollapseClickArrow.m */,
+				B01B8A1A174F618B00151D5A /* CollapseClickCell.h */,
+				B01B8A1B174F618B00151D5A /* CollapseClickCell.m */,
+				B01B8A1C174F618B00151D5A /* CollapseClickCell.xib */,
+			);
+			path = CollapseClick;
 			sourceTree = "<group>";
 		};
 		B01C62AB1582F10300CEAEA4 /* RenRenShare */ = {
@@ -4565,6 +4599,8 @@
 				B0157F061743345300A5A232 /* separatorLine@2x.png in Resources */,
 				B0157F071743345300A5A232 /* test.png in Resources */,
 				B0157F081743345300A5A232 /* test@2x.png in Resources */,
+				B01B8A14174F614F00151D5A /* StrategyController.xib in Resources */,
+				B01B8A20174F618B00151D5A /* CollapseClickCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4769,6 +4805,10 @@
 				B0157F1A1743345300A5A232 /* TCWBAuthorizeViewController.m in Sources */,
 				B0157F1B1743345300A5A232 /* TCWBEngine.m in Sources */,
 				B0157F1C1743345300A5A232 /* TCWBRequest.m in Sources */,
+				B01B8A13174F614F00151D5A /* StrategyController.m in Sources */,
+				B01B8A1D174F618B00151D5A /* CollapseClick.m in Sources */,
+				B01B8A1E174F618B00151D5A /* CollapseClickArrow.m in Sources */,
+				B01B8A1F174F618B00151D5A /* CollapseClickCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
