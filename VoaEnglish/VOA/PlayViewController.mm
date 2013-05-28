@@ -1510,23 +1510,6 @@ extern ASIHTTPRequest *nowrequest;
     [bannerView_ setHidden:NO];
 }
 
-- (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
-    needFlushAdv = NO;
-//    [UIView beginAnimations:@"BannerSlide" context:nil];
-//    bannerView.frame = CGRectMake(0.0,
-//                                  self.view.frame.size.height -
-//                                  bannerView.frame.size.height,
-//                                  bannerView.frame.size.width,
-//                                  bannerView.frame.size.height);
-//    [UIView commitAnimations];
-}
-
-- (void)adView:(GADBannerView *)bannerView
-    didFailToReceiveAdWithError:(GADRequestError *)error {
-    needFlushAdv = YES;
-//    NSLog(@"adView:didFailToReceiveAdWithError:%@", [error localizedDescription]);
-}
-
 
 /*
 - (void)viewDidUnload
@@ -1769,6 +1752,24 @@ extern ASIHTTPRequest *nowrequest;
         [bannerView_ release];
     }
     [super dealloc];
+}
+
+#pragma mark - GADBannerViewDelegate
+- (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
+    needFlushAdv = NO;
+    //    [UIView beginAnimations:@"BannerSlide" context:nil];
+    //    bannerView.frame = CGRectMake(0.0,
+    //                                  self.view.frame.size.height -
+    //                                  bannerView.frame.size.height,
+    //                                  bannerView.frame.size.width,
+    //                                  bannerView.frame.size.height);
+    //    [UIView commitAnimations];
+}
+
+- (void)adView:(GADBannerView *)bannerView
+didFailToReceiveAdWithError:(GADRequestError *)error {
+    needFlushAdv = YES;
+    //    NSLog(@"adView:didFailToReceiveAdWithError:%@", [error localizedDescription]);
 }
 
 #pragma mark - static method
