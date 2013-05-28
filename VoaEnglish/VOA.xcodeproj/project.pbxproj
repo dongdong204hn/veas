@@ -185,12 +185,6 @@
 		B0184F2E1532CABB00B2E5DA /* bgRg.png in Resources */ = {isa = PBXBuildFile; fileRef = B0184F2C1532CABA00B2E5DA /* bgRg.png */; };
 		B0184F2F1532CABB00B2E5DA /* bgRg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B0184F2D1532CABA00B2E5DA /* bgRg@2x.png */; };
 		B018534517421B040095A36D /* libxml2.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B018534417421B040095A36D /* libxml2.2.dylib */; };
-		B01B8A13174F614F00151D5A /* StrategyController.m in Sources */ = {isa = PBXBuildFile; fileRef = B01B8A11174F614F00151D5A /* StrategyController.m */; };
-		B01B8A14174F614F00151D5A /* StrategyController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B01B8A12174F614F00151D5A /* StrategyController.xib */; };
-		B01B8A1D174F618B00151D5A /* CollapseClick.m in Sources */ = {isa = PBXBuildFile; fileRef = B01B8A17174F618B00151D5A /* CollapseClick.m */; };
-		B01B8A1E174F618B00151D5A /* CollapseClickArrow.m in Sources */ = {isa = PBXBuildFile; fileRef = B01B8A19174F618B00151D5A /* CollapseClickArrow.m */; };
-		B01B8A1F174F618B00151D5A /* CollapseClickCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B01B8A1B174F618B00151D5A /* CollapseClickCell.m */; };
-		B01B8A20174F618B00151D5A /* CollapseClickCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B01B8A1C174F618B00151D5A /* CollapseClickCell.xib */; };
 		B01E291216BBE64500A5BDA1 /* readCount.png in Resources */ = {isa = PBXBuildFile; fileRef = B01E291016BBE64500A5BDA1 /* readCount.png */; };
 		B01E291316BBE64500A5BDA1 /* readCount@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B01E291116BBE64500A5BDA1 /* readCount@2x.png */; };
 		B01E291616BBE65600A5BDA1 /* readCount-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = B01E291516BBE65600A5BDA1 /* readCount-ipad.png */; };
@@ -423,7 +417,7 @@
 		B0A7EBFB16B029F5006F0097 /* UserMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = B0A7EBFA16B029F5006F0097 /* UserMessage.m */; };
 		B0A7EC0016B02B31006F0097 /* SendMessageController.m in Sources */ = {isa = PBXBuildFile; fileRef = B0A7EBFE16B02B31006F0097 /* SendMessageController.m */; };
 		B0A7EC0116B02B31006F0097 /* SendMessageController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0A7EBFF16B02B31006F0097 /* SendMessageController.xib */; };
-		B0A825E31754918000ADE3C5 /* libFlurry.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B0A825E21754918000ADE3C5 /* libFlurry.a */; };
+		B0A825E8175493E600ADE3C5 /* libFlurry.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B0A825E7175493E600ADE3C5 /* libFlurry.a */; };
 		B0ABA2A7168D455000D987E0 /* playingBBC.png in Resources */ = {isa = PBXBuildFile; fileRef = B0ABA2A5168D455000D987E0 /* playingBBC.png */; };
 		B0ABA2A8168D455000D987E0 /* playingBBC@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B0ABA2A6168D455000D987E0 /* playingBBC@2x.png */; };
 		B0B055EE14DA29A8008ABF07 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B0B055ED14DA29A8008ABF07 /* UIKit.framework */; };
@@ -1096,16 +1090,6 @@
 		B0184F2C1532CABA00B2E5DA /* bgRg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bgRg.png; sourceTree = "<group>"; };
 		B0184F2D1532CABA00B2E5DA /* bgRg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bgRg@2x.png"; sourceTree = "<group>"; };
 		B018534417421B040095A36D /* libxml2.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.dylib; path = usr/lib/libxml2.2.dylib; sourceTree = SDKROOT; };
-		B01B8A10174F614F00151D5A /* StrategyController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StrategyController.h; sourceTree = "<group>"; };
-		B01B8A11174F614F00151D5A /* StrategyController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StrategyController.m; sourceTree = "<group>"; };
-		B01B8A12174F614F00151D5A /* StrategyController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StrategyController.xib; sourceTree = "<group>"; };
-		B01B8A16174F618B00151D5A /* CollapseClick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollapseClick.h; sourceTree = "<group>"; };
-		B01B8A17174F618B00151D5A /* CollapseClick.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollapseClick.m; sourceTree = "<group>"; };
-		B01B8A18174F618B00151D5A /* CollapseClickArrow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollapseClickArrow.h; sourceTree = "<group>"; };
-		B01B8A19174F618B00151D5A /* CollapseClickArrow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollapseClickArrow.m; sourceTree = "<group>"; };
-		B01B8A1A174F618B00151D5A /* CollapseClickCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollapseClickCell.h; sourceTree = "<group>"; };
-		B01B8A1B174F618B00151D5A /* CollapseClickCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollapseClickCell.m; sourceTree = "<group>"; };
-		B01B8A1C174F618B00151D5A /* CollapseClickCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CollapseClickCell.xib; sourceTree = "<group>"; };
 		B01E291016BBE64500A5BDA1 /* readCount.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = readCount.png; sourceTree = "<group>"; };
 		B01E291116BBE64500A5BDA1 /* readCount@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "readCount@2x.png"; sourceTree = "<group>"; };
 		B01E291516BBE65600A5BDA1 /* readCount-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "readCount-ipad.png"; sourceTree = "<group>"; };
@@ -1420,8 +1404,9 @@
 		B0A825DA1754901100ADE3C5 /* GADInterstitialDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADInterstitialDelegate.h; sourceTree = "<group>"; };
 		B0A825DB1754901100ADE3C5 /* GADRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADRequest.h; sourceTree = "<group>"; };
 		B0A825DC1754901100ADE3C5 /* GADRequestError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADRequestError.h; sourceTree = "<group>"; };
-		B0A825E11754918000ADE3C5 /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Flurry.h; path = "../../../../../../../Downloads/Flurry iPhone SDK viPhone 4/Flurry-iOS-4.2.1/Flurry/Flurry.h"; sourceTree = "<group>"; };
-		B0A825E21754918000ADE3C5 /* libFlurry.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libFlurry.a; path = "../../../../../../../Downloads/Flurry iPhone SDK viPhone 4/Flurry-iOS-4.2.1/Flurry/libFlurry.a"; sourceTree = "<group>"; };
+		B0A825E51754930200ADE3C5 /* Flurry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
+		B0A825E61754930200ADE3C5 /* libFlurry.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry.a; sourceTree = "<group>"; };
+		B0A825E7175493E600ADE3C5 /* libFlurry.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libFlurry.a; path = "../../../../../Downloads/Flurry iPhone SDK viPhone 4/Flurry-iOS-4.2.1/Flurry/libFlurry.a"; sourceTree = "<group>"; };
 		B0ABA2A5168D455000D987E0 /* playingBBC.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = playingBBC.png; sourceTree = "<group>"; };
 		B0ABA2A6168D455000D987E0 /* playingBBC@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "playingBBC@2x.png"; sourceTree = "<group>"; };
 		B0B055E914DA29A8008ABF07 /* VOA.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VOA.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1974,6 +1959,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B0A825E8175493E600ADE3C5 /* libFlurry.a in Frameworks */,
 				B0157F21174336BC00A5A232 /* CoreLocation.framework in Frameworks */,
 				B018534517421B040095A36D /* libxml2.2.dylib in Frameworks */,
 				B0A62CD81740DDE30084FA5E /* AdSupport.framework in Frameworks */,
@@ -1997,7 +1983,6 @@
 				B0B055EE14DA29A8008ABF07 /* UIKit.framework in Frameworks */,
 				B0B055F014DA29A8008ABF07 /* Foundation.framework in Frameworks */,
 				B08CE96F14F27D68007B6A57 /* PlausibleDatabase.framework in Frameworks */,
-				B0A825E31754918000ADE3C5 /* libFlurry.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2125,9 +2110,6 @@
 				B0F4C9ED1526ECB8003928CB /* InforController.m */,
 				B0ED49AF173A53B500F32766 /* ColorPickerControllerViewController.h */,
 				B0ED49B0173A53B500F32766 /* ColorPickerControllerViewController.m */,
-				B01B8A10174F614F00151D5A /* StrategyController.h */,
-				B01B8A11174F614F00151D5A /* StrategyController.m */,
-				B01B8A12174F614F00151D5A /* StrategyController.xib */,
 			);
 			name = setting;
 			sourceTree = "<group>";
@@ -2342,7 +2324,6 @@
 		B016B58215107FF6008C75E9 /* my */ = {
 			isa = PBXGroup;
 			children = (
-				B01B8A15174F618B00151D5A /* CollapseClick */,
 				B04C87C2171694A000897859 /* THUtility */,
 				B03567BF1703D8A6001EA96B /* EPGLTransitionView */,
 				B020AEFC1701D17A00CC5D7D /* ImageSplit */,
@@ -2405,20 +2386,6 @@
 				B016E8ED16B7ACA900F5AFCC /* TOEIC_Offline144.png */,
 			);
 			path = iconAppsiPad;
-			sourceTree = "<group>";
-		};
-		B01B8A15174F618B00151D5A /* CollapseClick */ = {
-			isa = PBXGroup;
-			children = (
-				B01B8A16174F618B00151D5A /* CollapseClick.h */,
-				B01B8A17174F618B00151D5A /* CollapseClick.m */,
-				B01B8A18174F618B00151D5A /* CollapseClickArrow.h */,
-				B01B8A19174F618B00151D5A /* CollapseClickArrow.m */,
-				B01B8A1A174F618B00151D5A /* CollapseClickCell.h */,
-				B01B8A1B174F618B00151D5A /* CollapseClickCell.m */,
-				B01B8A1C174F618B00151D5A /* CollapseClickCell.xib */,
-			);
-			path = CollapseClick;
 			sourceTree = "<group>";
 		};
 		B01C62AB1582F10300CEAEA4 /* RenRenShare */ = {
@@ -2882,6 +2849,15 @@
 			name = sendMessage;
 			sourceTree = "<group>";
 		};
+		B0A825E4175492F200ADE3C5 /* Flurry */ = {
+			isa = PBXGroup;
+			children = (
+				B0A825E51754930200ADE3C5 /* Flurry.h */,
+				B0A825E61754930200ADE3C5 /* libFlurry.a */,
+			);
+			name = Flurry;
+			sourceTree = "<group>";
+		};
 		B0AF80E41580482100B4672E /* ShareToCN */ = {
 			isa = PBXGroup;
 			children = (
@@ -2898,6 +2874,7 @@
 		B0B055DE14DA29A8008ABF07 = {
 			isa = PBXGroup;
 			children = (
+				B0A825E7175493E600ADE3C5 /* libFlurry.a */,
 				B0157F20174336BC00A5A232 /* CoreLocation.framework */,
 				B018534417421B040095A36D /* libxml2.2.dylib */,
 				B0A62CDA1740F0F20084FA5E /* libGoogleAdMobAds.a */,
@@ -2996,6 +2973,7 @@
 		B0BB9A1A1598515C006B3D2E /* Reference */ = {
 			isa = PBXGroup;
 			children = (
+				B0A825E4175492F200ADE3C5 /* Flurry */,
 				B0157E611743345300A5A232 /* TCWeiBoSDK */,
 				B0121173173A9F9700C7733D /* InfColorPicker */,
 				DBB49C3816BCE644003AB95D /* DACircularProgress */,
@@ -3007,7 +2985,6 @@
 				B0AF80E41580482100B4672E /* ShareToCN */,
 				B01C62AB1582F10300CEAEA4 /* RenRenShare */,
 				B00770AA153D9C0200A712C1 /* EGO */,
-				B0E69A3115351F3900E20BE9 /* FlurryAnalytics */,
 				B0E9570E15255E1900BAB997 /* Ad */,
 				B0214B61151490B800AE3351 /* InAppSettingsKit */,
 				B000058814F3677B00254595 /* KissXML */,
@@ -3528,15 +3505,6 @@
 				B0D6ED341606E27900F2204D /* Localizable.strings */,
 			);
 			path = "zh-Hant.lproj";
-			sourceTree = "<group>";
-		};
-		B0E69A3115351F3900E20BE9 /* FlurryAnalytics */ = {
-			isa = PBXGroup;
-			children = (
-				B0A825E11754918000ADE3C5 /* Flurry.h */,
-				B0A825E21754918000ADE3C5 /* libFlurry.a */,
-			);
-			path = FlurryAnalytics;
 			sourceTree = "<group>";
 		};
 		B0E9570E15255E1900BAB997 /* Ad */ = {
@@ -4597,8 +4565,6 @@
 				B0157F061743345300A5A232 /* separatorLine@2x.png in Resources */,
 				B0157F071743345300A5A232 /* test.png in Resources */,
 				B0157F081743345300A5A232 /* test@2x.png in Resources */,
-				B01B8A14174F614F00151D5A /* StrategyController.xib in Resources */,
-				B01B8A20174F618B00151D5A /* CollapseClickCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4803,10 +4769,6 @@
 				B0157F1A1743345300A5A232 /* TCWBAuthorizeViewController.m in Sources */,
 				B0157F1B1743345300A5A232 /* TCWBEngine.m in Sources */,
 				B0157F1C1743345300A5A232 /* TCWBRequest.m in Sources */,
-				B01B8A13174F614F00151D5A /* StrategyController.m in Sources */,
-				B01B8A1D174F618B00151D5A /* CollapseClick.m in Sources */,
-				B01B8A1E174F618B00151D5A /* CollapseClickArrow.m in Sources */,
-				B01B8A1F174F618B00151D5A /* CollapseClickCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
