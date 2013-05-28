@@ -404,7 +404,6 @@
 		B091668A14ED03C2005E96F6 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = B091668914ED03C0005E96F6 /* Reachability.m */; };
 		B091668C14ED0514005E96F6 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B091668B14ED0513005E96F6 /* Security.framework */; };
 		B091668E14ED0562005E96F6 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B091668D14ED0561005E96F6 /* libz.dylib */; };
-		B099AABE1742253000822AF2 /* libFlurry.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B099AABD1742253000822AF2 /* libFlurry.a */; };
 		B09BC1C715770DF900CDD774 /* IASKAppSettingsView-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = B09BC1C615770DF900CDD774 /* IASKAppSettingsView-iPad.xib */; };
 		B09FC2A314E4CF44006DE38B /* SDImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = B09FC29214E4CF44006DE38B /* SDImageCache.m */; };
 		B09FC2A414E4CF44006DE38B /* SDWebImageDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = B09FC29614E4CF44006DE38B /* SDWebImageDecoder.m */; };
@@ -424,6 +423,7 @@
 		B0A7EBFB16B029F5006F0097 /* UserMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = B0A7EBFA16B029F5006F0097 /* UserMessage.m */; };
 		B0A7EC0016B02B31006F0097 /* SendMessageController.m in Sources */ = {isa = PBXBuildFile; fileRef = B0A7EBFE16B02B31006F0097 /* SendMessageController.m */; };
 		B0A7EC0116B02B31006F0097 /* SendMessageController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0A7EBFF16B02B31006F0097 /* SendMessageController.xib */; };
+		B0A825E31754918000ADE3C5 /* libFlurry.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B0A825E21754918000ADE3C5 /* libFlurry.a */; };
 		B0ABA2A7168D455000D987E0 /* playingBBC.png in Resources */ = {isa = PBXBuildFile; fileRef = B0ABA2A5168D455000D987E0 /* playingBBC.png */; };
 		B0ABA2A8168D455000D987E0 /* playingBBC@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B0ABA2A6168D455000D987E0 /* playingBBC@2x.png */; };
 		B0B055EE14DA29A8008ABF07 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B0B055ED14DA29A8008ABF07 /* UIKit.framework */; };
@@ -1377,8 +1377,6 @@
 		B091668914ED03C0005E96F6 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		B091668B14ED0513005E96F6 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		B091668D14ED0561005E96F6 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
-		B099AABC1742253000822AF2 /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
-		B099AABD1742253000822AF2 /* libFlurry.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry.a; sourceTree = "<group>"; };
 		B09BC1C615770DF900CDD774 /* IASKAppSettingsView-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "IASKAppSettingsView-iPad.xib"; sourceTree = "<group>"; };
 		B09FC29114E4CF44006DE38B /* SDImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDImageCache.h; sourceTree = "<group>"; };
 		B09FC29214E4CF44006DE38B /* SDImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDImageCache.m; sourceTree = "<group>"; };
@@ -1406,16 +1404,6 @@
 		B09FC2D314E50F22006DE38B /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		B09FC2D414E50F22006DE38B /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		B09FC2D514E50F23006DE38B /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		B0A62CCC1740B9D80084FA5E /* GADAdMobExtras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADAdMobExtras.h; sourceTree = "<group>"; };
-		B0A62CCD1740B9D80084FA5E /* GADAdNetworkExtras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADAdNetworkExtras.h; sourceTree = "<group>"; };
-		B0A62CCE1740B9D80084FA5E /* GADAdSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADAdSize.h; sourceTree = "<group>"; };
-		B0A62CCF1740B9D80084FA5E /* GADBannerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADBannerView.h; sourceTree = "<group>"; };
-		B0A62CD01740B9D80084FA5E /* GADBannerViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADBannerViewDelegate.h; sourceTree = "<group>"; };
-		B0A62CD11740B9D80084FA5E /* GADInterstitial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADInterstitial.h; sourceTree = "<group>"; };
-		B0A62CD21740B9D80084FA5E /* GADInterstitialDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADInterstitialDelegate.h; sourceTree = "<group>"; };
-		B0A62CD31740B9D80084FA5E /* GADRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADRequest.h; sourceTree = "<group>"; };
-		B0A62CD41740B9D80084FA5E /* GADRequestError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADRequestError.h; sourceTree = "<group>"; };
-		B0A62CD51740B9D80084FA5E /* libGoogleAdMobAds.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGoogleAdMobAds.a; sourceTree = "<group>"; };
 		B0A62CD71740DDE30084FA5E /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		B0A62CDA1740F0F20084FA5E /* libGoogleAdMobAds.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libGoogleAdMobAds.a; path = "../../../../../Downloads/GoogleAdMobAdsSdkiOS-6.4.1/libGoogleAdMobAds.a"; sourceTree = "<group>"; };
 		B0A7EBF916B029F5006F0097 /* UserMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserMessage.h; sourceTree = "<group>"; };
@@ -1423,6 +1411,17 @@
 		B0A7EBFD16B02B31006F0097 /* SendMessageController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SendMessageController.h; sourceTree = "<group>"; };
 		B0A7EBFE16B02B31006F0097 /* SendMessageController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendMessageController.m; sourceTree = "<group>"; };
 		B0A7EBFF16B02B31006F0097 /* SendMessageController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SendMessageController.xib; sourceTree = "<group>"; };
+		B0A825D41754901100ADE3C5 /* GADAdMobExtras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADAdMobExtras.h; sourceTree = "<group>"; };
+		B0A825D51754901100ADE3C5 /* GADAdNetworkExtras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADAdNetworkExtras.h; sourceTree = "<group>"; };
+		B0A825D61754901100ADE3C5 /* GADAdSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADAdSize.h; sourceTree = "<group>"; };
+		B0A825D71754901100ADE3C5 /* GADBannerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADBannerView.h; sourceTree = "<group>"; };
+		B0A825D81754901100ADE3C5 /* GADBannerViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADBannerViewDelegate.h; sourceTree = "<group>"; };
+		B0A825D91754901100ADE3C5 /* GADInterstitial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADInterstitial.h; sourceTree = "<group>"; };
+		B0A825DA1754901100ADE3C5 /* GADInterstitialDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADInterstitialDelegate.h; sourceTree = "<group>"; };
+		B0A825DB1754901100ADE3C5 /* GADRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADRequest.h; sourceTree = "<group>"; };
+		B0A825DC1754901100ADE3C5 /* GADRequestError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADRequestError.h; sourceTree = "<group>"; };
+		B0A825E11754918000ADE3C5 /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Flurry.h; path = "../../../../../../../Downloads/Flurry iPhone SDK viPhone 4/Flurry-iOS-4.2.1/Flurry/Flurry.h"; sourceTree = "<group>"; };
+		B0A825E21754918000ADE3C5 /* libFlurry.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libFlurry.a; path = "../../../../../../../Downloads/Flurry iPhone SDK viPhone 4/Flurry-iOS-4.2.1/Flurry/libFlurry.a"; sourceTree = "<group>"; };
 		B0ABA2A5168D455000D987E0 /* playingBBC.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = playingBBC.png; sourceTree = "<group>"; };
 		B0ABA2A6168D455000D987E0 /* playingBBC@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "playingBBC@2x.png"; sourceTree = "<group>"; };
 		B0B055E914DA29A8008ABF07 /* VOA.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VOA.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1998,7 +1997,7 @@
 				B0B055EE14DA29A8008ABF07 /* UIKit.framework in Frameworks */,
 				B0B055F014DA29A8008ABF07 /* Foundation.framework in Frameworks */,
 				B08CE96F14F27D68007B6A57 /* PlausibleDatabase.framework in Frameworks */,
-				B099AABE1742253000822AF2 /* libFlurry.a in Frameworks */,
+				B0A825E31754918000ADE3C5 /* libFlurry.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3534,8 +3533,8 @@
 		B0E69A3115351F3900E20BE9 /* FlurryAnalytics */ = {
 			isa = PBXGroup;
 			children = (
-				B099AABC1742253000822AF2 /* Flurry.h */,
-				B099AABD1742253000822AF2 /* libFlurry.a */,
+				B0A825E11754918000ADE3C5 /* Flurry.h */,
+				B0A825E21754918000ADE3C5 /* libFlurry.a */,
 			);
 			path = FlurryAnalytics;
 			sourceTree = "<group>";
@@ -3543,16 +3542,15 @@
 		B0E9570E15255E1900BAB997 /* Ad */ = {
 			isa = PBXGroup;
 			children = (
-				B0A62CCC1740B9D80084FA5E /* GADAdMobExtras.h */,
-				B0A62CCD1740B9D80084FA5E /* GADAdNetworkExtras.h */,
-				B0A62CCE1740B9D80084FA5E /* GADAdSize.h */,
-				B0A62CCF1740B9D80084FA5E /* GADBannerView.h */,
-				B0A62CD01740B9D80084FA5E /* GADBannerViewDelegate.h */,
-				B0A62CD11740B9D80084FA5E /* GADInterstitial.h */,
-				B0A62CD21740B9D80084FA5E /* GADInterstitialDelegate.h */,
-				B0A62CD31740B9D80084FA5E /* GADRequest.h */,
-				B0A62CD41740B9D80084FA5E /* GADRequestError.h */,
-				B0A62CD51740B9D80084FA5E /* libGoogleAdMobAds.a */,
+				B0A825D41754901100ADE3C5 /* GADAdMobExtras.h */,
+				B0A825D51754901100ADE3C5 /* GADAdNetworkExtras.h */,
+				B0A825D61754901100ADE3C5 /* GADAdSize.h */,
+				B0A825D71754901100ADE3C5 /* GADBannerView.h */,
+				B0A825D81754901100ADE3C5 /* GADBannerViewDelegate.h */,
+				B0A825D91754901100ADE3C5 /* GADInterstitial.h */,
+				B0A825DA1754901100ADE3C5 /* GADInterstitialDelegate.h */,
+				B0A825DB1754901100ADE3C5 /* GADRequest.h */,
+				B0A825DC1754901100ADE3C5 /* GADRequestError.h */,
 			);
 			name = Ad;
 			sourceTree = "<group>";
@@ -4967,6 +4965,7 @@
 					"\"$(SRCROOT)/VOA/FlurryAnalytics\"",
 					"\"$(SRCROOT)/VOA/Weibo/WeiboEngine\"",
 					"\"$(SRCROOT)/../../../../../Downloads/GoogleAdMobAdsSdkiOS-6.4.1\"",
+					"\"$(SRCROOT)/../../../../../Downloads/Flurry iPhone SDK viPhone 4/Flurry-iOS-4.2.1/Flurry\"",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
@@ -5005,6 +5004,7 @@
 					"\"$(SRCROOT)/VOA/FlurryAnalytics\"",
 					"\"$(SRCROOT)/VOA/Weibo/WeiboEngine\"",
 					"\"$(SRCROOT)/../../../../../Downloads/GoogleAdMobAdsSdkiOS-6.4.1\"",
+					"\"$(SRCROOT)/../../../../../Downloads/Flurry iPhone SDK viPhone 4/Flurry-iOS-4.2.1/Flurry\"",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = VOA;
