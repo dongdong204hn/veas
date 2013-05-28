@@ -28,7 +28,7 @@
 
 /**
  *  帮助页控制函数
- *
+ */
 - (void)changePage:(UIPageControl *)sender 
 {
     int page = pageControl.currentPage;
