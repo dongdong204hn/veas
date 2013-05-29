@@ -106,11 +106,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "VOA/PlayViewController.mm"
-         timestampString = "391001578.41157"
+         timestampString = "391516679.164656"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "6298"
-         endingLineNumber = "6298"
+         startingLineNumber = "6390"
+         endingLineNumber = "6390"
          landmarkName = "-scrollViewDidEndDecelerating:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -119,22 +119,22 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "VOA/PlayViewController.mm"
-         timestampString = "391001578.41157"
+         timestampString = "391516679.164656"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "7889"
-         endingLineNumber = "7889">
+         startingLineNumber = "7981"
+         endingLineNumber = "7981">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "VOA/PlayViewController.mm"
-         timestampString = "391001578.41157"
+         timestampString = "391516679.164656"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "8282"
-         endingLineNumber = "8282">
+         startingLineNumber = "8374"
+         endingLineNumber = "8374">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "Yes"
@@ -167,22 +167,22 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "VOA/PlayViewController.mm"
-         timestampString = "391001578.41157"
+         timestampString = "391516679.164656"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "7854"
-         endingLineNumber = "7854">
+         startingLineNumber = "7946"
+         endingLineNumber = "7946">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "VOA/PlayViewController.mm"
-         timestampString = "391001578.41157"
+         timestampString = "391516679.164656"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "7919"
-         endingLineNumber = "7919">
+         startingLineNumber = "8011"
+         endingLineNumber = "8011">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "Yes"

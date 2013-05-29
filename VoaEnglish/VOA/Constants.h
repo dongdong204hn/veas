@@ -153,6 +153,9 @@ extern NSString * const kDIEight;
 extern NSString * const kDINine;
 
 extern NSString * const kSendOne;
+
+extern NSString * const kStraOne;
+
 extern BOOL isPlayPage;
 //定义一些常用语句
 #define kBePro @"com.iyuba.VOA.update" //内购名称

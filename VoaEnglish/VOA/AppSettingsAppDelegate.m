@@ -190,7 +190,7 @@ void uncaughtExceptionHandler(NSException *exception) {
 //                NSLog(@"已注册推送");
             }
             float appVersion = [[[NSUserDefaults standardUserDefaults] objectForKey:@"appVersionC"] floatValue];
-            if (appVersion < 3.8f) { //新版本的一些新设置等
+            if (appVersion < 3.9f) { //新版本的一些新设置等
                 [[NSUserDefaults standardUserDefaults] setFloat:3.8f forKey:@"appVersionC"];
                 [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"haveScore"];
                 [[NSUserDefaults standardUserDefaults] setFloat:1.0f forKey:@"speed"];

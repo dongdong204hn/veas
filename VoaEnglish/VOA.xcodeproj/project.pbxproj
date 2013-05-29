@@ -713,6 +713,9 @@
 		B0F7B86916031EED002CF296 /* MessageEntrySendButtonPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = B0F7B86116031EED002CF296 /* MessageEntrySendButtonPressed.png */; };
 		B0F7B86A16031EED002CF296 /* MessageEntrySendButtonPressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B0F7B86216031EED002CF296 /* MessageEntrySendButtonPressed@2x.png */; };
 		B0F9091B14E9157B00C8EC8D /* NewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0F9091A14E9157B00C8EC8D /* NewController.xib */; };
+		B0FD232D1755EB0300D940B3 /* ownAdv-iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = B0FD232C1755EB0300D940B3 /* ownAdv-iPad.png */; };
+		B0FD232F1755EB0F00D940B3 /* ownAdv.png in Resources */ = {isa = PBXBuildFile; fileRef = B0FD232E1755EB0F00D940B3 /* ownAdv.png */; };
+		B0FD23311755F84D00D940B3 /* StrategyController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0FD23301755F84D00D940B3 /* StrategyController-iPad.xib */; };
 		B0FDEFC616AFB5B400257C1E /* STTweetLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = B0FDEFC516AFB5B400257C1E /* STTweetLabel.m */; };
 		DB02E0BC165F531B004BB056 /* PwordFrame.png in Resources */ = {isa = PBXBuildFile; fileRef = DB02E0BA165F531B004BB056 /* PwordFrame.png */; };
 		DB02E0BD165F531B004BB056 /* PwordFrame@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DB02E0BB165F531B004BB056 /* PwordFrame@2x.png */; };
@@ -1805,6 +1808,9 @@
 		B0F7B86116031EED002CF296 /* MessageEntrySendButtonPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MessageEntrySendButtonPressed.png; sourceTree = "<group>"; };
 		B0F7B86216031EED002CF296 /* MessageEntrySendButtonPressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MessageEntrySendButtonPressed@2x.png"; sourceTree = "<group>"; };
 		B0F9091A14E9157B00C8EC8D /* NewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewController.xib; sourceTree = "<group>"; };
+		B0FD232C1755EB0300D940B3 /* ownAdv-iPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ownAdv-iPad.png"; path = "../../../../../../Downloads/ownAdv-iPad.png"; sourceTree = "<group>"; };
+		B0FD232E1755EB0F00D940B3 /* ownAdv.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ownAdv.png; path = ../../../../../../../Downloads/ownAdv.png; sourceTree = "<group>"; };
+		B0FD23301755F84D00D940B3 /* StrategyController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "StrategyController-iPad.xib"; sourceTree = "<group>"; };
 		B0FDEFC416AFB5B400257C1E /* STTweetLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STTweetLabel.h; sourceTree = "<group>"; };
 		B0FDEFC516AFB5B400257C1E /* STTweetLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STTweetLabel.m; sourceTree = "<group>"; };
 		DB02E0BA165F531B004BB056 /* PwordFrame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PwordFrame.png; sourceTree = "<group>"; };
@@ -2128,7 +2134,6 @@
 				B0ED49B0173A53B500F32766 /* ColorPickerControllerViewController.m */,
 				B01B8A10174F614F00151D5A /* StrategyController.h */,
 				B01B8A11174F614F00151D5A /* StrategyController.m */,
-				B01B8A12174F614F00151D5A /* StrategyController.xib */,
 			);
 			name = setting;
 			sourceTree = "<group>";
@@ -2724,6 +2729,7 @@
 		B08226FA157605E8007AD1C9 /* iPad */ = {
 			isa = PBXGroup;
 			children = (
+				B0FD23301755F84D00D940B3 /* StrategyController-iPad.xib */,
 				DBB5332C1664B974004099FE /* SentenceViewController-iPad.xib */,
 				B08226FB157605E9007AD1C9 /* MainWindow-iPad.xib */,
 				B08226FE1576071C007AD1C9 /* NewController-iPad.xib */,
@@ -2743,6 +2749,7 @@
 		B08226FD15760608007AD1C9 /* iPhone */ = {
 			isa = PBXGroup;
 			children = (
+				B01B8A12174F614F00151D5A /* StrategyController.xib */,
 				B0A7EBFF16B02B31006F0097 /* SendMessageController.xib */,
 				B04ECB0B16AE28CE00F61D6E /* DisInforViewController.xib */,
 				DBC0DA4E165CC68000991618 /* SentenceViewController.xib */,
@@ -3111,6 +3118,7 @@
 		B0CEB3C7160412E6003AEDE1 /* player */ = {
 			isa = PBXGroup;
 			children = (
+				B0FD232C1755EB0300D940B3 /* ownAdv-iPad.png */,
 				B02B6CCF17365EC5001C8EFC /* gold1-iPad.png */,
 				B02B6CD017365EC6001C8EFC /* gold2-iPad.png */,
 				B02B6CD117365EC6001C8EFC /* gold3-iPad.png */,
@@ -3239,6 +3247,7 @@
 		B0D4413A151C62E8009ECE82 /* player */ = {
 			isa = PBXGroup;
 			children = (
+				B0FD232E1755EB0F00D940B3 /* ownAdv.png */,
 				B02B6CBB17365EB4001C8EFC /* gold1.png */,
 				B02B6CBC17365EB4001C8EFC /* gold2.png */,
 				B02B6CBD17365EB4001C8EFC /* gold3.png */,
@@ -4601,6 +4610,9 @@
 				B0157F081743345300A5A232 /* test@2x.png in Resources */,
 				B01B8A14174F614F00151D5A /* StrategyController.xib in Resources */,
 				B01B8A20174F618B00151D5A /* CollapseClickCell.xib in Resources */,
+				B0FD232D1755EB0300D940B3 /* ownAdv-iPad.png in Resources */,
+				B0FD232F1755EB0F00D940B3 /* ownAdv.png in Resources */,
+				B0FD23311755F84D00D940B3 /* StrategyController-iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

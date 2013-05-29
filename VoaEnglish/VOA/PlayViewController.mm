@@ -159,6 +159,7 @@
 @synthesize scoreSameSen;
 @synthesize scoreImg;
 @synthesize tcEngine;
+@synthesize ownAdvImg;
 
 //用于批量下载
 extern NSMutableArray *downLoadList;
@@ -901,10 +902,15 @@ extern ASIHTTPRequest *nowrequest;
     //-----------other operations-----------
     [self loadPlaySetting];
     
+    ownAdvImg = nil;
+    
     //开启外部控制音频播放
     [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
     [self becomeFirstResponder];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateMyAdv)
+                                                 name:UIApplicationDidBecomeActiveNotification object:nil];
     if (isFree) {
             [self loadAdv];
     }
@@ -1510,7 +1516,6 @@ extern ASIHTTPRequest *nowrequest;
     [bannerView_ setHidden:NO];
 }
 
-
 /*
 - (void)viewDidUnload
 {
@@ -1751,25 +1756,41 @@ extern ASIHTTPRequest *nowrequest;
     if (isFree) {
         [bannerView_ release];
     }
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];  
+    
     [super dealloc];
 }
 
 #pragma mark - GADBannerViewDelegate
 - (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
     needFlushAdv = NO;
-    //    [UIView beginAnimations:@"BannerSlide" context:nil];
-    //    bannerView.frame = CGRectMake(0.0,
-    //                                  self.view.frame.size.height -
-    //                                  bannerView.frame.size.height,
-    //                                  bannerView.frame.size.width,
-    //                                  bannerView.frame.size.height);
-    //    [UIView commitAnimations];
+    if (ownAdvImg) {
+        [ownAdvImg removeTarget:self action:@selector(ownAdvPressed:) forControlEvents:UIControlEventTouchUpInside];
+        [ownAdvImg removeFromSuperview];
+//        [ownAdvImg release], ownAdvImg = nil;
+        ownAdvImg = nil;
+    }
 }
 
 - (void)adView:(GADBannerView *)bannerView
 didFailToReceiveAdWithError:(GADRequestError *)error {
     needFlushAdv = YES;
     //    NSLog(@"adView:didFailToReceiveAdWithError:%@", [error localizedDescription]);
+    if (!ownAdvImg) {
+        ownAdvImg = [UIButton buttonWithType:UIButtonTypeCustom];
+        if (isiPhone) {
+            [ownAdvImg setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"ownAdv" ofType:@"png"]] forState:UIControlStateNormal];
+            [ownAdvImg setFrame:CGRectMake(0, self.view.frame.size.height - 50, 320, 50)];
+            [ownAdvImg addTarget:self action:@selector(ownAdvPressed:) forControlEvents:UIControlEventTouchUpInside];
+        } else {
+            [ownAdvImg setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"ownAdv-iPad" ofType:@"png"]] forState:UIControlStateNormal];
+            [ownAdvImg setFrame:CGRectMake(0, self.view.frame.size.height - 90, 768, 90)];
+            [ownAdvImg addTarget:self action:@selector(ownAdvPressed:) forControlEvents:UIControlEventTouchUpInside];
+        }
+        [self.view addSubview:ownAdvImg];
+        
+    }
 }
 
 #pragma mark - static method
@@ -1814,6 +1835,77 @@ didFailToReceiveAdWithError:(GADRequestError *)error {
 
 
 #pragma mark - main view action
+- (void)updateMyAdv {
+    if (kNetIsExist) {
+        if (needFlushAdv) {
+            needFlushAdv = NO;
+            [bannerView_ loadRequest:[GADRequest request]];
+            if (ownAdvImg) {
+                [ownAdvImg removeTarget:self action:@selector(ownAdvPressed:) forControlEvents:UIControlEventTouchUpInside];
+                [ownAdvImg removeFromSuperview];
+                //        [ownAdvImg release], ownAdvImg = nil;
+                ownAdvImg = nil;
+            }
+        }
+    } else {
+        kNetTest;
+        needFlushAdv = YES;
+        //    NSLog(@"adView:didFailToReceiveAdWithError:%@", [error localizedDescription]);
+        if (!ownAdvImg) {
+            ownAdvImg = [UIButton buttonWithType:UIButtonTypeCustom];
+            if (isiPhone) {
+                [ownAdvImg setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"ownAdv" ofType:@"png"]] forState:UIControlStateNormal];
+                [ownAdvImg setFrame:CGRectMake(0, self.view.frame.size.height - 50, 320, 50)];
+                [ownAdvImg addTarget:self action:@selector(ownAdvPressed:) forControlEvents:UIControlEventTouchUpInside];
+            } else {
+                [ownAdvImg setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"ownAdv-iPad" ofType:@"png"]] forState:UIControlStateNormal];
+                [ownAdvImg setFrame:CGRectMake(0, self.view.frame.size.height - 90, 768, 90)];
+                [ownAdvImg addTarget:self action:@selector(ownAdvPressed:) forControlEvents:UIControlEventTouchUpInside];
+            }
+            [self.view addSubview:ownAdvImg];
+            
+        }
+    }
+    
+//    if (kNetIsExist) {
+//        
+//        needFlushAdv = NO;
+//        if (ownAdvImg) {
+//            [ownAdvImg removeTarget:self action:@selector(ownAdvPressed:) forControlEvents:UIControlEventTouchUpInside];
+//            [ownAdvImg removeFromSuperview];
+//            //        [ownAdvImg release], ownAdvImg = nil;
+//            ownAdvImg = nil;
+//        }
+//    } else {
+//        kNetTest;
+//        needFlushAdv = YES;
+//        //    NSLog(@"adView:didFailToReceiveAdWithError:%@", [error localizedDescription]);
+//        if (!ownAdvImg) {
+//            ownAdvImg = [UIButton buttonWithType:UIButtonTypeCustom];
+//            if (isiPhone) {
+//                [ownAdvImg setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"ownAdv" ofType:@"png"]] forState:UIControlStateNormal];
+//                [ownAdvImg setFrame:CGRectMake(0, self.view.frame.size.height - 50, 320, 50)];
+//                [ownAdvImg addTarget:self action:@selector(ownAdvPressed:) forControlEvents:UIControlEventTouchUpInside];
+//            } else {
+//                [ownAdvImg setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"ownAdv-iPad" ofType:@"png"]] forState:UIControlStateNormal];
+//                [ownAdvImg setFrame:CGRectMake(0, self.view.frame.size.height - 90, 768, 90)];
+//                [ownAdvImg addTarget:self action:@selector(ownAdvPressed:) forControlEvents:UIControlEventTouchUpInside];
+//            }
+//            [self.view addSubview:ownAdvImg];
+//            
+//        }
+//    }
+}
+
+/**
+ *  展开工具栏
+ */
+- (IBAction)ownAdvPressed:(UIButton *) sender {
+    StrategyController *strategy = [[StrategyController alloc] init];
+    [self.navigationController pushViewController:strategy animated:NO];
+    [strategy release], strategy = nil;
+}
+
 /**
  *  展开工具栏
  */

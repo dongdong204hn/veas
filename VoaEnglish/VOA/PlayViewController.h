@@ -56,6 +56,7 @@
 #import "TCWBEngine.h"
 #import "Constants.h"
 #import "MyTextView.h"
+#import "StrategyController.h"
 
 @class timeSwitchClass;
 //@class SpeakHereController;
@@ -326,7 +327,7 @@
 @property (nonatomic, retain) UIButton        *commRecBtn; //发表评论按钮
 @property (nonatomic, retain) UIButton		*collectButton; //下载按钮
 @property (nonatomic, retain) UIButton		*playAgainButton; //下载按钮
-//@property (nonatomic, retain) UISegmentedControl *commRecControl;
+@property (nonatomic, retain) UIButton      *ownAdvImg;   //自定义攻略广告图片
 
 @property (nonatomic, retain) NSTimer			*sliderTimer; //播放时主定时器
 @property (nonatomic, retain) NSTimer			*lyricSynTimer; //歌词同步定时器

@@ -154,6 +154,8 @@ NSString * const kDINine = @"本地暂无当前文章，前往网页听读";
 
 NSString * const kSendOne = @"信息发送成功";
 
+NSString * const kStraOne = @"攻略";
+
 NSMutableArray *downLoadList;//下载队列的全局变量，用于“下次再说”功能
 ASIHTTPRequest *nowrequest;//正在下载的全局变量，用于给cell的progress赋值
 BOOL isPlayPage;
