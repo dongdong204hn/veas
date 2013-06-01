@@ -203,7 +203,6 @@ void uncaughtExceptionHandler(NSException *exception) {
                 [waitReadCountArray release];
                 [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"recPlayAgain"];
                 [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"recScore"];
-                [[NSUserDefaults standardUserDefaults] setObject:@"NO" forKey:kBePro];
                 
                 [VOASentence creatSynFlg];
                 
@@ -356,7 +355,6 @@ void uncaughtExceptionHandler(NSException *exception) {
                 [waitReadCountArray release];
                 [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"recPlayAgain"];
                 [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"recScore"];
-                [[NSUserDefaults standardUserDefaults] setObject:@"NO" forKey:kBePro];
                 
                 [VOASentence creatSynFlg];
                 
