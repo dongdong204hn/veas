@@ -41,7 +41,7 @@
         kNetTest;
     });
     self.navigationController.navigationBarHidden = NO;
-    [nameLab setText:[NSString stringWithFormat:@"发私信给\"%@\"", userMsg.toUserName]];
+    [nameLab setText:[NSString stringWithFormat:@"%@\"%@\"", kSendTwo,userMsg.toUserName]];
 }
 
 - (void)viewDidUnload {

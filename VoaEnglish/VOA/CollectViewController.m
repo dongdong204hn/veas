@@ -353,7 +353,7 @@
     
     cell.collectDate.text = fav._date;
         
-    cell.readCount.text = [NSString stringWithFormat:@"%i人已听", voa._readCount.integerValue+11321];
+    cell.readCount.text = [NSString stringWithFormat:@"%i%@", voa._readCount.integerValue+11321, kSearchThirte];
     
     //--------->设置内容换行
     [cell.myTitle setLineBreakMode:UILineBreakModeClip];
@@ -548,7 +548,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
             
             if ([contentsArray count] == 0) {
                 
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:kColFour message:[NSString stringWithFormat:@"%@%@%@",kSearchThree,searchWords,kColThree] delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil ];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:kColFour message:[NSString stringWithFormat:@"%@%@%@",kSearchThree,searchWords,kColThree] delegate:nil cancelButtonTitle:kFeedbackFive otherButtonTitles:nil, nil ];
                 
                 [alert show];
                 

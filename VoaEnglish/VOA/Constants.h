@@ -33,6 +33,7 @@ extern NSString * const kSearchNine;
 extern NSString * const kSearchTen;
 extern NSString * const kSearchEleven;
 extern NSString * const kSearchTwelve;
+extern NSString * const kSearchThirte;
 
 extern NSString * const kFeedbackOne;
 extern NSString * const kFeedbackTwo;
@@ -81,6 +82,7 @@ extern NSString * const kRegTwelve;
 extern NSString * const kRegThirte;
 extern NSString * const kRegFourte;
 extern NSString * const kRegFivete;
+extern NSString * const kRegSixte;
 
 extern NSString * const kColOne;
 extern NSString * const kColTwo;
@@ -107,6 +109,12 @@ extern NSString * const kNewThree;
 extern NSString * const kNewFour;
 extern NSString * const kNewFive;
 extern NSString * const kNewSix;
+extern NSString * const kNewSeven;
+extern NSString * const kNewEight;
+extern NSString * const kNewNine;
+extern NSString * const kNewTen;
+extern NSString * const kNewEleven;
+extern NSString * const kNewTwelve;
 
 extern NSString * const kClassOne;
 extern NSString * const kClassAll;
@@ -134,9 +142,24 @@ extern NSString * const kPlayNine;
 extern NSString * const kPlayTen;
 extern NSString * const kPlayEleven;
 extern NSString * const kPlayTwelve;
+extern NSString * const kPlayThirte;
+extern NSString * const kPlayFourte;
+extern NSString * const kPlayFifte;
+extern NSString * const kPlaySixte;
+extern NSString * const kPlaySevente;
+extern NSString * const kPlayEighte;
+extern NSString * const kPlayNinete;
+extern NSString * const kPlayTwenty;
+extern NSString * const kPlay21;
+extern NSString * const kPlay22;
+extern NSString * const kPlay23;
+extern NSString * const kPlay24;
+extern NSString * const kPlay25;
 
 extern NSString * const kSentenceOne;
 extern NSString * const kSentenceTwo;
+extern NSString * const kSentenceThree;
+extern NSString * const kSentenceFour;
 
 extern NSString * const kLyricOne;
 
@@ -153,10 +176,33 @@ extern NSString * const kDIEight;
 extern NSString * const kDINine;
 
 extern NSString * const kSendOne;
+extern NSString * const kSendTwo;
 
 extern NSString * const kStraOne;
 
+extern NSString * const kInnerOne;
+extern NSString * const kInnerTwo;
+extern NSString * const kInnerThree;
+extern NSString * const kInnerFour;
+extern NSString * const kInnerFive;
+extern NSString * const kInnerSix;
+extern NSString * const kInnerSeven;
+extern NSString * const kInnerEight;
+extern NSString * const kInnerNine;
+extern NSString * const kInnerTen;
+extern NSString * const kInnerEleven;
+
+extern NSString * const kDisinfOne;
+extern NSString * const kDisinfTwo;
+extern NSString * const kDisinfThree;
+extern NSString * const kDisinfFour;
+extern NSString * const kDisinfFive;
+extern NSString * const kDisinfSix;
+extern NSString * const kDisinfSeven;
+
 extern BOOL isPlayPage;
+
+
 //定义一些常用语句
 #define kBePro @"com.iyuba.VOA.update" //内购名称
 

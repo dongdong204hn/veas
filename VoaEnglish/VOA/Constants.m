@@ -33,6 +33,7 @@ NSString * const kSearchNine = @"搜索失败";
 NSString * const kSearchTen = @"未联网或者无匹配的结果";
 NSString * const kSearchEleven = @"连接失败";
 NSString * const kSearchTwelve = @"服务器暂不可用";
+NSString * const kSearchThirte = @"人已听";
 
 NSString * const kFeedbackOne = @"意见反馈";
 NSString * const kFeedbackTwo = @"我们已经收到您的意见,感谢您的支持";
@@ -81,6 +82,7 @@ NSString * const kRegTwelve = @"注册失败";
 NSString * const kRegThirte = @"用户名已存在";
 NSString * const kRegFourte = @"邮箱已注册";
 NSString * const kRegFivete= @"用户名长度错误";
+NSString * const kRegSixte= @"提交";
 
 NSString * const kColOne = @"对本地新闻进行搜索";
 NSString * const kColTwo = @"本地";
@@ -107,6 +109,12 @@ NSString * const kNewThree = @"最新";
 NSString * const kNewFour = @"努力为您获取最新新闻ing...";
 NSString * const kNewFive = @"当前新闻正在更新中,暂不可用,请您先听读列表中其他VOA新闻";
 NSString * const kNewSix = @"无网络连接或服务器暂不可用";
+NSString * const kNewSeven = @"检测到您之前有未下载完成的任务";
+NSString * const kNewEight = @"继续下载";
+NSString * const kNewNine = @"下次再说";
+NSString * const kNewTen = @"拒绝";
+NSString * const kNewEleven = @"音频";
+NSString * const kNewTwelve= @"可能暂无此音频";
 
 NSString * const kClassOne = @"分类";
 NSString * const kClassAll = @"全部";
@@ -134,9 +142,24 @@ NSString * const kPlayNine = @"回复";
 NSString * const kPlayTen = @"区间复读功能评价后免费开启";
 NSString * const kPlayEleven = @"在设置中功能升级后开启语速控制";
 NSString * const kPlayTwelve = @"好评后免费为您开启区间复读功能，万分感谢^.^";
+NSString * const kPlayThirte = @"中译";
+NSString * const kPlayFourte = @"写评论";
+NSString * const kPlayFifte = @"发布";
+NSString * const kPlaySixte = @"按住 说话";
+NSString * const kPlaySevente = @"开启语音打分";
+NSString * const kPlayEighte = @"关闭语音打分";
+NSString * const kPlayNinete = @"单曲循环";
+NSString * const kPlayTwenty = @"顺序播放";
+NSString * const kPlay21 = @"随机播放";
+NSString * const kPlay22 = @"开启定时";
+NSString * const kPlay23 = @"取消定时";
+NSString * const kPlay24 = @"回放";
+NSString * const kPlay25 = @"录音时间太短";
 
 NSString * const kSentenceOne = @"已为您添加到本地～";
 NSString * const kSentenceTwo = @"为了今后为您提供更加优质的服务，请您先登录帐户～";
+NSString * const kSentenceThree = @"第";
+NSString * const kSentenceFour = @"句";
 
 NSString * const kLyricOne = @"暂未更新";
 
@@ -153,8 +176,30 @@ NSString * const kDIEight = @"非本地文章且当前服务器不可用";
 NSString * const kDINine = @"本地暂无当前文章，前往网页听读";
 
 NSString * const kSendOne = @"信息发送成功";
+NSString * const kSendTwo = @"发私信给";
 
 NSString * const kStraOne = @"攻略";
+
+NSString * const kInnerOne = @"恢复购买";
+NSString * const kInnerTwo = @"正在恢复，请稍候";
+NSString * const kInnerThree = @"购买中";
+NSString * const kInnerFour = @"升级为专业版,享受最佳体验:\n1.去除广告条(重启应用后生效)\n2.开启离线词库,无网环境照常学习,全面提升英语能力!\n3.功能加强!\n4.一次购买，无论之后更新哪些功能，永久全部开放!";
+NSString * const kInnerFive = @"已升级至专业版";
+NSString * const kInnerSix = @"升级至专业版";
+NSString * const kInnerSeven = @"恢复已购买产品";
+NSString * const kInnerEight = @"购买失败";
+NSString * const kInnerNine = @"正在购买";
+NSString * const kInnerTen = @"购买成功";
+NSString * const kInnerEleven = @"恢复成功";
+
+NSString * const kDisinfOne = @"应用展示";
+NSString * const kDisinfTwo = @"学习记录";
+NSString * const kDisinfThree = @"消息中心";
+NSString * const kDisinfFour = @"点击列表查看消息全部内容,点击头像可直接发消息";
+NSString * const kDisinfFive = @"分";
+NSString * const kDisinfSix = @"今日开始统计";
+NSString * const kDisinfSeven = @"进入文章";
+
 
 NSMutableArray *downLoadList;//下载队列的全局变量，用于“下次再说”功能
 ASIHTTPRequest *nowrequest;//正在下载的全局变量，用于给cell的progress赋值

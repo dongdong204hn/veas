@@ -213,7 +213,7 @@
         UILabel *appLab = [[UILabel alloc] initWithFrame:CGRectMake(110, 5, 100, 25)];
         [appLab setFont:[UIFont systemFontOfSize:18]];
         [appLab setTextColor:[UIColor blackColor]];
-        [appLab setText:@"应用展示"];
+        [appLab setText:kDisinfOne];
         [appLab setBackgroundColor:[UIColor clearColor]];
         [appLab setTextAlignment:NSTextAlignmentCenter];
         [inforScroll addSubview:appLab];
@@ -222,7 +222,7 @@
         UILabel *noteLab = [[UILabel alloc] initWithFrame:CGRectMake(320 + 110, 5, 100, 25)];
         [noteLab setFont:[UIFont systemFontOfSize:18]];
         [noteLab setTextColor:[UIColor blackColor]];
-        [noteLab setText:@"学习记录"];
+        [noteLab setText:kDisinfTwo];
         [noteLab setBackgroundColor:[UIColor clearColor]];
         [noteLab setTextAlignment:NSTextAlignmentCenter];
         [inforScroll addSubview:noteLab];
@@ -232,7 +232,7 @@
         UILabel *messageLab = [[UILabel alloc] initWithFrame:CGRectMake(640 + 110, 5, 100, 25)];
         [messageLab setFont:[UIFont systemFontOfSize:18]];
         [messageLab setTextColor:[UIColor blackColor]];
-        [messageLab setText:@"消息中心"];
+        [messageLab setText:kDisinfThree];
         [messageLab setBackgroundColor:[UIColor clearColor]];
         [messageLab setTextAlignment:NSTextAlignmentCenter];
         [inforScroll addSubview:messageLab];
@@ -276,7 +276,7 @@
         [disMsgLab setTextColor:[UIColor colorWithRed:71.0/255 green:71.0/255 blue:72.0/255 alpha:1.0f]];
         [disMsgLab setDelegate:self];
         [disMsgLab setBackgroundColor:[UIColor clearColor]];
-        [disMsgLab setText:@"点击列表查看消息全部内容,点击头像可直接发消息"];
+        [disMsgLab setText:kDisinfFour];
         
         [recordView setFrame:CGRectMake(320, 35, 320, 330)];
         
@@ -288,7 +288,7 @@
         UILabel *appLab = [[UILabel alloc] initWithFrame:CGRectMake(294, 5, 180, 50)];
         [appLab setFont:[UIFont systemFontOfSize:20]];
         [appLab setTextColor:[UIColor blackColor]];
-        [appLab setText:@"应用展示"];
+        [appLab setText:kDisinfOne];
         [appLab setBackgroundColor:[UIColor clearColor]];
         [appLab setTextAlignment:NSTextAlignmentCenter];
         [inforScroll addSubview:appLab];
@@ -297,7 +297,7 @@
         UILabel *noteLab = [[UILabel alloc] initWithFrame:CGRectMake(768 + 294, 5, 180, 50)];
         [noteLab setFont:[UIFont systemFontOfSize:20]];
         [noteLab setTextColor:[UIColor blackColor]];
-        [noteLab setText:@"学习记录"];
+        [noteLab setText:kDisinfTwo];
         [noteLab setBackgroundColor:[UIColor clearColor]];
         [noteLab setTextAlignment:NSTextAlignmentCenter];
         [inforScroll addSubview:noteLab];
@@ -307,7 +307,7 @@
         UILabel *messageLab = [[UILabel alloc] initWithFrame:CGRectMake(1536 + 294, 5, 180, 50)];
         [messageLab setFont:[UIFont systemFontOfSize:20]];
         [messageLab setTextColor:[UIColor blackColor]];
-        [messageLab setText:@"消息中心"];
+        [messageLab setText:kDisinfThree];
         [messageLab setBackgroundColor:[UIColor clearColor]];
         [messageLab setTextAlignment:NSTextAlignmentCenter];
         [inforScroll addSubview:messageLab];
@@ -351,7 +351,7 @@
         [disMsgLab setTextColor:[UIColor colorWithRed:71.0/255 green:71.0/255 blue:72.0/255 alpha:1.0f]];
         [disMsgLab setDelegate:self];
         [disMsgLab setBackgroundColor:[UIColor clearColor]];
-        [disMsgLab setText:@"点击列表查看消息全部内容,点击头像可直接发消息"];
+        [disMsgLab setText:kDisinfFour];
         
         [recordView setFrame:CGRectMake(768, 50, 768, 866)];
         
@@ -436,20 +436,20 @@
     if (avgTime > 0) {
         int n = (avgTime%60)*5/3;
         if (n > 9) {
-            [avgOfDayStudyTLab setText:[NSString stringWithFormat:@"%d.%d分", avgTime/60, n]];
+            [avgOfDayStudyTLab setText:[NSString stringWithFormat:@"%d.%d%@", avgTime/60, n, kDisinfFive]];
         } else {
-            [avgOfDayStudyTLab setText:[NSString stringWithFormat:@"%d.0%d分", avgTime/60, n]];
+            [avgOfDayStudyTLab setText:[NSString stringWithFormat:@"%d.0%d%@", avgTime/60, n, kDisinfFive]];
         }
     
     } else {
-        [avgOfDayStudyTLab setText:@"今日开始统计"];
+        [avgOfDayStudyTLab setText:kDisinfSix];
     }
     
     int n = (seconds%60)*5/3;
     if (n > 9) {
-        [todayStudyTLab setText:[NSString stringWithFormat:@"%d.%d分", seconds/60, n]];
+        [todayStudyTLab setText:[NSString stringWithFormat:@"%d.%d%@", seconds/60, n, kDisinfFive]];
     } else {
-        [todayStudyTLab setText:[NSString stringWithFormat:@"%d.0%d分", seconds/60, n]];
+        [todayStudyTLab setText:[NSString stringWithFormat:@"%d.0%d%@", seconds/60, n, kDisinfFive]];
     }
     
     [countOfReadedLab setText:[NSString stringWithFormat:@"%d", [VOAView countOfReaded]]];
@@ -954,7 +954,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 //    NSLog(@"topicId:%i", voaid);
     if (voaid > 0) {
         toVoaid = voaid;
-        [disMsgLab setText:[NSString stringWithFormat:@"%@ #进入文章 ", userMsg.comment]];
+        [disMsgLab setText:[NSString stringWithFormat:@"%@ #%@ ", userMsg.comment, kDisinfSeven]];
     } else {
         [disMsgLab setText:userMsg.comment];
     }

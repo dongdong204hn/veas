@@ -1018,7 +1018,7 @@ extern ASIHTTPRequest *nowrequest;
     [mySesArray release];
     
     //定义取词时显示菜单
-    UIMenuItem *menuItem = [[UIMenuItem alloc]initWithTitle:@"中译" action:@selector(showChDefine)];
+    UIMenuItem *menuItem = [[UIMenuItem alloc]initWithTitle:kPlayThirte action:@selector(showChDefine)];
     UIMenuController *menu = [UIMenuController sharedMenuController];
     [menu setMenuItems:[NSArray arrayWithObject:menuItem]];
     [menuItem release];
@@ -1346,7 +1346,7 @@ extern ASIHTTPRequest *nowrequest;
     
 	textView.minNumberOfLines = 1;
 	textView.maxNumberOfLines = 6;
-    [textView setText:@"写评论"];
+    [textView setText:kPlayFourte];
 	textView.returnKeyType = UIReturnKeyNext; //just as an example
 	textView.font = [UIFont systemFontOfSize:15.0f];
 	textView.delegate = self;
@@ -1380,7 +1380,7 @@ extern ASIHTTPRequest *nowrequest;
     sendBtn = [UIButton buttonWithType:UIButtonTypeCustom];
 	sendBtn.frame = CGRectMake(containerView.frame.size.width - 69, 8, 63, 27);
     sendBtn.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin;
-	[sendBtn setTitle:@"发布" forState:UIControlStateNormal];
+	[sendBtn setTitle:kPlayFifte forState:UIControlStateNormal];
     
     [sendBtn setTitleShadowColor:[UIColor colorWithWhite:0 alpha:0.4] forState:UIControlStateNormal];
     sendBtn.titleLabel.shadowOffset = CGSizeMake (0.0, -1.0);
@@ -1401,7 +1401,7 @@ extern ASIHTTPRequest *nowrequest;
 	[containerView addSubview:commChangeBtn];
     
     commRecBtn.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin;
-    [commRecBtn setTitle:@"按住 说话" forState:UIControlStateNormal];
+    [commRecBtn setTitle:kPlaySixte forState:UIControlStateNormal];
     
     [commRecBtn setTitleShadowColor:[UIColor colorWithWhite:0 alpha:0.4] forState:UIControlStateNormal];
     commRecBtn.titleLabel.shadowOffset = CGSizeMake (0.0, -1.0);
@@ -1968,11 +1968,11 @@ didFailToReceiveAdWithError:(GADRequestError *)error {
     if (sender.selected) {
         [[NSUserDefaults standardUserDefaults] setObject:@"YES" forKey:@"recScore"];
         sender.selected = NO;
-        [displayModeBtn setTitle:@"开启语音打分" forState:UIControlStateNormal];
+        [displayModeBtn setTitle:kPlaySevente forState:UIControlStateNormal];
     }else{
         [[NSUserDefaults standardUserDefaults] setObject:@"NO" forKey:@"recScore"];
         sender.selected = YES;
-        [displayModeBtn setTitle:@"关闭语音打分" forState:UIControlStateNormal];
+        [displayModeBtn setTitle:kPlayEighte forState:UIControlStateNormal];
     }
     
     [Constants beginAnimationWithName:@"Display" duration:0.5f];
@@ -1998,7 +1998,7 @@ didFailToReceiveAdWithError:(GADRequestError *)error {
                 [modeBtn setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"sin-iPad" ofType:@"png"]] forState:UIControlStateNormal];
             }
             
-            [displayModeBtn setTitle:@"单曲循环" forState:UIControlStateNormal]; 
+            [displayModeBtn setTitle:kPlayNinete forState:UIControlStateNormal]; 
             break;
         case 2:
             if (isiPhone) {
@@ -2007,7 +2007,7 @@ didFailToReceiveAdWithError:(GADRequestError *)error {
                 [modeBtn setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"seq-iPad" ofType:@"png"]] forState:UIControlStateNormal];
             }
 
-            [displayModeBtn setTitle:@"顺序播放" forState:UIControlStateNormal];
+            [displayModeBtn setTitle:kPlayTwenty forState:UIControlStateNormal];
             break;
         case 3:
             if (isiPhone) {
@@ -2016,7 +2016,7 @@ didFailToReceiveAdWithError:(GADRequestError *)error {
                 [modeBtn setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"ran-iPad" ofType:@"png"]] forState:UIControlStateNormal];
             }
             
-            [displayModeBtn setTitle:@"随机播放" forState:UIControlStateNormal];
+            [displayModeBtn setTitle:kPlay21 forState:UIControlStateNormal];
             break;
         default:
             break;
@@ -4064,7 +4064,7 @@ void audioRouteChangeListenerCallback (
     //    [self changeTimer];
     if (isFixing) {
         isFixing = NO;
-        [fixButton setTitle:@"开启定时" forState:UIControlStateNormal];
+        [fixButton setTitle:kPlay22 forState:UIControlStateNormal];
         if (isiPhone) {
             [clockButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"clockBBC" ofType:@"png"]] forState:UIControlStateNormal];
         } else {
@@ -4081,7 +4081,7 @@ void audioRouteChangeListenerCallback (
         fixSeconds = ([fixHour intValue]*60 + [fixMinute intValue])*60 + [fixSecond intValue];
         if (fixSeconds>0) {
             isFixing = YES;
-            [fixButton setTitle:@"取消定时" forState:UIControlStateNormal];
+            [fixButton setTitle:kPlay23 forState:UIControlStateNormal];
             if (isiPhone) {
                 [clockButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"clockBBC" ofType:@"png"]] forState:UIControlStateNormal];
             } else {
@@ -4145,7 +4145,7 @@ void audioRouteChangeListenerCallback (
                         [fixTimer invalidate];
                         fixTimer = nil;
                         isFixing = NO;
-                        [fixButton setTitle:@"开启定时" forState:UIControlStateNormal];
+                        [fixButton setTitle:kPlay22 forState:UIControlStateNormal];
                         if (isiPhone) {
                             [clockButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"clockBBC" ofType:@"png"]] forState:UIControlStateNormal];
                         } else {
@@ -4163,7 +4163,7 @@ void audioRouteChangeListenerCallback (
         [fixTimer invalidate];
         fixTimer = nil;
         isFixing = NO;
-        [fixButton setTitle:@"开启定时" forState:UIControlStateNormal];
+        [fixButton setTitle:kPlay22 forState:UIControlStateNormal];
         if (isiPhone) {
             [clockButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"clockBBC" ofType:@"png"]] forState:UIControlStateNormal];
         } else {
@@ -4357,14 +4357,14 @@ void audioRouteChangeListenerCallback (
     [commChangeBtn setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"audioComm" ofType:@"png"]] forState:UIControlStateNormal];
     [commChangeBtn setTag:1];
     [commRecBtn removeTarget:self action:@selector(playCommRec) forControlEvents:UIControlEventTouchUpInside];
-    [commRecBtn setTitle:@"按住 说话" forState:UIControlStateNormal];
+    [commRecBtn setTitle:kPlaySixte forState:UIControlStateNormal];
     [commRecBtn addTarget:self action:@selector(startCommRecord) forControlEvents:UIControlEventTouchDown];
     [commRecBtn addTarget:self action:@selector(endCommRecord) forControlEvents:UIControlEventTouchUpInside];
     [commRecBtn addTarget:self action:@selector(endCommRecord) forControlEvents:UIControlEventTouchUpOutside];
     
     for (int i = 0; i < [commArray count]/7; i++) {
         if (i == sender.superview.tag) {
-            [textView setText:[NSString stringWithFormat:@"回复%@:", [commArray objectAtIndex:i*7+1]]];
+            [textView setText:[NSString stringWithFormat:@"%@%@:", kPlayNine, [commArray objectAtIndex:i*7+1]]];
         }
     }
     isResponse = YES;
@@ -4379,7 +4379,7 @@ void audioRouteChangeListenerCallback (
         NSInteger uid = [[NSUserDefaults standardUserDefaults] integerForKey:@"nowUser"];
         if (uid>0) {
             if ([textView isHidden]) {
-                NSLog(@"上传音频");
+//                NSLog(@"上传音频");
                 if (commChangeBtn.tag == 3) {
                     [self sendComments:1];
                 }
@@ -4921,7 +4921,7 @@ void audioRouteChangeListenerCallback (
                 break;
             }
         }
-        UIAlertView *netAlert = [[UIAlertView alloc] initWithTitle:kPlayFive message:[NSString stringWithFormat:@"音频%@, 可能暂无此音频", kPlayFive] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        UIAlertView *netAlert = [[UIAlertView alloc] initWithTitle:kPlayFive message:[NSString stringWithFormat:@"%@%@, %@", kNewEleven,kPlayFive,kNewTwelve] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
         if (request.tag == voa._voaid) {
             [collectButton setHidden:NO];
             [downloadingFlg setHidden:YES];
@@ -6896,11 +6896,11 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
  */
 - (void)growingTextViewDidBeginEditing:(HPGrowingTextView *)growingTextView {
     int nowUserID = [[[NSUserDefaults standardUserDefaults] objectForKey:@"nowUser"] integerValue];
-    if ([[growingTextView text] isEqualToString:@"写评论"]) {
+    if ([[growingTextView text] isEqualToString:kPlayFourte]) {
         [growingTextView setText:@""];
     }
     if (nowUserID > 0) {
-        if ([[growingTextView text] length] > 0 && [[growingTextView text] rangeOfString:@"回复"].location == NSNotFound) {
+        if ([[growingTextView text] length] > 0 && [[growingTextView text] rangeOfString:kPlayNine].location == NSNotFound) {
             [self sendComments:0];
         }
     } else {
@@ -7099,7 +7099,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
             [commRecBtn removeTarget:self action:@selector(startCommRecord) forControlEvents:UIControlEventTouchDown];
             [commRecBtn removeTarget:self action:@selector(endCommRecord) forControlEvents:UIControlEventTouchUpInside];
             [commRecBtn removeTarget:self action:@selector(endCommRecord) forControlEvents:UIControlEventTouchUpOutside];
-            [commRecBtn setTitle:@"回放" forState:UIControlStateNormal];
+            [commRecBtn setTitle:kPlay24 forState:UIControlStateNormal];
             [commRecBtn addTarget:self action:@selector(playCommRec) forControlEvents:UIControlEventTouchUpInside];
             
             [commChangeBtn removeTarget:self action:@selector(doCommChange) forControlEvents:UIControlEventTouchUpInside];
@@ -7107,7 +7107,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
             [commChangeBtn setTag:3];
             [commChangeBtn addTarget:self action:@selector(returnCommRec) forControlEvents:UIControlEventTouchUpInside];
         } else {
-            [displayModeBtn setTitle:@"录音时间太短" forState:UIControlStateNormal];
+            [displayModeBtn setTitle:kPlay25 forState:UIControlStateNormal];
             
             [Constants beginAnimationWithName:@"Display" duration:0.5f];
             [displayModeBtn setAlpha:0.8];
@@ -7164,7 +7164,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
  */
 - (void)returnCommRec{
     [commRecBtn removeTarget:self action:@selector(playCommRec) forControlEvents:UIControlEventTouchUpInside];
-    [commRecBtn setTitle:@"按住 说话" forState:UIControlStateNormal];
+    [commRecBtn setTitle:kPlaySixte forState:UIControlStateNormal];
     [commRecBtn addTarget:self action:@selector(startCommRecord) forControlEvents:UIControlEventTouchDown];
     [commRecBtn addTarget:self action:@selector(endCommRecord) forControlEvents:UIControlEventTouchUpInside];
     [commRecBtn addTarget:self action:@selector(endCommRecord) forControlEvents:UIControlEventTouchUpOutside];
@@ -7176,7 +7176,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [commChangeBtn setTag:2];
     [commChangeBtn addTarget:self action:@selector(doCommChange) forControlEvents:UIControlEventTouchUpInside];
 //    [self doCommChange];
-    NSLog(@"返回语音评价录制");
+//    NSLog(@"返回语音评价录制");
 }
 
 /**
@@ -7201,7 +7201,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
  *  回放语音评价
  */
 - (void)playCommRec{
-    NSLog(@"回放语音评价");
+//    NSLog(@"回放语音评价");
     
     NSString *recordAudioFullPath = [kRecorderDirectory stringByAppendingPathComponent:
                                      [NSString stringWithFormat:kRecordFile]];
@@ -7209,7 +7209,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     ////    [tempLock lock];
     if ([[NSFileManager defaultManager] fileExistsAtPath:recordAudioFullPath])
     {
-        NSLog(@"文件存在");
+//        NSLog(@"文件存在");
         AVAudioSession *session = [AVAudioSession sharedInstance];
         [session setCategory:AVAudioSessionCategoryPlayback error:nil];
         if (wordPlayer) {
@@ -7222,7 +7222,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
         [wordPlayer play];
         
     }else {
-        NSLog(@"文件不存在");
+//        NSLog(@"文件不存在");
     }
 }
 
@@ -7345,7 +7345,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
             
             if (recordSeconds < 3.0f) {
                 
-                [displayModeBtn setTitle:@"录音时间太短" forState:UIControlStateNormal];
+                [displayModeBtn setTitle:kPlay25 forState:UIControlStateNormal];
 
                 [Constants beginAnimationWithName:@"Display" duration:0.5f];
                 [displayModeBtn setAlpha:0.8];

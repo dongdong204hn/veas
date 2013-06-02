@@ -244,7 +244,7 @@ extern ASIHTTPRequest *nowrequest;
     if ([[NSUserDefaults standardUserDefaults]boolForKey:@"alertShowed"]==NO) {
         downLoadList = [[VOAView findDownloading] retain];
         if ([downLoadList count]!=0) {
-            UIActionSheet *downLoadSheet = [[UIActionSheet alloc] initWithTitle:@"检测到您之前有未下载完成的任务" delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:@"继续下载",@"下次再说",@"拒绝", nil];
+            UIActionSheet *downLoadSheet = [[UIActionSheet alloc] initWithTitle:kNewSeven delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:kNewEight,kNewNine,kNewTen, nil];
             [downLoadSheet showInView:self.view.window];
             
         }
@@ -611,7 +611,7 @@ extern ASIHTTPRequest *nowrequest;
             }
             cell.myTitle.text = voa._title_Cn;
             cell.myDate.text = voa._creatTime;
-            cell.readCount.text = [NSString stringWithFormat:@"%i人已听", [VOAView findReadCount:voa._voaid]+11321];
+            cell.readCount.text = [NSString stringWithFormat:@"%i%@", [VOAView findReadCount:voa._voaid]+11321, kSearchThirte];
             //--------->设置内容换行
             [cell.myTitle setLineBreakMode:UILineBreakModeClip];
             //--------->设置最大行数
@@ -1688,7 +1688,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
         VoaViewCell *cell = (VoaViewCell *)[self.voasTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
         [cell.progress setHidden:YES];
         [cell.progress release];
-        UIAlertView *netAlert = [[UIAlertView alloc] initWithTitle:kPlayFive message:[NSString stringWithFormat:@"音频%@, 可能暂无此音频", kPlayFive] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        UIAlertView *netAlert = [[UIAlertView alloc] initWithTitle:kPlayFive message:[NSString stringWithFormat:@"%@%@, %@",kNewEleven, kPlayFive, kNewTwelve] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
         [netAlert show];
         [netAlert release];
         //修改按钮功能 图片
@@ -1776,7 +1776,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     VoaViewCell *cell = (VoaViewCell *)[self.voasTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
     [cell.progress setHidden:YES];
     [cell.progress release];
-    UIAlertView *netAlert = [[UIAlertView alloc] initWithTitle:kPlayFive message:[NSString stringWithFormat:@"音频%@", kPlayFive] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+    UIAlertView *netAlert = [[UIAlertView alloc] initWithTitle:kPlayFive message:[NSString stringWithFormat:@"%@%@", kNewEleven, kPlayFive] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
     [netAlert show];
     [netAlert release];
     //修改按钮功能 图片

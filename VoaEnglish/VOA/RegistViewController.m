@@ -328,7 +328,7 @@
                 
             case 4:
                 registBtn = [UIButton buttonWithType:UIButtonTypeCustom] ;
-                [registBtn setTitle:@"提交" forState:UIControlStateNormal];
+                [registBtn setTitle:kRegSixte forState:UIControlStateNormal];
                 [registBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
                 [registBtn addTarget:self action:@selector(doRegist) forControlEvents:UIControlEventTouchUpInside];
                 if (isiPhone) {

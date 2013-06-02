@@ -199,7 +199,7 @@
     [cell.myTitle setTextColor:[UIColor purpleColor]];
     cell.myTitle.text = content._title;
     VOAView *nowVoa = [VOAView find:content._voaid];
-    cell.readCount.text = [NSString stringWithFormat:@"%i人已听", nowVoa._readCount.integerValue+11321];
+    cell.readCount.text = [NSString stringWithFormat:@"%i%@", nowVoa._readCount.integerValue+11321, kSearchThirte];
     [cell.myDate setTextColor:[UIColor redColor]];
     cell.myDate.text = [NSString stringWithFormat:@"%@%d%@;%@%d%@",kSearchSix, content._titleNum, kSearchEight, kSearchSeven,content._number,kSearchEight];
     [cell.collectDate setTextColor:[UIColor purpleColor]];

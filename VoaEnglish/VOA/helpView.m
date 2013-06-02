@@ -71,7 +71,7 @@
         [self.pageControl setFrame:CGRectMake(350, -5, 68, 36)];
     }
     //    self.title = kHelpOne;
-    self.title = NSLocalizedString(@"使用帮助", @"");
+    self.title = NSLocalizedString(kHelpOne, @"");
     scrollView.pagingEnabled = YES;
     scrollView.showsVerticalScrollIndicator = NO;
     scrollView.showsHorizontalScrollIndicator = NO;

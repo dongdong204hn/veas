@@ -31,12 +31,12 @@
 
 - (void)doBuy:(UIButton *) btn {
     
-    NSLog(@"购买");
+//    NSLog(@"购买");
     switch (btn.tag) {
         case 2: //恢复购买
-            NSLog(@"恢复购买");
+//            NSLog(@"恢复购买");
             HUD = [[MBProgressHUD alloc] initWithView:self.view];
-            HUD.labelText = @"正在恢复，请稍候";
+            HUD.labelText = kInnerTwo;
             [self.view addSubview:HUD];
 //            [HUD release];
             HUD.removeFromSuperViewOnHide = YES;
@@ -48,13 +48,13 @@
             break;
         case 1: //购买
         {
-            NSLog(@"购买");
+//            NSLog(@"购买");
             if (![SVStoreKit productPurchased:kBePro]) {
                 storeKit = [[SVStoreKit alloc] initWithDelegate:self];
                 [storeKit buyIdentifier:kBePro];
                 //            storeKit.tag = IAPAlertTagText;
                 HUD = [[MBProgressHUD alloc] initWithView:self.view];
-                HUD.labelText = @"购买中";
+                HUD.labelText = kInnerThree;
                 [self.view addSubview:HUD];
 //                [HUD release];
                 HUD.removeFromSuperViewOnHide = YES;
@@ -99,7 +99,7 @@
     [super viewDidLoad];
     self.navigationController.navigationBarHidden = NO;
 	// Do any additional setup after loading the view.
-    [intro setText:@"升级为专业版,享受最佳体验:\n1.去除广告条(重启应用后生效)\n2.开启离线词库,无网环境照常学习,全面提升英语能力!\n3.功能加强!\n4.一次购买，无论之后更新哪些功能，永久全部开放!"];
+    [intro setText:kInnerFour];
     [intro setNumberOfLines:0];
     [intro setBackgroundColor:[UIColor clearColor]];
     [intro setTextColor:[UIColor colorWithRed:1.0/255 green:151.0/255 blue:211.0/255 alpha:1]];
@@ -107,10 +107,10 @@
     [buyBtn setShowsTouchWhenHighlighted:YES];
     [buyBtn addTarget:self action:@selector(doBuy:) forControlEvents:UIControlEventTouchUpInside];
     if ([[NSUserDefaults standardUserDefaults] boolForKey:kBePro] || [[NSUserDefaults standardUserDefaults] boolForKey:@"isVip"]) {
-        [buyBtn setTitle:@"已升级至专业版" forState:UIControlStateNormal];
+        [buyBtn setTitle:kInnerFive forState:UIControlStateNormal];
         [buyBtn setUserInteractionEnabled:NO];
     } else {
-        [buyBtn setTitle:@"升级至专业版" forState:UIControlStateNormal];
+        [buyBtn setTitle:kInnerSix forState:UIControlStateNormal];
     }
 
     [buyBtn setBackgroundColor:[UIColor colorWithRed:1.0/255 green:151.0/255 blue:211.0/255 alpha:1]];
@@ -119,7 +119,7 @@
     
     [recoverBtn setShowsTouchWhenHighlighted:YES];
     [recoverBtn addTarget:self action:@selector(doBuy:) forControlEvents:UIControlEventTouchUpInside];
-    [recoverBtn setTitle:@"恢复已购买产品" forState:UIControlStateNormal];
+    [recoverBtn setTitle:kInnerSeven forState:UIControlStateNormal];
     [recoverBtn setBackgroundColor:[UIColor colorWithRed:1.0/255 green:151.0/255 blue:211.0/255 alpha:1]];
     [[recoverBtn layer] setCornerRadius:10.0f];
     [[recoverBtn layer] setMasksToBounds:YES];
@@ -149,23 +149,23 @@
     if (error.code != SKErrorPaymentCancelled)
     {
         NSLog(@"Transaction error: %@", error.localizedDescription);
-        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"购买失败" message:error.localizedDescription delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:kInnerEight message:error.localizedDescription delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
         [alert show];
         [alert release];
     }
 }
 - (void) storeKit:(SVStoreKit *)_storeKit produtRequestDidFinished:(NSArray *)products{
     NSLog(@"%@",products);
-    HUD.labelText = @"正在购买";
+    HUD.labelText = kInnerNine;
     //    for (SKProduct * product in products) {
     //        [_storeKit buyProduct:product];
     // ;   }
 }
 - (void) productPurchased:(SVStoreKit *)_storeKit{
     [HUD hide:YES];
-    [buyBtn setTitle:@"已升级至专业版" forState:UIControlStateNormal];
+    [buyBtn setTitle:kInnerFive forState:UIControlStateNormal];
     [buyBtn setUserInteractionEnabled:NO];
-    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"购买成功" message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:kInnerTen message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
     [alert show];
     [alert release];
 //    [self ensureIAPandDeleteAd:YES];
@@ -175,7 +175,7 @@
 }
 - (void) storeKitRestoreComplete:(SVStoreKit *)_storeKit{
     [HUD hide:YES];
-    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"恢复成功" message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:kInnerEleven message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
     [alert show];
     [alert release];
     [self.storeKit release];

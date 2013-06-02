@@ -59,7 +59,7 @@
     [myImageView setImageWithURL:url placeholderImage:[UIImage imageNamed:@"acquiesce.png"]];
     SenEn.text = voaSen.Sentence;
     SenCn.text = voaSen.Sentence_cn;
-    self.title = [NSString stringWithFormat:@"第%d/%d句",row + 1,[sentences count]];
+    self.title = [NSString stringWithFormat:@"%@%d/%d%@",kSentenceThree ,row + 1,[sentences count], kSentenceFour];
     
 }
 
@@ -339,7 +339,7 @@
     VOAView *voa = [VOAView find:voaSen.VoaId];
     NSURL *url = [NSURL URLWithString: voa._pic];
     [myImageView setImageWithURL:url placeholderImage:[UIImage imageNamed:@"acquiesce.png"]];
-    self.title = [NSString stringWithFormat:@"第%d/%d句",row + 1,[sentences count]];
+    self.title = [NSString stringWithFormat:@"%@%d/%d%@",kSentenceThree, row + 1,[sentences count], kSentenceFour];
 }
 
 /**
@@ -364,7 +364,7 @@
     NSURL *url = [NSURL URLWithString: voa._pic];
     [myImageView setImageWithURL:url placeholderImage:[UIImage imageNamed:@"acquiesce.png"]];
     
-    self.title = [NSString stringWithFormat:@"第%d/%d句",row + 1,[sentences count]];
+    self.title = [NSString stringWithFormat:@"%@%d/%d%@",kSentenceThree, row + 1,[sentences count], kSentenceFour];
 }
 
 
