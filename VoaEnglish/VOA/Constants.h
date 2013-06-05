@@ -161,7 +161,7 @@ extern NSString * const kSentenceTwo;
 extern NSString * const kSentenceThree;
 extern NSString * const kSentenceFour;
 
-extern NSString * const kLyricOne;
+//extern NSString * const kLyricOne;
 
 extern NSString * const kAudioOne;
 

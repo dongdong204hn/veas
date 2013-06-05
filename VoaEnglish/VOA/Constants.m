@@ -161,7 +161,7 @@ NSString * const kSentenceTwo = @"为了今后为您提供更加优质的服务�
 NSString * const kSentenceThree = @"第";
 NSString * const kSentenceFour = @"句";
 
-NSString * const kLyricOne = @"暂未更新";
+//NSString * const kLyricOne = @"暂未更新";
 
 NSString * const kAudioOne = @"很抱歉,网络不稳定或者音频有问题.您可以选择先下载到本地再进行播放。";
 
