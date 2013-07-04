@@ -404,7 +404,6 @@
 		B091668A14ED03C2005E96F6 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = B091668914ED03C0005E96F6 /* Reachability.m */; };
 		B091668C14ED0514005E96F6 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B091668B14ED0513005E96F6 /* Security.framework */; };
 		B091668E14ED0562005E96F6 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B091668D14ED0561005E96F6 /* libz.dylib */; };
-		B099AABE1742253000822AF2 /* libFlurry.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B099AABD1742253000822AF2 /* libFlurry.a */; };
 		B09BC1C715770DF900CDD774 /* IASKAppSettingsView-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = B09BC1C615770DF900CDD774 /* IASKAppSettingsView-iPad.xib */; };
 		B09FC2A314E4CF44006DE38B /* SDImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = B09FC29214E4CF44006DE38B /* SDImageCache.m */; };
 		B09FC2A414E4CF44006DE38B /* SDWebImageDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = B09FC29614E4CF44006DE38B /* SDWebImageDecoder.m */; };
@@ -1381,7 +1380,6 @@
 		B091668B14ED0513005E96F6 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		B091668D14ED0561005E96F6 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		B099AABC1742253000822AF2 /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
-		B099AABD1742253000822AF2 /* libFlurry.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry.a; sourceTree = "<group>"; };
 		B09BC1C615770DF900CDD774 /* IASKAppSettingsView-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "IASKAppSettingsView-iPad.xib"; sourceTree = "<group>"; };
 		B09FC29114E4CF44006DE38B /* SDImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDImageCache.h; sourceTree = "<group>"; };
 		B09FC29214E4CF44006DE38B /* SDImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDImageCache.m; sourceTree = "<group>"; };
@@ -2004,7 +2002,6 @@
 				B0B055EE14DA29A8008ABF07 /* UIKit.framework in Frameworks */,
 				B0B055F014DA29A8008ABF07 /* Foundation.framework in Frameworks */,
 				B08CE96F14F27D68007B6A57 /* PlausibleDatabase.framework in Frameworks */,
-				B099AABE1742253000822AF2 /* libFlurry.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3544,7 +3541,6 @@
 			isa = PBXGroup;
 			children = (
 				B099AABC1742253000822AF2 /* Flurry.h */,
-				B099AABD1742253000822AF2 /* libFlurry.a */,
 			);
 			path = FlurryAnalytics;
 			sourceTree = "<group>";

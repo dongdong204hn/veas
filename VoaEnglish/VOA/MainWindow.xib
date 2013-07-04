@@ -46,6 +46,7 @@
 				<int key="NSvFlags">292</int>
 				<string key="NSFrameSize">{320, 480}</string>
 				<reference key="NSSuperview"/>
+				<reference key="NSNextKeyView"/>
 				<string key="NSReuseIdentifierKey">_NS:410</string>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
@@ -69,9 +70,9 @@
 				</object>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 				<bool key="IBUIHorizontal">NO</bool>
-				<object class="IBUINavigationController" key="IBUISelectedViewController" id="403006616">
-					<object class="IBUITabBarItem" key="IBUITabBarItem" id="421824418">
-						<string key="IBUITitle">信息</string>
+				<object class="IBUINavigationController" key="IBUISelectedViewController" id="633884870">
+					<object class="IBUITabBarItem" key="IBUITabBarItem" id="543592591">
+						<string key="IBUITitle">设置</string>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 					</object>
 					<reference key="IBUIParentViewController" ref="238590291"/>
@@ -82,15 +83,18 @@
 					</object>
 					<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 					<bool key="IBUIHorizontal">NO</bool>
-					<object class="IBUINavigationBar" key="IBUINavigationBar" id="715146738">
+					<object class="IBUINavigationBar" key="IBUINavigationBar" id="768495093">
 						<nil key="NSNextResponder"/>
 						<int key="NSvFlags">256</int>
 						<string key="NSFrameSize">{0, 0}</string>
-						<string key="NSReuseIdentifierKey">_NS:15</string>
-						<object class="NSColor" key="IBUIBackgroundColor" id="286281674">
-							<int key="NSColorSpace">3</int>
-							<bytes key="NSWhite">MCAwAA</bytes>
+						<string key="NSReuseIdentifierKey">_NS:557</string>
+						<object class="NSColor" key="IBUIBackgroundColor">
+							<int key="NSColorSpace">1</int>
+							<bytes key="NSRGB">MC45NTY4NjI3NDUxIDAuOTI1NDkwMTk2MSAwLjg1MDk4MDM5MjIgMAA</bytes>
 						</object>
+						<bool key="IBUIOpaque">NO</bool>
+						<bool key="IBUIClipsSubviews">YES</bool>
+						<bool key="IBUIMultipleTouchEnabled">YES</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<object class="NSColor" key="IBUITintColor">
 							<int key="NSColorSpace">2</int>
@@ -99,13 +103,12 @@
 					</object>
 					<object class="NSMutableArray" key="IBUIViewControllers">
 						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="IBUIViewController" id="188378246">
-							<object class="IBUINavigationItem" key="IBUINavigationItem" id="216195268">
+						<object class="IBUIViewController" id="97429549">
+							<object class="IBUINavigationItem" key="IBUINavigationItem" id="146602108">
 								<string key="IBUITitle">Root View Controller</string>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 							</object>
-							<reference key="IBUIParentViewController" ref="403006616"/>
-							<string key="IBUINibName">DisInforViewController</string>
+							<reference key="IBUIParentViewController" ref="633884870"/>
 							<object class="IBUISimulatedOrientationMetrics" key="IBUISimulatedOrientationMetrics">
 								<int key="IBUIInterfaceOrientation">1</int>
 								<int key="interfaceOrientation">1</int>
@@ -264,10 +267,9 @@
 							</object>
 						</object>
 					</object>
-					<reference ref="403006616"/>
-					<object class="IBUINavigationController" id="633884870">
-						<object class="IBUITabBarItem" key="IBUITabBarItem" id="543592591">
-							<string key="IBUITitle">设置</string>
+					<object class="IBUINavigationController" id="403006616">
+						<object class="IBUITabBarItem" key="IBUITabBarItem" id="421824418">
+							<string key="IBUITitle">信息</string>
 							<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						</object>
 						<reference key="IBUIParentViewController" ref="238590291"/>
@@ -278,18 +280,15 @@
 						</object>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<bool key="IBUIHorizontal">NO</bool>
-						<object class="IBUINavigationBar" key="IBUINavigationBar" id="768495093">
+						<object class="IBUINavigationBar" key="IBUINavigationBar" id="715146738">
 							<nil key="NSNextResponder"/>
 							<int key="NSvFlags">256</int>
 							<string key="NSFrameSize">{0, 0}</string>
-							<string key="NSReuseIdentifierKey">_NS:557</string>
-							<object class="NSColor" key="IBUIBackgroundColor">
-								<int key="NSColorSpace">1</int>
-								<bytes key="NSRGB">MC45NTY4NjI3NDUxIDAuOTI1NDkwMTk2MSAwLjg1MDk4MDM5MjIgMAA</bytes>
+							<string key="NSReuseIdentifierKey">_NS:15</string>
+							<object class="NSColor" key="IBUIBackgroundColor" id="286281674">
+								<int key="NSColorSpace">3</int>
+								<bytes key="NSWhite">MCAwAA</bytes>
 							</object>
-							<bool key="IBUIOpaque">NO</bool>
-							<bool key="IBUIClipsSubviews">YES</bool>
-							<bool key="IBUIMultipleTouchEnabled">YES</bool>
 							<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 							<object class="NSColor" key="IBUITintColor">
 								<int key="NSColorSpace">2</int>
@@ -298,12 +297,13 @@
 						</object>
 						<object class="NSMutableArray" key="IBUIViewControllers">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBUIViewController" id="97429549">
-								<object class="IBUINavigationItem" key="IBUINavigationItem" id="146602108">
+							<object class="IBUIViewController" id="188378246">
+								<object class="IBUINavigationItem" key="IBUINavigationItem" id="216195268">
 									<string key="IBUITitle">Root View Controller</string>
 									<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								</object>
-								<reference key="IBUIParentViewController" ref="633884870"/>
+								<reference key="IBUIParentViewController" ref="403006616"/>
+								<string key="IBUINibName">DisInforViewController</string>
 								<object class="IBUISimulatedOrientationMetrics" key="IBUISimulatedOrientationMetrics">
 									<int key="IBUIInterfaceOrientation">1</int>
 									<int key="interfaceOrientation">1</int>
@@ -313,12 +313,14 @@
 							</object>
 						</object>
 					</object>
+					<reference ref="633884870"/>
 				</object>
 				<object class="IBUITabBar" key="IBUITabBar" id="687918645">
 					<reference key="NSNextResponder"/>
 					<int key="NSvFlags">266</int>
 					<string key="NSFrame">{{0, 431}, {320, 49}}</string>
 					<reference key="NSSuperview"/>
+					<reference key="NSNextKeyView"/>
 					<string key="NSReuseIdentifierKey">_NS:467</string>
 					<reference key="IBUIBackgroundColor" ref="286281674"/>
 					<bool key="IBUIAutoresizesSubviews">NO</bool>
