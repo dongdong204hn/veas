@@ -264,6 +264,15 @@ extern ASIHTTPRequest *nowrequest;
         
     });
     
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"nightMode"]) {
+        [[UIApplication sharedApplication].keyWindow setBackgroundColor:[UIColor colorWithRed:0.196f green:0.31f blue:0.521f alpha:5.0]];
+        ;
+    } else {
+        //        [self.view setBackgroundColor:[UIColor clearColor]];
+        [[UIApplication sharedApplication].keyWindow setBackgroundColor:[UIColor whiteColor]];
+        ;
+    }
+    
     notSelect = YES;
     isPlayPage = NO;
 //    [self setTitle:@"最新"];
@@ -1427,7 +1436,6 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
                     if (newVoa._readCount.integerValue > [[VOAView find:newVoa._voaid] _readCount].integerValue) {
                         [VOAView alterReadCount:newVoa._voaid count:newVoa._readCount.integerValue];
                     }
-                    
 //                    NSLog(@"已有");
                 }
                 [newVoa release],newVoa = nil;
@@ -1486,6 +1494,9 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
         [request setDidFinishSelector:@selector(requestSoundDone:)];
         [request setDidFailSelector:@selector(requestSoundWentWrong:)];
         [myQueue addOperation:request]; //queue is an NSOperationQueue
+        if (![VOADetail isExist:voa._voaid]) {
+            [self catchDetails:voa];
+        }
     }
     [self.voasTableView reloadData];
     
@@ -1526,6 +1537,10 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
         [request setTimeOutSeconds:10];
         [myQueue addOperation:request]; //queue is an NSOperationQueue
         //    NSLog(@"status new:%d", request.);
+        if (![VOADetail isExist:voa._voaid]) {
+            [self catchDetails:voa];
+        }
+    
     }
     else {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{

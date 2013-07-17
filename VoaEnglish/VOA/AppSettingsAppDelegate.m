@@ -125,7 +125,7 @@ void uncaughtExceptionHandler(NSException *exception) {
             [[NSUserDefaults standardUserDefaults] setObject:@"YES" forKey:@"hightlightLoc"];
             [[NSUserDefaults standardUserDefaults] setObject:@"YES" forKey:@"shakeCtrlPlay"];
             [[NSUserDefaults standardUserDefaults] setObject:@"NO" forKey:@"recordRead"];
-            [[NSUserDefaults standardUserDefaults] setFloat:3.8f forKey:@"appVersionC"];
+            [[NSUserDefaults standardUserDefaults] setFloat:3.9f forKey:@"appVersionC"];
             [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:1] forKey:@"playMode"];
             [[NSUserDefaults standardUserDefaults] setObject:@"NO" forKey:@"autoDownload"];
             [[NSUserDefaults standardUserDefaults] setObject:@"NO" forKey:@"nightMode"];
@@ -190,8 +190,8 @@ void uncaughtExceptionHandler(NSException *exception) {
 //                NSLog(@"已注册推送");
             }
             float appVersion = [[[NSUserDefaults standardUserDefaults] objectForKey:@"appVersionC"] floatValue];
-            if (appVersion < 3.8f) { //新版本的一些新设置等
-                [[NSUserDefaults standardUserDefaults] setFloat:3.8f forKey:@"appVersionC"];
+            if (appVersion < 3.9f) { //新版本的一些新设置等
+                [[NSUserDefaults standardUserDefaults] setFloat:3.9f forKey:@"appVersionC"];
                 [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"haveScore"];
                 [[NSUserDefaults standardUserDefaults] setFloat:1.0f forKey:@"speed"];
                 [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"showSen"];
@@ -257,7 +257,7 @@ void uncaughtExceptionHandler(NSException *exception) {
             [[NSUserDefaults standardUserDefaults] setObject:@"NO" forKey:@"hightlightLoc"]; //高亮区域默认不居中
             [[NSUserDefaults standardUserDefaults] setObject:@"YES" forKey:@"shakeCtrlPlay"]; //默认晃动设备可控制播放
             [[NSUserDefaults standardUserDefaults] setObject:@"NO" forKey:@"recordRead"]; //默认开启跟读模式
-            [[NSUserDefaults standardUserDefaults] setFloat:3.8f forKey:@"appVersionC"]; //版本号3.2
+            [[NSUserDefaults standardUserDefaults] setFloat:3.9f forKey:@"appVersionC"]; //版本号3.2
             [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:1] forKey:@"playMode"]; //默认单曲循环
             [[NSUserDefaults standardUserDefaults] setObject:@"NO" forKey:@"autoDownload"]; //默认自动下载
             [[NSUserDefaults standardUserDefaults] setObject:@"NO" forKey:@"nightMode"]; //默认关闭夜间模式
@@ -342,8 +342,8 @@ void uncaughtExceptionHandler(NSException *exception) {
             });
             
             float appVersion = [[[NSUserDefaults standardUserDefaults] objectForKey:@"appVersionC"] floatValue];
-            if (appVersion < 3.8f) { //新版本的一些新设置等
-                [[NSUserDefaults standardUserDefaults] setFloat:3.8f forKey:@"appVersionC"];
+            if (appVersion < 3.9f) { //新版本的一些新设置等
+                [[NSUserDefaults standardUserDefaults] setFloat:3.9f forKey:@"appVersionC"];
                 [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"haveScore"];
                 [[NSUserDefaults standardUserDefaults] setFloat:1.0f forKey:@"speed"];
                 [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"showSen"];
@@ -358,7 +358,7 @@ void uncaughtExceptionHandler(NSException *exception) {
                 
                 [VOASentence creatSynFlg];
                 
-                UIAlertView *updateAlert = [[UIAlertView alloc] initWithTitle:@"更新内容" message:@"进行了一些细节上的优化和完善。" delegate:nil cancelButtonTitle:@"我已知晓" otherButtonTitles:nil];
+                UIAlertView *updateAlert = [[UIAlertView alloc] initWithTitle:@"更新内容" message:@"根据用户的反馈进行了一些针对性的修复和完善，提高用户体验。" delegate:nil cancelButtonTitle:@"我已知晓" otherButtonTitles:nil];
                 [updateAlert show];
                 [updateAlert release], updateAlert = nil;
             }

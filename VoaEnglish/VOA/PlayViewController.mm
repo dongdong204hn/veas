@@ -625,12 +625,12 @@ extern ASIHTTPRequest *nowrequest;
                                            time : (NSMutableArray *)timeArray
                                     localPlayer : (AVPlayer *)player
                                          scroll : (TextScrollView *)textScroll];
-//                                myLabelDelegate : self];
+            //                                myLabelDelegate : self];
             
             nowTextView = [lyricLabelArray objectAtIndex:0];
             CGSize newSize = CGSizeMake(textScroll.frame.size.width, setY);
             [textScroll setContentSize:newSize];
-            
+            [myScroll addSubview:textScroll]; //~~!
             BOOL engChn = [[NSUserDefaults standardUserDefaults] boolForKey:@"synContext"] ;
             if (engChn) {
                 for (UIView *hideView in textScroll.subviews) {
@@ -663,11 +663,12 @@ extern ASIHTTPRequest *nowrequest;
             [btnTwo setUserInteractionEnabled:YES];
             [btnThree setUserInteractionEnabled:YES];
             [btnFour setUserInteractionEnabled:YES];
-
+            
             [self catchComments:1];
         });
         
     });
+    
 }
 
 /**
@@ -698,13 +699,6 @@ extern ASIHTTPRequest *nowrequest;
 //    [self becomeFirstResponder];
     
     [[UIApplication sharedApplication] setIdleTimerDisabled:[[NSUserDefaults standardUserDefaults] boolForKey:@"keepScreenLight"]];
-    
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"nightMode"]) {
-        [[UIApplication sharedApplication].keyWindow setBackgroundColor:[UIColor colorWithRed:0.196f green:0.31f blue:0.521f alpha:5.0]];
-         ;
-    } else {
-        [self.view setBackgroundColor:[UIColor clearColor]];
-    }
     
     [self updateDownloadFlg];
     
@@ -856,6 +850,7 @@ extern ASIHTTPRequest *nowrequest;
         nowTextView = [lyricLabelArray objectAtIndex:0];
         CGSize newSize = CGSizeMake(textScroll.frame.size.width, setY);
         [textScroll setContentSize:newSize];
+        [myScroll addSubview:textScroll];//~~!
         //            });
         
     }
@@ -1777,7 +1772,7 @@ extern ASIHTTPRequest *nowrequest;
 didFailToReceiveAdWithError:(GADRequestError *)error {
     needFlushAdv = YES;
     //    NSLog(@"adView:didFailToReceiveAdWithError:%@", [error localizedDescription]);
-    if (!ownAdvImg) {
+    if (!ownAdvImg && ![[NSUserDefaults standardUserDefaults] boolForKey:kBePro]) {
         ownAdvImg = [UIButton buttonWithType:UIButtonTypeCustom];
         if (isiPhone) {
             [ownAdvImg setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"ownAdv" ofType:@"png"]] forState:UIControlStateNormal];
@@ -1851,7 +1846,7 @@ didFailToReceiveAdWithError:(GADRequestError *)error {
         kNetTest;
         needFlushAdv = YES;
         //    NSLog(@"adView:didFailToReceiveAdWithError:%@", [error localizedDescription]);
-        if (!ownAdvImg) {
+        if (!ownAdvImg && ![[NSUserDefaults standardUserDefaults] boolForKey:kBePro]) {
             ownAdvImg = [UIButton buttonWithType:UIButtonTypeCustom];
             if (isiPhone) {
                 [ownAdvImg setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"ownAdv" ofType:@"png"]] forState:UIControlStateNormal];
@@ -1867,34 +1862,6 @@ didFailToReceiveAdWithError:(GADRequestError *)error {
         }
     }
     
-//    if (kNetIsExist) {
-//        
-//        needFlushAdv = NO;
-//        if (ownAdvImg) {
-//            [ownAdvImg removeTarget:self action:@selector(ownAdvPressed:) forControlEvents:UIControlEventTouchUpInside];
-//            [ownAdvImg removeFromSuperview];
-//            //        [ownAdvImg release], ownAdvImg = nil;
-//            ownAdvImg = nil;
-//        }
-//    } else {
-//        kNetTest;
-//        needFlushAdv = YES;
-//        //    NSLog(@"adView:didFailToReceiveAdWithError:%@", [error localizedDescription]);
-//        if (!ownAdvImg) {
-//            ownAdvImg = [UIButton buttonWithType:UIButtonTypeCustom];
-//            if (isiPhone) {
-//                [ownAdvImg setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"ownAdv" ofType:@"png"]] forState:UIControlStateNormal];
-//                [ownAdvImg setFrame:CGRectMake(0, self.view.frame.size.height - 50, 320, 50)];
-//                [ownAdvImg addTarget:self action:@selector(ownAdvPressed:) forControlEvents:UIControlEventTouchUpInside];
-//            } else {
-//                [ownAdvImg setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"ownAdv-iPad" ofType:@"png"]] forState:UIControlStateNormal];
-//                [ownAdvImg setFrame:CGRectMake(0, self.view.frame.size.height - 90, 768, 90)];
-//                [ownAdvImg addTarget:self action:@selector(ownAdvPressed:) forControlEvents:UIControlEventTouchUpInside];
-//            }
-//            [self.view addSubview:ownAdvImg];
-//            
-//        }
-//    }
 }
 
 /**

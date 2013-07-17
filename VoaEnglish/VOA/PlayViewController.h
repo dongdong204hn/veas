@@ -32,7 +32,6 @@
 #import "SevenProgressBar.h" //自定义缓冲进度条
 #import "ShareToCNBox.h"
 #import "SVShareTool.h"
-#include <AudioToolbox/AudioToolbox.h>
 //#import "CommentViewController.h"
 #import "HPGrowingTextView.h"   //评论的自动放大的输入框
 #import "NSString+URLEncoding.h" //字符串的URL编解码
