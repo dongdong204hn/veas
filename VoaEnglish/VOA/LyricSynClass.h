@@ -85,6 +85,21 @@ lyricCnLabelArray: (NSMutableArray *)lyricCnLabelArray
 //         cnLines : (int *)cnLines ;//歌词显示
 
 /**
+ 歌词排布
+ @param  lyricLabelArray 存放英文歌词标签
+ @return offsetArray 全部歌词排布偏移数组
+ */
++ (NSMutableArray *)lyricViewNew : (NSMutableArray *)lyricLabelArray
+                lyricCnLabelArray: (NSMutableArray *)lyricCnLabelArray
+                           index : (NSMutableArray *)indexArray
+                           lyric : (NSMutableArray *)lyricArray
+                         lyricCn : (NSMutableArray *)lyricCnArray
+                            time : (NSMutableArray *)timeArray
+                          offset : (NSMutableArray *)offsetArray
+                     localPlayer : (AVPlayer *)mp3Player
+                          scroll : (TextScrollView *)textScroll;
+
+/**
  *  按指定区域截屏
  */
 + (UIImage*)screenshot:(CGRect) senRect;

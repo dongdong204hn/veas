@@ -14,8 +14,8 @@
     NSInteger VoaId;
     NSInteger ParaId; 
     NSInteger IdIndex; 
-    NSInteger StartTime;
-    NSInteger EndTime;
+    float StartTime;
+    float EndTime;
     NSString *Sentence;
     NSString *Sentence_cn;
     NSInteger userId;
@@ -27,15 +27,15 @@
 @property NSInteger VoaId;
 @property NSInteger ParaId;
 @property NSInteger IdIndex;
-@property NSInteger StartTime;
-@property NSInteger EndTime;
+@property float StartTime;
+@property float EndTime;
 @property (nonatomic,retain) NSString * Sentence;
 @property (nonatomic,retain) NSString * Sentence_cn;
 @property NSInteger userId;
 @property NSInteger collected;
 @property NSInteger synchroFlg;
 
-- (id) initWithVOASentence:(NSInteger) _SentenceId VoaId:(NSInteger) _VoaId ParaId:(NSInteger) _ParaId IdIndex:(NSInteger) _IdIndex StartTime:(NSInteger) _StartTime EndTime:(NSInteger) _EndTime  Sentence:(NSString *) _Sentence Sentence_cn:(NSString *) _Sentence_cn  userId:(NSInteger)_userId collected:(NSInteger) _collected synchroFlg:(NSInteger) _synchroFlg;
+- (id) initWithVOASentence:(NSInteger) _SentenceId VoaId:(NSInteger) _VoaId ParaId:(NSInteger) _ParaId IdIndex:(NSInteger) _IdIndex StartTime:(float) _StartTime EndTime:(float) _EndTime  Sentence:(NSString *) _Sentence Sentence_cn:(NSString *) _Sentence_cn  userId:(NSInteger)_userId collected:(NSInteger) _collected synchroFlg:(NSInteger) _synchroFlg;
 - (BOOL) alterCollect;
 + (void) alterCollectBySenId:(NSInteger)SentenceId;
 - (void) alterSynchroCollect;
@@ -51,6 +51,8 @@
 + (NSInteger) countOfCollected;
 
 + (void) creatSynFlg;
+
++ (void) alterTimefield;
 
 //+ (id) find:(NSString *) key userId:(NSInteger)userId;
 @end

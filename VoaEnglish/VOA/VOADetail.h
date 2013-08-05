@@ -14,7 +14,8 @@
     NSInteger _voaid;
     NSInteger _paraid; //段落号
     NSInteger _idIndex; //句数号
-    NSInteger _timing; //时长
+    float _startTiming; //开始时间
+    float _endTiming; //结束时间
     NSString *_sentence;
     NSString *_imgWords; //图片描述
     NSString *_imgPath; //图片路径
@@ -25,7 +26,8 @@
 @property NSInteger _voaid;
 @property NSInteger _paraid;
 @property NSInteger _idIndex;
-@property NSInteger _timing;
+@property float _startTiming;
+@property float _endTiming;
 @property (nonatomic, retain) NSString *_sentence;
 @property (nonatomic, retain) NSString *_imgWords;
 @property (nonatomic, retain) NSString *_imgPath;
@@ -33,12 +35,14 @@
 //@property (nonatomic, retain) NSString *_sentence_jp;
 
 - (BOOL) insert;
-- (id) initWithVoaId:(NSInteger) voaid paraid:(NSInteger) paraid idIndex:(NSInteger) idIndex timing:(NSInteger) timing sentence:(NSString *)sentence  imgWords:(NSString *) imgWords imgPath:(NSString *) imgPath sentence_cn:(NSString *) sentence_cn;
+- (BOOL) insertNew;
+- (id) initWithVoaId:(NSInteger) voaid paraid:(NSInteger) paraid idIndex:(NSInteger) idIndex startTiming:(float) startTiming sentence:(NSString *)sentence  imgWords:(NSString *) imgWords imgPath:(NSString *) imgPath sentence_cn:(NSString *) sentence_cn;
+- (id) initWithVoaId:(NSInteger) voaid paraid:(NSInteger) paraid idIndex:(NSInteger) idIndex startTiming:(float) startTiming endTiming:(float)endTiming sentence:(NSString *)sentence  imgWords:(NSString *) imgWords imgPath:(NSString *) imgPath sentence_cn:(NSString *) sentence_cn;
 + (id) find:(NSInteger) voaid;
 + (BOOL) isExist:(NSInteger) voaid;
 + (void) deleteByVoaid:(NSInteger)voaid ;
-+ (id) findByVoaidAndTime:(NSInteger)voaid timing:(NSInteger) timing;
-
++ (id) findByVoaidAndTime:(NSInteger)voaid timing:(float) startTiming;
++ (void) alterTimefield;
 //+ (NSArray *) findAll;
 //+ (NSInteger) findLastId;
 //+ (NSString *) findImgWords:(NSInteger) voaid;

@@ -103,7 +103,7 @@ static PLSqliteDatabase * dbPointer;
 //    dbPointer = [[PLSqliteDatabase alloc] initWithPath:sourcePath];
 	if ([dbPointer open]) {
 //		NSLog(@"open voa succeed!");
-        id<PLResultSet> rs;
+        /*id<PLResultSet> rs;
         NSString *findSql = [NSString stringWithFormat:@"SELECT COUNT(*) count FROM sqlite_master where type='table' and name='voaDetailTwo'"];
         rs = [dbPointer executeQuery:findSql];
         if ([rs next]) {
@@ -126,7 +126,7 @@ static PLSqliteDatabase * dbPointer;
             //                [dbPointer executeUpdate:findSqlOne];
             //            }
         }
-        [rs close];
+        [rs close];*/
 	};
 	
 	return dbPointer;

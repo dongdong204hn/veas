@@ -55,8 +55,28 @@
 
 - (void) doRegist
 {
-    if (userF.textColor == [UIColor blackColor] && codeF.textColor == [UIColor blackColor] && codeAgainF.textColor == [UIColor blackColor] && mailF.textColor == [UIColor blackColor]) {
+    if (userF.textColor == [UIColor blackColor] && codeF.textColor == [UIColor blackColor] && codeAgainF.textColor == [UIColor blackColor] && mailF.textColor == [UIColor blackColor] && userF.text.length > 0 && codeF.text.length > 0 && codeAgainF.text.length > 0 && mailF.text.length > 0) {
         [self catchRegists];
+    } else {
+        alert = [[UIAlertView alloc] initWithTitle:kReg17 message:nil delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
+        
+        [alert setBackgroundColor:[UIColor clearColor]];
+        
+        [alert setContentMode:UIViewContentModeScaleAspectFit];
+        
+        [alert show];
+        
+        UIActivityIndicatorView *active = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        
+        active.center = CGPointMake(alert.bounds.size.width/2, alert.bounds.size.height-40);
+        
+        [alert addSubview:active];
+        
+        [active startAnimating];
+        
+        [active release];
+        
+        [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(c) userInfo:nil repeats:NO];
     }
 }
 

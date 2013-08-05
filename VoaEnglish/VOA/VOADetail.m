@@ -14,19 +14,20 @@
 @synthesize _voaid;
 @synthesize _paraid;
 @synthesize _idIndex;
-@synthesize _timing;
+@synthesize _startTiming;
+@synthesize _endTiming;
 @synthesize _sentence;
 @synthesize _imgWords;
 @synthesize _imgPath;
 @synthesize _sentence_cn;
 //@synthesize _sentence_jp;
 
-- (id) initWithVoaId:(NSInteger) voaid paraid:(NSInteger) paraid idIndex:(NSInteger) idIndex timing:(NSInteger) timing sentence:(NSString *)sentence  imgWords:(NSString *) imgWords imgPath:(NSString *) imgPath sentence_cn:(NSString *) sentence_cn {
+- (id) initWithVoaId:(NSInteger) voaid paraid:(NSInteger) paraid idIndex:(NSInteger) idIndex startTiming:(float) startTiming sentence:(NSString *)sentence  imgWords:(NSString *) imgWords imgPath:(NSString *) imgPath sentence_cn:(NSString *) sentence_cn {
 	if (self = [super init]) {
 		_voaid = voaid;
         _paraid = paraid;
         _idIndex = idIndex;
-        _timing = timing;
+        _startTiming = startTiming;
         _sentence = [sentence retain];
         _imgWords = [imgWords retain];
         _imgPath = [imgPath retain];
@@ -36,12 +37,28 @@
 	return self;
 }
 
+- (id) initWithVoaId:(NSInteger) voaid paraid:(NSInteger) paraid idIndex:(NSInteger) idIndex startTiming:(float) startTiming endTiming:(float)endTiming sentence:(NSString *)sentence  imgWords:(NSString *) imgWords imgPath:(NSString *) imgPath sentence_cn:(NSString *) sentence_cn {
+    if (self = [super init]) {
+		_voaid = voaid;
+        _paraid = paraid;
+        _idIndex = idIndex;
+        _startTiming = startTiming;
+        _endTiming = endTiming;
+        _sentence = [sentence retain];
+        _imgWords = [imgWords retain];
+        _imgPath = [imgPath retain];
+        _sentence_cn = [sentence_cn retain];
+        //        _sentence_jp = [sentence_jp retain];
+    }
+	return self;
+}
+
 - (BOOL) insert
 {
     PLSqliteDatabase *dataBase = [database setup];
     //    const char *myDate = [date UTF8String];//NSString转变为字符数组
     //    date 显示为 2011-11-01%2012:12:12
-	NSString *findSql = [NSString stringWithFormat:@"insert into voadetail(Voaid,ParaId,IdIndex,Timing,Sentence,ImgWords,ImgPath,Sentence_cn) values(%d,%d,%d,%d,\"%@\",\"%@\",\"%@\",\"%@\") ;",self._voaid,self._paraid,self._idIndex,self._timing,self._sentence,self._imgWords,self._imgPath,self._sentence_cn];
+	NSString *findSql = [NSString stringWithFormat:@"insert into voadetail(Voaid,ParaId,IdIndex,StartTiming,Sentence,ImgWords,ImgPath,Sentence_cn) values(%d,%d,%d,%f,\"%@\",\"%@\",\"%@\",\"%@\") ;",self._voaid,self._paraid,self._idIndex,self._startTiming,self._sentence,self._imgWords,self._imgPath,self._sentence_cn];
     
 	if([dataBase executeUpdate:findSql]) {
 //        NSLog(@"--success!");
@@ -55,6 +72,24 @@
     return NO;
 }
 
+- (BOOL) insertNew
+{
+    PLSqliteDatabase *dataBase = [database setup];
+    //    const char *myDate = [date UTF8String];//NSString转变为字符数组
+    //    date 显示为 2011-11-01%2012:12:12
+	NSString *findSql = [NSString stringWithFormat:@"insert into voadetail(Voaid,ParaId,IdIndex,StartTiming,EndTiming,Sentence,ImgWords,ImgPath,Sentence_cn) values(%d,%d,%d,%f,%f,\"%@\",\"%@\",\"%@\",\"%@\") ;",self._voaid,self._paraid,self._idIndex,self._startTiming,self._endTiming,self._sentence,self._imgWords,self._imgPath,self._sentence_cn];
+    
+	if([dataBase executeUpdate:findSql]) {
+        //        NSLog(@"--success!");
+        return YES;
+	}
+	else {
+        //		UIAlertView *errAlert = [[UIAlertView alloc] initWithTitle:@"Error!" message:@"Update failture!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        //		[errAlert show];
+        //        [errAlert release], errAlert = nil;
+	}
+    return NO;
+}
 
 + (id) find:(NSInteger) voaid{
 	PLSqliteDatabase *dataBase = [database setup];
@@ -76,12 +111,13 @@
                 NSInteger voaid = [rs intForColumn:@"voaid"];
                 NSInteger paraid = [rs intForColumn:@"paraid"];
                 NSInteger idIndex = [rs intForColumn:@"idIndex"];
-                NSInteger timing = [rs intForColumn:@"timing"];
+                float startTiming = [rs floatForColumn:@"startTiming"];
+                float endTiming = [rs floatForColumn:@"endTiming"];
                 NSString *sentence = [rs objectForColumn:@"sentence"];
                 NSString *imgWords = [rs objectForColumn:@"imgWords"];
                 NSString *imgPath = [rs objectForColumn:@"imgPath"];
                 
-                voaDetail = [[VOADetail alloc] initWithVoaId:voaid paraid:paraid idIndex:idIndex timing:timing sentence:sentence imgWords:imgWords imgPath:imgPath sentence_cn:sentence_cn];
+                voaDetail = [[VOADetail alloc] initWithVoaId:voaid paraid:paraid idIndex:idIndex startTiming:startTiming endTiming:endTiming sentence:sentence imgWords:imgWords imgPath:imgPath sentence_cn:sentence_cn];
                 break;
             }
         } else {
@@ -131,37 +167,38 @@
     }
 }
 
-+(id)findByVoaidAndTime:(NSInteger)voaid timing:(NSInteger)timing{
++(id)findByVoaidAndTime:(NSInteger)voaid timing:(float)startTiming{
     PLSqliteDatabase *dataBase = [database setup];
     
 	id<PLResultSet> rs;
-	NSString *findSql = [NSString stringWithFormat:@"select * FROM voadetail WHERE VoaId = %d and Timing = %d", voaid,timing];
+	NSString *findSql = [NSString stringWithFormat:@"select * FROM voadetail WHERE VoaId = %d and StartTiming > %f and StartTiming < %f", voaid,startTiming-0.1, startTiming+0.1];
 	rs = [dataBase executeQuery:findSql];
 	
 	VOADetail *voaDetail = nil;
     NSString *sentence_cn = nil;
 
 	while ([rs next]) {
-       
-            sentence_cn = [[[[rs objectForColumn:@"Sentence_cn"]stringByReplacingOccurrencesOfString:@"\"" withString:@"”"] stringByReplacingOccurrencesOfString:@"<b>" withString:@""] stringByReplacingOccurrencesOfString:@"</b>" withString:@""];
-            //            NSLog(([sentence_cn isEqualToString:@""] || [sentence_cn isEqualToString:@"null"] || [sentence_cn isEqualToString:@"test"])?@"中文为空":@"有中文");
+        
+        sentence_cn = [[[[rs objectForColumn:@"Sentence_cn"]stringByReplacingOccurrencesOfString:@"\"" withString:@"”"] stringByReplacingOccurrencesOfString:@"<b>" withString:@""] stringByReplacingOccurrencesOfString:@"</b>" withString:@""];
+        //            NSLog(([sentence_cn isEqualToString:@""] || [sentence_cn isEqualToString:@"null"] || [sentence_cn isEqualToString:@"test"])?@"中文为空":@"有中文");
         if (![sentence_cn isEqualToString:@""] && ![sentence_cn isEqualToString:@"null"] && ![sentence_cn isEqualToString:@"test"]) {
         }else{
-               NSString *sorry=@"抱歉，太过久远的VOA新闻未收录中文～";
-               sentence_cn = sorry;
+            NSString *sorry=@"抱歉，太过久远的VOA新闻未收录中文～";
+            sentence_cn = sorry;
         }
-                //                NSLog(@"sentence_cn:%@",sentence_cn);
-                NSInteger voaid = [rs intForColumn:@"Voaid"];
-                NSInteger paraid = [rs intForColumn:@"Paraid"];
-                NSInteger idIndex = [rs intForColumn:@"IdIndex"];
-                NSInteger timing = [rs intForColumn:@"Timing"];
-                NSString *sentence = [rs objectForColumn:@"Sentence"];
-                NSString *imgWords = [rs objectForColumn:@"ImgWords"];
-                NSString *imgPath = [rs objectForColumn:@"ImgPath"];
-                
-                voaDetail = [[[VOADetail alloc] initWithVoaId:voaid paraid:paraid idIndex:idIndex timing:timing sentence:sentence imgWords:imgWords imgPath:imgPath sentence_cn:sentence_cn] autorelease];
-            }
-//            NSLog(@"voadetail:%d,%d,%d,%@",voaDetail._voaid,voaDetail._paraid,voaDetail._idIndex,voaDetail._sentence_cn);
+        //                NSLog(@"sentence_cn:%@",sentence_cn);
+        NSInteger voaid = [rs intForColumn:@"Voaid"];
+        NSInteger paraid = [rs intForColumn:@"Paraid"];
+        NSInteger idIndex = [rs intForColumn:@"IdIndex"];
+        float startTiming = [rs floatForColumn:@"startTiming"];
+        float endTiming = [rs floatForColumn:@"endTiming"];
+        NSString *sentence = [rs objectForColumn:@"Sentence"];
+        NSString *imgWords = [rs objectForColumn:@"ImgWords"];
+        NSString *imgPath = [rs objectForColumn:@"ImgPath"];
+        
+        voaDetail = [[[VOADetail alloc] initWithVoaId:voaid paraid:paraid idIndex:idIndex startTiming:startTiming endTiming:endTiming sentence:sentence imgWords:imgWords imgPath:imgPath sentence_cn:sentence_cn] autorelease];
+    }
+    //            NSLog(@"voadetail:%d,%d,%d,%@",voaDetail._voaid,voaDetail._paraid,voaDetail._idIndex,voaDetail._sentence_cn);
 
 	[rs close];
     //    if (i<3) {
@@ -170,78 +207,17 @@
 	return voaDetail;
 }
 
-/*
- + (NSArray *) findAll{
- PLSqliteDatabase *dataBase = [database setup];
- 
- id<PLResultSet> rs;
- rs = [dataBase executeQuery:@"SELECT * FROM voadetail"];
- 
- NSMutableArray *voaDetails = [[NSMutableArray alloc] init];
- 
- while ([rs next]) {
- NSInteger voaid = [rs intForColumn:@"voaid"];
- NSInteger paraid = [rs intForColumn:@"paraid"];
- NSInteger idIndex = [rs intForColumn:@"idIndex"];
- NSInteger timing = [rs intForColumn:@"timing"];
- NSString *sentence = [rs objectForColumn:@"sentence"];
- NSString *imgWords = [rs objectForColumn:@"imgWords"];
- NSString *imgPath = [rs objectForColumn:@"imgPath"];
- NSString *sentence_cn = [[[[rs objectForColumn:@"sentence_cn"]stringByReplacingOccurrencesOfString:@"\"" withString:@"”"] stringByReplacingOccurrencesOfString:@"<b>" withString:@""] stringByReplacingOccurrencesOfString:@"</b>" withString:@""];
- VOADetail *voaDetail = [[VOADetail alloc] initWithVoaId:voaid paraid:paraid idIndex:idIndex timing:timing sentence:sentence imgWords:imgWords imgPath:imgPath sentence_cn:sentence_cn];
- [voaDetails addObject:voaDetail];
- 
- [voaDetail release], voaDetail = nil;  
- }
- 
- [rs close];
- 
- return voaDetails;
- }*/
+/**
+ 数据库表voadetail添加增加float类型列EndTiming和StartTiming，然后将Timing的值拷贝到StartTiming。
+ */
++ (void) alterTimefield {
+    PLSqliteDatabase *db = [database setup];
+    NSString *findSql = [NSString stringWithFormat:@"ALTER TABLE voadetail ADD EndTiming float default 0;"];
+    [db executeUpdate:findSql];
+    findSql = [NSString stringWithFormat:@"ALTER TABLE voadetail ADD StartTiming float;"];
+    [db executeUpdate:findSql];
+    findSql = [NSString stringWithFormat:@"update voadetail set StartTiming = Timing;"];
+    [db executeUpdate:findSql];
+}
 
-/*
- + (NSString *) findImgWords:(NSInteger) voaid{
- PLSqliteDatabase *dataBase = [database setup];
- //    NSLog(@"jinlaile");
- id<PLResultSet> rs;
- NSString *findSql = [NSString stringWithFormat:@"select imgWords FROM voadetail WHERE voaid = %d and paraid = 1 and idIndex =1", voaid];
- rs = [dataBase executeQuery:findSql];
- 
- NSString *imgWords = nil;
- 
- if([rs next]) {
- imgWords = [rs objectForColumn:@"imgWords"];
- }
- else {
- //		UIAlertView *errAlert = [[UIAlertView alloc] initWithTitle:@"Error!" message:@"Can not find!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
- //		[errAlert show];
- }
- //	NSLog(@"imgword:%@",imgWords);
- [rs close];
- //	[voaDetail release];
- return imgWords;	
- }*/
-
-/*
- + (NSInteger) findLastId
- {
- PLSqliteDatabase *dataBase = [database setup];
- id<PLResultSet> rs;
- NSString *findSql = [NSString stringWithFormat:@"select max(voaid) last from voadetail"];
- rs = [dataBase executeQuery:findSql];
- NSString *last = @"0";
- if([rs next]) {
- last = [rs objectForColumn:@"last"];
- //        NSLog(@"%@", last);
- }
- else {
- UIAlertView *errAlert = [[UIAlertView alloc] initWithTitle:@"Error!" message:@"Can not find!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
- [errAlert show];
- [errAlert release];
- }	
- [rs close];
- //	[dataBase close];//
- return last.integerValue;	
- 
- }*/
 @end

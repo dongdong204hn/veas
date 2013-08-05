@@ -91,6 +91,10 @@
  */
 @interface PlayViewController : UIViewController <UIAlertViewDelegate, AVAudioPlayerDelegate, ASIHTTPRequestDelegate,MyLabelDelegate,MBProgressHUDDelegate, AVAudioSessionDelegate, UIScrollViewDelegate,UIActionSheetDelegate,UITableViewDelegate,UITableViewDataSource,UIPickerViewDelegate,UIPickerViewDataSource,HPGrowingTextViewDelegate,HSCButtonDelegate, UITextViewDelegate, GADBannerViewDelegate>
 {
+    UIButton *aChoose;
+    UIButton *bChoose;
+    NSMutableArray *offsetArray;
+    
     CL_AudioRecorder* audioRecoder;
     BOOL              m_isRecording;
     AVAsset *avSet;
@@ -165,6 +169,7 @@
     NSMutableArray	*lyricArray;
     NSMutableArray	*lyricCnArray;
 	NSMutableArray	*timeArray;
+    NSMutableArray	*endTimeArray;
 	NSMutableArray	*indexArray;
 	NSMutableArray	*lyricLabelArray;
     NSMutableArray	*lyricCnLabelArray;
@@ -335,6 +340,7 @@
 @property (nonatomic, retain) NSMutableArray	*lyricArray;    //英文歌词数组
 @property (nonatomic, retain) NSMutableArray	*lyricCnArray;  //中文歌词数组
 @property (nonatomic, retain) NSMutableArray	*timeArray; //歌词播放时长数组
+@property (nonatomic, retain) NSMutableArray	*endTimeArray; 
 @property (nonatomic, retain) NSMutableArray	*indexArray;    //歌词序列号数组
 @property (nonatomic, retain) NSMutableArray	*lyricLabelArray;   //英文歌词标签数组
 @property (nonatomic, retain) NSMutableArray	*lyricCnLabelArray; //中文歌词标签数组

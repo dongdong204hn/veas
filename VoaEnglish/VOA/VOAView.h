@@ -57,6 +57,7 @@
 //全赋值初始化VOAView对象
 - (id) initWithVoaId:(NSInteger ) voaid title:(NSString *) title descCn:(NSString *) descCn descJp:(NSString *) descJp title_Cn:(NSString *)title_Cn  title_Jp:(NSString *) title_Jp category:(NSString *) category sound:(NSString *) sound url:(NSString *) url pic:(NSString *) pic creatTime:(NSString *) creatTime publishTime:(NSString *) publishTime readcount:(NSString *) readCount hotFlg:(NSString *) hotFlg isRead:(NSString *) isRead;
 
+
 + (NSMutableArray *) findNew:(NSInteger)offset newVoas:(NSMutableArray *) newVoas;
 
 + (NSMutableArray *) findNewByCategory:(NSInteger)offset category:(NSInteger ) category myArray:(NSMutableArray *) myArray;

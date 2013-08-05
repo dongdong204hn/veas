@@ -29,4 +29,11 @@
    indexResultIn:(NSMutableArray *)indexArray
      voaResultIn:(VOAView *)voa;
 
++ (BOOL)querySQL:(NSMutableArray *)lyricArray
+ lyricCnResultIn:(NSMutableArray *)lyricCnArray
+	timeResultIn:(NSMutableArray *)timeArray
+    endTimeResultIn:(NSMutableArray *)endTimeArray
+   indexResultIn:(NSMutableArray *)indexArray
+     voaResultIn:(VOAView *)voa;
+
 @end

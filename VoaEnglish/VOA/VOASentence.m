@@ -21,7 +21,7 @@
 @synthesize collected;
 @synthesize synchroFlg;
 
--(id) initWithVOASentence:(NSInteger) _SentenceId VoaId:(NSInteger)_VoaId ParaId:(NSInteger)_ParaId IdIndex:(NSInteger)_IdIndex StartTime:(NSInteger)_StartTime EndTime:(NSInteger)_EndTime Sentence:(NSString *)_Sentence Sentence_cn:(NSString *)_Sentence_cn userId:(NSInteger)_userId collected:(NSInteger) _collected  synchroFlg:(NSInteger) _synchroFlg
+-(id) initWithVOASentence:(NSInteger) _SentenceId VoaId:(NSInteger)_VoaId ParaId:(NSInteger)_ParaId IdIndex:(NSInteger)_IdIndex StartTime:(float)_StartTime EndTime:(float)_EndTime Sentence:(NSString *)_Sentence Sentence_cn:(NSString *)_Sentence_cn userId:(NSInteger)_userId collected:(NSInteger) _collected  synchroFlg:(NSInteger) _synchroFlg
 {
     
     if (self = [super init]) {
@@ -46,7 +46,7 @@
 {
     PLSqliteDatabase *dataBase = [favdatabase setup];
 	id<PLResultSet> rs;
-	NSString *findSql = [NSString stringWithFormat:@"select * FROM favsentence WHERE VoaId=%d and StartTime=%d and userId = %d and collected > -1",self.VoaId,self.StartTime,self.userId];
+	NSString *findSql = [NSString stringWithFormat:@"select * FROM favsentence WHERE VoaId=%d and StartTime>%f and StartTime<%f and userId = %d and collected > -1",self.VoaId,self.StartTime-0.1,self.StartTime+0.1,self.userId];
     rs = [dataBase executeQuery:findSql];
 	BOOL myflag = NO;
 	
@@ -71,7 +71,7 @@
     PLSqliteDatabase *dataBase = [favdatabase setup];
     BOOL flg;
     if (![self isExist]) {
-        NSString *findSql = [NSString stringWithFormat:@"insert into favsentence(SentenceId,VoaId,ParaId,IdIndex,StartTime,EndTime,Sentence,SentenceCn,userId,collected,synchroFlg) values(%d,%d,%d,%d,%d,%d,\"%@\",\"%@\",%d,1,0);",SentenceId,VoaId,ParaId,IdIndex,StartTime,EndTime,Sentence,Sentence_cn,userId];
+        NSString *findSql = [NSString stringWithFormat:@"insert into favsentence(SentenceId,VoaId,ParaId,IdIndex,StartTime,EndTime,Sentence,SentenceCn,userId,collected,synchroFlg) values(%d,%d,%d,%d,%f,%f,\"%@\",\"%@\",%d,1,0);",SentenceId,VoaId,ParaId,IdIndex,StartTime,EndTime,Sentence,Sentence_cn,userId];
         if([dataBase executeUpdate:findSql]) {
             //            NSLog(@"--success!");
         }
@@ -108,7 +108,7 @@
 }
 
 /**
- *  同步用户生词时标识此词是存在的
+ *  同步用户句子时标识此句是存在的
  */
 - (void) alterSynchroCollect
 {
@@ -119,7 +119,7 @@
     myDate = [formatter stringFromDate:[NSDate date]];
     //    NSLog(@"%@",myDate);
     if (![self isExist]) {
-        NSString *findSql = [NSString stringWithFormat:@"insert into favsentence(SentenceId,VoaId,ParaId,IdIndex,StartTime,EndTime,Sentence,SentenceCn,userId,collected,synchroFlg) values(%d,%d,%d,%d,%d,%d,\"%@\",\"%@\",%d,0,1);",SentenceId,VoaId,ParaId,IdIndex,StartTime,EndTime,Sentence,Sentence_cn,userId];
+        NSString *findSql = [NSString stringWithFormat:@"insert into favsentence(SentenceId,VoaId,ParaId,IdIndex,StartTime,EndTime,Sentence,SentenceCn,userId,collected,synchroFlg) values(%d,%d,%d,%d,%f,%f,\"%@\",\"%@\",%d,0,1);",SentenceId,VoaId,ParaId,IdIndex,StartTime,EndTime,Sentence,Sentence_cn,userId];
         if([dataBase executeUpdate:findSql]) {
             //            NSLog(@"--success!");
         }
@@ -128,7 +128,7 @@
         }
     }else
     {
-        NSString *findSql = [NSString stringWithFormat:@"update favsentence set synchroFlg = 1 WHERE VoaId = %d and userId= %d and StartTime =%d;", VoaId,userId,StartTime];
+        NSString *findSql = [NSString stringWithFormat:@"update favsentence set synchroFlg = 1 WHERE VoaId = %d and userId= %d and StartTime>%f and StartTime<%f;", VoaId,userId,StartTime-0.1,StartTime+0.1];
         if([dataBase executeUpdate:findSql]) {
             //            NSLog(@"--success!");
         }
@@ -153,8 +153,8 @@
         NSInteger VoaId =[rs intForColumn:@"VoaId"];
         NSInteger ParaId = [rs intForColumn:@"ParaId"];
         NSInteger IdIndex = [rs intForColumn:@"IdIndex"];
-        NSInteger StartTime = [rs intForColumn:@"StartTime"];
-        NSInteger EndTime = [rs intForColumn:@"EndTime"];
+        float StartTime = [rs floatForColumn:@"StartTime"];
+        float EndTime = [rs floatForColumn:@"EndTime"];
         NSString *Sentence =[[rs objectForColumn:@"Sentence"] autorelease];
         NSString *Sentence_cn = [[rs objectForColumn:@"SentenceCn"] autorelease];
 
@@ -188,8 +188,8 @@
         NSInteger VoaId =[rs intForColumn:@"VoaId"];
         NSInteger ParaId = [rs intForColumn:@"ParaId"];
         NSInteger IdIndex = [rs intForColumn:@"IdIndex"];
-        NSInteger StartTime = [rs intForColumn:@"StartTime"];
-        NSInteger EndTime = [rs intForColumn:@"EndTime"];
+        float StartTime = [rs floatForColumn:@"StartTime"];
+        float EndTime = [rs floatForColumn:@"EndTime"];
         NSString *Sentence =[[rs objectForColumn:@"Sentence"] autorelease];
         NSString *Sentence_cn = [[rs objectForColumn:@"SentenceCn"] autorelease];
         
@@ -316,8 +316,8 @@
         NSInteger VoaId =[rs intForColumn:@"VoaId"];
         NSInteger ParaId = [rs intForColumn:@"ParaId"];
         NSInteger IdIndex = [rs intForColumn:@"IdIndex"];
-        NSInteger StartTime = [rs intForColumn:@"StartTime"];
-        NSInteger EndTime = [rs intForColumn:@"EndTime"];
+        float StartTime = [rs floatForColumn:@"StartTime"];
+        float EndTime = [rs floatForColumn:@"EndTime"];
         NSString *Sentence =[[rs objectForColumn:@"Sentence"] autorelease];
         NSString *Sentence_cn = [[rs objectForColumn:@"SentenceCn"] autorelease];
         NSInteger userId = [rs intForColumn:@"userId"];
@@ -359,6 +359,21 @@
     PLSqliteDatabase *dataBase = [favdatabase setup];
     NSString *findSql = [NSString stringWithFormat:@"ALTER TABLE favsentence ADD synchroFlg integer DEFAULT 0"];
     [dataBase executeUpdate:findSql];
+}
+
+/**
+ 数据库表favsentence修改列StartTime和EndTime类型为float.
+ */
++ (void) alterTimefield {
+    PLSqliteDatabase *db = [favdatabase setup];
+    NSString *findSql = [NSString stringWithFormat:@"CREATE TABLE favsentenceTwo (SentenceId integer NOT NULL PRIMARY KEY,VoaId integer,ParaId integer,IdIndex integer,StartTime float,EndTime float DEFAULT 1800,Sentence varchar,SentenceCn varchar,userId integer NOT NULL DEFAULT 0,collected integer DEFAULT 0,synchroFlg integer NOT NULL DEFAULT 0);"];
+    [db executeUpdate:findSql];
+    findSql = [NSString stringWithFormat:@"insert into favsentenceTwo select * from favsentence;"];
+    [db executeUpdate:findSql];
+    findSql = [NSString stringWithFormat:@"drop table favsentence;"];
+    [db executeUpdate:findSql];
+    findSql = [NSString stringWithFormat:@"alter table favsentenceTwo rename to favsentence;"];
+    [db executeUpdate:findSql];
 }
 
 @end

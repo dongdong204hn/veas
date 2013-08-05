@@ -148,6 +148,11 @@ void uncaughtExceptionHandler(NSException *exception) {
             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"recPlayAgain"];
             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"recScore"];
             
+            [self cancelLocalNotification];
+            [self createLocalNotification];
+            
+//            [VOADetail alterTimefield];
+            
             //展示帮助界面
             numOfPages = 6;
             scrollView = [[UIScrollView alloc] initWithFrame:self.windowTwo.bounds];
@@ -204,9 +209,15 @@ void uncaughtExceptionHandler(NSException *exception) {
                 [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"recPlayAgain"];
                 [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"recScore"];
                 
-                [VOASentence creatSynFlg];
+                [self cancelLocalNotification];
+                [self createLocalNotification];
                 
-                UIAlertView *updateAlert = [[UIAlertView alloc] initWithTitle:@"重要更新" message:@"进行了一些细节上的优化和完善。" delegate:nil cancelButtonTitle:@"我已知晓" otherButtonTitles:nil];
+                [VOADetail alterTimefield];
+                [VOASentence alterTimefield];
+                
+//                [VOASentence creatSynFlg];
+                
+                UIAlertView *updateAlert = [[UIAlertView alloc] initWithTitle:@"重要更新" message:@"修复了一些bug。较新的VOA新闻音频均提高了同步精度。\n优化了区间复读功能：在文本内容界面新增按钮A、B，AB复读模式下，暂停音频播放，滑动某句话到A或B的位置，点击A或B按钮，即可指定此句为起始句A还是结束句B。下方进度条的A、B刻度也会相应改变。" delegate:nil cancelButtonTitle:@"我已知晓" otherButtonTitles:nil];
                 [updateAlert show];
                 [updateAlert release], updateAlert = nil;
             }
@@ -280,6 +291,11 @@ void uncaughtExceptionHandler(NSException *exception) {
             [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:1] forKey:@"remCode"];
             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"recPlayAgain"];
             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"recScore"];
+            
+            [self cancelLocalNotification];
+            [self createLocalNotification];
+            
+//            [VOADetail alterTimefield];
             
             //展示用户帮助
             numOfPages = 6;
@@ -356,9 +372,14 @@ void uncaughtExceptionHandler(NSException *exception) {
                 [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"recPlayAgain"];
                 [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"recScore"];
                 
-                [VOASentence creatSynFlg];
+                [self cancelLocalNotification];
+                [self createLocalNotification]; 
                 
-                UIAlertView *updateAlert = [[UIAlertView alloc] initWithTitle:@"更新内容" message:@"根据用户的反馈进行了一些针对性的修复和完善，提高用户体验。" delegate:nil cancelButtonTitle:@"我已知晓" otherButtonTitles:nil];
+                [VOADetail alterTimefield];
+                [VOASentence alterTimefield];
+//                [VOASentence creatSynFlg];
+                
+                UIAlertView *updateAlert = [[UIAlertView alloc] initWithTitle:@"重要更新" message:@"修复了一些bug。较新的VOA新闻音频均提高了同步精度。\n优化了区间复读功能：在文本内容界面新增按钮A、B，AB复读模式下，暂停音频播放，滑动某句话到A或B的位置，点击A或B按钮，即可指定此句为起始句A还是结束句B。下方进度条的A、B刻度也会相应改变。" delegate:nil cancelButtonTitle:@"我已知晓" otherButtonTitles:nil];
                 [updateAlert show];
                 [updateAlert release], updateAlert = nil;
             }
@@ -385,6 +406,9 @@ void uncaughtExceptionHandler(NSException *exception) {
         NSString *deviceTokenStr = [[NSUserDefaults standardUserDefaults] objectForKey:@"DeviceTokenStringVOAC"];
         [self pushToken:deviceTokenStr];
     }
+    
+//    [self cancelLocalNotification];
+//    [self createLocalNotification];
 
     return YES;
 }
@@ -511,6 +535,8 @@ void uncaughtExceptionHandler(NSException *exception) {
      Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
      */
 //    [[NSUserDefaults standardUserDefaults] setObject:@"YES" forKey:kBePro];
+    
+    application.applicationIconBadgeNumber = 0;
     /*
      检测是否正在学习，若未标志正在学习，记录开始时间与日期。并且若有网的话告诉服务器无网时所听的新闻。
      */
@@ -865,6 +891,103 @@ void uncaughtExceptionHandler(NSException *exception) {
             }
         [doc release], doc = nil;
     }
+    
+}
+
+#pragma mark - LocalNotification
+- (void)cancelLocalNotification {
+    // 获得 UIApplication
+    [[UIApplication sharedApplication] cancelAllLocalNotifications];
+    
+}
+
+- (void)createLocalNotification {
+    
+//    if (![UserSetting isPushDate]) {
+//        return;
+//    }
+    UILocalNotification *localNotif = [[UILocalNotification alloc] init];
+    if (localNotif) {
+        
+//        NSArray *pushDateArray = [UserSetting pushHourAndMinAndAMPM];
+//        int hour = [[pushDateArray objectAtIndex:0] intValue];
+//        int min = [[pushDateArray objectAtIndex:1] intValue];
+//        NSString *amOrPm = [pushDateArray objectAtIndex:2];
+        int hour = 10;
+        int min = 0;
+        NSString *amOrPm = @"PM";
+
+        if ([amOrPm isEqualToString:@"PM"]) {
+            hour += 12;
+        }
+        
+        NSDateComponents *components = [[[NSDateComponents alloc] init] autorelease];
+        [components setHour:hour];
+        [components setMinute:min];
+        
+        //本地化一下子
+        NSCalendar *localCalendar = [NSCalendar currentCalendar];
+        
+        NSDate *date = [localCalendar dateFromComponents:components];
+        
+//        NSDate *now=[NSDate new];
+//        localNotif.fireDate = [NSDate dateWithTimeInterval:50 sinceDate:now];
+        localNotif.fireDate= date;
+ 
+        localNotif.timeZone = [NSTimeZone defaultTimeZone];
+        
+        localNotif.repeatInterval = NSDayCalendarUnit;
+        
+        NSLog(@"hour is %d, min is %d\n下次推送时间是%@", hour, min, localNotif.fireDate);
+        
+        
+        
+        //本地化一下子
+        NSString *pushStr = nil;
+//        switch ([UserSetting assistantID]) {
+//            case 0://大椰
+//                pushStr = NSLocalizedString(@"大椰助理:嘿!老大,到时间学习了。外语学习是要坚持才能看到成绩的哦。", @"alertBody");
+//                break;
+//                
+//            case 1://小桃
+//                pushStr = NSLocalizedString(@"小桃助理:主人,学习的时间到了哦。外语学习贵在坚持,我在应用里等着主人哦~", @"alertBody");
+//                break;
+//                
+//            default:
+//                pushStr = NSLocalizedString(@"助理:主人,学习的时间到了哦。", @"alertBody");
+//                break;
+//        }
+        pushStr = NSLocalizedString(@"亲，坚持精心听读VOA新闻，英语水平定会稳步提高。^.^", @"alertBody");
+        localNotif.alertBody = pushStr;
+        localNotif.alertAction = NSLocalizedString(@"确定", @"alertAction");
+        
+        localNotif.soundName = UILocalNotificationDefaultSoundName;
+        
+        localNotif.applicationIconBadgeNumber = 1;
+        
+        NSDictionary *info = [NSDictionary dictionaryWithObject:@"name"forKey:@"key"];
+        localNotif.userInfo = info;
+        
+        [[UIApplication sharedApplication] scheduleLocalNotification:localNotif];
+    }
+    [localNotif release];
+    
+}
+
+/**
+ *  作用不大
+ */
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
+{
+    if (application.applicationState == UIApplicationStateActive) {
+        NSLog(@"received a local notification while running in the foreground");
+    } else if (application.applicationState == UIApplicationStateBackground) {
+        NSLog(@"received a local notification while running in the background");
+    }
+    else if (application.applicationState == UIApplicationStateInactive) {
+        NSLog(@"received a local notification while not running");
+    }
+    //    [self handleLocalNotificaion:notification];
     
 }
 

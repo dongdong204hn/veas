@@ -62,8 +62,8 @@ lyricCnLabelArray: (NSMutableArray *)lyricCnLabelArray
         UITextView *lyricCnLabel = [lyricCnLabelArray objectAtIndex:i];
 		[lyricCnLabel retain];
 
- 		if ((int)progress >= [[timeArray objectAtIndex:i] unsignedIntValue] && 
-			(int)progress < [[timeArray objectAtIndex:i+1] unsignedIntValue]) {
+ 		if (progress >= [[timeArray objectAtIndex:i] floatValue] && 
+			progress < [[timeArray objectAtIndex:i+1] floatValue]) {
 			
 //			lyricLabel.highlighted = YES;
 //			lyricLabel.highlightedTextColor = swColor;
@@ -148,7 +148,7 @@ lyricCnLabelArray: (NSMutableArray *)lyricCnLabelArray
     UITextView *lyricCnLabel = [lyricCnLabelArray objectAtIndex:[indexArray count] - 1];
 	[lyricCnLabel retain];
 	
-	if ((int)progress >= [[timeArray objectAtIndex:[indexArray count] - 1] unsignedIntValue]){
+	if (progress >= [[timeArray objectAtIndex:[indexArray count] - 1] floatValue]){
         [lyricLabel setTextColor:swColor];
 //		lyricLabel.highlighted = YES;
 //		lyricLabel.highlightedTextColor = swColor;
@@ -216,8 +216,6 @@ lyricCnLabelArray: (NSMutableArray *)lyricCnLabelArray
     if (mulValueFont > 0) {
         fontSize = mulValueFont;
     }
-//    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:fontSize] forKey:@"nowValueFont"];
-//    UIFont *Courier = [UIFont fontWithName:@"Courier" size:fontSize];//初始15
     UIFont *Courier = [UIFont systemFontOfSize:fontSize];//初始15
     UIFont *CourierTwo = [UIFont systemFontOfSize:fontSize-2]; 
 //    BOOL isPad = [Constants isPad];
@@ -248,7 +246,8 @@ lyricCnLabelArray: (NSMutableArray *)lyricCnLabelArray
 //        {
 //            *cnLines = (*cnLines / cnLineNumber) + 1;
 //        }
-    
+        
+        
         MyTextView *lyricLabel = [[MyTextView alloc] initWithFrame:
                                   CGRectMake(0, offSetY, textScroll.frame.size.width, enSize.height)];
         [lyricLabel setContentSize:CGSizeMake(textScroll.frame.size.width, enSize.height)];
@@ -259,13 +258,7 @@ lyricCnLabelArray: (NSMutableArray *)lyricCnLabelArray
         NSString *labelText = [[NSString alloc] initWithFormat:@"%@", [lyricArray objectAtIndex:i]];
         lyricLabel.text = labelText;
         [lyricLabel whenTapped:^{
-//            NSLog(@"11");
-//            [mp3Player seekToTime:CMTimeMakeWithSeconds([[timeArray objectAtIndex:i] unsignedIntValue], NSEC_PER_SEC)];
             [[PlayViewController sharedPlayer] aniToPlay:lyricLabel] ;
-//            PlayViewController *player = [PlayViewController sharedPlayer];
-//            player.selectWord = [lyricLabel.text substringWithRange:lyricLabel.selectedRange];
-//            [player.selectWord retain];
-//            NSLog(@"ca:%@", [lyricLabel.text substringWithRange:lyricLabel.selectedRange]);
         }];
         [lyricLabel whenDoubleTapped:^{ //避免双击时仍触发上面的单击事件
 //            NSLog(@"22");
@@ -310,7 +303,6 @@ lyricCnLabelArray: (NSMutableArray *)lyricCnLabelArray
                                     CGRectMake(0, offSetY, textScroll.frame.size.width, chSize.height+20)];
         [lyricCnLabel setContentSize:CGSizeMake(textScroll.frame.size.width, chSize.height+20)];
         [lyricCnLabel whenTapped:^{ //增加单击事件，
-//            [mp3Player seekToTime:CMTimeMakeWithSeconds([[timeArray objectAtIndex:i] unsignedIntValue], NSEC_PER_SEC)];
             [[PlayViewController sharedPlayer] aniToPlay:lyricLabel] ;
         }];
 //        UITextView *lyricCnLabel = [[UITextView alloc] initWithFrame:
@@ -357,6 +349,171 @@ lyricCnLabelArray: (NSMutableArray *)lyricCnLabelArray
     return offSetY;
 }
 
++ (NSMutableArray *)lyricViewNew : (NSMutableArray *)lyricLabelArray
+                lyricCnLabelArray: (NSMutableArray *)lyricCnLabelArray
+                           index : (NSMutableArray *)indexArray
+                           lyric : (NSMutableArray *)lyricArray
+                         lyricCn : (NSMutableArray *)lyricCnArray
+                            time : (NSMutableArray *)timeArray
+                          offset : (NSMutableArray *)offsetArray
+                     localPlayer : (AVPlayer *)mp3Player
+                          scroll : (TextScrollView *)textScroll {
+    //  防止实例被释放
+	[lyricLabelArray retain];
+    [lyricCnLabelArray retain];
+	[indexArray retain];
+	[lyricArray retain];
+    [lyricCnArray retain];
+    //    [mp3Player retain];
+	[textScroll retain];
+	
+//    NSMutableArray *offsetArray = [[NSMutableArray alloc] init];
+    
+    //  歌词信息在ViewScroll中显示
+	int  offSetY = 0;
+    [offsetArray addObject:[[NSNumber alloc] initWithInt:offSetY]];
+    //    double engHight = 0.f;
+    //    double cnHight = 0.f;
+    int fontSize = 15;
+    if ([Constants isPad]) {
+        fontSize = 20;
+    }
+    int mulValueFont = [[NSUserDefaults standardUserDefaults] integerForKey:@"mulValueFont"];
+    if (mulValueFont > 0) {
+        fontSize = mulValueFont;
+    }
+    //    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:fontSize] forKey:@"nowValueFont"];
+    //    UIFont *Courier = [UIFont fontWithName:@"Courier" size:fontSize];//初始15
+    UIFont *Courier = [UIFont systemFontOfSize:fontSize];//初始15
+    UIFont *CourierTwo = [UIFont systemFontOfSize:fontSize-2];
+    //    BOOL isPad = [Constants isPad];
+    //    if (isPad) {
+    ////        Courier = [UIFont fontWithName:@"Courier" size:fontSize];//初始20
+    //        Courier = [UIFont systemFontOfSize:fontSize];
+    //        CourierTwo = [UIFont systemFontOfSize:fontSize-2];
+    //    }
+	for (int i = 0; i <= [indexArray count] - 1; i++) {
+        //        UIFont *CourierTwo = [UIFont fontWithName:@"arial" size:13];
+        
+        //	计算每行字符长度。
+        //        engHight = [@"a" sizeWithFont:Courier].height;
+        CGSize enSize = [lyricArray objectAtIndex:i] != Nil ? [[lyricArray objectAtIndex:i] sizeWithFont:Courier constrainedToSize:CGSizeMake(textScroll.frame.size.width-25, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap] : CGSizeZero;
+        
+        CGSize chSize = [lyricCnArray objectAtIndex:i] != Nil ? [[lyricCnArray objectAtIndex:i] sizeWithFont:CourierTwo constrainedToSize:CGSizeMake(textScroll.frame.size.width-15, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap] : CGSizeZero;
+        
+        //        cnHight = [@"赵" sizeWithFont:CourierTwo].height;
+        //		*engLines = [[lyricArray objectAtIndex:i] sizeWithFont:Courier constrainedToSize:CGSizeMake(textScroll.frame.size.width-10, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap].height / engHight;
+        //        *cnLines = [[lyricCnArray objectAtIndex:i] length];
+        
+        //        int cnLineNumber = (textScroll.frame.size.width-11)/([@"赵" sizeWithFont:CourierTwo].width-1);//21
+        //        NSLog(@"width:%lf,height:%lf",[@" " sizeWithFont:Courier].width,[@" " sizeWithFont:Courier].height);
+        
+        //        if ((*cnLines % cnLineNumber)>0) {
+        //            *cnLines = (*cnLines / cnLineNumber) + 2;//35:当前每行所放字母的数目  每个字母9pix n个字母总宽度9*n+1
+        //        }else
+        //        {
+        //            *cnLines = (*cnLines / cnLineNumber) + 1;
+        //        }
+        
+        
+        MyTextView *lyricLabel = [[MyTextView alloc] initWithFrame:
+                                  CGRectMake(0, offSetY, textScroll.frame.size.width, enSize.height)];
+        [lyricLabel setContentSize:CGSizeMake(textScroll.frame.size.width, enSize.height)];
+        //        UITextView *lyricLabel = [[UITextView alloc] initWithFrame:
+        //							   CGRectMake(5, offSetY, textScroll.frame.size.width-10, *engLines * engHight)];
+        //        [lyricLabel setContentSize:CGSizeMake(textScroll.frame.size.width-10, *engLines * engHight)];
+        //        lyricLabel.delegate = myLabelDelegate;
+        NSString *labelText = [[NSString alloc] initWithFormat:@"%@", [lyricArray objectAtIndex:i]];
+        lyricLabel.text = labelText;
+        [lyricLabel whenTapped:^{
+            [[PlayViewController sharedPlayer] aniToPlay:lyricLabel] ;
+        }];
+        [lyricLabel whenDoubleTapped:^{ //避免双击时仍触发上面的单击事件
+            //            NSLog(@"22");
+        }];
+        [labelText release];
+        //        lyricLabel.myDelegate = self;
+        lyricLabel.tag = 200 + i;
+        [lyricLabel setFont:Courier];
+        [lyricLabel setTextColor:[UIColor grayColor]];
+        lyricLabel.backgroundColor = [UIColor clearColor];
+        //        [lyricLabel.text setLineBreakMode:UILineBreakModeWordWrap];
+        //        [lyricLabel setNumberOfLines:*engLines];
+        [lyricLabel setEditable:NO];
+        [lyricLabel setScrollEnabled:NO];
+        [lyricLabel setContentOffset:CGPointMake(0, 10)];
+        
+		[textScroll addSubview:lyricLabel];
+        [lyricLabel release];
+        
+        //		MyLabel *lyricLabel = [[MyLabel alloc] initWithFrame:
+        //							   CGRectMake(0, offSetY, textScroll.frame.size.width, *engLines * engHight)];
+        //        lyricLabel.delegate = myLabelDelegate;
+        //        NSString *labelText = [[NSString alloc] initWithFormat:@"%@", [lyricArray objectAtIndex:i]];
+        //        lyricLabel.text = labelText;
+        //        [labelText release];
+        //        lyricLabel.tag = 200 + i;
+        //        [lyricLabel setFont:Courier];
+        //        [lyricLabel setTextColor:[UIColor grayColor]];
+        //        lyricLabel.backgroundColor = [UIColor clearColor];
+        //        [lyricLabel setLineBreakMode:UILineBreakModeWordWrap];
+        //        [lyricLabel setNumberOfLines:*engLines];
+        //		[textScroll addSubview:lyricLabel];
+        //        [lyricLabel release];
+        
+		[lyricLabelArray addObject:lyricLabel];
+        //        [lyricLabel release];//!!切记release不能多次，一次足以，否则一边释放掉会导致其他地方也用不了
+        //		offSetY += *engLines * engHight;
+        offSetY += enSize.height;
+        [offsetArray addObject:[[NSNumber alloc] initWithInt:offSetY]];
+        
+        UITextView *lyricCnLabel = [[UITextView alloc] initWithFrame:
+                                    CGRectMake(0, offSetY, textScroll.frame.size.width, chSize.height+20)];
+        [lyricCnLabel setContentSize:CGSizeMake(textScroll.frame.size.width, chSize.height+20)];
+        [lyricCnLabel whenTapped:^{ //增加单击事件，
+            [[PlayViewController sharedPlayer] aniToPlay:lyricLabel] ;
+        }];
+        if (![[lyricCnArray objectAtIndex:i] isEqualToString:@"null"] && ![[lyricCnArray objectAtIndex:i] isEqualToString:@""] && ![[lyricCnArray objectAtIndex:i] isEqualToString:@"test"]) {
+            
+            NSString *labelText = [[NSString alloc] initWithFormat:@"%@", [lyricCnArray objectAtIndex:i]];
+            lyricCnLabel.text = labelText;
+            [labelText release];
+            
+        }else
+        {
+            //            lyricCnLabel.text = kLyricOne;//没有翻译就空着吧。。 隐藏了"暂未更新"
+        }
+        
+		lyricCnLabel.tag = i;
+        [lyricCnLabel setFont:CourierTwo];
+        [lyricCnLabel setTextColor:[UIColor grayColor]];
+        lyricCnLabel.backgroundColor = [UIColor clearColor];
+        //        [lyricCnLabel setLineBreakMode:UILineBreakModeWordWrap];
+        //        [lyricCnLabel setNumberOfLines:*cnLines];
+        [lyricCnLabel setEditable:NO];
+        [lyricCnLabel setScrollEnabled:NO];
+        [lyricCnLabel setContentOffset:CGPointMake(0, 10)];
+		[textScroll addSubview:lyricCnLabel];
+        [lyricCnLabel release];
+		[lyricCnLabelArray addObject:lyricCnLabel];	
+        //        [lyricCnLabel release];//!!切记release不能多次，一次足以，否则一边释放掉会导致其他地方也用不了
+        //		offSetY += *cnLines * cnHight;
+        offSetY += chSize.height+30;
+        [offsetArray addObject:[[NSNumber alloc] initWithInt:offSetY]];
+        
+	}//end for
+	
+	//  释放
+	[lyricLabelArray release];
+    [lyricCnLabelArray release];
+	[indexArray release];
+    [lyricArray release];
+	[lyricCnArray release];
+    //    [mp3Player release];
+	[textScroll release];
+    return offsetArray;
+}
+
 + (void)preLyricSyn: (NSMutableArray *)timeArray
           localPlayer : (AVPlayer *)mp3Player
 {
@@ -364,14 +521,14 @@ lyricCnLabelArray: (NSMutableArray *)lyricCnLabelArray
     double progress = CMTimeGetSeconds(playerProgress);
     int i = 0;
     for (; i < [timeArray count]; i++) {
-        if ((int)progress < [[timeArray objectAtIndex:i] unsignedIntValue]) {
+        if (progress < [[timeArray objectAtIndex:i] floatValue]) {
             if ((i-2)>=0) {
-                [mp3Player seekToTime:CMTimeMakeWithSeconds([[timeArray objectAtIndex:i-2] unsignedIntValue], NSEC_PER_SEC)];
+                [mp3Player seekToTime:CMTimeMakeWithSeconds([[timeArray objectAtIndex:i-2] floatValue], NSEC_PER_SEC)];
             }
             return ;
         }
     }
-    [mp3Player seekToTime:CMTimeMakeWithSeconds([[timeArray objectAtIndex:[timeArray count]-2] unsignedIntValue], NSEC_PER_SEC)];
+    [mp3Player seekToTime:CMTimeMakeWithSeconds([[timeArray objectAtIndex:[timeArray count]-2] floatValue], NSEC_PER_SEC)];
 }
 
 + (void)aftLyricSyn: (NSMutableArray *)timeArray
@@ -381,8 +538,8 @@ lyricCnLabelArray: (NSMutableArray *)lyricCnLabelArray
     double progress = CMTimeGetSeconds(playerProgress);
     int i = 0;
     for (; i < [timeArray count]; i++) {
-        if ((int)progress < [[timeArray objectAtIndex:i] unsignedIntValue]) {
-            [mp3Player seekToTime:CMTimeMakeWithSeconds([[timeArray objectAtIndex:i] unsignedIntValue], NSEC_PER_SEC)];
+        if (progress < [[timeArray objectAtIndex:i] floatValue]) {
+            [mp3Player seekToTime:CMTimeMakeWithSeconds([[timeArray objectAtIndex:i] floatValue], NSEC_PER_SEC)];
             break;
         }
     }   

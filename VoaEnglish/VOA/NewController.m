@@ -618,7 +618,8 @@ extern ASIHTTPRequest *nowrequest;
                                                                       options:nil] objectAtIndex:0];
                 }
             }
-            cell.myTitle.text = voa._title_Cn;
+            cell.myTitle.text = ([voa._title_Cn isEqualToString:@"(null)"]? voa._title: voa._title_Cn);
+            NSLog(@"voaid:%d %@", voa._voaid, voa._creatTime);
             cell.myDate.text = voa._creatTime;
             cell.readCount.text = [NSString stringWithFormat:@"%i%@", [VOAView findReadCount:voa._voaid]+11321, kSearchThirte];
             //--------->设置内容换行
@@ -668,10 +669,10 @@ extern ASIHTTPRequest *nowrequest;
                         if (isiPhone) {
                             DACircularProgressView *test = [[DACircularProgressView alloc]initWithFrame:CGRectMake(278, 43, 37, 37)];
                             cell.progress = test;
-                            NSLog(@"progress1:%d", [cell.progress retainCount]);
-                            NSLog(@"test1:%d",   test.retainCount);
+//                            NSLog(@"progress1:%d", [cell.progress retainCount]);
+//                            NSLog(@"test1:%d",   test.retainCount);
                             [cell.progress retain];
-                            NSLog(@"progress1:%d", [cell.progress retainCount]);
+//                            NSLog(@"progress1:%d", [cell.progress retainCount]);
                             [test release], test = nil;
                             
 //                            cell.progress=[[[DACircularProgressView alloc]initWithFrame:CGRectMake(278, 43, 37, 37)] autorelease];
@@ -1287,7 +1288,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 - (void)catchDetails:(VOAView *) voaid
 {
 //    NSLog(@"获取内容-%d",voaid._voaid);
-    NSString *url = [NSString stringWithFormat:@"http://apps.iyuba.com/voa/textApi.jsp?voaid=%d&format=xml",voaid._voaid];
+    NSString *url = [NSString stringWithFormat:@"http://apps.iyuba.com/voa/textNewApi.jsp?voaid=%d&format=xml",voaid._voaid];
 //    NSLog(@"catch:%d",voaid._voaid);
 //    ASIHTTPRequest * request = [[ASIHTTPRequest alloc] initWithURL:[NSURL URLWithString:url]];
     ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
@@ -1374,12 +1375,13 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
                 //                    NSLog(@"id:%d",newVoaDetail._voaid);
                 newVoaDetail._paraid = [[[obj elementForName:@"ParaId"] stringValue]integerValue];
                 newVoaDetail._idIndex = [[[obj elementForName:@"IdIndex"] stringValue]integerValue];             
-                newVoaDetail._timing = [[[obj elementForName:@"Timing"] stringValue]integerValue];
+                newVoaDetail._startTiming = [[[obj elementForName:@"Timing"] stringValue] floatValue];
+                newVoaDetail._endTiming = [[[obj elementForName:@"EndTiming"] stringValue] floatValue];
                 newVoaDetail._sentence = [[[[obj elementForName:@"Sentence"] stringValue]stringByReplacingOccurrencesOfString:@"\"" withString:@"”"]stringByReplacingOccurrencesOfString:@"<b>" withString:@""];
                 newVoaDetail._imgWords = [[[obj elementForName:@"ImgWords"] stringValue]stringByReplacingOccurrencesOfString:@"\"" withString:@"”"];
                 newVoaDetail._imgPath = [[obj elementForName:@"ImgPath"] stringValue];
                 newVoaDetail._sentence_cn = [[[[[obj elementForName:@"sentence_cn"] stringValue]stringByReplacingOccurrencesOfString:@"\"" withString:@"”"] stringByReplacingOccurrencesOfString:@"<b>" withString:@""] stringByReplacingOccurrencesOfString:@"</b>" withString:@""];
-                if ([newVoaDetail insert]) {
+                if ([newVoaDetail insertNew]) {
                     //                        NSLog(@"插入%d成功",newVoaDetail._voaid);
                 }
                 [newVoaDetail release],newVoaDetail = nil;
@@ -1415,7 +1417,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
                 if (lastId<newVoa._voaid) {
                     lastId = newVoa._voaid;
                 }
-                newVoa._title = [[obj elementForName:@"Title"] stringValue];
+                newVoa._title = [[[obj elementForName:@"Title"] stringValue] stringByReplacingOccurrencesOfString:@"\"" withString:@"”"];
                 newVoa._descCn = [[[obj elementForName:@"DescCn"] stringValue] stringByReplacingOccurrencesOfString:@"\"" withString:@"”"];
                 newVoa._title_Cn = [[[obj elementForName:@"Title_cn"] stringValue] isEqualToString: @" null"] ? nil :[[obj elementForName:@"Title_cn"] stringValue];
                 newVoa._category = [[obj elementForName:@"Category"] stringValue];

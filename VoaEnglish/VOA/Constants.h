@@ -83,6 +83,7 @@ extern NSString * const kRegThirte;
 extern NSString * const kRegFourte;
 extern NSString * const kRegFivete;
 extern NSString * const kRegSixte;
+extern NSString * const kReg17;
 
 extern NSString * const kColOne;
 extern NSString * const kColTwo;
@@ -155,6 +156,8 @@ extern NSString * const kPlay22;
 extern NSString * const kPlay23;
 extern NSString * const kPlay24;
 extern NSString * const kPlay25;
+extern NSString * const kPlay26;
+extern NSString * const kPlay27;
 
 extern NSString * const kSentenceOne;
 extern NSString * const kSentenceTwo;

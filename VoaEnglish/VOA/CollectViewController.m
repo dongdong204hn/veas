@@ -608,8 +608,8 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
                         [senView setHidesBottomBarWhenPushed:YES];//设置推到新界面时无bottomBar
                         [self.navigationController pushViewController:senView animated:YES];
                         [senView release], senView = nil;
-                        [HUD hide:YES];
-                    });  
+//                        [HUD hide:YES];
+                    });
                 }); 
 
                 
@@ -860,7 +860,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 - (void)catchDetails:(VOAView *) voaid
 {
     //    NSLog(@"获取内容-%d",voaid._voaid);
-    NSString *url = [NSString stringWithFormat:@"http://apps.iyuba.com/voa/textApi.jsp?voaid=%d&format=xml",voaid._voaid];
+    NSString *url = [NSString stringWithFormat:@"http://apps.iyuba.com/voa/textNewApi.jsp?voaid=%d&format=xml",voaid._voaid];
     //    NSLog(@"catch:%d",voaid._voaid);
     //    ASIHTTPRequest * request = [[ASIHTTPRequest alloc] initWithURL:[NSURL URLWithString:url]];
     ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
@@ -893,7 +893,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     //        NSLog(@"下载");
     //        NSLog(@"Queue 预备: %d",wordId);
     NSOperationQueue *myQueue = [self sharedQueue];
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://apps.iyuba.com/voa/updateCollect.jsp?userId=%d&type=%@&voaId=%d&sentenceId=%d&groupName=Iyuba&sentenceFlg=1", sen.userId, mode, sen.VoaId, sen.StartTime]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://apps.iyuba.com/voa/updateCollect.jsp?userId=%d&type=%@&voaId=%d&sentenceId=%f&groupName=Iyuba&sentenceFlg=1", sen.userId, mode, sen.VoaId, sen.StartTime]];
     NSLog(@"url:%@", url);
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
     [request setDelegate:self];
@@ -919,8 +919,8 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
             for (DDXMLElement *obj in items) {
 //                lastPage = [[[obj elementForName:@"lastPage"] stringValue] integerValue];
                 NSInteger voaid = [[obj elementForName:@"voaid"] stringValue].integerValue;
-                NSInteger sentenceid = [[obj elementForName:@"sentenceid"] stringValue].integerValue;
-                NSInteger endTime = [[obj elementForName:@"endTime"] stringValue].integerValue;
+                float sentenceid = [[obj elementForName:@"sentenceid"] stringValue].integerValue;
+                float endTime = [[obj elementForName:@"endTime"] stringValue].integerValue;
                 NSString *content = [[[[[obj elementForName:@"content"] stringValue]stringByReplacingOccurrencesOfString:@"\"" withString:@"”"] stringByReplacingOccurrencesOfString:@"<b>" withString:@""] stringByReplacingOccurrencesOfString:@"</b>" withString:@""];
                 NSString *contentcn = [[[[[obj elementForName:@"contentcn"] stringValue]stringByReplacingOccurrencesOfString:@"\"" withString:@"”"] stringByReplacingOccurrencesOfString:@"<b>" withString:@""] stringByReplacingOccurrencesOfString:@"</b>" withString:@""];
                 VOASentence *nowSen = [[VOASentence alloc] initWithVOASentence:[VOASentence findLastId]+1 VoaId:voaid ParaId:0 IdIndex:0 StartTime:sentenceid EndTime:endTime Sentence:content Sentence_cn:contentcn userId:nowUserId collected:0 synchroFlg:1];
@@ -1000,12 +1000,13 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
                 //                    NSLog(@"id:%d",newVoaDetail._voaid);
                 newVoaDetail._paraid = [[[obj elementForName:@"ParaId"] stringValue]integerValue];
                 newVoaDetail._idIndex = [[[obj elementForName:@"IdIndex"] stringValue]integerValue];
-                newVoaDetail._timing = [[[obj elementForName:@"Timing"] stringValue]integerValue];
+                newVoaDetail._startTiming = [[[obj elementForName:@"Timing"] stringValue] floatValue];
+                newVoaDetail._endTiming = [[[obj elementForName:@"EndTiming"] stringValue] floatValue];
                 newVoaDetail._sentence = [[[[obj elementForName:@"Sentence"] stringValue]stringByReplacingOccurrencesOfString:@"\"" withString:@"”"]stringByReplacingOccurrencesOfString:@"<b>" withString:@""];
                 newVoaDetail._imgWords = [[[obj elementForName:@"ImgWords"] stringValue]stringByReplacingOccurrencesOfString:@"\"" withString:@"”"];
                 newVoaDetail._imgPath = [[obj elementForName:@"ImgPath"] stringValue];
                 newVoaDetail._sentence_cn = [[[[[obj elementForName:@"sentence_cn"] stringValue]stringByReplacingOccurrencesOfString:@"\"" withString:@"”"] stringByReplacingOccurrencesOfString:@"<b>" withString:@""] stringByReplacingOccurrencesOfString:@"</b>" withString:@""];
-                if ([newVoaDetail insert]) {
+                if ([newVoaDetail insertNew]) {
                     //                        NSLog(@"插入%d成功",newVoaDetail._voaid);
                 }
                 [newVoaDetail release],newVoaDetail = nil;

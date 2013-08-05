@@ -26,6 +26,7 @@
 //    assert(request != nil);
     
     request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://app.iyuba.com/ios/"]];
+//    request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://voa.iyuba.com"]];
     assert(request != nil);
     
     [self.webView loadRequest:request];

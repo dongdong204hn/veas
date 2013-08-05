@@ -83,6 +83,7 @@ NSString * const kRegThirte = @"用户名已存在";
 NSString * const kRegFourte = @"邮箱已注册";
 NSString * const kRegFivete= @"用户名长度错误";
 NSString * const kRegSixte= @"提交";
+NSString * const kReg17= @"请检查您输入的信息";
 
 NSString * const kColOne = @"对本地新闻进行搜索";
 NSString * const kColTwo = @"本地";
@@ -155,6 +156,8 @@ NSString * const kPlay22 = @"开启定时";
 NSString * const kPlay23 = @"取消定时";
 NSString * const kPlay24 = @"回放";
 NSString * const kPlay25 = @"录音时间太短";
+NSString * const kPlay26 = @"区间A点不可以大于B点";
+NSString * const kPlay27 = @"区间B点不可以小于A点";
 
 NSString * const kSentenceOne = @"已为您添加到本地～";
 NSString * const kSentenceTwo = @"为了今后为您提供更加优质的服务，请您先登录帐户～";

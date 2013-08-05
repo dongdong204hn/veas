@@ -689,7 +689,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
 - (void)catchDetails:(NSInteger) voaid
 {
-    NSString *url = [NSString stringWithFormat:@"http://apps.iyuba.com/voa/textApi.jsp?voaid=%d&format=xml",voaid];
+    NSString *url = [NSString stringWithFormat:@"http://apps.iyuba.com/voa/textNewApi.jsp?voaid=%d&format=xml",voaid];
     ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
     request.delegate = self;
     [request setUsername:@"detail"];
@@ -757,12 +757,13 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
                 newVoaDetail._voaid = request.tag ;
                 newVoaDetail._paraid = [[[obj elementForName:@"ParaId"] stringValue]integerValue];
                 newVoaDetail._idIndex = [[[obj elementForName:@"IdIndex"] stringValue]integerValue];             
-                newVoaDetail._timing = [[[obj elementForName:@"Timing"] stringValue]integerValue];
+                newVoaDetail._startTiming = [[[obj elementForName:@"Timing"] stringValue] floatValue];
+                newVoaDetail._endTiming = [[[obj elementForName:@"EndTiming"] stringValue] floatValue];
                 newVoaDetail._sentence = [[[obj elementForName:@"Sentence"] stringValue]stringByReplacingOccurrencesOfString:@"\"" withString:@"”"];
                 newVoaDetail._imgWords = [[[obj elementForName:@"ImgWords"] stringValue]stringByReplacingOccurrencesOfString:@"\"" withString:@"”"];
                 newVoaDetail._imgPath = [[obj elementForName:@"ImgPath"] stringValue];
                 newVoaDetail._sentence_cn = [[[obj elementForName:@"sentence_cn"] stringValue]stringByReplacingOccurrencesOfString:@"\"" withString:@"”"];
-                if ([newVoaDetail insert]) {
+                if ([newVoaDetail insertNew]) {
                     //                        NSLog(@"插入%d成功",newVoaDetail._voaid);
                 }
                 [newVoaDetail release], newVoaDetail = nil;

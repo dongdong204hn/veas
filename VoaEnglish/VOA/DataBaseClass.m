@@ -22,14 +22,14 @@
 	[indexArray retain];
     PLSqliteDatabase *dataBase = [database setup];
 	id<PLResultSet> rs;
-	NSString *findSql = [NSString stringWithFormat:@"select timing,sentence FROM voadetail WHERE voaid = %d order by paraid ", voa._voaid];
+	NSString *findSql = [NSString stringWithFormat:@"select StartTiming,sentence FROM voadetail WHERE voaid = %d order by paraid,idindex ", voa._voaid];
 	rs = [dataBase executeQuery:findSql];
     int myIndex = 0;
-    int time = 0;
+    float time = 0.0;
 	while ([rs next]) {
         NSString *lyric = [rs objectForColumn:@"sentence"];
-        time = [rs intForColumn:@"timing"];
-        NSNumber *timeNum = [[NSNumber alloc] initWithInt:time];
+        time = [rs floatForColumn:@"StartTiming"];
+        NSNumber *timeNum = [[NSNumber alloc] initWithFloat:time];
         NSNumber *indexNum = [[NSNumber alloc] initWithInt:++myIndex];
         NSString *lyricStr = [[NSString alloc] initWithUTF8String:[lyric UTF8String]];
         [timeArray addObject:timeNum];
@@ -59,15 +59,15 @@
     PLSqliteDatabase *dataBase = [database setup];
 	id<PLResultSet> rs;
 //    NSLog(@"voaid:%d",voa._voaid);
-	NSString *findSql = [NSString stringWithFormat:@"select timing,sentence,sentence_cn FROM voadetail WHERE voaid = %d order by paraid ", voa._voaid];
+	NSString *findSql = [NSString stringWithFormat:@"select StartTiming,sentence,sentence_cn FROM voadetail WHERE voaid = %d order by paraid,idindex", voa._voaid];
 	rs = [dataBase executeQuery:findSql];
     int myIndex = 0;
-    int time = 0;
+    float time = 0.0;
 	while ([rs next]) {
         NSString *lyric = [rs objectForColumn:@"sentence"];
         NSString *lyricCn = [rs objectForColumn:@"sentence_cn"];
-        time = [rs intForColumn:@"timing"];
-        NSNumber *timeNum = [[NSNumber alloc] initWithInt:time];
+        time = [rs floatForColumn:@"StartTiming"];
+        NSNumber *timeNum = [[NSNumber alloc] initWithFloat:time];
         NSNumber *indexNum = [[NSNumber alloc] initWithInt:++myIndex];
         NSString *lyricStr = [[NSString alloc] initWithUTF8String:[lyric UTF8String]];
         NSString *lyrciCnStr = [[NSString alloc] initWithUTF8String:[lyricCn UTF8String]];
@@ -84,6 +84,58 @@
 	[lyricArray release];
     [lyricCnArray release];
 	[timeArray release];
+	[indexArray release];
+    
+    if ([lyricArray count] > 0) {
+        return  YES;
+    }
+    return  NO;
+}
+
++ (BOOL)querySQL:(NSMutableArray *)lyricArray
+ lyricCnResultIn:(NSMutableArray *)lyricCnArray
+	timeResultIn:(NSMutableArray *)timeArray
+    endTimeResultIn:(NSMutableArray *)endTimeArray
+   indexResultIn:(NSMutableArray *)indexArray
+     voaResultIn:(VOAView *)voa {
+    [lyricArray retain];
+	[timeArray retain];
+    [endTimeArray retain];
+	[indexArray retain];
+    [lyricCnArray retain];
+    PLSqliteDatabase *dataBase = [database setup];
+	id<PLResultSet> rs;
+    //    NSLog(@"voaid:%d",voa._voaid);
+	NSString *findSql = [NSString stringWithFormat:@"select StartTiming,EndTiming,sentence,sentence_cn FROM voadetail WHERE voaid = %d order by paraid,idindex", voa._voaid];
+	rs = [dataBase executeQuery:findSql];
+    int myIndex = 0;
+    float time = 0.0;
+    float endTime = 0.0;
+	while ([rs next]) {
+        NSString *lyric = [rs objectForColumn:@"sentence"];
+        NSString *lyricCn = [rs objectForColumn:@"sentence_cn"];
+        time = [rs floatForColumn:@"StartTiming"];
+        endTime = [rs floatForColumn:@"EndTiming"];
+        NSNumber *timeNum = [[NSNumber alloc] initWithFloat:time];
+        NSNumber *endTimeNum = [[NSNumber alloc] initWithFloat:endTime];
+        NSNumber *indexNum = [[NSNumber alloc] initWithInt:++myIndex];
+        NSString *lyricStr = [[NSString alloc] initWithUTF8String:[lyric UTF8String]];
+        NSString *lyrciCnStr = [[NSString alloc] initWithUTF8String:[lyricCn UTF8String]];
+        [timeArray addObject:timeNum];
+        [endTimeArray addObject:endTimeNum];
+        [indexArray addObject:indexNum];
+        [lyricArray addObject:lyricStr];
+        [lyricCnArray addObject:lyrciCnStr];
+        [timeNum release], timeNum = nil;
+        [indexNum release], indexNum = nil;
+        [lyricStr release], lyricStr = nil;
+        [lyrciCnStr release], lyrciCnStr = nil;
+	}
+	[rs close];
+	[lyricArray release];
+    [lyricCnArray release];
+	[timeArray release];
+    [endTimeArray release];
 	[indexArray release];
     
     if ([lyricArray count] > 0) {
